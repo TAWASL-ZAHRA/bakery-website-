@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" dir="ltr" typeof="bibo:Document w3p:REC" about="" property="dcterms:language" content="ja" prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head>
+	<title>RDF 1.1 Turtle</title>
+	<meta charset="utf-8">
+	
+	
+        
+	
+    
+    <style type="text/css">
+    /* Style Turtle script blocks to be visable */
+    pre.example script {
+        display:block;
+    }
+    .separated { border-collapse:collapse; }
+    .separated thead tr th { border:1px solid black; padding: .2em; }
+    .separated tbody tr td { border:1px solid black; text-align: center; }
+    .separated tbody tr td.r { text-align: right; padding: .5em; }
+    .grammar td { font-family: monospace; vertical-align: top; }
+    .grammar-literal { color: gray;}
+	.grammar_comment { color: #A52A2A; font-style: italic; }
+    </style> 
+	
+    <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.issue-title span, div.note-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child { margin-top: 0 }
+.issue, .note {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-REC">
+<!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+
+<body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+
+<p><a href="../../index.html"><img src="../../images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="http://www.w3.org/TR/2014/REC-turtle-20140225/">RDF 1.1 Turtle, Terse RDF Triple Language W3C Recommendation 25 February 2014</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="../../mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2014年9月19日 | Last Update: 2021年4月6日</p>
+
+<hr>
+
+<p><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="https://www.w3.org/Icons/w3c_home"></a></p>
+
+<h1 property="dcterms:title" id="title" class="title p-name"><abbr title="Resource Description Framework">RDF</abbr> 1.1 Turtle</h1>
+
+<h2 id="subtitle" property="bibo:subtitle">Terse <abbr title="Resource Description Framework">RDF</abbr> Triple Language</h2>
+
+<h2 content="2014-02-24T23:00:00.000Z" datatype="xsd:dateTime" property="dcterms:issued" id="w3c-recommendation-25-february-2014"><abbr title="World Wide Web Consortium">W3C</abbr>勧告 <time datetime="2014-02-25" class="dt-published">2014年2月25日</time></h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/REC-turtle-20140225/" class="u-url">http://www.w3.org/TR/2014/REC-turtle-20140225/</a></dd>
+  <dt>最新公開バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a></dd>
+  <dt>テスト・スイート:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/">http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/</a></dd>
+  <dt>実装報告書:</dt>
+  <dd><a href="http://www.w3.org/2013/TurtleReports/index.html">http://www.w3.org/2013/TurtleReports/index.html</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/PR-turtle-20140109/" rel="dcterms:replaces">http://www.w3.org/TR/2014/PR-turtle-20140225/</a></dd>
+  <dt>編集者:</dt>
+  <dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.w3.org/People/Eric/" content="Eric Prud'hommeaux" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Eric Prud'hommeaux</a>, <a href="http://www.w3.org/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage"><abbr title="World Wide Web Consortium">W3C</abbr></a></span>
+</dd>
+<dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://gavin.carothers.name/" content="Gavin Carothers" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Gavin Carothers</a>, <a href="http://lexmachina.com/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">Lex Machina, Inc</a></span>
+</dd>
+  <dt>著者:</dt>
+  <dd rel="dcterms:contributor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.dajobe.org/" content="David Beckett" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">David Beckett</a></span></dd>
+  <dd rel="dcterms:contributor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.w3.org/People/Berners-Lee/" content="Tim Berners-Lee" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Tim Berners-Lee</a>, <a href="http://www.w3.org/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage"><abbr title="World Wide Web Consortium">W3C</abbr></a></span></dd>
+  <dd rel="dcterms:contributor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.w3.org/People/Eric/" content="Eric Prud'hommeaux" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Eric Prud'hommeaux</a>, <a href="http://www.w3.org/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage"><abbr title="World Wide Web Consortium">W3C</abbr></a></span></dd>
+  <dd rel="dcterms:contributor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://gavin.carothers.name/" content="Gavin Carothers" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Gavin Carothers</a>, <a href="http://lexmachina.com/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">Lex Machina, Inc</a></span></dd>
+</dl>
+
+<p>公開以後に報告されたエラーや問題がないか<a href="http://www.w3.org/2014/rdf1.1-errata"><strong>正誤表</strong></a>を確認してください。</p>
+
+<p>この仕様の英語版が唯一の規範のバージョンです。非規範の<a href="http://www.w3.org/Consortium/Translation/">翻訳版</a>も入手可能かもしれません。</p>
+
+<p class="copyright"><a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2008-2014 <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>&#xae;</sup> (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+<hr>
+
+</div>
+
+<section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_abstract">要約</h2>
+
+<p><abbr title="Resource Description Framework">RDF</abbr>（Resource Description Framework）は、ウェブで情報を表現するための汎用言語です。</p>
+
+<p>このドキュメントは、共通の使用パターンとデータ型の省略形を用いて、<abbr title="Resource Description Framework">RDF</abbr>グラフをコンパクトで自然なテキスト形式で完全に記述できるTurtleと呼ばれる<abbr title="Resource Description Framework">RDF</abbr>用のテキスト形式の構文を定義しています。Turtleは、<a href="http://www.w3.org/TR/sparql11-query/"><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr></a> <abbr title="World Wide Web Consortium">W3C</abbr>勧告のトリプル・パターン構文やN-Triple[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]形式と様々なレベルで互換性があります。</p>
+
+</section><section class="introductory" id="sotd" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_sotd">このドキュメントのステータス</h2>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行の<abbr title="World Wide Web Consortium">W3C</abbr>の刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr>技術報告インデックス</a>にあります。</em></p>
+
+<p>このドキュメントは、<abbr title="Resource Description Framework">RDF</abbr> 1.1ドキュメント群の一部です。このドキュメントでは、RDFの具象構文[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]であるTurtle（Terse <abbr title="Resource Description Framework">RDF</abbr> Triple Language）を定義しています。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/2011/rdf-wg/"><abbr title="Resource Description Framework">RDF</abbr>ワーキンググループ</a>によって勧告として公開されました。このドキュメントに関してコメントを行いたい場合には、<a href="mailto:public-rdf-comments@w3.org">public-rdf-comments@w3.org</a>（<a href="mailto:public-rdf-comments-request@w3.org?subject=subscribe">購読</a>、<a href="http://lists.w3.org/Archives/Public/public-rdf-comments/">アーカイブ</a>）にお送りください。どのようなコメントでも歓迎します。</p>
+
+<p>ワーキンググループの<a href="http://www.w3.org/2013/TurtleReports/index.html">実装報告書</a>を参照してください。</p>
+
+<p>このドキュメントは、<abbr title="World Wide Web Consortium">W3C</abbr>メンバー、ソフトウェア開発者、他の<abbr title="World Wide Web Consortium">W3C</abbr>グループ、および他の利害関係者によりレビューされ、<abbr title="World Wide Web Consortium">W3C</abbr>勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成における<abbr title="World Wide Web Consortium">W3C</abbr>の役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/" rel="w3p:patentRules" about="" id="sotd_patent">2004年2月5日の<abbr title="World Wide Web Consortium">W3C</abbr>特許方針</a>の下で活動しているグループによって作成されました。<abbr title="World Wide Web Consortium">W3C</abbr>は、このグループの成果物に関連する<a rel="disclosure" href="http://www.w3.org/2004/01/pp-impl/46168/status">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許方針の6項</a>に従って情報を開示しなければなりません。</p>
+
+</section><section id="toc">
+
+<h2 class="introductory" aria-level="1" role="heading" id="h2_toc">目次</h2>
+
+<ul class="toc" role="directory" id="respecContents">
+  <li class="tocline"><a href="#sec-intro" class="tocxref"><span class="secno">1. </span>はじめに</a></li>
+  <li class="tocline"><a href="#language-features" class="tocxref"><span class="secno">2. </span>Turtle言語</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#simple-triples" class="tocxref"><span class="secno">2.1 </span>シンプルなトリプル</a></li>
+    <li class="tocline"><a href="#predicate-lists" class="tocxref"><span class="secno">2.2 </span>述語リスト</a></li>
+    <li class="tocline"><a href="#object-lists" class="tocxref"><span class="secno">2.3 </span>目的語リスト</a></li>
+    <li class="tocline"><a href="#sec-iri" class="tocxref"><span class="secno">2.4 </span>IRI</a></li>
+    <li class="tocline"><a href="#literals" class="tocxref"><span class="secno">2.5 </span><abbr title="Resource Description Framework">RDF</abbr>リテラル</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#turtle-literals" class="tocxref"><span class="secno">2.5.1 </span>引用符付きリテラル</a></li>
+      <li class="tocline"><a href="#abbrev" class="tocxref"><span class="secno">2.5.2 </span>数値</a></li>
+      <li class="tocline"><a href="#booleans" class="tocxref"><span class="secno">2.5.3 </span>ブール値</a></li>
+    </ul>
+    </li>
+    <li class="tocline"><a href="#BNodes" class="tocxref"><span class="secno">2.6 </span><abbr title="Resource Description Framework">RDF</abbr>空白ノード</a></li>
+    <li class="tocline"><a href="#unlabeled-bnodes" class="tocxref"><span class="secno">2.7 </span>入れ子にしたTurtleのラベルなし空白ノード</a></li>
+    <li class="tocline"><a href="#collections" class="tocxref"><span class="secno">2.8 </span>コレクション</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#sec-examples" class="tocxref"><span class="secno">3. </span>例</a></li>
+  <li class="tocline"><a href="#sec-diff-sparql" class="tocxref"><span class="secno">4. </span>Turtleと<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>の比較</a></li>
+  <li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">5. </span>適合性</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-mime" class="tocxref"><span class="secno">5.1 </span>メディア・タイプとコンテンツ・エンコーディング</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#sec-grammar" class="tocxref"><span class="secno">6. </span>Turtle文法</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-grammar-ws" class="tocxref"><span class="secno">6.1 </span>空白</a></li>
+    <li class="tocline"><a href="#sec-grammar-comments" class="tocxref"><span class="secno">6.2 </span>コメント</a></li>
+    <li class="tocline"><a href="#sec-iri-references" class="tocxref"><span class="secno">6.3 </span>IRI参照</a></li>
+    <li class="tocline"><a href="#sec-escapes" class="tocxref"><span class="secno">6.4 </span>エスケープ・シーケンス</a></li>
+    <li class="tocline"><a href="#sec-grammar-grammar" class="tocxref"><span class="secno">6.5 </span>文法</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#sec-parsing" class="tocxref"><span class="secno">7. </span>解析</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-parsing-state" class="tocxref"><span class="secno">7.1 </span>パーサの状態</a></li>
+    <li class="tocline"><a href="#sec-parsing-terms" class="tocxref"><span class="secno">7.2 </span><abbr title="Resource Description Framework">RDF</abbr>用語コンストラクタ</a></li>
+    <li class="tocline"><a href="#sec-parsing-triples" class="tocxref"><span class="secno">7.3 </span><abbr title="Resource Description Framework">RDF</abbr>トリプル・コンストラクタ</a></li>
+    <li class="tocline"><a href="#sec-parsing-example" class="tocxref"><span class="secno">7.4 </span>解析の例</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#in-html" class="tocxref"><span class="secno">A. </span>HTMLドキュメントへのTurtleの組み込み</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#xhtml" class="tocxref"><span class="secno">A.1 </span>XHTML</a></li>
+    <li class="tocline"><a href="#in-html-parsing" class="tocxref"><span class="secno">A.2 </span>HTMLでのTurtleの解析</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#sec-mediaReg" class="tocxref"><span class="secno">B. </span>インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</a></li>
+  <li class="tocline"><a href="#sec-acks" class="tocxref"><span class="secno">C. </span>謝辞</a></li>
+  <li class="tocline"><a href="#sec-changelog" class="tocxref"><span class="secno">D. </span>変更履歴</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-change-log-PR-REC" class="tocxref"><span class="secno">D.1 </span><span class="formerLink">2014年1月の勧告案</span>以後の変更</a></li>
+    <li class="tocline"><a href="#sec-changelog-CR-PR" class="tocxref"><span class="secno">D.2 </span><span class="formerLink">2013年2月の勧告候補</span>から<span class="formerLink">2014年1月の勧告案</span>までの変更</a></li>
+    <li class="tocline"><a href="#sec-changelog-WD-CR" class="tocxref"><span class="secno">D.3 </span><span class="formerLink">2011年8月の最初の草案</span>から<span class="formerLink">勧告候補</span>までの変更</a></li>
+    <li class="tocline"><a href="#sec-changelog-Subm-WD" class="tocxref"><span class="secno">D.4 </span><span class="formerLink">2008年1月のチーム提案</span>から<span class="formerLink">最初の草案</span>までの変更</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#references" class="tocxref"><span class="secno">E. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">E.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">E.2 </span>参考情報の参考文献</a></li>
+  </ul>
+  </li>
+</ul>
+
+</section>
+<section class="informative" id="sec-intro" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-intro"><span class="secno">1. </span>はじめに</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>このドキュメントでは、<abbr title="Resource Description Framework">RDF</abbr>の具象構文[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]であるTurtle（Terse <abbr title="Resource Description Framework">RDF</abbr> Triple Language）を定義しています。</p>
+
+<p>Turtleドキュメントは、<abbr title="Resource Description Framework">RDF</abbr>グラフをテキスト形式で表現したものです。次のTurtleドキュメントは、グリーン・ゴブリン（Green Goblin）とスパイダーマン（Spiderman）の関係を記述しています。</p>
+
+<div class="example"><div class="example-title"><span>例1</span></div>
+<pre class="example"><span>@base &lt;http://example.org/&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rel: &lt;http://www.perceive.net/schemas/relationship/&gt; .
+
+&lt;#green-goblin&gt;
+    rel:enemyOf &lt;#spiderman&gt; ;
+    a foaf:Person ;    # マーベル・ユニバースのコンテキストで
+    foaf:name &quot;Green Goblin&quot; .
+
+&lt;#spiderman&gt;
+    rel:enemyOf &lt;#green-goblin&gt; ;
+    a foaf:Person ;
+    foaf:name &quot;Spiderman&quot;, &quot;Человек-паук&quot;@ru .</span></pre></div>
+
+<p>この例は、<a href="#relative-iri">@baseと相対IRI</a>、<a href="#prefixed-name">@prefixと接頭辞名</a>、「<code>;</code>」で区切られた<a href="#predicate-lists">述語リスト</a>、「<code>,</code>」で区切られた<a href="#object-lists">目的語リスト</a>、<code><a href="#iri-a">a</a></code>というトークン、<a href="#literals">リテラル</a>といった、Turtle言語の特徴の多くを取り入れています。</p>
+
+<p><a href="#grammar-production-triples"><code>triples</code></a>に対するTurtle文法は、<a href="http://www.w3.org/TR/sparql11-query/#rTriplesBlock"><code>TriplesBlock</code></a>に対する<a href="http://www.w3.org/TR/sparql11-query/"><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr> 1.1クエリ言語</a>[<cite><a class="bibref" href="#bib-SPARQL11-QUERY">SPARQL11-QUERY</a></cite>]の文法のサブセットです。可能である場合には、この2つの文法は、生成規則と終端記号の名前を共有しています。</p>
+
+<p>Turtleドキュメントからの<abbr title="Resource Description Framework">RDF</abbr>グラフの構築については、<a class="sectionRef" href="#sec-grammar">Turtle文法</a>と<a class="sectionRef" href="#sec-parsing">解析</a>で定義しています。</p>
+
+</section>
+<section class="informative" id="language-features" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_language-features"><span class="secno">2. </span>Turtle言語</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>Turtleドキュメントにより、<abbr title="Resource Description Framework">RDF</abbr>グラフをコンパクトなテキスト形式で記述できるようになります。<abbr title="Resource Description Framework">RDF</abbr>グラフは、主語、述語、目的語から成る<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple">トリプル</a>で構成されます。</p>
+
+<p>コメントは、「<code>#</code>」の後に記述でき、別の字句トークンの一部ではなく、行末まで続きます。</p>
+
+<section id="simple-triples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_simple-triples"><span class="secno">2.1 </span>シンプルなトリプル</h3>
+
+<p>最もシンプルなトリプル・ステートメントは、用語（主語、述語、目的語）のシーケンスで、余白で区切られ、各トリプルの後に「<code>.</code>」を置いて終了します。</p>
+
+<div class="example"><div class="example-title"><span>例2</span></div>
+<pre class="example"><span>&lt;http://example.org/#spiderman&gt; &lt;http://www.perceive.net/schemas/relationship/enemyOf&gt; &lt;http://example.org/#green-goblin&gt; .</span></pre>
+</div>
+
+</section>
+<section id="predicate-lists" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_predicate-lists"><span class="secno">2.2 </span>述語リスト</h3>
+
+<p>複数の述語が同じ主語を参照することがよくあります。<a href="#grammar-production-predicateObjectList">predicateObjectList生成規則</a>は、一連の述語および目的語とマッチし、「;」で区切って主語の後に置きます。これは、その主語を持つ一連の<abbr title="Resource Description Framework">RDF</abbr>トリプルがあり、述語と目的語がそれぞれ1つのトリプルに割り当てられられている状況を表します。したがって、「<code>;</code>」という記号は、述語と目的語の<abbr title="Resource Description Framework">RDF</abbr>用語のみが異なるトリプルの主語を繰り返すために用いられます。</p>
+
+<p>次の2つの例は、スパイダーマンに関するトリプルを記述する同等な方法です。</p>
+
+<div class="example"><div class="example-title"><span>例3</span></div>
+<pre class="example"><span>&lt;http://example.org/#spiderman&gt; &lt;http://www.perceive.net/schemas/relationship/enemyOf&gt; &lt;http://example.org/#green-goblin&gt; ;
+				&lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Spiderman&quot; .</span></pre>
+</div>
+
+<div class="example"><div class="example-title"><span>例4</span></div>
+<pre class="example"><span>&lt;http://example.org/#spiderman&gt; &lt;http://www.perceive.net/schemas/relationship/enemyOf&gt; &lt;http://example.org/#green-goblin&gt; .
+&lt;http://example.org/#spiderman&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Spiderman&quot; .</span></pre></div>
+
+</section>
+<section id="object-lists" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_object-lists"><span class="secno">2.3 </span>目的語リスト</h3>
+
+<p>述語と同様に、目的語はしばしば同じ主語と述語で繰り返されます。<a href="#grammar-production-objectList">objectList生成規則</a>は、一連の目的語とマッチし、「<code>,</code>」で区切って述語の後に置きます。これは、同じ主語と述語を持つ一連の<abbr title="Resource Description Framework">RDF</abbr>トリプルがあり、目的語がそれぞれ1つのトリプルに割り当てられている状況を表します。したがって、「<code>,</code>」という記号は、目的語の<abbr title="Resource Description Framework">RDF</abbr>用語のみが異なるトリプルの主語と述語を繰り返すために用いられます。</p>
+
+<p>次の2つの例は、2つの言語でスパイダーマンの名前を記述する同等な方法です。</p>
+
+<div class="example"><div class="example-title"><span>例5</span></div>
+<pre class="example"><span>&lt;http://example.org/#spiderman&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Spiderman&quot;, &quot;Человек-паук&quot;@ru .</span></pre>
+</div>
+
+<div class="example"><div class="example-title"><span>例6</span></div>
+<pre class="example"><span>&lt;http://example.org/#spiderman&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Spiderman&quot; .
+&lt;http://example.org/#spiderman&gt; &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Человек-паук&quot;@ru .</span></pre>
+</div>
+
+</section>
+
+<p><abbr title="Resource Description Framework">RDF</abbr>概念で定義されている<em><abbr title="Resource Description Framework">RDF</abbr>用語</em>には、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a>（Internationalized Resource Identifiers）、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a>の3種類があります。Turtleは、それぞれを記述する多くの方法を提供します。</p>
+
+<section id="sec-iri" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-iri"><span class="secno">2.4 </span>IRI</h3>
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a>は、相対IRIまたは絶対IRI、もしくは接頭辞名として記述できます。相対IRIと絶対IRIは、「&lt;」と「&gt;」で囲まれ、<a href="#numeric">数値エスケープ・シーケンス</a>（以下で述べる）を含むことができます。例えば、<code>&lt;http://example.org/#green-goblin&gt;</code>。</p>
+
+<p id="relative-iri"><code>&lt;#green-goblin&gt;</code>のような相対IRIは、現在の基底IRI対して解決されます。新しい基底IRIは「<code>@base</code>」か「<code>BASE</code>」指示子で定義できます。このオペレーションの詳細は、<a class="sectionRef sec-ref" href="#sec-iri-references"><span class="secno">6.3</span>項 <span class="sec-title">IRI参照</span></a> で定義しています。</p>
+
+<p id="iri-a">Turtleトリプルの述語の位置にある「<code>a</code>」というトークンは、<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>というIRIを表します。</p>
+
+<p><em id="prefixed-name">接頭辞名</em>は、接頭辞ラベルとローカル部分（local part）で、コロン「&quot;:&quot;」で区切られています。接頭辞名は、接頭辞に関連付けられているIRIとローカル部分とを連結することによりIRIになります。「<code>@prefix</code>」や「<code>PREFIX</code>」指示子は、接頭辞ラベルをIRIに関連付けます。その後の「<code>@prefix</code>」や「<code>PREFIX</code>」指示子は、同じ接頭辞ラベルを再マッピングできます。</p>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_1"><span>注</span></div><div class="">
+
+<p>Turtle言語は当初、接頭辞と基底の指示子の記述に「<code>@</code>」という文字が含まれている構文のみを認めていました。大文字・小文字を区別しない「<code>PREFIX</code>」と「<code>BASE</code>」の形式は、Turtle構文を<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>構文と揃えるために追加されました。<abbr title="Resource Description Framework">RDF</abbr> 1.1 Turtleパーサが広く利用されるようになるまでは、「<code>@prefix</code>」と「<code>@base</code>」の形式で<abbr title="Resource Description Framework">RDF</abbr>をシリアル化するのが望ましいです。</p>
+
+</div></div>
+
+<p>接頭辞名を用いて<code>http://www.perceive.net/schemas/relationship/enemyOf</code>を記述するためには、</p>
+<ol>
+  <li><code>http://www.perceive.net/schemas/relationship/</code>という語彙のIRIの接頭辞ラベルを<code>somePrefix</code>と定義します。</li>
+  <li>次に、<code>somePrefix:enemyOf</code>と記述します。これは、<code>&lt;http://www.perceive.net/schemas/relationship/enemyOf&gt;</code>と記述するのと同等です。</li>
+</ol>
+
+<p>これは、元のTurtle構文を接頭辞宣言に用いるか、</p>
+
+<div class="example"><div class="example-title"><span>例7</span></div>
+<pre class="example"><span>@prefix somePrefix: &lt;http://www.perceive.net/schemas/relationship/&gt; .
+
+&lt;http://example.org/#green-goblin&gt; somePrefix:enemyOf &lt;http://example.org/#spiderman&gt; .</span></pre>
+</div>
+
+<p><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>の構文を接頭辞宣言に用いるかのどちらかで記述できます。</p>
+
+<div class="example"><div class="example-title"><span>例8</span></div>
+<pre class="example"><span>PREFIX somePrefix: &lt;http://www.perceive.net/schemas/relationship/&gt;
+
+&lt;http://example.org/#green-goblin&gt; somePrefix:enemyOf &lt;http://example.org/#spiderman&gt; .</span></pre>
+</div>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_2"><span>注</span></div><div class="">
+
+<p>接頭辞名は、XML QNamesの上位集合です。これらは接頭辞名のローカル部分に次のものを含むことができるという点に違いがあります。</p>
+
+<ul>
+  <li>先頭の数字。例えば、<code>leg:3032571</code>や<code>isbn13:9780136019701</code></li>
+  <li>先頭ではないコロン。例えば、<code>og:video:height</code></li>
+  <li><a href="#reserved">予約文字エスケープ・シーケンス</a>。例えば、<code>wgs:lat\-long</code></li>
+</ul>
+
+</div></div>
+
+<p>次のTurtleドキュメントには、TurtleでIRIを記述するあらゆる方法の例が含まれています。</p>
+
+<div class="example"><div class="example-title"><span>例9</span></div>
+<pre class="example"><span># すべてが絶対IRIのトリプル
+&lt;http://one.example/subject1&gt; &lt;http://one.example/predicate1&gt; &lt;http://one.example/object1&gt; .
+
+@base &lt;http://one.example/&gt; .
+&lt;subject2&gt; &lt;predicate2&gt; &lt;object2&gt; .     # 相対IRI。例：http://one.example/subject2
+
+BASE &lt;http://one.example/&gt;
+&lt;subject2&gt; &lt;predicate2&gt; &lt;object2&gt; .     # 相対IRI。例：http://one.example/subject2
+
+@prefix p: &lt;http://two.example/&gt; .
+p:subject3 p:predicate3 p:object3 .     # 接頭辞名。例：http://two.example/subject3
+
+PREFIX p: &lt;http://two.example/&gt;
+p:subject3 p:predicate3 p:object3 .     # 接頭辞名。例：http://two.example/subject3
+
+@prefix p: &lt;path/&gt; .                    # 接頭辞 p: 現在 http://one.example/path/ を表す。
+p:subject4 p:predicate4 p:object4 .     # 接頭辞名。例：http://one.example/path/subject4
+
+@prefix : &lt;http://another.example/&gt; .    # 空の接頭辞
+:subject5 :predicate5 :object5 .        # 接頭辞名。例：http://another.example/subject5
+
+:subject6 a :subject7 .                 # 右記と同じ。 :subject6 &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; :subject7 .
+
+&lt;http://伝言.example/?user=&#x623;&#x643;&#x631;&#x645;&amp;amp;channel=R%26D&gt; a :subject8 . # 多文字種（multi-script）の主語IRI。</span></pre>
+</div>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_3"><span>注</span></div><div class="">
+
+<p>「<code>@prefix</code>」と「<code>@base</code>」の指示子には、IRIの後に終了文字「<code>.</code>」が必要で、これらと同等の「<code>PREFIX</code>」と「<code>BASE</code>」は、指示子のIRI部分の後に終了文字「<code>.</code>」があってはなりません。</p>
+
+</div></div>
+
+</section>
+<section id="literals" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_literals"><span class="secno">2.5 </span><abbr title="Resource Description Framework">RDF</abbr>リテラル</h3>
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a>は、文字列、数値、日付などの値を識別するために用います。</p>
+
+<div class="example"><div class="example-title"><span>例10</span></div>
+<pre class="example"><span>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example.org/#green-goblin&gt; foaf:name &quot;Green Goblin&quot; .
+
+&lt;http://example.org/#spiderman&gt; foaf:name &quot;Spiderman&quot; .</span></pre>
+</div>
+
+<section id="turtle-literals" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_turtle-literals"><span class="secno">2.5.1 </span>引用符付きリテラル</h4>
+
+<p>引用符付きリテラル（文法生成規則 <a href="#grammar-production-RDFLiteral">RDFLiteral</a>）では、字句形式の後に、言語タグまたはデータ型IRI（または、これらのどちらもない）が置かれます。字句形式の表現は、<code>&quot;</code>（<span class="codepoint">U+0022</span>）などの先頭の区切り記号、認められている文字列か<a href="#numeric">数値エスケープ・シーケンス</a>か<a href="#string">文字列エスケープ・シーケンス</a>、最後の区切り記号で構成されます。対応する<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form"><abbr title="Resource Description Framework">RDF</abbr>字句形式</a>は、エスケープ・シーケンス処理後の、区切り記号の間の文字です。<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string">言語タグ</a>があれば、その前に「<code>@</code>」（<span class="codepoint">U+0040</span>）が置かれます。言語タグがなければ、「<code>^^</code>」（<span class="codepoint">U+005E</span> <span class="codepoint">U+005E</span>）の後に<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">データ型IRI</a>が置かれるかもしれません。Turtleのデータ型IRIは、<a href="#sec-iri">絶対IRI</a>、<a href="#sec-iri">相対IRI</a>、<a href="#prefixed-name">接頭辞名</a>のいずれかで記述できます。データ型IRIも言語タグもないときには、データ型は<code>xsd:string</code>です。</p>
+
+<p>「<code>\</code>」（<span class="codepoint">U+005C</span>）は、エスケープ・シーケンスの一部として出現する場合を除き、引用符付きリテラルには出現できません。その他の制限は、次のとおり、区切り記号に依存します。</p>
+
+<ul>
+  <li><code>'</code>（<span class="codepoint">U+0027</span>）で区切られたリテラルには、<code>'</code>、<code title="LINE FEED"><sub>LF</sub></code>（<span class="codepoint">U+000A</span>）、<code title="CARRIAGE RETURN"><sub>CR</sub></code>（<span class="codepoint">U+000D</span>）の文字を含むことができません。</li>
+  <li><code>&quot;</code>で区切られたリテラルには、<code>&quot;</code>、<code title="LINE FEED"><sub>LF</sub></code>、<code title="CARRIAGE RETURN"><sub>CR</sub></code>の文字を含むことができません。</li>
+  <li><code>'''</code>で区切られたリテラルには、<code>'''</code>の文字列を含むことができません。</li>
+  <li><code>&quot;&quot;&quot;</code>で区切られたリテラルには、<code>&quot;&quot;&quot;</code>の文字列を含むことができません。</li>
+</ul>
+
+<div class="example"><div class="example-title"><span>例11</span></div>
+<pre class="example"><span>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix show: &lt;http://example.org/vocab/show/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+show:218 rdfs:label &quot;That Seventies Show&quot;^^xsd:string .            # XMLスキーマ文字列データ型のリテラル
+show:218 rdfs:label &quot;That Seventies Show&quot;^^&lt;http://www.w3.org/2001/XMLSchema#string&gt; . # 同上
+show:218 rdfs:label &quot;That Seventies Show&quot; .                                            # 同上
+show:218 show:localName &quot;That Seventies Show&quot;@en .                 # 言語タグ付きリテラル
+show:218 show:localName 'Cette Serie des Annees Soixante-dix'@fr . # シングル引用符で区切られたリテラル
+show:218 show:localName &quot;Cette Serie des Annees Septante&quot;@fr-be .  # 領域サブタグ付きリテラル
+show:218 show:blurb '''This is a multi-line                        # 組み込み改行（new line）および引用符付きリテラル
+literal with many quotes (&quot;&quot;&quot;&quot;&quot;)
+and up to two sequential apostrophes ('').''' .</span></pre>
+</div>
+
+</section>
+<section id="abbrev" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_abbrev"><span class="secno">2.5.2 </span>数値</h4>
+
+<p>数値は、その他のリテラルと同じように、字句形式とデータ型（例えば、<code>&quot;-5.0&quot;^^xsd:decimal</code>）で記述できます。Turtleには、整数の値、任意の精度の10進数の値、倍精度浮動小数点数の値を記述するための省略構文があります。</p>
+
+<table class="separated">
+<thead>
+  <tr>
+    <th>データ型</th>
+    <th>省略形</th>
+    <th>字句形</th>
+    <th>説明</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><strong>xsd:integer</strong></td>
+    <td><code>-5</code></td>
+    <td><code>&quot;-5&quot;^^xsd:integer</code></td>
+    <td>整数の値は、オプションの記号と、一連の数字で記述できます。整数は、「<code>[+-]?[0-9]+</code>」という正規表現とマッチします。</td>
+  </tr>
+  <tr>
+    <td><strong>xsd:decimal</strong></td>
+    <td><code>-5.0</code></td>
+    <td><code>&quot;-5.0&quot;^^xsd:decimal</code></td>
+    <td>任意の精度の10進数は、オプションの記号、0以上の数、小数点、1以上の数で記述できます。10進数は、「<code>[+-]?[0-9]*\.[0-9]+</code>」という正規表現とマッチします。</td>
+  </tr>
+  <tr>
+    <td><strong>xsd:double</strong></td>
+    <td><code>4.2E9</code></td>
+    <td><code>&quot;4.2E9&quot;^^xsd:double</code></td>
+    <td>倍精度浮動小数点数の値は、オプションで小数点が付く任意符号付き仮数、「e」または「E」の文字、任意符号付き整数指数で記述できます。指数は「<code>[+-]?[0-9]+</code>」という正規表現とマッチし、仮数は「<code>[+-]?[0-9]+\.[0-9]+</code>」、「<code>[+-]?\.[0-9]+</code>」または「<code>[+-]?[0-9]</code>」の正規表現のひとつとマッチします。</td>
+  </tr>
+</tbody>
+</table>
+
+<!-- 				<table class="separated">
+				  <caption style="font-weight: bold;">Example numeric representations:</caption>
+				  <tbody>
+				    <tr><th><a href="http://www.w3.org/TR/xmlschema-2/#integer">xsd:integer</a></th>
+				    <td><code>-5</code></td> <td><code>0</code></td> <td><code>1</code></td> <td><code>010</code></td> <td><code>+10</code></td></tr>
+				    <tr><th><a href="http://www.w3.org/TR/xmlschema-2/#decimal">xsd:decimal</a></th>
+				    <td><code>-5.0</code></td> <td><code>.0</code></td> <td><code>1.234567890</code></td> <td><code>010.0</code></td> <td><code>+10.0</code></td></tr>
+				    <tr><th><a href="http://www.w3.org/TR/xmlschema-2/#double">xsd:double</a></th>
+				    <td><code>-.5e1</code></td> <td><code>0E0</code></td> <td><code>1.234567890E0</code></td> <td><code>01e1</code></td> <td><code>+10e0</code></td></tr>
+				  </tbody>
+				</table>
+ -->
+
+<div class="example"><div class="example-title"><span>例12</span></div>
+<pre class="example"><span>@prefix : &lt;http://example.org/elements&gt; .                                                                              
+&lt;http://en.wikipedia.org/wiki/Helium&gt;
+    :atomicNumber 2 ;               # xsd:integer
+    :atomicMass 4.002602 ;          # xsd:decimal
+    :specificGravity 1.663E-4 .     # xsd:double</span></pre>
+</div>
+
+</section>
+<section id="booleans" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<h4 aria-level="3" role="heading" id="h4_booleans"><span class="secno">2.5.3 </span>ブール値</h4>
+
+<p>ブール値は、「<code>true</code>」か「<code>false</code>」（大文字・小文字を区別する）のどちらかで記述でき、<a href="http://www.w3.org/TR/xmlschema-2/#boolean">xsd:boolean</a>というデータ型を持つ<abbr title="Resource Description Framework">RDF</abbr>リテラルを表します。</p>
+
+<div class="example"><div class="example-title"><span>例13</span></div>
+<pre class="example"><span>@prefix : &lt;http://example.org/stats&gt; .
+&lt;http://somecountry.example/census2007&gt;
+    :isLandlocked false .           # xsd:boolean</span></pre></div>
+
+</section>
+</section>
+<section id="BNodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_BNodes"><span class="secno">2.6 </span><abbr title="Resource Description Framework">RDF</abbr>空白ノード</h3>
+
+<p>Turtleの<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node"><abbr title="Resource Description Framework">RDF</abbr>空白ノード</a>は、<code>_:</code>で表され、その後に一連の名前文字である空白ノード・ラベルが続きます。ラベル内の文字は、<a href="#grammar-production-PN_CHARS_BASE">PN_CHARS_BASE</a>に基づいて構築されますが、次のとおりに緩和されています。</p>
+
+<ul>
+  <li><code>_</code>という文字と数字は、空白ノード・ラベルのどこに出現してもよい。</li>
+  <li><code>.</code>という文字は、最初または最後の文字を除き、どこに出現してもよい。</li>
+  <li><code>-</code>、<code>U+00B7</code>、<code>U+0300</code>～<code>U+036F</code>、<code>U+203F</code>～<code>U+2040</code>の文字は、最初の文字を除き、どこでも認められる。</li>
+</ul>
+
+<p>新しい<abbr title="Resource Description Framework">RDF</abbr>空白ノードは、ドキュメント内の一意の空白ノード・ラベルにそれぞれ割り当てられます。同じ空白ノード・ラベルを繰り返して用いると、同じ<abbr title="Resource Description Framework">RDF</abbr>空白ノードを識別します。</p>
+
+<div class="example"><div class="example-title"><span>例14</span></div>
+<pre class="example"><span>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+_:alice foaf:knows _:bob .
+_:bob foaf:knows _:alice .</span></pre>
+</div>
+
+</section>
+<section id="unlabeled-bnodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_unlabeled-bnodes"><span class="secno">2.7 </span>入れ子にしたTurtleのラベルなし空白ノード</h3>
+
+<p>Turtleでは、生成規則の<a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a>と終端記号の<a href="#grammar-production-ANON">ANON</a>がマッチするときにも新しい<abbr title="Resource Description Framework">RDF</abbr>空白ノードが割り当てられます。これらの両方ともがトリプルの<a href="#grammar-production-subject">主語</a>または<a href="#grammar-production-object">目的語</a>の位置に出現可能です（Turtle文法を参照）。その主語または目的語は、新しい<abbr title="Resource Description Framework">RDF</abbr>空白ノードです。この空白ノードは、blankNodePropertyListに組み込まれた<a href="#grammar-production-predicateObjectList">predicateObjectList</a>生成規則とのマッチングにより生成されるトリプルの主語の機能も果たします。これらのトリプルの生成については、<a href="#predicate-lists">述語リスト</a>で記述しています。空白ノードは、下記で述べている<a href="#collections">コレクション</a>にも割り当てられます。</p>
+
+<div class="example"><div class="example-title"><span>例15</span></div>
+<pre class="example"><span>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+# 誰かが他の誰かを知っていて、その人は「Bob」という名前を持っている。
+[] foaf:knows [ foaf:name &quot;Bob&quot; ] .</span></pre>
+</div>
+
+<p>Turtle文法では、<a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a>を入れ子にすることができます。このケースでは、個々の内部の<code>[</code>は、新しい主語の空白ノードを設け、<code>]</code>で外部ノードに戻り、<a href="#grammar-production-predicateObjectList">述語目的語リスト</a>に対する現在の主語の機能を果たします。</p>
+
+<p><a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a>における<a href="#grammar-production-predicateObjectList">predicateObjectList</a>の使用は、ノードの一連のプロパティーを表すための一般的な成句です。</p>
+
+<div style="float:left;">
+
+<p style="padding-left:2em;" class="idlAttrName">省略形:</p>
+
+<div class="example"><div class="example-title"><span>例16</span></div>
+<pre class="example"><span>@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+[ foaf:name &quot;Alice&quot; ] foaf:knows [
+    foaf:name &quot;Bob&quot; ;
+    foaf:knows [
+        foaf:name &quot;Eve&quot; ] ;
+    foaf:mbox &lt;bob@example.com&gt; ] .
+				</span></pre></div>
+			      </div>
+				  <div style="float:left;">
+
+<p style="padding-left:2em;" class="idlAttrName">対応するシンプルなトリプル:</p>
+
+<div class="example"><div class="example-title"><span>例17</span></div>
+<pre class="example"><span>
+_:a &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Alice&quot; .
+_:a &lt;http://xmlns.com/foaf/0.1/knows&gt; _:b .
+_:b &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Bob&quot; .
+_:b &lt;http://xmlns.com/foaf/0.1/knows&gt; _:c .
+_:c &lt;http://xmlns.com/foaf/0.1/name&gt; &quot;Eve&quot; .
+_:b &lt;http://xmlns.com/foaf/0.1/mbox&gt; &lt;bob@example.com&gt; .</span></pre>
+</div>
+</div>
+<div style="clear:both;"></div>
+
+</section>
+<section id="collections" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_collections"><span class="secno">2.8 </span>コレクション</h3>
+
+<p><abbr title="Resource Description Framework">RDF</abbr>は、<abbr title="Resource Description Framework">RDF</abbr>ノードのリストに<a href="http://www.w3.org/TR/rdf11-mt/#rdf-collections">コレクション</a>[<cite><a class="bibref" href="#bib-RDF11-MT">RDF11-MT</a></cite>]の構造を提供します。コレクション用のTurtle構文は、<code>()</code>で囲まれた<abbr title="Resource Description Framework">RDF</abbr>用語の恐らく空のリストです。このコレクションは、<code>()</code>で囲まれた用語の順序である<code>rdf:first</code>ステートメントの目的語のシーケンスを持つ<code>rdf:first</code>/<code>rdf:rest</code>リスト構造を表します。</p>
+
+<p><code>(…)</code>という構文は、トリプルの<a href="#grammar-production-subject">主語</a>か<a href="#grammar-production-object">目的語</a>の位置に出現しなければなりません（<em class="rfc2119" title="MUST">MUST</em>）（Turtle文法を参照）。リスト冒頭の空白ノードは、含まれているトリプルの主語か目的語です。</p>
+
+<div class="example"><div class="example-title"><span>例18</span></div>
+<pre class="example"><span>
+@prefix : &lt;http://example.org/foo&gt; .
+# このトリプルの目的語はRDFコレクション空白ノード
+:subject :predicate ( :a :b :c ) .
+
+# 空のコレクション値 - rdf:nil
+:subject :predicate2 () .</span></pre>
+</div>
+
+</section>
+</section>
+<section class="informative" id="sec-examples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-examples"><span class="secno">3. </span>例</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>この例は、<a href="http://www.w3.org/TR/rdf-syntax-grammar/"><abbr title="Resource Description Framework">RDF</abbr>/XML構文仕様</a>の<a href="http://www.w3.org/TR/rdf-syntax-grammar/#example7">例7</a>をTurtleに変換したものです（<a href="examples/example1.ttl">example1.ttl</a>）。</p>
+
+<div><div class="example"><div class="example-title"><span>例19</span></div>
+<pre class="example">@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ex: &lt;http://example.org/stuff/1.0/&gt; .
+
+&lt;http://www.w3.org/TR/rdf-syntax-grammar&gt;
+  dc:title &quot;RDF/XML Syntax Specification (Revised)&quot; ;
+  ex:editor [
+    ex:fullname &quot;Dave Beckett&quot;;
+    ex:homePage &lt;http://purl.org/net/dajobe/&gt;
+  ] .</pre>
+</div></div>
+
+<p>2つのリテラルの<abbr title="Resource Description Framework">RDF</abbr>コレクションの例。</p>
+
+<div class="example"><div class="example-title"><span>例20</span></div>
+<pre class="example"><span>
+PREFIX : &lt;http://example.org/stuff/1.0/&gt;
+:a :b ( &quot;apple&quot; &quot;banana&quot; ) .</span></pre>
+</div>
+
+<p>上記は、下記の省略形です（<a href="examples/example2.ttl">example2.ttl</a>）。</p>
+
+<div><div class="example"><div class="example-title"><span>例21</span></div>
+<pre class="example">@prefix : &lt;http://example.org/stuff/1.0/&gt; .
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+:a :b
+  [ rdf:first &quot;apple&quot;;
+    rdf:rest [ rdf:first &quot;banana&quot;;
+               rdf:rest rdf:nil ]
+  ] .</pre></div></div>
+
+<p>改行を含んだリテラルの目的語が含まれている2つの同じトリプルの例で、プレーン・リテラルと長いリテラルの形式で記述されています。この例の改行は、LINE FEED（U+000A）です（<a href="examples/example3.ttl">example3.ttl</a>）。</p>
+
+<div><div class="example"><div class="example-title"><span>例22</span></div>
+<pre class="example">@prefix : &lt;http://example.org/stuff/1.0/&gt; .
+
+:a :b &quot;The first line\nThe second line\n  more&quot; .
+
+:a :b &quot;&quot;&quot;The first line
+The second line
+  more&quot;&quot;&quot; .</pre></div></div>
+
+<p>文法で示されているように、<a href="#grammar-production-collection">コレクション</a>は<a href="#grammar-production-subject">主語</a>か<a href="#grammar-production-object">目的語</a>のどちらかになりえます。この主語や目的語は、コレクションに1つ以上の目的語があれば最初の目的語に対する新しい空白ノードになり、コレクションが空の場合には<code>rdf:nil</code>になるでしょう。</p>
+
+<p>例えば、</p>
+
+<div class="example"><div class="example-title"><span>例23</span></div>
+<pre class="example untested"><span>@prefix : &lt;http://example.org/stuff/1.0/&gt; .
+(1 2.0 3E1) :p &quot;w&quot; .</span></pre></div>
+
+<p>上記は、下記の糖衣構文です（<code>b0</code>、<code>b1</code>と<code>b2</code>の空白ノードが<abbr title="Resource Description Framework">RDF</abbr>グラフの他のいかなる位置にも出現ないことに注意）。</p>
+
+<div class="example"><div class="example-title"><span>例24</span></div>
+<pre class="example untested"><span>@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+    _:b0  rdf:first  1 ;
+          rdf:rest   _:b1 .
+    _:b1  rdf:first  2.0 ;
+          rdf:rest   _:b2 .
+    _:b2  rdf:first  3E1 ;
+          rdf:rest   rdf:nil .
+    _:b0  :p         &quot;w&quot; . </span></pre></div>
+
+<p><abbr title="Resource Description Framework">RDF</abbr>コレクションは入れ子にすることができ、他の構文形式を含むことができます。</p>
+
+<div class="example"><div class="example-title"><span>例25</span></div>
+<pre class="example untested"><span>PREFIX : &lt;http://example.org/stuff/1.0/&gt;
+(1 [:p :q] ( 2 ) ) :p2 :q2 .</span></pre></div>
+
+<p>上記は、下記の糖衣構文です。</p>
+
+<div class="example"><div class="example-title"><span>例26</span></div>
+<pre class="example untested"><span>@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+    _:b0  rdf:first  1 ;
+          rdf:rest   _:b1 .
+    _:b1  rdf:first  _:b2 .
+    _:b2  :p         :q .
+    _:b1  rdf:rest   _:b3 .
+    _:b3  rdf:first  _:b4 .
+    _:b4  rdf:first  2 ;
+          rdf:rest   rdf:nil .
+    _:b3  rdf:rest   rdf:nil .</span></pre>
+</div>
+
+</section>
+<section class="informative" id="sec-diff-sparql" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+      
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-diff-sparql"><span class="secno">4. </span>Turtleと<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>の比較</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p><a href="http://www.w3.org/TR/sparql11-query/"><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr> 1.1クエリ言語</a>（<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>）[<cite><a class="bibref" href="#bib-SPARQL11-QUERY">SPARQL11-QUERY</a></cite>]は、その<a href="http://www.w3.org/TR/sparql11-query/#rTriplesBlock">TriplesBlock生成規則</a>にTurtle形式の構文を用います。この生成規則は、次の点においてTurtle言語と異なっています。</p>
+
+<ol>
+  <li><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>は、<abbr title="Resource Description Framework">RDF</abbr>トリプルの主語として<a href="http://www.w3.org/TR/sparql11-query/#rGraphTerm"><abbr title="Resource Description Framework">RDF</abbr>リテラルを認めます</a>。</li>
+  <li><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>では、その形式のトリプルのどの部分でも変数（<code>?</code><em>名</em>または<code>$</code><em>名</em>）が認められています。</li>
+  <li>Turtleでは、トリプルの外部のいかなる場所でも<a href="#grammar-production-directive">接頭辞と基底宣言</a>が認められています。<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>では、これは（<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>クエリの最初の）<a href="http://www.w3.org/TR/sparql11-query/#rPrologue">Prologue</a>でのみ認められています。</li>
+  <li><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>は、「<code>a</code>」を除き、大文字・小文字を区別しないキーワードを用います。Turtleの<code>@prefix</code>と<code>@base</code>の宣言は大文字・小文字を区別し、<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>由来の<code>PREFIX</code>と<code>BASE</code>は大文字・小文字を区別しません。</li>
+  <li>「<code>true</code>」と「<code>false</code>」は、<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>では大文字・小文字を区別せず、Turtleでは区別します。<code>TrUe</code>は、Turtleでは有効なブール値ではありません。</li>
+</ol>
+
+<p>詳細な情報に関しては、<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>クエリ・ドキュメント[<cite><a class="bibref" href="#bib-SPARQL11-QUERY">SPARQL11-QUERY</a></cite>]の<a href="http://www.w3.org/TR/sparql11-query/#QSynIRI">IRIの構文</a>の項と<a href="http://www.w3.org/TR/sparql11-query/#grammar"><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>文法</a>の項を参照してください。</p>
+
+</section>
+<section id="conformance" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_conformance"><span class="secno">5. </span>適合性</h2>
+
+<p>非規範的と記している項と同じく、この仕様のすべての作成ガイドライン、図、例、注は、非規範的です。この仕様のその他の部分はすべて規範的です。</p>
+
+<p>この仕様の「しなければならない（<em class="rfc2119" title="MUST">MUST</em>）」、「してはならない（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）」、「必須である／要求される（<em class="rfc2119" title="REQUIRED">REQUIRED</em>）」、「すべきである／する必要がある（<em class="rfc2119" title="SHOULD">SHOULD</em>）」、「すべきでない／する必要がない（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）」、「推奨される（<em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em>）」、「することができる／してもよい（<em class="rfc2119" title="MAY">MAY</em>）」、「選択できる／任意である（<em class="rfc2119" title="OPTIONAL">OPTIONAL</em>）」というキーワードは、[<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>]で記述されているように解釈されるべきです。</p>
+
+<p>この仕様は、次のものに関する適合性基準を定義しています。</p>
+
+<ul>
+  <li>Turtleドキュメント</li>
+  <li>Turtleパーサ</li>
+</ul>
+
+<p>適合<strong>Turtleドキュメント</strong>は、<a class="sectionRef sec-ref" href="#sec-grammar"><span class="secno">6</span>項 <span class="sec-title">Turtle文法</span></a>で定義されている文法と追加の制約に準拠したUnicodeの文字列で、<a href="#grammar-production-turtleDoc"><code>turtleDoc</code>生成規則</a>で始まります。Turtleドキュメントは<abbr title="Resource Description Framework">RDF</abbr>グラフをシリアル化します。</p>
+
+<p>適合<strong>Turtleパーサ</strong>は、アプリケーションの代わりにTurtleドキュメントを読むことができるシステムです。<a class="sectionRef sec-ref" href="#sec-parsing"><span class="secno">7</span>項 <span class="sec-title">解析</span></a>で定義しているように、これによってシリアル化された<abbr title="Resource Description Framework">RDF</abbr>データセットが作成され、通常は何らかのAPI形式で、それをアプリケーションに利用できます。</p>
+
+<p>Turtle言語を識別するIRIは、<code>http://www.w3.org/ns/formats/Turtle</code>です。</p>
+
+<div class="note"><div class="note-title" aria-level="2" role="heading" id="h_note_4"><span>注</span></div>
+
+<p class="">この仕様は、Turtleのパーサが非適合の入力ドキュメントを扱う方法を定義しません。</p>
+
+</div>
+
+<section id="sec-mime" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-mime"><span class="secno">5.1 </span>メディア・タイプとコンテンツ・エンコーディング</h3>
+
+<p>Turtleのメディア・タイプは<code>text/turtle</code>です。Turtleのコンテンツのコンテンツ・エンコーディングは、常にUTF-8です。MIME形式のCharsetパラメータは、<code>text/</code>のメディア・タイプのツリーがcharsetパラメータなしにUTF-8を送信することを認めるような時が来るまで、必須です。メディア・タイプの登録形式については、<a class="sectionRef sec-ref" href="#sec-mediaReg"><span class="secno">B</span>項 <span class="sec-title">インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</span></a>を参照してください。</p>
+
+</section>
+</section>
+<section id="sec-grammar" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+          
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-grammar"><span class="secno">6. </span>Turtle文法</h2>
+
+<p>Turtleドキュメントは、UTF-8でエンコードされたUnicode[<cite><a class="bibref" href="#bib-UNICODE">UNICODE</a></cite>]文字列です。U+0000～U+10FFFFの範囲のUnicode文字のみが認められています。</p>
+
+<section id="sec-grammar-ws" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-grammar-ws"><span class="secno">6.1 </span>空白</h3>
+
+<p>空白（生成規則<a href="#grammar-production-WS">WS</a>）は、そうしないと1つの終端記号と（誤）認識されてしまう2つの終端記号を分離するために用いられます。下記の大文字の規則名は、空白が重要なものです。これらは、Turtleパーサの構築のために選択できる終端記号を形成します。</p>
+
+<p>空白は生成規則<a href="#grammar-production-String">String</a>において重要です。</p>
+
+</section>
+<section id="sec-grammar-comments" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-grammar-comments"><span class="secno">6.2 </span>コメント</h3>
+
+<p>Turtle内のコメントは、<a href="#grammar-production-IRIREF">IRIREF</a>や<a href="#grammar-production-String">String</a>の外部では、「#」の形式をとり、行末（U+000DかU+000Aの文字で記述される）か、コメント記号の後に行末がない場合にはファイルの最後まで続きます。コメントは空白として扱われます。</p>
+
+</section>
+<section id="sec-iri-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-iri-references"><span class="secno">6.3 </span>IRI参照</h3>
+
+<p>相対IRIは、<a class="norm" href="http://www.ietf.org/rfc/rfc3986.txt">URI（Uniform Resource Identifier）: 一般的構文</a>[<cite><a class="bibref" href="#bib-RFC3986">RFC3986</a></cite>]にあるとおり、5.2項の基本アルゴリズムのみを用いて、基底IRIで解決されます。構文に基づく正規化もスキームに基づく正規化も（RFC3986の6.2.2および6.2.3項に記述されている）実行されません。IRI参照で追加的に認められている文字は、<a class="norm" href="http://www.ietf.org/rfc/rfc3987.txt">IRI（Internationalized Resource Identifiers）</a>[<cite><a class="bibref" href="#bib-RFC3987">RFC3987</a></cite>]の6.5項にあるとおり、URI参照で無制限の文字が扱われているのと同じ方法で扱われます。</p>
+
+<p>RFC3986の5.1.1項「コンテンツ内に組み込まれた基底URI」にあるとおり、<code>@base</code>や<code>BASE</code>の指示子は、相対IRIを解決するために用いる基底IRIを指定します。5.1.2項「カプセル化されたエンティティーからの基底URI」では、xml:base指示子を持つSOAPエンベロープやContent-Locationヘッダーを持つマイム・マルチパート・ドキュメントのようなカプセル化されたドキュメントから、スコープ内の基底IRI（In-Scope Base IRI）を持ってくる方法を定めています。5.1.3項「検索URIからの基底URI」で識別された「検索URI」は、特定のTurtleが検索されたURLです。上記のどの方法でも基底URIを指定できない場合は、デフォルト基底URI（5.1.4項「デフォルト基底URI」）が用いられます。<code>@base</code>や<code>BASE</code>の指示子は、前のものに対して相対的に、それぞれ新しいスコープ内の基底URIを設定します。</p>
+
+</section>
+<section id="sec-escapes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-escapes"><span class="secno">6.4 </span>エスケープ・シーケンス</h3>
+
+<p>turtleドキュメントで用いるエスケープには次の3つの形式があります。</p>
+
+<ul>
+  <li>
+<p><em id="numeric">数値エスケープ・シーケンス</em>はUnicodeコード・ポイントを表します。</p>
+
+<table>
+<thead>
+  <tr>
+    <th>エスケープ・シーケンス</th>
+    <th>Unicodeコード・ポイント</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>'\u' <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a></td>
+    <td>最上位桁から最下位桁へと変換した4つの16進数字でエンコードした値に対応する、U+0000～U+FFFFの範囲のUnicode文字。</td>
+  </tr>
+  <tr>
+    <td>'\U' <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a> <a href="#grammar-production-HEX">hex</a></td>
+    <td>最上位桁から最下位桁へと変換した8つの16進数字でエンコードした値に対応する、U+0000～U+10FFFFの範囲のUnicode文字。</td>
+  </tr>
+</tbody>
+</table>
+
+<p>上記は、<a href="#grammar-production-HEX">HEX</a>が次の16進数の文字である場合です。</p>
+
+<blockquote>
+
+<p><span style="font-family: monospace; font-size: 85%;">HEX ::= [0-9] | [A-F] | [a-f]</span></p>
+
+</blockquote>
+</li>
+  <li>
+<p><em id="string">文字列エスケープ・シーケンス</em>は、昔から文字列リテラルでエスケープされている文字を表します。</p>
+
+<table>
+<thead>
+  <tr>
+    <th>エスケープ・シーケンス</th>
+    <th>Unicodeコード・ポイント</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>'\t'</td>
+    <td>U+0009</td>
+  </tr>
+  <tr>
+    <td>'\b'</td>
+    <td>U+0008</td>
+  </tr>
+  <tr>
+    <td>'\n'</td>
+    <td>U+000A</td>
+  </tr>
+  <tr>
+    <td>'\r'</td>
+    <td>U+000D</td>
+  </tr>
+  <tr>
+    <td>'\f'</td>
+    <td>U+000C</td>
+  </tr>
+  <tr>
+    <td>'\&quot;'</td>
+    <td>U+0022</td>
+  </tr>
+  <tr>
+    <td>'\''</td>
+    <td>U+0027</td>
+  </tr>
+  <tr>
+    <td>'\\'</td>
+    <td>U+005C</td>
+  </tr>
+</tbody>
+</table>
+</li>
+  <li>
+<p><em id="reserved">予約文字エスケープ・シーケンス</em>は、「<span>\</span>」の後に<code>~.-!$&amp;'()*+,;=/?#@%_</code>のうちの1つが来る形で構成され、これらの文字は「<span>\</span>」の右側に置かれます。</p>
+</li>
+</ul>
+
+<table class="separated" id="term2escape">
+<caption>各種のエスケープ・シーケンスを使用できる状況</caption>
+<thead>
+  <tr>
+    <th></th>
+    <th><a href="#numeric">数値<br>エスケープ</a></th>
+    <th><a href="#string">文字列<br>エスケープ</a></th>
+    <th><a href="#reserved">予約文字<br>エスケープ</a></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="r"><a href="#grammar-production-IRIREF"><abbr title="Resource Description Framework">RDF</abbr>用語</a>として、または、<a href="#grammar-production-prefixID">@prefix</a>、<a href="#grammar-production-sparqlPrefix">PREFIX</a>、<a href="#grammar-production-base">@base</a>、または<a href="#grammar-production-sparqlBase">BASE</a>宣言で用いられる<span style="font-weight:bold;">IRI</span></td>
+    <td style="background-color: green; border:1px solid black;">yes</td>
+    <td>no</td>
+    <td>no</td>
+  </tr>
+  <tr>
+    <td class="r"><a href="#grammar-production-PN_LOCAL"><span style="font-weight:bold;">ローカル名</span></a></td>
+    <td>no</td>
+    <td>no</td>
+    <td style="background-color: green; border:1px solid black;">yes</td>
+  </tr>
+  <tr>
+    <td class="r"><span style="font-weight:bold;">文字列</span></td>
+    <td style="background-color: green; border:1px solid black;">yes</td>
+    <td style="background-color: green; border:1px solid black;">yes</td>
+    <td>no</td>
+  </tr>
+</tbody>
+</table>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_5"><span>注</span></div>
+
+<p class="">%エンコードのシーケンスは、<a href="#grammar-production-IRIREF">IRIの文字範囲</a>にあり、ローカル名で<a href="#grammar-production-PERCENT">明示的に認められます</a>。これは、「%」の後に2つの16進の文字が置かれる形式で、同じ3文字のシーケンスを表します。このシーケンスが処理中にデコードされることはあり<em>ません</em>。Turtleで<code>&lt;http://a.example/%66oo-bar&gt;</code>と記述されている用語は、<code>http://a.example/foo-bar</code>というIRIではなく、<code>http://a.example/%66oo-bar</code>というIRIを指します。<code>@prefix ex: &lt;http://a.example/&gt;</code>という接頭辞を持つ<code>ex:%66oo-bar</code>として記述されている用語も、<code>http://a.example/%66oo-bar</code>というIRIを指します。</p>
+
+</div>
+
+</section>
+<section id="sec-grammar-grammar" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"><h3 aria-level="2" role="heading" id="h3_sec-grammar-grammar"><span class="secno">6.5 </span>文法</h3>
+
+<p>ここで用いる<abbr title="Extended Backus?Naur Form">EBNF</abbr>は、XML 1.0[<cite><a class="bibref" href="#bib-EBNF-NOTATION">EBNF-NOTATION</a></cite>]で定義されています。[<a href="http://www.w3.org/TR/sparql11-query/#rRDFLiteral"><span class="prodNo">60s</span></a>]のように、数値と末尾の「s」で構成される生成規則ラベルは、<a href="http://www.w3.org/TR/sparql11-query/#sparqlGrammar"><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr> 1.1クエリ言語文法</a>[<cite><a class="bibref" href="#bib-SPARQL11-QUERY">SPARQL11-QUERY</a></cite>]においてその数を持つ生成規則を参照しています。</p>
+
+<div>
+
+<p>注:</p>
+
+<ol>
+  <li>シングル引用符内のキーワード（「<code class="grammar-literal">@base</code>」「<code class="grammar-literal">@prefix</code>」、「<code class="grammar-literal">a</code>」「<code class="grammar-literal">true</code>」「<code class="grammar-literal">false</code>」）は大文字・小文字を区別します。ダブル引用符（「<code class="grammar-literal">BASE</code>」、「<code class="grammar-literal">PREFIX</code>」）内のキーワードは大文字・小文字を区別しません。</li>
+  <li><code><a href="#grammar-production-UCHAR">UCHAR</a></code>と<code><a href="#grammar-production-ECHAR">ECHAR</a></code>のエスケープ・シーケンスは、大文字・小文字を区別します。</li>
+  <li>入力をトークン化し、文法規則を選ぶ時には、最も長いマッチが選ばれます。</li>
+  <li>大文字化された名前を持つ規則が終端記号として用いられるとき、Turtle文法はLL(1)とLALR(1)です。</li>
+  <li>文法へのエントリー・ポイントは<code>turtleDoc</code>です。</li>
+  <li>符号付きの数字では、符号と数字の間には空白は許されません。</li>
+  <li><span style="font-size: smaller;"> <span>[162s]</span> <span><code>ANON</code></span> <span>::=</span> <span>'<code class="grammar-literal">[</code>' <a href="#grammar-production-WS">WS</a><code class="grammar-star">*</code> '<code class="grammar-literal">]</code>'</span> </span>というトークンでは、空白とコメントは<code class="grammar-literal">[]</code>間にいくつでも認められています。シングル･スペースのバージョンは、明瞭さのために文法で用いられます。</li>
+  <li>「<code class="grammar-literal">prefix</code>」も「<code class="grammar-literal">base</code>」も<a href="http://www.iana.org/assignments/language-subtag-registry">公認の言語サブタグ</a>ではありませんが、「<a href="#grammar-production-prefixID"><code class="grammar-literal">@prefix</code></a>」と「<a href="#grammar-production-base"><code class="grammar-literal">@base</code></a>」の文字列は、<a href="#grammar-production-LANGTAG">LANGTAG</a>のパターンとマッチします。この仕様は、これらのトークン（例えば、<code>&quot;A&quot;@base</code>）のどちらかが後続する引用符付きリテラルがTurtle言語に含まれるかどうかを定義しません。</li>
+</ol>
+
+</div>
+<div>
+
+<table class="grammar">
+<tbody class="grammar-productions">
+  <tr id="grammar-production-turtleDoc">
+    <td>[1]</td>
+    <td><code>turtleDoc</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-statement">statement</a><code class="grammar-star">*</code></td>
+  </tr>
+  <tr id="grammar-production-statement">
+    <td>[2]</td>
+    <td><code>statement</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-directive">directive</a> <code>| </code> <a href="#grammar-production-triples">triples</a> '<code class="grammar-literal">.</code>'</td>
+  </tr>
+  <tr id="grammar-production-directive">
+    <td>[3]</td>
+    <td><code>directive</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-prefixID">prefixID</a> <code>| </code> <a href="#grammar-production-base">base</a> <code>| </code> <a href="#grammar-production-sparqlPrefix">sparqlPrefix</a> <code>| </code> <a href="#grammar-production-sparqlBase">sparqlBase</a></td>
+  </tr>
+  <tr id="grammar-production-prefixID">
+    <td>[4]</td>
+    <td><code>prefixID</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">@prefix</code>' <a href="#grammar-production-PNAME_NS">PNAME_NS</a> <a href="#grammar-production-IRIREF">IRIREF</a> '<code class="grammar-literal">.</code>'</td>
+  </tr>
+  <tr id="grammar-production-base">
+    <td>[5]</td>
+    <td><code>base</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">@base</code>' <a href="#grammar-production-IRIREF">IRIREF</a> '<code class="grammar-literal">.</code>'</td>
+  </tr>
+  <tr id="grammar-production-sparqlBase">
+    <td>[5s]</td>
+    <td><code>sparqlBase</code></td>
+    <td>::=</td>
+    <td><span class="add">&quot;<code class="grammar-literal">BASE</code>&quot;</span> <a href="#grammar-production-IRIREF">IRIREF</a></td>
+  </tr>
+  <tr id="grammar-production-sparqlPrefix">
+    <td>[6s]</td>
+    <td><code>sparqlPrefix</code></td>
+    <td>::=</td>
+    <td><span class="add">&quot;<code class="grammar-literal">PREFIX</code>&quot;</span> <a href="#grammar-production-PNAME_NS">PNAME_NS</a> <a href="#grammar-production-IRIREF">IRIREF</a></td>
+  </tr>
+  <tr id="grammar-production-triples">
+    <td>[6]</td>
+    <td><code>triples</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-subject">subject</a> <a href="#grammar-production-predicateObjectList">predicateObjectList</a> <code>| </code> <a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a> <a href="#grammar-production-predicateObjectList">predicateObjectList</a>?</td>
+  </tr>
+  <tr id="grammar-production-predicateObjectList">
+    <td>[7]</td>
+    <td><code>predicateObjectList</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-verb">verb</a> <a href="#grammar-production-objectList">objectList</a> ('<code class="grammar-literal">;</code>' (<a href="#grammar-production-verb">verb</a> <a href="#grammar-production-objectList">objectList</a>)?)<code class="grammar-star">*</code></td>
+  </tr>
+  <tr id="grammar-production-objectList">
+    <td>[8]</td>
+    <td><code>objectList</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-object">object</a> ('<code class="grammar-literal">,</code>' <a href="#grammar-production-object">object</a>)<code class="grammar-star">*</code></td>
+  </tr>
+  <tr id="grammar-production-verb">
+    <td>[9]</td>
+    <td><code>verb</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-predicate">predicate</a> <code>| </code> '<code class="grammar-literal">a</code>'</td>
+  </tr>
+  <tr id="grammar-production-subject">
+    <td>[10]</td>
+    <td><code>subject</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-iri">iri</a> <code>| </code> <a class="add" href="#grammar-production-BlankNode">BlankNode</a> <code class="add">| </code> <a class="add" href="#grammar-production-collection">collection</a></td>  </tr>
+  <tr id="grammar-production-predicate">
+    <td>[11]</td>
+    <td><code>predicate</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-iri">iri</a></td>
+  </tr>
+  <tr id="grammar-production-object">
+    <td>[12]</td>
+    <td><code>object</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-iri">iri</a> <code>| </code> <a class="add" href="#grammar-production-BlankNode">BlankNode</a> <code class="add">| </code> <a class="add" href="#grammar-production-collection">collection</a> <code>| </code> <a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a> <code>| </code> <a href="#grammar-production-literal">literal</a></td>
+  </tr>
+  <tr id="grammar-production-literal">
+    <td>[13]</td>
+    <td><code>literal</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-RDFLiteral">RDFLiteral</a> <code>| </code> <a href="#grammar-production-NumericLiteral">NumericLiteral</a> <code>| </code> <a href="#grammar-production-BooleanLiteral">BooleanLiteral</a></td>  </tr>
+  <tr id="grammar-production-blankNodePropertyList">
+    <td>[14]</td>
+    <td><code>blankNodePropertyList</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">[</code>' <a href="#grammar-production-predicateObjectList">predicateObjectList</a> '<code class="grammar-literal">]</code>'</td>
+  </tr>
+  <tr id="grammar-production-collection">
+    <td>[15]</td>
+    <td><code>collection</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">(</code>' <a href="#grammar-production-object">object</a><code class="grammar-star">*</code> '<code class="grammar-literal">)</code>'</td>
+  </tr>
+  <tr id="grammar-production-NumericLiteral">
+    <td>[16]</td>
+    <td><code>NumericLiteral</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-INTEGER">INTEGER</a> <code>| </code> <a href="#grammar-production-DECIMAL">DECIMAL</a> <code>| </code> <a href="#grammar-production-DOUBLE">DOUBLE</a></td>
+  </tr>
+  <tr id="grammar-production-RDFLiteral">
+    <td>[128s]</td>
+    <td><code>RDFLiteral</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-String">String</a> (<a href="#grammar-production-LANGTAG">LANGTAG</a> <code>| </code> '<code class="grammar-literal">^^</code>' <a href="#grammar-production-iri">iri</a>)?</td>
+  </tr>
+  <tr id="grammar-production-BooleanLiteral">
+    <td>[133s]</td>
+    <td><code>BooleanLiteral</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">true</code>' <code>| </code> '<code class="grammar-literal">false</code>'</td>
+  </tr>
+  <tr id="grammar-production-String">
+    <td>[17]</td>
+    <td><code>String</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</a> <code>| </code> <a href="#grammar-production-STRING_LITERAL_SINGLE_QUOTE">STRING_LITERAL_SINGLE_QUOTE</a> <code>| </code> <a href="#grammar-production-STRING_LITERAL_LONG_SINGLE_QUOTE">STRING_LITERAL_LONG_SINGLE_QUOTE</a> <code>| </code> <a href="#grammar-production-STRING_LITERAL_LONG_QUOTE">STRING_LITERAL_LONG_QUOTE</a></td>
+  </tr>
+  <tr id="grammar-production-iri">
+    <td>[135s]</td>
+    <td><code>iri</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-IRIREF">IRIREF</a> <code>| </code> <a href="#grammar-production-PrefixedName">PrefixedName</a></td>
+  </tr>
+  <tr id="grammar-production-PrefixedName">
+    <td>[136s]</td>
+    <td><code>PrefixedName</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PNAME_LN">PNAME_LN</a> <code>| </code> <a href="#grammar-production-PNAME_NS">PNAME_NS</a></td>
+  </tr>
+  <tr id="grammar-production-BlankNode">
+    <td>[137s]</td>
+    <td><code>BlankNode</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-BLANK_NODE_LABEL">BLANK_NODE_LABEL</a> <code>| </code> <a href="#grammar-production-ANON">ANON</a></td>
+  </tr>
+  <tr>
+    <td colspan="4"><h3 id="terminals">終端記号の生成規則</h3></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-IRIREF">
+    <td>[18]</td>
+    <td><code>IRIREF</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">&lt;</code>' ([<code class="grammar-chars">^#x00-#x20&lt;&gt;&quot;{}|^`\</code>] <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>)<code class="grammar-star">*</code> '<code class="grammar-literal">&gt;</code>'<span class="grammar_comment"> /* #x00=NULL #01-#x1F=control codes #x20=space */</span></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PNAME_NS">
+    <td>[139s]</td>
+    <td><code>PNAME_NS</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PN_PREFIX">PN_PREFIX</a>? '<code class="grammar-literal">:</code>'</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PNAME_LN">
+    <td>[140s]</td>
+    <td><code>PNAME_LN</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PNAME_NS">PNAME_NS</a> <a href="#grammar-production-PN_LOCAL">PN_LOCAL</a></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-BLANK_NODE_LABEL">
+    <td>[141s]</td>
+    <td><code>BLANK_NODE_LABEL</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">_:</code>' (<a href="#grammar-production-PN_CHARS_U">PN_CHARS_U</a> <code>| </code> [<code class="grammar-chars">0-9</code>]) ((<a href="#grammar-production-PN_CHARS">PN_CHARS</a> <code>| </code> '<code class="grammar-literal">.</code>')<code class="grammar-star">*</code> <a href="#grammar-production-PN_CHARS">PN_CHARS</a>)?</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-LANGTAG">
+    <td>[144s]</td>
+    <td><code>LANGTAG</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">@</code>' [<code class="grammar-chars">a-zA-Z</code>]<code class="grammar-plus">+</code> ('<code class="grammar-literal">-</code>' [<code class="grammar-chars">a-zA-Z0-9</code>]<code class="grammar-plus">+</code>)<code class="grammar-star">*</code></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-INTEGER">
+    <td>[19]</td>
+    <td><code>INTEGER</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">+-</code>]? [<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-DECIMAL">
+    <td>[20]</td>
+    <td><code>DECIMAL</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">+-</code>]? [<code class="grammar-chars">0-9</code>]<code class="grammar-star">*</code> '<code class="grammar-literal">.</code>' [<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-DOUBLE">
+    <td>[21]</td>
+    <td><code>DOUBLE</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">+-</code>]? ([<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code> '<code class="grammar-literal">.</code>' [<code class="grammar-chars">0-9</code>]<code class="grammar-star">*</code> <a href="#grammar-production-EXPONENT">EXPONENT</a> <code>| </code> '<code class="grammar-literal">.</code>' [<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code> <a href="#grammar-production-EXPONENT">EXPONENT</a> <code>| </code> [<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code> <a href="#grammar-production-EXPONENT">EXPONENT</a>)</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-EXPONENT">
+    <td>[154s]</td>
+    <td><code>EXPONENT</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">eE</code>] [<code class="grammar-chars">+-</code>]? [<code class="grammar-chars">0-9</code>]<code class="grammar-plus">+</code></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-STRING_LITERAL_QUOTE">
+    <td>[22]</td>
+    <td><code>STRING_LITERAL_QUOTE</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">&quot;</code>' ([<code class="grammar-chars">^#x22#x5C#xA#xD</code>] <code>| </code> <a href="#grammar-production-ECHAR">ECHAR</a> <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>)<code class="grammar-star">*</code> '<code class="grammar-literal">&quot;</code>'<span class="grammar_comment"> /* #x22=&quot; #x5C=\ #xA=new line #xD=carriage return */</span></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-STRING_LITERAL_SINGLE_QUOTE">
+    <td>[23]</td>
+    <td><code>STRING_LITERAL_SINGLE_QUOTE</code></td>
+    <td>::=</td>
+    <td>&quot;<code class="grammar-literal">'</code>&quot; ([<code class="grammar-chars">^#x27#x5C#xA#xD</code>] <code>| </code> <a href="#grammar-production-ECHAR">ECHAR</a> <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>)<code class="grammar-star">*</code> &quot;<code class="grammar-literal">'</code>&quot;<span class="grammar_comment"> /* #x27=' #x5C=\ #xA=new line #xD=carriage return */</span></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-STRING_LITERAL_LONG_SINGLE_QUOTE">
+    <td>[24]</td>
+    <td><code>STRING_LITERAL_LONG_SINGLE_QUOTE</code></td>
+    <td>::=</td>
+    <td>&quot;<code class="grammar-literal">'''</code>&quot; ((&quot;<code class="grammar-literal">'</code>&quot; <code>| </code> &quot;<code class="grammar-literal">''</code>&quot;)? ([<code class="grammar-chars">^'\</code>] <code>| </code> <a href="#grammar-production-ECHAR">ECHAR</a> <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>))<code class="grammar-star">*</code> &quot;<code class="grammar-literal">'''</code>&quot;</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-STRING_LITERAL_LONG_QUOTE">
+    <td>[25]</td>
+    <td><code>STRING_LITERAL_LONG_QUOTE</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">&quot;&quot;&quot;</code>' (('<code class="grammar-literal">&quot;</code>' <code>| </code> '<code class="grammar-literal">&quot;&quot;</code>')? ([<code class="grammar-chars">^&quot;\</code>] <code>| </code> <a href="#grammar-production-ECHAR">ECHAR</a> <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>))<code class="grammar-star">*</code> '<code class="grammar-literal">&quot;&quot;&quot;</code>'</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-UCHAR">
+    <td>[26]</td>
+    <td><code>UCHAR</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">\u</code>' <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <code>| </code> '<code class="grammar-literal">\U</code>' <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-ECHAR">
+    <td>[159s]</td>
+    <td><code>ECHAR</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">\</code>' [<code class="grammar-chars">tbnrf&quot;'\</code>]</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-WS">
+    <td>[161s]</td>
+    <td><code>WS</code></td>
+    <td>::=</td>
+    <td><code class="grammar-char-escape">#x20</code> <code>| </code> <code class="grammar-char-escape">#x9</code> <code>| </code> <code class="grammar-char-escape">#xD</code> <code>| </code> <code class="grammar-char-escape">#xA</code><span class="grammar_comment"> /* #x20=space #x9=character tabulation #xD=carriage return #xA=new line */</span></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-ANON">
+    <td>[162s]</td>
+    <td><code>ANON</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">[</code>' <a href="#grammar-production-WS">WS</a><code class="grammar-star">*</code> '<code class="grammar-literal">]</code>'</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_CHARS_BASE">
+    <td>[163s]</td>
+    <td><code>PN_CHARS_BASE</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">A-Z</code>] <code>| </code> [<code class="grammar-chars">a-z</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>00C0-#<span class="add">x</span>00D6</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>00D8-#<span class="add">x</span>00F6</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>00F8-#<span class="add">x</span>02FF</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>0370-#<span class="add">x</span>037D</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>037F-#<span class="add">x</span>1FFF</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>200C-#<span class="add">x</span>200D</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>2070-#<span class="add">x</span>218F</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>2C00-#<span class="add">x</span>2FEF</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>3001-#<span class="add">x</span>D7FF</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>F900-#<span class="add">x</span>FDCF</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>FDF0-#<span class="add">x</span>FFFD</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>10000-#<span class="add">x</span>EFFFF</code>]</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_CHARS_U">
+    <td>[164s]</td>
+    <td><code>PN_CHARS_U</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PN_CHARS_BASE">PN_CHARS_BASE</a> <code>| </code> '<code class="grammar-literal">_</code>'</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_CHARS">
+    <td>[166s]</td>
+    <td><code>PN_CHARS</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PN_CHARS_U">PN_CHARS_U</a> <code>| </code> '<code class="grammar-literal">-</code>' <code>| </code> [<code class="grammar-chars">0-9</code>] <code>| </code> <code class="grammar-char-escape">#<span class="add">x</span>00B7</code> <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>0300-#<span class="add">x</span>036F</code>] <code>| </code> [<code class="grammar-chars">#<span class="add">x</span>203F-#<span class="add">x</span>2040</code>]</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_PREFIX">
+    <td>[167s]</td>
+    <td><code>PN_PREFIX</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PN_CHARS_BASE">PN_CHARS_BASE</a> ((<a href="#grammar-production-PN_CHARS">PN_CHARS</a> <code>| </code> '<code class="grammar-literal">.</code>')<code class="grammar-star">*</code> <a href="#grammar-production-PN_CHARS">PN_CHARS</a>)?</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_LOCAL">
+    <td>[168s]</td>
+    <td><code>PN_LOCAL</code></td>
+    <td>::=</td>
+    <td>(<a href="#grammar-production-PN_CHARS_U">PN_CHARS_U</a> <code>| </code> '<code class="grammar-literal">:</code>' <code>| </code> [<code class="grammar-chars">0-9</code>] <code>| </code> <a href="#grammar-production-PLX">PLX</a>) ((<a href="#grammar-production-PN_CHARS">PN_CHARS</a> <code>| </code> '<code class="grammar-literal">.</code>' <code>| </code> '<code class="grammar-literal">:</code>' <code>| </code> <a href="#grammar-production-PLX">PLX</a>)<code class="grammar-star">*</code> (<a href="#grammar-production-PN_CHARS">PN_CHARS</a> <code>| </code> '<code class="grammar-literal">:</code>' <code>| </code> <a href="#grammar-production-PLX">PLX</a>))?</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PLX">
+    <td>[169s]</td>
+    <td><code>PLX</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-PERCENT">PERCENT</a> <code>| </code> <a href="#grammar-production-PN_LOCAL_ESC">PN_LOCAL_ESC</a></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PERCENT">
+    <td>[170s]</td>
+    <td><code>PERCENT</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">%</code>' <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a></td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-HEX">
+    <td>[171s]</td>
+    <td><code>HEX</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">0-9</code>] <code>| </code> [<code class="grammar-chars">A-F</code>] <code>| </code> [<code class="grammar-chars">a-f</code>]</td>
+  </tr>
+  <tr class="grammar-token" id="grammar-production-PN_LOCAL_ESC">
+    <td>[172s]</td>
+    <td><code>PN_LOCAL_ESC</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">\</code>' ('<code class="grammar-literal">_</code>' <code>| </code> '<code class="grammar-literal">~</code>' <code>| </code> '<code class="grammar-literal">.</code>' <code>| </code> '<code class="grammar-literal">-</code>' <code>| </code> '<code class="grammar-literal">!</code>' <code>| </code> '<code class="grammar-literal">$</code>' <code>| </code> '<code class="grammar-literal">&amp;</code>' <code>| </code> &quot;<code class="grammar-literal">'</code>&quot; <code>| </code> '<code class="grammar-literal">(</code>' <code>| </code> '<code class="grammar-literal">)</code>' <code>| </code> '<code class="grammar-literal">*</code>' <code>| </code> '<code class="grammar-literal">+</code>' <code>| </code> '<code class="grammar-literal">,</code>' <code>| </code> '<code class="grammar-literal">;</code>' <code>| </code> '<code class="grammar-literal">=</code>' <code>| </code> '<code class="grammar-literal">/</code>' <code>| </code> '<code class="grammar-literal">?</code>' <code>| </code> '<code class="grammar-literal">#</code>' <code>| </code> '<code class="grammar-literal">@</code>' <code>| </code> '<code class="grammar-literal">%</code>')</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+</section>
+</section>
+<section id="sec-parsing" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter"> 
+          
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-parsing"><span class="secno">7. </span>解析</h2>
+
+<p><abbr title="Resource Description Framework">RDF</abbr> 1.1概念および抽象構文仕様[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]は、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a>および<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a>という3種類の<em><abbr title="Resource Description Framework">RDF</abbr>用語</em>を定義しています。リテラルは、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a>と、オプションの<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">言語タグ</a>[<cite><a class="bibref" href="#bib-BCP47">BCP47</a></cite>]またはデータ型IRIで構成されます。<code class="dfn" id="prefix">prefix</code>という別の型は、解析中に文字列識別子を名前空間IRIにマッピングするために用います。この項では、生成規則と字句トークンにマッチする文字列を<abbr title="Resource Description Framework">RDF</abbr>用語やそれらの構成要素（例えば、言語タグ、リテラルの字句形式）にマッピングすることにより、<a class="sectionRef sec-ref" href="#sec-grammar-grammar"><span class="secno">6.5</span>項 <span class="sec-title">文法</span></a>に適合する文字列をトリプルの集合にマッピングします。文法の生成規則により、パーサの状態が変更され、トリプルが作成されます。</p>
+
+<section id="sec-parsing-state" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-parsing-state"><span class="secno">7.1 </span>パーサの状態</h3>
+
+<p>Turtleの解析には、次の5つのアイテムの状態が必要です。</p>
+
+<ul>
+  <li id="baseURI">IRI <code class="dfn">baseURI</code> ― <a href="#grammar-production-base">base生成規則</a>に達した時には、2番目の規則引数である<code>IRIREF</code>は、相対IRIの解決に用いられる基底URIです。
+<!--<span class="testrefs">(test: <a href="tests/#base1">base1</a> <a href="tests/#base2">base2</a>)</span>.-->
+</li>
+  <li id="namespaces">Map[<a href="#prefix" class="type prefix">prefix</a> -&gt; IRI] <code class="dfn">namespaces</code> ― <a href="#grammar-production-prefixID">prefixID生成規則</a>の2番目と3番目規則引数（<code>PNAME_NS</code>と<code>IRIREF</code>）は、接頭辞（<code>PNAME_NS</code>）に名前空間名（<code>IRIREF</code>）を割り当てます。<code>prefixID</code>生成規則以外では、あらゆる<code>PNAME_NS</code>は名前空間と置き換えられます。<!--<span class="testrefs">(test: <a href="tests/#prefix1">prefix1</a> <a href="tests/#escapedNamespace1">escapedNamespace1</a>)</span>--><code>(PN_PREFIX)? &quot;:&quot;</code>という<code>PNAME_NS</code>生成規則により、接頭辞が空の文字列でありえることに注意してください。<!--<span class="testrefs">(test: <a href="tests/#default1">default1</a>)</span>.--></li>
+  <li id="bnodeLabels">Map[string -&gt; <a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">blank node</a>] <code class="dfn">bnodeLabels</code> ― 文字列から空白ノードへのマッピング。</li>
+  <li id="curSubject">RDF_Term <code class="dfn">curSubject</code> ― <code class="curSubject">curSubject</code>が<code><a href="#grammar-production-subject">subject</a></code>生成規則にバインドされます。</li>
+  <li id="curPredicate">RDF_Term <code class="dfn">curPredicate</code> ― <code class="curPredicate">curPredicate</code>が<code><a href="#grammar-production-verb">verb</a></code>生成規則にバインドされます。マッチしたトークンが「<code>a</code>」であった場合、<code class="curPredicate">curPredicate</code>は<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>というIRIにバインドされます。
+<!--<span class="testrefs">(test: <a href="tests/#type">type</a>)</span>-->
+</li> 
+</ul>
+
+</section>
+<section id="sec-parsing-terms" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-parsing-terms"><span class="secno">7.2 </span><abbr title="Resource Description Framework">RDF</abbr>用語コンストラクタ</h3>
+
+<p>次の表は、生成規則と字句トークンを、<code><abbr title="Resource Description Framework">RDF</abbr> terms</code>または<a class="sectionRef sec-ref" href="#sec-parsing"><span class="secno">7</span>項 <span class="sec-title">解析</span></a>で挙げた<code><abbr title="Resource Description Framework">RDF</abbr> terms</code>の構成要素にマッピングしています。</p>
+
+<table class="separated">
+<thead>
+  <tr>
+    <th>生成規則</th>
+    <th>型</th>
+    <th>手順</th>
+  </tr>
+</thead>
+<tbody>
+  <tr id="handle-IRIREF">
+    <td style="text-align:left;"><a href="#grammar-production-IRIREF" class="type IRI">IRIREF</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td>
+    <td>「&lt;」と「&gt;」の間の文字を用いて、数値エスケープ・シーケンスをエスケープしないで、IRIのUnicode文字列を形成します。相対IRIの解決は<a class="sectionRef" href="#sec-iri-references">6.3項</a>により実行されます。</td>
+  </tr>
+  <tr id="handle-PNAME_NS">
+    <td rowspan="2" style="text-align:left;"><a href="#grammar-production-PNAME_NS" class="type string">PNAME_NS</a></td>
+    <td><a href="#prefix">接頭辞</a></td>
+    <td><a href="#grammar-production-prefixID">prefixID</a>生成規則または<a href="#grammar-production-sparqlPrefix">sparqlPrefix</a>生成規則で用いた時には、<code>prefix</code>は、<a href="#namespaces">名前空間マップ</a>へのキーである規則の最初の引数にマッチする潜在的に空のUnicode文字列です。
+</td>
+  </tr>
+  <tr id="handle-PNAME_NS2">
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td>
+    <td><a href="#grammar-production-PrefixedName">PrefixedName</a>生成規則で用いた時には、<code>iri</code>は、規則の最初の引数に対応する<a href="#namespaces">名前空間マップ</a>の値です。</td>
+  </tr>
+  <tr id="handle-PNAME_LN">
+    <td style="text-align:left;"><a href="#grammar-production-PNAME_LN" class="type IRI">PNAME_LN</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td>
+    <td>潜在的に空の<a href="#prefix">接頭辞</a>は、<code>PNAME_NS</code>という最初のシーケンスで識別されます。<a href="#namespaces">名前空間マップ</a>には対応する名前空間がなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。IRIのUnicode文字列は、2番目の引数である<code>PN_LOCAL</code>で<a href="#reserved">予約文字</a>をエスケープせず、<code>namespace</code>に連結させることで形成されます。</td>
+  </tr>
+<!-- tr id="handle-PrefixedName"><td style="text-align:left;"><a class="type IRI" href="#grammar-production-PrefixedName"         >PrefixedName</a></td><td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td><td>.</td></tr -->
+  <tr id="handle-STRING_LITERAL_SINGLE_QUOTE">
+    <td style="text-align:left;"><a href="#grammar-production-STRING_LITERAL_SINGLE_QUOTE" class="type lexicalForm">STRING_LITERAL_SINGLE_QUOTE</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a></td>
+    <td>最も外側の「'」の間の文字を用いて、<a href="#numeric">数値</a>および<a href="#string">文字列</a>のエスケープ・シーケンスをエスケープしないで、字句形式のUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-STRING_LITERAL_QUOTE">
+    <td style="text-align:left;"><a href="#grammar-production-STRING_LITERAL_QUOTE" class="type lexicalForm">STRING_LITERAL_QUOTE</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a></td>
+    <td>最も外側の「&quot;」の間の文字を用いて、<a href="#numeric">数値</a>および<a href="#string">文字列</a>のエスケープ・シーケンスをエスケープしないで、字句形式のUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-STRING_LITERAL_LONG_SINGLE_QUOTE">
+    <td style="text-align:left;"><a href="#grammar-production-STRING_LITERAL_LONG_SINGLE_QUOTE" class="type lexicalForm">STRING_LITERAL_LONG_SINGLE_QUOTE </a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a></td>
+    <td>最も外側の「'''」の間の文字を用いて、<a href="#numeric">数値</a>および<a href="#string">文字列</a>のエスケープ・シーケンスをエスケープしないで、字句形式のUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-STRING_LITERAL_LONG_QUOTE">
+    <td style="text-align:left;"><a href="#grammar-production-STRING_LITERAL_LONG_QUOTE" class="type lexicalForm">STRING_LITERAL_LONG_QUOTE </a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a></td>
+    <td>最も外側の「&quot;」の間の文字を用いて、<a href="#numeric">数値</a>および<a href="#string">文字列</a>のエスケープ・シーケンスをエスケープしないで、字句形式のUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-LANGTAG">
+    <td style="text-align:left;"><a href="#grammar-production-LANGTAG" class="type langTag">LANGTAG</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tag">言語タグ</a></td>
+    <td><code>@</code>の後の文字は、言語タグのUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-RDFLiteral">
+    <td style="text-align:left;"><a href="#grammar-production-RDFLiteral" class="type literal">RDFLiteral</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、<code>String</code>という最初の規則の引数の字句形式があります。<code>'^^' iri</code>の規則がマッチする場合、データ型は<code>iri</code>で、リテラルには言語タグがありません。<code>LANGTAG</code>の規則がマッチした場合、データ型は<code>rdf:langString</code>で、言語タグは<code>LANGTAG</code>です。どちらもマッチしなかった場合、データ型は<code>xsd:string</code>で、リテラルには言語タグがありません。</td>
+  </tr>
+  <tr id="handle-INTEGER">
+    <td style="text-align:left;"><a href="#grammar-production-INTEGER" class="type integer">INTEGER</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、入力文字列の字句形式と、<code>xsd:integer</code>というデータ型があります。</td>
+  </tr>
+  <tr id="handle-DECIMAL">
+    <td style="text-align:left;"><a href="#grammar-production-DECIMAL" class="type decimal">DECIMAL</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、入力文字列の字句形式と、<code>xsd:decimal</code>というデータ型があります。</td>
+  </tr>
+  <tr id="handle-DOUBLE">
+    <td style="text-align:left;"><a href="#grammar-production-DOUBLE" class="type double">DOUBLE</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、入力文字列の字句形式と、<code>xsd:double</code>というデータ型があります。</td>
+  </tr>
+  <tr id="handle-BooleanLiteral">
+    <td style="text-align:left;"><a href="#grammar-production-BooleanLiteral" class="type boolean">BooleanLiteral</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、<code>true</code>か<code>false</code>の字句形式があり（どれが入力とマッチしたかによる）と、<code>xsd:boolean</code>のデータ型があります。</td>
+  </tr>
+  <tr id="handle-BLANK_NODE_LABEL">
+    <td style="text-align:left;"><a href="#grammar-production-BLANK_NODE_LABEL" class="type bNode">BLANK_NODE_LABEL</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a></td>
+    <td>2番目の引数である<code>PN_LOCAL</code>とマッチする文字列は、<a href="#bnodeLabels">bnodeLabels</a>のキーです。マップに対応する空白ノードがない場合、1が割り当てられます。</td>
+  </tr>
+  <tr id="handle-ANON">
+    <td style="text-align:left;"><a href="#grammar-production-ANON" class="type bNode">ANON</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a></td>
+    <td>空白ノードが生成されます。</td>
+  </tr>
+  <tr id="handle-blankNodePropertyList">
+    <td style="text-align:left;"><a href="#grammar-production-blankNodePropertyList" class="type bNode">blankNodePropertyList</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a></td>
+    <td>空白ノードが生成されます。次の項の<code>blankNodePropertyList</code>の規則に注意してください。
+</td>
+  </tr>
+  <tr id="handle-collection">
+    <td rowspan="2" style="text-align:left;"><a href="#grammar-production-collection" class="type bNode">collection</a></td>
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a></td>
+    <td>空でないリストに対し、空白ノードが生成されます。次の項の<code>collection</code>の規則に注意してください。</td>
+  </tr>
+  <tr id="handle-collection2">
+    <td><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td>
+    <td>空のリストに対し、結果として生じるIRIは<code>rdf:nil</code>です。次の項の<code>collection</code>の規則に注意してください。</td>
+  </tr>
+</tbody>
+</table>
+
+</section>
+<section id="sec-parsing-triples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-parsing-triples"><span class="secno">7.3 </span><abbr title="Resource Description Framework">RDF</abbr>トリプル・コンストラクタ</h3>
+
+<p>Turtleドキュメントは、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-triple"><abbr title="Resource Description Framework">RDF</abbr>トリプル</a>の集合で構成される<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-graph"><abbr title="Resource Description Framework">RDF</abbr>グラフ</a>を定義しています。<code><a href="#grammar-production-subject">subject</a></code>生成規則は、<code class="curSubject">curSubject</code>を設定します。<code><a href="#grammar-production-verb">verb</a></code>生成規則は、<code class="curPredicate">curPredicate</code>を設定します。ドキュメントの個々の<a href="#grammar-production-object" class="grammarRef" tabindex="30">目的語</a><code>N</code>は、<span class="ntriple"><code class="curSubject">curSubject</code> <code class="curPredicate">curPredicate</code> <code>N</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを生成します。</p>
+
+<h3 style="padding-bottom:0; margin-bottom:0;" id="propertyList"><span>プロパティー・リスト</span></h3>
+
+<p style="padding-top:0; margin-top:0;"><code><a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a></code>生成規則の開始により、<code class="curSubject">curSubject</code>と<code class="curPredicate">curPredicate</code>が記録され、<code class="curSubject">curSubject</code>が新しい<code>blank node</code> <code>B</code>に設定されます。<code><a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a></code>生成規則の終了により、<code class="curSubject">curSubject</code>と<code class="curPredicate">curPredicate</code>は復元されます。<code><a href="#grammar-production-blankNodePropertyList">blankNodePropertyList</a></code>とのマッチにより生成されるノードは、空白ノード<code>B</code>です。</p>
+
+<h3 style="padding-bottom:0; margin-bottom:0;" id="collection"><span>コレクション</span></h3>
+
+<p style="padding-top:0; margin-top:0;"><code><a href="#grammar-production-collection">collection</a></code>生成規則の開始により、<code class="curSubject">curSubject</code>と<code class="curPredicate">curPredicate</code>が記録されます。<code><a href="#grammar-production-collection">collection</a></code>生成規則の個々の<code>object</code>は、新しい<code>blank node</code> <code>B</code>に設定された<code class="curSubject">curSubject</code>と、<code>rdf:first</code>に設定された<code class="curPredicate">curPredicate</code>を持っています。最初のものの後で目的語<code>object<sub>n</sub></code>ごとに、<span class="ntriple"><code>object<sub>n-1</sub></code> <code>rdf:rest</code> <code>object<sub>n</sub></code> .</span>というトリプルが生成されます。<code><a href="#grammar-production-collection">collection</a></code>生成規則の終了により、<span class="ntriple"><code>curSubject rdf:rest rdf:nil</code> .</span>というトリプルが追加生成され、<code class="curSubject">curSubject</code>と<code class="curPredicate">curPredicate</code>が復元されます。<code><a href="#grammar-production-collection">collection</a></code>とのマッチにより生成されたノードは、空でないリストに対する最初の空白ノード<code>B</code>と、空のリストに対する<code>rdf:nil</code>です。</p>
+
+</section>
+<section class="informative" id="sec-parsing-example" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-parsing-example"><span class="secno">7.4 </span>解析の例</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>次の参考情報の例は、このTurtleドキュメントをLALR(1)パーサで解析する際に行なわれるセマンティックなアクションを示します。</p>
+
+<div class="example"><div class="example-title"><span>例27</span></div>
+
+<pre class="example"><span>
+@prefix ericFoaf: &lt;http://www.w3.org/People/Eric/ericP-foaf.rdf#&gt; .
+@prefix : &lt;http://xmlns.com/foaf/0.1/&gt; .
+ericFoaf:ericP :givenName &quot;Eric&quot; ;
+              :knows &lt;http://norman.walsh.name/knows/who/dan-brickley&gt; ,
+                      [ :mbox &lt;mailto:timbl@w3.org&gt; ] ,
+                      &lt;http://getopenid.com/amyvdh&gt; .</span></pre>
+</div>
+
+<ul>
+  <li><code>http://www.w3.org/People/Eric/ericP-foaf.rdf#</code>というIRIに<code>ericFoaf</code>をマッピングします。</li>
+  <li><code>http://xmlns.com/foaf/0.1/</code>というIRIに空の接頭辞をマッピングします。</li>
+  <li><code class="curSubject">curSubject</code>に<code>http://www.w3.org/People/Eric/ericP-foaf.rdf#ericP</code>というIRIを割り当てます。</li>
+  <li><code class="curPredicate">curPredicate</code>に<code>http://xmlns.com/foaf/0.1/givenName</code>というIRIを割り当てます。</li>
+  <li><span class="ntriple"><code>&lt;...rdf#ericP&gt;</code> <code>&lt;.../givenName&gt;</code> <code>&quot;Eric&quot;</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを作成します。</li>
+  <li><code class="curPredicate">curPredicate</code>に<code>http://xmlns.com/foaf/0.1/knows</code>というIRIを割り当てます。</li>
+  <li><span class="ntriple"><code>&lt;...rdf#ericP&gt;</code> <code>&lt;.../knows&gt;</code> <code>&lt;...who/dan-brickley&gt;</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを作成します。</li>
+  <li><span class="ntriple"><code>&lt;...rdf#ericP&gt;</code> <code>&lt;.../knows&gt;</code> <code>_:1</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを作成します。</li>
+  <li><code class="curSubject">curSubject</code>を保存し、空白ノード<code>_:1</code>に再び割り当てます。</li>
+  <li><code class="curPredicate">curPredicate</code>を保存します。</li>
+  <li><code class="curPredicate">curPredicate</code>に<code>http://xmlns.com/foaf/0.1/mbox</code>というIRIを割り当てます。</li>
+  <li><span class="ntriple"><code>_:1</code> <code>&lt;.../mbox&gt;</code> <code>&lt;mailto:timbl@w3.org&gt;</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを作成します。</li>
+  <li><code class="curSubject">curSubject</code>と<code class="curPredicate">curPredicate</code>を、それらの保存した値（<code>&lt;...rdf#ericP&gt;</code>, <code>&lt;.../knows&gt;</code>）に復元させます。</li>
+  <li><span class="ntriple"><code>&lt;...rdf#ericP&gt;</code> <code>&lt;.../knows&gt;</code> <code>&lt;http://getopenid.com/amyvdh&gt;</code> .</span>という<abbr title="Resource Description Framework">RDF</abbr>トリプルを作成します。</li>
+</ul>
+
+</section>
+</section>
+<section class="appendix informative" id="in-html" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_in-html"><span class="secno">A. </span>HTMLドキュメントへのTurtleの組み込み</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>HTML[<cite><a class="bibref" href="#bib-HTML5">HTML5</a></cite>]の<code>script</code>タグは、ドキュメントにデータ・ブロックを組み込むために使用できます。このように、TurtleはHTMLに容易に組み込むことができます。
+<!-- removed this link as it is moot <a href="http://dev.w3.org/html5/spec/Overview.html#scripting-1">tags</a>--></p>
+
+<div class="example"><div class="example-title"><span>例28</span></div>
+<pre class="example">&lt;script type=&quot;text/turtle&quot;&gt;
+@prefix dc: &lt;http://purl.org/dc/terms/&gt; .
+@prefix frbr: &lt;http://purl.org/vocab/frbr/core#&gt; .
+
+&lt;http://books.example.com/works/45U8QJGZSQKDH8N&gt; a frbr:Work ;
+     dc:creator &quot;Wil Wheaton&quot;@en ;
+     dc:title &quot;Just a Geek&quot;@en ;
+     frbr:realization &lt;http://books.example.com/products/9780596007683.BOOK&gt;,
+         &lt;http://books.example.com/products/9780596802189.EBOOK&gt; .
+
+&lt;http://books.example.com/products/9780596007683.BOOK&gt; a frbr:Expression ;
+     dc:type &lt;http://books.example.com/product-types/BOOK&gt; .
+
+&lt;http://books.example.com/products/9780596802189.EBOOK&gt; a frbr:Expression ;
+     dc:type &lt;http://books.example.com/product-types/EBOOK&gt; .
+&lt;/script&gt;</pre></div>
+
+<p>Turtleの内容は、<code>type</code>属性を<code>text/turtle</code>に設定した<code>script</code>タグ内に記述すべきです。<code>&lt;</code>と<code>&gt;</code>の記号は、scriptタグ内でエスケープする必要はありません。組み込まれたTurtleの文字エンコードは、HTMLドキュメント・エンコーディングとマッチするでしょう。</p>
+
+<section class="informative" id="xhtml">
+
+<h3 aria-level="2" role="heading" id="h3_xhtml"><span class="secno">A.1 </span>XHTML</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>JavaScriptのように、HTML（<code>text/html</code>）用に記述したTurtleをXHTML（<code>application/xhtml+xml</code>）で用いると壊れる場合があります。その解決策は、JavaScriptに用いられているものと同じです。</p>
+
+<div class="example"><div class="example-title"><span>例29</span></div>
+<pre class="example">&lt;script type=&quot;text/turtle&quot;&gt;
+<strong># &lt;![CDATA[</strong>
+@prefix frbr: &lt;http://purl.org/vocab/frbr/core#&gt; .
+
+&lt;http://books.example.com/works/45U8QJGZSQKDH8N&gt; a frbr:Work .
+<strong># ]]&gt;</strong>
+&lt;/script&gt;</pre>
+</div>
+
+<p>Turtleデータ・ブロックは、XHTMLに組み込む時には、CDATAセクションで囲まなければなりません。このCDATAマーカーは、Turtleコメント内になければなりません。「<code>]]&gt;</code>」という文字列がドキュメントに出現すれば、それは文字列のエスケープ（<code>]T></code>）を用いてエスケープされなければなりません。これによって、Turtleは、<code>text/html</code>と<code>application/xhtml+xml</code>の両方として機能する多言語ドキュメントでも安全になるでしょう。CDATAセクションの使用や「<code>]]&gt;</code>」のスケープを行わないと、整形式ではないXMLドキュメントが作成されるかもしれません。</p>
+
+</section>
+<section class="informative" id="in-html-parsing" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_in-html-parsing"><span class="secno">A.2 </span>HTMLでのTurtleの解析</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>組み込まれたTurtleの解析と通常のTurtleドキュメントには、構文上または文法上の違いはありません。HTML DOMから解析されたTurtleドキュメントは、UTF-8エンコードのバイトの列ではなく、文字データの列になるでしょう。HTMLドキュメントが既にDOMで解析されていれば、デコードは必要ありません。個々の<code>script</code>データ・ブロックは、自身のTurtleドキュメントであると考えられます。Turtleデータ・ブロックの<code>@prefix</code>と<code>@base</code>宣言の範囲はそのデータ・ブロックであり、その他のデータ・ブロックには影響を与えません。HTMLの<code>lang</code>属性やXHTMLの<code>xml:lang</code>属性は、データ・ブロックの解析には影響を与えません。カプセル化したHTMLドキュメントの基底URIは、RFC3986の5.1.1項により「コンテンツに組み込まれた基底URI」を提供します。</p>
+
+</section>
+</section>      
+<section class="appendix" id="sec-mediaReg" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-mediaReg"><span class="secno">B. </span>インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</h2>
+
+<dl>
+  <dt>連絡先:</dt>
+  <dd>Eric Prud'hommeaux</dd>
+  <dt>参照:</dt>
+  <dd><a href="http://www.w3.org/2002/06/registering-mediatype"><abbr title="World Wide Web Consortium">W3C</abbr>仕様に関するメディア・タイプの登録方法</a></dd>
+  <dd><a href="http://www.w3.org/2001/tag/2002/0129-mime">インターネット・メディア・タイプ登録、使用の整合性</a>
+<br>TAGの発見事項 2002年6月3日（2002年9月4日改定）</dd>
+</dl>
+
+<p>Turtleのインターネット・メディア・タイプ/MIMEタイプは、「text/turtle」です。</p>
+
+<p>Turtleファイルは、すべてのプラットホーム上で拡張子「.ttl」（すべて小文字）であることが推奨されます。</p>
+
+<p>マッキントッシュHFSファイル・システム上に保存されたTurtleファイルには、ファイル・タイプ「TEXT」が付与されていることが推奨されます。</p>
+
+<p>下記のこの情報は、IANAでのレビュー、承認、および登録のために<a href="http://www.w3.org/mid/20071218114549.GQ8244@w3.org">IESGに提出</a>されました。</p>
+
+<dl>
+  <dt>タイプ名:</dt>
+  <dd>text</dd>
+  <dt>サブタイプ名:</dt>
+  <dd>turtle</dd>
+  <dt>必須パラメータ:</dt>
+  <dd>なし</dd>
+  <dt>任意のパラメータ:</dt>
+  <dd><code>charset</code> ― このパラメータは、非ASCIIデータを転送する際に必要です。<code>charset</code>は、それがもしあれば、常に<code>UTF-8</code>です。</dd>
+  <dt>コード化に関する考察:</dt>
+  <dd>Turtleの構文は、Unicode[<cite><a class="bibref" href="#bib-UNICODE">UNICODE</a></cite>]のコード・ポイントで表されます。コード化は、常にUTF-8[<cite><a class="bibref" href="#bib-UTF-8">UTF-8</a></cite>]です。</dd>
+  <dd>Unicodeコード・ポイントは、Xが16進の[0-9A-Fa-f]である場合、\uXXXX（U+0～U+FFFF）または\UXXXXXXXX構文（U+10000以降）を用いて表現できます。</dd>
+  <dt>セキュリティに関する考察:</dt>
+  <dd>Turtleは汎用の言明言語です。アプリケーションは、より多くの言明を推論したり、IRIを逆参照するためにデータを評価でき、そのIRIのスキームに関するセキュリティ上の検討事項が生じます。特に、HTTP IRIに関する[<cite><a class="bibref" href="#bib-RFC3023">RFC3023</a></cite>]の10項のプライバシー問題に注意してください。不正確または悪質なデータ情報源から得たデータは、意図しないIRIの逆参照のみならず、不正確または誤解を招く結果に結びつくかもしれません。調べた資源に対する信頼性を、意図されているデータ利用の感度と慎重に合わせなければなりません。例えば、潜在的な内科療法の推論には、旅行計画の推論とは恐らく異なる信頼性が必要でしょう。</dd>
+  <dd>Turtleは任意のアプリケーション・データを表すために用います。セキュリティ上の検討事項は、使用領域によって変わるでしょう。テキストに適用できるセキュリティ・ツールやプロトコル（例えば、PGP暗号化、MD5チェックサム検証、パスワードで保護された圧縮）は、Turtleドキュメントにも使用できます。組み込まれた情報の感度を反映したセキュリティー/プライバシー・プロトコルを課さなければなりません。</dd>
+  <dd>Turtleは、ユーザに提示するデータを表すことができます（例えば、<abbr title="Resource Description Framework">RDF</abbr>スキーマ・ラベル）。信頼できないTurtleドキュメントから検索された文字列を表示するアプリケーションは、読者を誤解させるような悪質な文字列が用いられていなことを保証しなければなりません。XMLのメディア・タイプ登録におけるセキュリティに関する考察（[<cite><a class="bibref" href="#bib-RFC3023">RFC3023</a></cite>]の10項）は、任意のデータとマークアップの表現に関するガイダンスを追加提供します。</dd>
+  <dd>Turtleは、IRIを用語識別子として用います。Turtleで表現されたデータを解釈するアプリケーションは、<a href="http://www.ietf.org/rfc/rfc3986.txt" class="norm">URI（Uniform Resource Identifier）: 一般的構文</a>[<cite><a class="bibref" href="#bib-RFC3986">RFC3986</a></cite>]の7項と<a href="http://www.ietf.org/rfc/rfc3987.txt" class="norm">IRI（Internationalized Resource Identifiers）</a>[<cite><a class="bibref" href="#bib-RFC3987">RFC3987</a></cite>]の8項のセキュリティ問題に取り組むべきです。</dd>
+  <dd>複数のIRIの見た目が同じでありえます。異なるスクリプトの文字が同じに見えるかもしれません（キリル文字の「о」はラテン文字の「o」と同じに見えるかもしれません）。結合文字が後続する文字は、別の文字と同じ視覚的表現を持っているかもしれません（結合アキュート・アクセントが後続するラテン小文字Eは、アキュート付きラテン小文字Eと同じ視覚的表現を持っています）。<!-- (<code>foo:resum&#40751;code> and <code>f&#1086;&#1086;:resume&#769;</code>)-->Turtleでデータを記述または解釈する人やアプリケーションは、意図するセマンティクスとマッチするIRIを慎重に用いて、同じように見えるIRIを回避しなければなりません。類似している文字のマッチングに関する詳細は、<a href="http://www.unicode.org/reports/tr36/" class="inform">Unicodeセキュリティに関する考察</a>[<cite><a class="bibref" href="#bib-UNICODE-SECURITY">UNICODE-SECURITY</a></cite>]および<a href="http://www.ietf.org/rfc/rfc3987.txt" class="norm">IRI（Internationalized Resource Identifiers）</a>[<cite><a class="bibref" href="#bib-RFC3987">RFC3987</a></cite>]の8項にあります。
+<!--@@ no security considerations section at this time. @@ See Turtle - Terse RDF Triple Language appendix X, <a href="#security">Security Considerations</a> as well as <a class="norm" href="http://www.ietf.org/rfc/rfc3629.txt">RFC 3629</a> [<a href="#rfc3629">RFC3629</a>] section 7, Security Considerations. --></dd>
+  <dt>互換性に関する考察:</dt>
+  <dd>互換性の問題は知られていません。</dd>
+  <dt>公開済み仕様書:</dt>
+  <dd>この仕様書。</dd>
+  <dt>このメディア・タイプを使用するアプリケーション:</dt>
+  <dd>このメディア・タイプを用いる広く展開したアプリケーションは知られていません。これは、これらのデータを用いる一部のウェブ・サービスとクライアントで使用できます。</dd>
+  <dt>追加情報:</dt>
+  <dt>マジック・ナンバー:</dt>
+  <dd>Turtleドキュメントは、文字列「@prefix」または「@base」（大文字・小文字を区別する）、あるいは、ドキュメントの冒頭近くに文字列「PREFIX」または「BASE」（大文字・小文字を区別しない）を持つことができます。</dd>
+  <dt>ファイル拡張子:</dt>
+  <dd>「.ttl」</dd>
+  <dt>基底URI:</dt>
+  <dd>Turtleの「@base &lt;IRIref&gt;」または「BASE &lt;IRIref&gt;」用語は、現在の基底URIを、後ほどドキュメントで順次用いるクエリ言語の相対IRIrefと交換できます。</dd>
+  <dt>マッキントッシュ・ファイル・タイプ・コード:</dt>
+  <dd>「TEXT」</dd>
+  <dt>詳細情報に関する連絡先:</dt>
+  <dd>Eric Prud'hommeaux &lt;eric@w3.org&gt;</dd>
+  <dt>意図する使途:</dt>
+  <dd>汎用</dd>
+  <dt>使用上の制限:</dt>
+  <dd>なし</dd>
+  <dt>著者／改版管理者:</dt>
+  <dd>Turtle仕様は、<abbr title="Resource Description Framework">RDF</abbr> WGの成果です。<abbr title="World Wide Web Consortium">W3C</abbr>は、この仕様書に対する変更管理を保持します。</dd>
+</dl>
+
+</section>
+<section class="appendix" id="sec-acks" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+        
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-acks"><span class="secno">C. </span>謝辞</h2>
+
+<p>この取り組みについては、他の<abbr title="Resource Description Framework">RDF</abbr>構文やTurtleの背景について論じている<a href="http://www.dajobe.org/2003/11/new-syntaxes-rdf/">New Syntaxes for <abbr title="Resource Description Framework">RDF</abbr></a>という論文（WWW2004に提出され、そこでは<em>N-Triples Plus</em>と呼ばれた）で述べられました。</p>
+
+<p>この取り組みは、EU IST-7プログラムIST-2001-34732の資金援助による<a href="http://www.w3.org/2001/sw/Europe/">Semantic Web Advanced Development Europe (SWAD-Europe)</a>プロジェクト（2002-2004年）の間に始められ、英国の<a href="http://www.bristol.ac.uk/">ブリストル大学</a><a href="http://www.ilrt.bris.ac.uk/">Institute for Learning and Research Technology</a>（2002-2005年9月）の支援でさらに開発がすすめられました。</p>
+
+<p>Gregg Kellogg、Andy Seaborn、Sandro Hawkeおよび<abbr title="Resource Description Framework">RDF</abbr>ワーキンググループのメンバーにより、このバージョンへの有用な貢献が行われました。</p>
+
+<p>ドキュメントは、より広範囲のコミュニティーによるレビュー・プロセスを通じて改善されました。</p>
+
+</section>
+<section class="appendix" id="sec-changelog" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-changelog"><span class="secno">D. </span>変更履歴</h2>
+
+<section id="sec-change-log-PR-REC" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-change-log-PR-REC"><span class="secno">D.1 </span><a href="http://www.w3.org/TR/2014/PR-turtle-20140109/">2014年1月の勧告案</a>以後の変更</h3>
+
+<ul>
+  <li><a href="http://lists.w3.org/Archives/Public/public-rdf-comments/2014Feb/0008.html">Lars Svenssonからのコメント</a>に応じて、欠落していた接頭辞を例11に加えました。</li>
+  <li>文法生成規則[21]と[23]の<a href="http://lists.w3.org/Archives/Public/public-rdf-wg/2014Feb/0027.html">エラー</a>を修正しました。</li>
+  <li>文法生成規則[24]と[25]の<a href="http://lists.w3.org/Archives/Public/public-rdf-comments/2014Feb/0018.html">エラー</a>を修正しました。</li>
+</ul>
+
+</section>
+<section id="sec-changelog-CR-PR" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-changelog-CR-PR"><span class="secno">D.2 </span><a href="http://www.w3.org/TR/2013/CR-turtle-20130219/">2013年2月の勧告候補</a>から<a href="http://www.w3.org/TR/2014/PR-turtle-20140109/">2014年1月の勧告案</a>までの変更</h3>
+
+<ul>
+  <li>勧告候補の公表時には、Turtleドキュメントにおいて<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>形式の<code>BASE</code>指示子と<code>PREFIX</code>指示子の使用を認める<a href="#grammar-production-sparqlPrefix">sparqlPrefix</a>と<a href="#grammar-production-sparqlBase">sparqlBase</a>の追加は「危険」であると記述しました。この機能は、もはや危険ではありません。</li>
+  <li>このドキュメントのタイトルを「<em>Turtle</em>」から「<em><abbr title="Resource Description Framework">RDF</abbr> 1.1 Turtle</em>」に変更しました。
+</li>
+  <li><a href="#sec-parsing-state">7.1項</a>のテストへの古いリンクを削除しました。</li>
+</ul>
+
+</section>
+<section id="sec-changelog-WD-CR" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-changelog-WD-CR"><span class="secno">D.3 </span><a href="http://www.w3.org/TR/2011/WD-turtle-20110809/">2011年8月の最初の草案</a>から<a href="http://www.w3.org/TR/2013/CR-turtle-20130219/">勧告候補</a>までの変更</h3>
+
+<ul>
+  <li>STRING_*生成規則に関し、数ではなく、STRING_LITERAL_QUOTEという形式の名前に改名</li>
+  <li>接頭辞名のローカル部分に「:」を含むことができるようになりました。</li>
+  <li>HTML内のTurtle</li>
+  <li>IRIに関する文法トークンと規則の改名</li>
+  <li>予約文字エスケープ・シーケンス</li>
+  <li>文字列エスケープ・シーケンスを文字列に制限しました。</li>
+  <li>数値エスケープ・シーケンスをIRIと文字列に制限しました。</li>
+  <li>トップレベルの空白-述語-目的語のリストをサポート</li>
+  <li>@接頭辞および接頭辞ラベルの間には空白が必要となりました。</li>
+</ul>
+
+</section>
+<section id="sec-changelog-Subm-WD" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-changelog-Subm-WD"><span class="secno">D.4 </span><a href="http://www.w3.org/TeamSubmission/2008/SUBM-turtle-20080114/">2008年1月のチーム提案</a>から<a href="http://www.w3.org/TR/2011/WD-turtle-20110809/">最初の草案</a>までの変更</h3>
+
+<ul>
+  <li><a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rSTRING_LITERAL2">STRING_LITERAL2</a>、<a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rSTRING_LITERAL_LONG1">STRING_LITERAL_LONG1</a>、<a href="http://www.w3.org/TR/2013/REC-sparql11-query-20130321/#rSTRING_LITERAL_LONG2">STRING_LITERAL_LONG2</a>という3つの<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>の文字列構文を追加採用しました。</li>
+  <li>次の<abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>の接頭辞付き名前用構文を採用しました（編集者の草案を参照）。
+  <ul>
+    <li>最初または最後を除き、ローカル名のすべての位置の名前の中の「.」。例えば、<code>ex:first.name</code>。</li>
+    <li><a href="http://www.w3.org/TR/rdf-sparql-query/#rPN_LOCAL">PN_LOCAL</a>字句トークンの最初の文字内の数字。例えば、<code>ex:7tm</code></li>
+  </ul>
+  </li>
+  <li><abbr title="SPARQL Protocol And RDF Query Language">SPARQL</abbr>のIRI解決と接頭辞代替テキストを採用した。</li>
+  <li>同じ接頭辞の再利用を明示的に認めた。</li>
+  <li><a href="#sec-parsing">解析規則</a>を追加した。</li>
+</ul>
+
+<p><a href="http://www.w3.org/TeamSubmission/2008/SUBM-turtle-20080114#sec-changelog"><abbr title="World Wide Web Consortium">W3C</abbr>以前の提案変更履歴</a>も参照してください。</p>
+
+</section>
+</section>
+<section class="appendix" id="references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_references"><span class="secno">E. </span>参考文献</h2>
+
+<section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">E.1 </span>規範的な参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-BCP47">[BCP47]</dt>
+  <dd rel="dcterms:requires">A. Phillips; M. Davis. <a href="http://tools.ietf.org/html/bcp47"><cite>Tags for Identifying Languages</cite></a>. September 2009. IETF Best Current Practice. URL: <a href="http://tools.ietf.org/html/bcp47">http://tools.ietf.org/html/bcp47</a></dd>
+  <dt id="bib-EBNF-NOTATION">[EBNF-NOTATION]</dt>
+  <dd rel="dcterms:requires">Tim Bray; Jean Paoli; C. M. Sperberg-McQueen; Eve Maler; Francois Yergeau. <a href="http://www.w3.org/TR/REC-xml/#sec-notation"><cite>EBNF Notation</cite></a> 26 November 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/REC-xml/#sec-notation">http://www.w3.org/TR/REC-xml/#sec-notation</a></dd>
+  <dt id="bib-RDF11-CONCEPTS">[RDF11-CONCEPTS]</dt>
+  <dd rel="dcterms:requires">Richard Cyganiak, David Wood, Markus Lanthaler. <cite><a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">RDF 1.1 Concepts and Abstract Syntax.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/rdf11-concepts/">http://www.w3.org/TR/rdf11-concepts/</a></dd>
+  <dt id="bib-RFC2119">[RFC2119]</dt>
+  <dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
+  <dt id="bib-RFC3023">[RFC3023]</dt>
+  <dd rel="dcterms:requires">M. Murata; S. St.Laurent; D. Kohn. <a href="http://www.ietf.org/rfc/rfc3023.txt"><cite>XML Media Types (RFC 3023)</cite></a>. January 2001. RFC. URL: <a href="http://www.ietf.org/rfc/rfc3023.txt">http://www.ietf.org/rfc/rfc3023.txt</a></dd>
+  <dt id="bib-RFC3986">[RFC3986]</dt>
+  <dd rel="dcterms:requires">T. Berners-Lee; R. Fielding; L. Masinter. <a href="http://www.ietf.org/rfc/rfc3986.txt"><cite>Uniform Resource Identifier (URI): Generic Syntax (RFC 3986)</cite></a>. January 2005. RFC. URL: <a href="http://www.ietf.org/rfc/rfc3986.txt">http://www.ietf.org/rfc/rfc3986.txt</a></dd>
+  <dt id="bib-RFC3987">[RFC3987]</dt>
+  <dd rel="dcterms:requires">M. Durst; M. Suignard. <a href="http://www.ietf.org/rfc/rfc3987.txt"><cite>Internationalized Resource Identifiers (IRIs)</cite></a>. January 2005. RFC. URL: <a href="http://www.ietf.org/rfc/rfc3987.txt">http://www.ietf.org/rfc/rfc3987.txt</a></dd>
+  <dt id="bib-UNICODE">[UNICODE]</dt>
+  <dd rel="dcterms:requires"><a href="http://www.unicode.org/versions/latest/"><cite>The Unicode Standard</cite></a>. URL: <a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a></dd>
+  <dt id="bib-UTF-8">[UTF-8]</dt>
+  <dd rel="dcterms:requires">F. Yergeau. <a href="http://www.ietf.org/rfc/rfc3629.txt"><cite>UTF-8, a transformation format of ISO 10646</cite></a>. IETF RFC 3629. November 2003. URL: <a href="http://www.ietf.org/rfc/rfc3629.txt">http://www.ietf.org/rfc/rfc3629.txt</a></dd>
+</dl>
+
+</section>
+<section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">E.2 </span>参考情報の参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-HTML5">[HTML5]</dt>
+  <dd rel="dcterms:references">Robin Berjon; Steve Faulkner; Travis Leithead; Erika Doyle Navara; Edward O'Connor; Silvia Pfeiffer. <a href="http://www.w3.org/TR/html5/"><cite>HTML5</cite></a>. 4 February 2014. W3C Candidate Recommendation. URL: <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5/</a></dd>
+  <dt id="bib-N-TRIPLES">[N-TRIPLES]</dt>
+  <dd rel="dcterms:references">Gavin Carothers, Andy Seabourne. <cite><a href="http://www.w3.org/TR/2014/REC-n-triples-20140225/">RDF 1.1 N-Triples</a></cite>. W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-n-triples-20140225/">http://www.w3.org/TR/2014/REC-n-triples-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/n-triples/">http://www.w3.org/TR/n-triples/</a></dd>
+  <dt id="bib-RDF11-MT">[RDF11-MT]</dt>  <dd rel="dcterms:references">Patrick J. Hayes, Peter F. Patel-Schneider. <cite><a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/">RDF 1.1 Semantics.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/">http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/rdf11-mt/">http://www.w3.org/TR/rdf11-mt/</a></dd>
+  <dt id="bib-SPARQL11-QUERY">[SPARQL11-QUERY]</dt>
+  <dd rel="dcterms:references">Steven Harris; Andy Seaborne. <a href="http://www.w3.org/TR/sparql11-query/"><cite>SPARQL 1.1 Query Language</cite></a>. 21 March 2013. W3C Recommendation. URL: <a href="http://www.w3.org/TR/sparql11-query/">http://www.w3.org/TR/sparql11-query/</a></dd>
+  <dt id="bib-UNICODE-SECURITY">[UNICODE-SECURITY]</dt>
+  <dd rel="dcterms:references">Mark Davis; Michel Suignard. <a href="http://www.unicode.org/reports/tr36/"><cite>Unicode Security Considerations</cite></a>. URL: <a href="http://www.unicode.org/reports/tr36/">http://www.unicode.org/reports/tr36/</a></dd>
+</dl>
+
+</section>
+</section>
+
+</body>
+</html>

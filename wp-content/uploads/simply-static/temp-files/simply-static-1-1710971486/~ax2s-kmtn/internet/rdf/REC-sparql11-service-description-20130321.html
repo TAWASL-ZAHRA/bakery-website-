@@ -1,0 +1,1262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SPARQL 1.1サービス記述</title>
+<style type="text/css">@import url("www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/local.css");
+
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+
+em.rfc2119 { text-transform: lowercase;
+             font-variant: small-caps;
+             font-style: normal; }</style>
+<link rel="stylesheet" type="text/css" href="www.w3.org/StyleSheets/TR/W3C-REC.css">
+</head>
+<body>
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321/">SPARQL 1.1 Service Description W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2013年8月6日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a></p>
+
+<h1>
+<a name="title" id="title"></a>SPARQL 1.1サービス記述</h1>
+
+<h2>
+<a name="w3c-doctype" id="w3c-doctype"></a>W3C勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321/">http://www.w3.org/TR/2013/REC-sparql11-service-description-20130321/</a></dd>
+  <dt>最新バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-service-description/">http://www.w3.org/TR/sparql11-service-description/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2012/PR-sparql11-service-description-20121108/">http://www.w3.org/TR/2012/PR-sparql11-service-description-20121108/</a></dd>
+  <dt>編集者:</dt>
+  <dd>Gregory Todd Williams, Rensselaer Polytechnic Institute <a href="mailto:greg@evilfunhouse.com">&lt;greg@evilfunhouse.com&gt;</a>
+</dd>
+</dl>
+
+<p>このドキュメントに対する正誤表を参照してください。いくつかの規範的な<a href="www.w3.org/2013/sparql-errata#sparql11-service-description"><strong>修正</strong></a>が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-service-description"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+</div>
+
+<hr>
+
+<div>
+
+<h2>
+<a name="abstract" id="abstract"></a>要約</h2>
+
+<p>このドキュメントはSPARQLサービス記述、つまり、<a href="www.w3.org/TR/sparql11-protocol/">SSPARQL 1.1 RDF用プロトコル</a>[<a href="#SPROT">SPROT</a>]によって利用可能となるSPARQLサービスを発見する方法と、それを記述するための語彙を記述しています。この記述は、クライアントやエンドユーザが、サポート済みの拡張関数や利用可能なデータセットに関する詳細などのSPARQLサービスに関する情報を発見できる方法を提供します。</p>
+
+</div>
+<div>
+
+<h2>
+<a name="status" id="status"></a>このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a></li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL 1.1サービス記述</a>（このドキュメント）</li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1統合クエリ</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2012/PR-sparql11-service-description-20121108/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+</div>
+<div class="toc">
+
+<h2>
+<a name="contents" id="contents"></a>目次</h2>
+
+<p class="toc">1 <a href="#intro">はじめに</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 <a href="#terminology">用語</a><br>
+2 <a href="#accessing">サービス記述へのアクセス</a><br>
+3 <a href="#vocab">サービス記述語彙</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 <a href="#namespace">SPARQLサービス記述の名前空間およびOWLオントロジー</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 <a href="#properties">プロパティー</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 <a href="#sd-endpoint">sd:endpoint</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.2 <a href="#sd-feature">sd:feature</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.3 <a href="#sd-defaultEntailmentRegime">sd:defaultEntailmentRegime</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.4 <a href="#sd-entailmentRegime">sd:entailmentRegime</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.5 <a href="#sd-defaultSupportedEntailmentProfile">sd:defaultSupportedEntailmentProfile</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.6 <a href="#sd-supportedEntailmentProfile">sd:supportedEntailmentProfile</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.7 <a href="#sd-extensionFunction">sd:extensionFunction</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.8 <a href="#sd-extensionAggregate">sd:extensionAggregate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.9 <a href="#sd-languageExtension">sd:languageExtension</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.10 <a href="#sd-supportedLanguage">sd:supportedLanguage</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.11 <a href="#sd-propertyFeature">sd:propertyFeature</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.12 <a href="#sd-defaultDataset">sd:defaultDataset</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.13 <a href="#sd-availableGraphs">sd:availableGraphs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.14 <a href="#sd-resultFormat">sd:resultFormat</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.15 <a href="#sd-inputFormat">sd:inputFormat</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.16 <a href="#sd-defaultGraph">sd:defaultGraph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.17 <a href="#sd-namedGraph">sd:namedGraph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.18 <a href="#sd-name">sd:name</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.19 <a href="#sd-graph">sd:graph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.3 <a href="#classes">クラス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.1 <a href="#sd-Service">sd:Service</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.2 <a href="#sd-Feature">sd:Feature</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.3 <a href="#sd-Language">sd:Language</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.4 <a href="#sd-Function">sd:Function</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.5 <a href="#sd-Aggregate">sd:Aggregate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.6 <a href="#sd-EntailmentRegime">sd:EntailmentRegime</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.7 <a href="#sd-EntailmentProfile">sd:EntailmentProfile</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.8 <a href="#sd-GraphCollection">sd:GraphCollection</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.9 <a href="#sd-Dataset">sd:Dataset</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.10 <a href="#sd-Graph">sd:Graph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.3.11 <a href="#sd-NamedGraph">sd:NamedGraph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.4 <a href="#instances">インスタンス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.1 <a href="#lang-sparql10query">sd:SPARQL10Query</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.2 <a href="#lang-sparql11query">sd:SPARQL11Query</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.3 <a href="#lang-sparql11update">sd:SPARQL11Update</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.4 <a href="#sd-dereferencesuris">sd:DereferencesURIs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.5 <a href="#sd-uniondefaultgraph">sd:UnionDefaultGraph</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.6 <a href="#sd-requiresdataset">sd:RequiresDataset</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.7 <a href="#sd-emptygraphs">sd:EmptyGraphs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.8 <a href="#sd-basicfederatedquery">sd:BasicFederatedQuery</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.4.9 <a href="#other-instances">その他のインスタンス</a><br>
+4 <a href="#example">例（参考情報）</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.1 <a href="#example-rdfxml">RDF/XMLサービス記述</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.2 <a href="#example-turtle">Turtleサービス記述</a><br>
+5 <a href="#conformance">適合性</a><br>
+</p>
+
+<h3>
+<a name="appendices" id="appendices"></a>付録</h3>
+
+<p class="toc">A <a href="#sec-bibliography">参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.1 <a href="#sec-normative-refs">規範的な参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.2 <a href="#sec-non-normative-refs">その他の参考文献</a><br>
+</p>
+
+</div>
+<hr>
+<div class="body">
+<div class="div1">
+
+<h2>
+<a name="intro" id="intro"></a>1 はじめに</h2>
+
+<p>
+SPARQLサービス記述では、<a href="www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 RDF用プロトコル</a>[<a href="#SPROT">SPROT</a>]によって利用可能となるSPARQLサービスの特徴をリストアップしています。このドキュメントは、特定のSPARQLサービスからサービス記述を発見する方法と、RDFでそのような記述をコード化するためのRDFスキーマの両方について記述しています。</p>
+
+<div class="div2">
+
+<h3>
+<a name="terminology" id="terminology"></a>1.1 用語</h3>
+
+<p>このドキュメントが、しなければならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）、すべきである／する必要がある（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）、することができる／してもよい（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）という単語を使用し、強調されたテキストとして出現するとき、RFC 2119 [<a href="#RFC2119">RFC2119</a>]で記述されているとおりに解釈されなければなりません。</p>
+
+<p>このドキュメントでは、次の用語も使用しています。</p>
+
+<dl>
+  <dt>SPARQLサービス</dt>
+  <dd>
+<a>SPARQL 1.1 RDF用プロトコル</a>（このドキュメントの「SPARQLサービス」の用法は、SPARQL 1.1プロトコルに定義されている「<a href="www.w3.org/TR/sparql11-protocol/#terminology">SPARQLプロトコル・サービス</a>」と同じ）[<a href="#SPROT">SPROT</a>]に適合する実装。</dd>
+  <dt>SPARQLエンドポイント</dt>
+  <dd>SPARQLサービスがクライアントからリクエストを受けるURI。</dd>
+</dl>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="accessing" id="accessing"></a>2 サービス記述へのアクセス</h2>
+
+<p>SPARQLプロトコルによって利用可能となるSPARQLサービスは、クエリ・パラメータの文字列が提供されることなくHTTP GETオペレーションで逆参照が行われた時に、サービス・エンドポイントでサービス記述ドキュメントを返すべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。このサービス記述は、RDFシリアル化で利用可能とならなければならず（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）、<a href="www.w3.org/TR/rdfa-syntax/">RDFa</a>[<a href="#RDFA">RDFA</a>]により(X)HTMLに組み込むことができ（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）、他のRDF表現で利用できる場合は、<a href="www.w3.org/Protocols/rfc2616/rfc2616-sec12.html">内容交渉</a>[<a href="#CONNEG">CONNEG</a>]を使用すべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="vocab" id="vocab"></a>3 サービス記述語彙</h2>
+
+<div class="div2">
+
+<h3>
+<a name="namespace" id="namespace"></a>3.1 SPARQLサービス記述の名前空間およびOWLオントロジー</h3>
+
+<p>SPARQLサービス記述の名前空間IRIは次のとおりです。</p>
+
+<p><a href="www.w3.org/ns/sparql-service-description#">http://www.w3.org/ns/sparql-service-description#</a></p>
+
+<p>このドキュメントでこの名前空間に用いている接頭辞は<code>sd</code>です。</p>
+
+<p>サービス記述のオントロジーのRDFエンコーディングは、<a href="www.w3.org/ns/sparql-service-description#">名前空間IRI</a>からのHTTP内容交渉によって入手できます。</p>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="properties" id="properties"></a>3.2 プロパティー</h3>
+
+<div class="div3">
+
+<h4>
+<a name="sd-endpoint" id="sd-endpoint"></a>3.2.1 sd:endpoint</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、サービスのために<a href="www.w3.org/TR/sparql11-protocol/#terminology">SPARQLプロトコル・サービス</a>[<a href="#SPROT">SPROT</a>]を実装するSPARQLエンドポイントに関連付けます。sd:endpointプロパティーの目的語はIRIです。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>owl:InverseFunctionalProperty</code></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-feature" id="sd-feature"></a>3.2.2 sd:feature</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、サポート済み機能を表す資源に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-defaultEntailmentRegime" id="sd-defaultEntailmentRegime"></a>3.2.3 sd:defaultEntailmentRegime</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、基本グラフ・パターン・マッチングに用いられている含意レジームを表す資源に関連付けます。このプロパティーは、1つの含意レジームが、サービスのデフォルトのデータセット内のすべてのグラフにデフォルトで当てはまる場合に用いることを意図しています。異なる含意レジームがデータセット内の特定のグラフに当てはまる状況では、この事実をそのグラフの記述で示すために<a href="#sd-entailmentRegime"><code>sd:entailmentRegime</code></a>プロパティーを用いるべきです。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-EntailmentRegime"><code>sd:EntailmentRegime</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-entailmentRegime" id="sd-entailmentRegime"></a>3.2.4 sd:entailmentRegime</h4>
+
+<p>名前付きグラフ記述を、そのグラフに対する基本グラフ・パターン・マッチングに用いられている含意レジームを表す資源に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-EntailmentRegime"><code>sd:EntailmentRegime</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-defaultSupportedEntailmentProfile" id="sd-defaultSupportedEntailmentProfile"></a>3.2.5 sd:defaultSupportedEntailmentProfile</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、デフォルトの含意レジーム（<a href="#sd-defaultEntailmentRegime"><code>sd:defaultEntailmentRegime</code></a>で宣言されているとおりに）のサポート済みプロファイルを表す資源に関連付けます。含意レジームのプロファイルについては、<a href="www.w3.org/TR/sparql11-entailment/#OWL2ProfilesDS">SPARQL 1.1含意レジーム</a>[<a href="#SPARQLENT">SPARQLENT</a>]でより詳細に議論しています。</p>
+
+<p>この仕様が、サービス記述内の公表された含意プロファイルと公表された含意レジームとの互換性に関する適合性の要件を設けていないことに注意してください。<a href="#sd-entailmentRegime">sd:entailmentRegime</a>/<a href="#sd-defaultEntailmentRegime">sd:defaultEntailmentRegime</a>プロパティーに対する値と<a href="#sd-supportedEntailmentProfile">sd:supportedEntailmentProfile</a>/<a href="#sd-defaultSupportedEntailmentProfile">sd:defaultSupportedEntailmentProfile</a>プロパティーに対する値の合理的な組み合わせの提供は、サービス記述の作成者に依存します。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-EntailmentProfile"><code>sd:EntailmentProfile</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-supportedEntailmentProfile" id="sd-supportedEntailmentProfile"></a>3.2.6 sd:supportedEntailmentProfile</h4>
+
+<p>名前付きグラフの記述を、そのグラフに対する基本グラフ・パターン・マッチングに用いられている含意レジーム（<a href="#sd-entailmentRegime"><code>sd:entailmentRegime</code></a>で宣言されているとおりに）のサポート済みプロファイルを表す資源に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-EntailmentProfile"><code>sd:EntailmentProfile</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-extensionFunction" id="sd-extensionFunction"></a>3.2.7 sd:extensionFunction</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、SPARQLの<a href="www.w3.org/TR/sparql11-query/#selectExpressions">SELECT式</a>または<a href="www.w3.org/TR/sparql11-query/#expressions">FILTER</a>、<a href="www.w3.org/TR/sparql11-query/#having">HAVING</a>、<a href="www.w3.org/TR/sparql11-query/#groupby">GROUP BY</a>、<a href="www.w3.org/TR/sparql11-query/#modOrderBy">ORDER BY</a>、または<a href="www.w3.org/TR/sparql11-query/#bind">BIND</a>句で使用できる関数に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Function"><code>sd:Function</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-extensionAggregate" id="sd-extensionAggregate"></a>3.2.8 sd:extensionAggregate</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>インスタンスを、<a href="www.w3.org/TR/sparql11-query/#aggregates">サポート済み集約</a>であるCOUNT、SUM、MIN、MAX、AVG、GROUP_CONCAT、SAMPLEの標準的なリストに加え、SPARQLの集約クエリ（例えば、<a href="www.w3.org/TR/sparql11-query/#having">HAVING</a>句や<a href="www.w3.org/TR/sparql11-query/#selectExpressions">SELECT式</a>）で使用できる集約に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Aggregate"><code>sd:Aggregate</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-languageExtension" id="sd-languageExtension"></a>3.2.9 sd:languageExtension</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、SPARQLクエリまたは更新言語に対する実装済み拡張を表す資源に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-supportedLanguage" id="sd-supportedLanguage"></a>3.2.10 sd:supportedLanguage</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、それが実装するSPARQL言語（例えば、クエリと更新）に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Language"><code>sd:Language</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-propertyFeature" id="sd-propertyFeature"></a>3.2.11 sd:propertyFeature</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、SPARQLクエリまたは更新の言語を拡張し、名前付きプロパティーを用いてアクセスされる実装済み機能を表す資源に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>subPropertyOf:</th>
+    <td><a href="#sd-feature"><code>sd:feature</code></a></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-defaultDataset" id="sd-defaultDataset"></a>3.2.12 sd:defaultDataset</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、明示的なデータセットがクエリ、更新リクエスト、またはプロトコル・パラメータで指定されていない場合に利用可能なデフォルト・データセットの記述に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>owl:InverseFunctionalProperty</code></td>
+  </tr>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Dataset"><code>sd:Dataset</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-availableGraphs" id="sd-availableGraphs"></a>3.2.13 sd:availableGraphs</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、クエリでFROM/FROM NAMED句を用いて、または、サービスがデータセット構築の範囲を制限している場合は、更新リクエストでUSING/USING NAMEDを用いて、SPARQLプロトコルによるデータセットの構築で認められているグラフの記述に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-resultFormat" id="sd-resultFormat"></a>3.2.14 sd:resultFormat</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、クエリ結果をシリアル化するためにサポートされているフォーマットに関連付けます。</p>
+
+<p>よく使われるシリアル化フォーマットのURIは、<a class="inform" href="www.w3.org/ns/formats/">ファイル・フォーマット用の一意のURI</a>で定義されています。既存のURIがないフォーマットの場合、フォーマットを記述するために、そのドキュメントで定義されている<code>&lt;<a href="www.w3.org/ns/formats/media_type">http://www.w3.org/ns/formats/media_type</a>&gt;</code>プロパティーと<code>&lt;<a href="www.w3.org/ns/formats/preferred_suffix">http://www.w3.org/ns/formats/preferred_suffix</a>&gt;</code>プロパティーを用いるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><code>&lt;<a href="www.w3.org/ns/formats/Format">http://www.w3.org/ns/formats/Format</a>&gt;</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-inputFormat" id="sd-inputFormat"></a>3.2.15 sd:inputFormat</h4>
+
+<p>例えば、SPARQL 1.1更新のLOAD<a href="www.w3.org/TR/sparql11-update/#load">ステートメント</a>により、または、URIがFROM/FROM NAMED/USING/USING NAMED句で逆参照された場合に（下記の<a href="#sd-dereferencesuris">sd:DereferencesURIs</a>も参照）、<a href="#sd-Service"><code>sd:Service</code></a>のインスタンスを、RDF入力を解析するためにサポートされているフォーマットに関連付けます。</p>
+
+<p>よく使われるシリアル化フォーマットのURIは、<a class="inform" href="www.w3.org/ns/formats/">ファイル・フォーマット用の一意のURI</a>で定義されています。既存のURIがないフォーマットの場合、フォーマットを記述するために、そのドキュメントで定義されている<code>&lt;<a href="www.w3.org/ns/formats/media_type">http://www.w3.org/ns/formats/media_type</a>&gt;</code>プロパティーと<code>&lt;<a href="www.w3.org/ns/formats/preferred_suffix">http://www.w3.org/ns/formats/preferred_suffix</a>&gt;</code>プロパティーを用いるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Service"><code>sd:Service</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><code>&lt;<a href="www.w3.org/ns/formats/Format">http://www.w3.org/ns/formats/Format</a>&gt;</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-defaultGraph" id="sd-defaultGraph"></a>3.2.16 sd:defaultGraph</h4>
+
+<p><a href="#sd-Dataset"><code>sd:Dataset</code></a>のインスタンスを、そのデフォルト・グラフの記述に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-Dataset"><code>sd:Dataset</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Graph"><code>sd:Graph</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-namedGraph" id="sd-namedGraph"></a>3.2.17 sd:namedGraph</h4>
+
+<p><a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a>のインスタンス（または、そのサブクラスである<a href="#sd-Dataset"><code>sd:Dataset</code></a>）を、その名前付きグラフのうちの1つの記述に関連付けます。そのような名前付きグラフの記述には、<a href="#sd-name"><code>sd:name</code></a>プロパティーが含まれていなければならず（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）、<a href="#sd-graph"><code>sd:graph</code></a>プロパティーを含むことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-name" id="sd-name"></a>3.2.18 sd:name</h4>
+
+<p>名前付きグラフを、それがFROM/FROM NAMED句で参照できる名前に関連付けます。sd:nameプロパティーの目的語はIRIです。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-graph" id="sd-graph"></a>3.2.19 sd:graph</h4>
+
+<p>名前付きグラフを、そのグラフの記述に関連付けます。</p>
+
+<table>
+  <tr>
+    <th>定義域:</th>
+    <td><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a></td>
+  </tr>
+  <tr>
+    <th>値域:</th>
+    <td><a href="#sd-Graph"><code>sd:Graph</code></a></td>
+  </tr>
+</table>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="classes" id="classes"></a>3.3 クラス</h3>
+
+<div class="div3">
+
+<h4>
+<a name="sd-Service" id="sd-Service"></a>3.3.1 sd:Service</h4>
+
+<p><a href="#sd-Service"><code>sd:Service</code></a>のインスタンスは、SPARQLプロトコルによって利用可能となるSPARQLサービスを表します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Feature" id="sd-Feature"></a>3.3.2 sd:Feature</h4>
+
+<p><a href="#sd-Feature"><code>sd:Feature</code></a>のインスタンスは、SPARQLサービスの機能を表します。具体的な機能には、<a href="#sd-Function">関数</a>、<a href="#sd-Aggregate">集約</a>、<a href="#sd-Language">言語</a>、そして含意<a href="#sd-EntailmentRegime">レジーム</a>と<a href="#sd-EntailmentProfile">プロファイル</a>があります。このドキュメントでは、<a href="#sd-dereferencesuris"><code>sd:DereferencesURIs</code></a>、<a href="#sd-uniondefaultgraph"><code>sd:UnionDefaultGraph</code></a>、<a href="#sd-requiresdataset"><code>sd:RequiresDataset</code></a>、<a href="#sd-emptygraphs"><code>sd:EmptyGraphs</code></a>、そして<a href="#sd-basicfederatedquery"><code>sd:BasicFederatedQuery</code></a>という、5つの<a href="#sd-Feature"><code>sd:Feature</code></a>のインスタンスを定義しています。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Language" id="sd-Language"></a>3.3.3 sd:Language</h4>
+
+<p><a href="#sd-Language"><code>sd:Language</code></a>のインスタンスは、特別な機能や拡張を提供する特定の設定を含む、SPARQL言語のうちの1つを表します。このドキュメントでは、<a href="#lang-sparql10query"><code>sd:SPARQL10Query</code></a>、<a href="#lang-sparql11query"><code>sd:SPARQL11Query</code></a>、そして<a href="#lang-sparql11update"><code>sd:SPARQL11Update</code></a>という、3つの<a href="#sd-Language"><code>sd:Language</code></a>のインスタンスを定義しています。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Function" id="sd-Function"></a>3.3.4 sd:Function</h4>
+
+<p><a href="#sd-Function"><code>sd:Function</code></a>のインスタンスは、SPARQLの<a href="www.w3.org/TR/sparql11-query/#selectExpressions">SELECT式</a>または<a href="www.w3.org/TR/sparql11-query/#expressions">FILTER</a>、<a href="www.w3.org/TR/sparql11-query/#having">HAVING</a>、<a href="www.w3.org/TR/sparql11-query/#groupby">GROUP BY</a>、<a href="www.w3.org/TR/sparql11-query/#modOrderBy">ORDER BY</a>、または<a href="www.w3.org/TR/sparql11-query/#bind">BIND</a>句で使用できる関数を表します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Aggregate" id="sd-Aggregate"></a>3.3.5 sd:Aggregate</h4>
+
+<p><a href="#sd-Aggregate"><code>sd:Aggregate</code></a>のインスタンスは、<a href="www.w3.org/TR/sparql11-query/#aggregates">サポート済み集約</a>であるCOUNT、SUM、MIN、MAX、AVG、GROUP_CONCAT、SAMPLEの標準的なリストに加え、SPARQLの集約クエリで使用できる集約（例えば、<a href="www.w3.org/TR/sparql11-query/#having">HAVING</a>句や<a href="www.w3.org/TR/sparql11-query/#selectExpressions">SELECT式</a>）を表します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-EntailmentRegime" id="sd-EntailmentRegime"></a>3.3.6 sd:EntailmentRegime</h4>
+
+<p><a href="#sd-EntailmentRegime"><code>sd:EntailmentRegime</code></a>のインスタンスは、基本グラフ・パターン・マッチング（<a href="www.w3.org/TR/sparql11-query/#sparqlBGPExtend">SPARQL 1.1クエリ言語</a>で記述されているとおりに）で用いられている含意レジームを表します。よく使われる含意レジームのURIは、<a class="inform" href="www.w3.org/ns/entailment/">セマンティック・ウェブ含意レジーム用の一意のURI</a>[<a href="#ENTAILMENT">ENTAILMENT</a>]で定義されています。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-EntailmentProfile" id="sd-EntailmentProfile"></a>3.3.7 sd:EntailmentProfile</h4>
+
+<p><a href="#sd-EntailmentProfile"><code>sd:EntailmentProfile</code></a>のインスタンスは、含意レジームのプロファイルを表します。含意レジームのプロファイルは、含意に関して有効なRDFを構成するものに制限を課すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。よく使われる含意プロファイルのURIは、<a href="www.w3.org/ns/owl-profile/">OWL 2プロファイル用の一意のURI</a>[<a href="#OWL2PROF">OWL2PROF</a>]で定義されています。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-GraphCollection" id="sd-GraphCollection"></a>3.3.8 sd:GraphCollection</h4>
+
+<p><a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a>のインスタンスは、0以上の名前付きグラフ記述のコレクションを表します。<a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a>に属する個々の名前付きグラフ記述は、<a href="#sd-namedGraph"><code>sd:namedGraph</code></a>の述語とリンクされていなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Dataset" id="sd-Dataset"></a>3.3.9 sd:Dataset</h4>
+
+<p><a href="#sd-Dataset"><code>sd:Dataset</code></a>のインスタンスは、デフォルト・グラフと0以上の名前付きグラフで構成される<a href="www.w3.org/TR/sparql11-query/#rdfDataset">RDFデータセット</a>を表します。</p>
+
+<p><a href="#sd-Dataset"><code>sd:Dataset</code></a>のデフォルト・グラフは、<a href="#sd-defaultGraph"><code>sd:defaultGraph</code></a>の述語とリンクされていなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。
+</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+  <tr>
+    <th>subClassOf:</th>
+    <td><a href="#sd-GraphCollection"><code>sd:GraphCollection</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-Graph" id="sd-Graph"></a>3.3.10 sd:Graph</h4>
+
+<p><a href="#sd-Graph"><code>sd:Graph</code></a>のインスタンスは、RDFグラフの記述を表します。</p>
+
+<p>このドキュメントは、定義域<a href="#sd-Graph"><code>sd:Graph</code></a>を持つプロパティーを定義していません。その代わり、そのようなインスタンスは、他の適切な語彙を用いて記述できます（<a href="#example">下記の例</a>を参照）。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-NamedGraph" id="sd-NamedGraph"></a>3.3.11 sd:NamedGraph</h4>
+
+<p><a href="#sd-NamedGraph"><code>sd:NamedGraph</code></a>のインスタンスは、名前（<a href="#sd-name"><code>sd:name</code></a>により）とオプションのグラフ記述（<a href="#sd-graph"><code>sd:graph</code></a>により）を持っている名前付きグラフを表します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><code>rdfs:Class</code></td>
+  </tr>
+</table>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="instances" id="instances"></a>3.4 インスタンス</h3>
+
+<div class="div3">
+
+<h4>
+<a name="lang-sparql10query" id="lang-sparql10query"></a>3.4.1 sd:SPARQL10Query</h4>
+
+<p><code>sd:SPARQL10Query</code>は、<a href="www.w3.org/TR/rdf-sparql-query/">SPARQL 1.0クエリ言語</a>[<a href="#QUERY10">QUERY10</a>]を表す<a href="#sd-Language"><code>sd:Language</code></a>です。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Language"><code>sd:Language</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="lang-sparql11query" id="lang-sparql11query"></a>3.4.2 sd:SPARQL11Query</h4>
+
+<p><code>sd:SPARQL11Query</code>は、<a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>[<a href="#QUERY11">QUERY11</a>]を表す<a href="#sd-Language"><code>sd:Language</code></a>です。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Language"><code>sd:Language</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="lang-sparql11update" id="lang-sparql11update"></a>3.4.3 sd:SPARQL11Update</h4>
+
+<p><code>sd:SPARQLUpdate</code>は、<a href="www.w3.org/TR/sparql11-update/">SPARQL 1.1更新言語</a>[<a href="#UPDATE11">UPDATE11</a>]を表す<a href="#sd-Language"><code>sd:Language</code></a>です。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Language"><code>sd:Language</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-dereferencesuris" id="sd-dereferencesuris"></a>3.4.4 sd:DereferencesURIs</h4>
+
+<p><code>sd:DereferencesURIs</code>は、<a href="#sd-feature">sd:feature</a>プロパティーの目的語として用いられた場合に、SPARQLサービスが<a href="www.w3.org/TR/sparql11-query/#specifyingDataset">FROM/FROM NAMED</a>句と <a href="www.w3.org/TR/sparql11-update/#defUSING">USING/USING NAMED</a>句で用いられるURIを逆参照し[<a href="#AWWW">AWWW</a>]、結果として生じるRDFをクエリの評価中にデータセットで用いるということを示します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-uniondefaultgraph" id="sd-uniondefaultgraph"></a>3.4.5 sd:UnionDefaultGraph</h4>
+
+<p><code>sd:UnionDefaultGraph</code>は、<a href="#sd-feature">sd:feature</a>プロパティーの目的語として用いられた場合に、クエリと更新の評価中に用いられるデータセットのデフォルト・グラフ（明示的なデータセットが指定されていない場合）が、そのデータセットのすべての名前付きグラフの和集合で構成されることを示します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-requiresdataset" id="sd-requiresdataset"></a>3.4.6 sd:RequiresDataset</h4>
+
+<p><code>sd:RequiresDataset</code>は、<a href="#sd-feature">sd:feature</a>プロパティーの目的語として用いられた場合に、SPARQLサービスに明示的なデータセット宣言（クエリ内の<a href="www.w3.org/TR/sparql11-query/#specifyingDataset">FROM/FROM NAMED</a>句、更新内の<a href="www.w3.org/TR/sparql11-update/#defUSING">USING/USING NAMED</a>、<a href="www.w3.org/TR/sparql11-protocol/#dataset">適切なSPARQLプロトコル・パラメータ</a>のいずれかに基づく）が必要であることを示します。</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-emptygraphs" id="sd-emptygraphs"></a>3.4.7 sd:EmptyGraphs</h4>
+
+<p><code>sd:EmptyGraphs</code>は、<a href="#sd-feature">sd:feature</a>プロパティーの目的語として用いられた場合に、基礎となるグラフ・ストアが空のグラフをサポートしていることを示します。空のグラフをサポートしているグラフ・ストアは、トリプルの削除後に空のままとなったグラフを削除してはなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST NOT</em>）。（<a href="www.w3.org/TR/sparql11-update/#graphUpdate">SPARQL 1.1更新の3.1 グラフ更新</a>を参照。）</p>
+
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="sd-basicfederatedquery" id="sd-basicfederatedquery"></a>3.4.8 sd:BasicFederatedQuery</h4>
+
+<p><code>sd:BasicFederatedQuery</code>は、<a href="#sd-feature">sd:feature</a>プロパティーの目的語として用いられた場合に、SPARQLサービスが、<a href="www.w3.org/TR/sparql11-federated-query/">SPARQL 1.1統合拡張</a>[<a href="#SPARQLFED">SPARQLFED</a>]で定義されているとおりに<a href="www.w3.org/TR/sparql11-federated-query/#service">SERVICEキーワード</a>を用いて、基本的な統合クエリをサポートしていることを示します。</p>
+<table>
+  <tr>
+    <th>型:</th>
+    <td><a href="#sd-Feature"><code>sd:Feature</code></a></td>
+  </tr>
+</table>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="other-instances" id="other-instances"></a>3.4.9 その他のインスタンス</h4>
+
+<p>上記のインスタンスとは別に、カスタム拡張や他のドキュメントでは、さらにサービス記述で使用可能なインスタンスのURIを定義できます。次のドキュメントでは、前の項で定義している一部のプロパティーとともに使用できるインスタンスのURIもリストアップしています。</p>
+
+<ul>
+  <li>
+<a href="www.w3.org/ns/entailment/">セマンティック・ウェブ含意レジーム用の一意のURI</a>[<a href="#ENTAILMENT">ENTAILMENT</a>]（<a href="#sd-defaultEntailmentRegime"><code>sd:defaultEntailmentRegime</code></a>プロパティーと<a href="#sd-entailmentRegime"><code>sd:entailmentRegime</code></a>プロパティーとともに使用できる<a href="#sd-EntailmentRegime"><code>sd:EntailmentRegime</code></a>クラスのメンバー）</li>
+  <li>
+<a href="www.w3.org/ns/owl-profile/">OWL 2プロファイル用の一意のURI</a>[<a href="#OWL2PROF">OWL2PROF</a>]（<a href="#sd-defaultSupportedEntailmentProfile"><code>sd:defaultSupportedEntailmentProfile</code></a>プロパティーと<a href="#sd-supportedEntailmentProfile"><code>sd:supportedEntailmentProfile</code></a>プロパティーとともに使用できる<a href="#sd-EntailmentProfile"><code>sd:EntailmentProfile</code></a>クラスのメンバー）</li>
+  <li>
+<a href="www.w3.org/ns/formats/">ファイル・フォーマット用の一意のURI</a>[<a href="#FORMATS">FORMATS</a>]（<a href="#sd-resultFormat"><code>sd:resultFormat</code></a>プロパティーと<a href="#sd-inputFormat"><code>sd:inputFormat</code></a>プロパティーとともに使用できる<code>&lt;<a href="www.w3.org/ns/formats/Format">http://www.w3.org/ns/formats/Format</a>&gt;</code>クラスのメンバー）</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="example" id="example"></a>4 例（参考情報）</h2>
+
+<p>次のHTTPトレースは、SPARQLエンドポイント<code>http://www.example/sparql/</code>からのサービス記述の検索について説明しています。</p>
+
+<p>このRDFは、SPARQL 1.1クエリ言語をサポートしているURL<code>http://www.example/sparql/</code>で利用可能なSPARQLサービスを記述しています。サービスは、FROM/FROM NAMED句で用いられているURLを逆参照し、RDF/XMLとTurtleシリアル化の両方のフォーマットをサポートし、<code>http://example.org/Distance</code>拡張関数をサポートし、デフォルト・グラフと1つの名前付きグラフを持つデータセット（両方ともvoiD語彙[<a href="#VOID">VOID</a>]を用いて記述されている）を持っています。デフォルト・グラフには、100のトリプルが含まれており、RDFSの含意をサポートしています。一方で、http://www.example/named-graphという名のグラフには、2000のトリプルが含まれており、OWL2 RLの含意をサポートしています。</p>
+
+<div class="div2">
+
+<h3>
+<a name="example-rdfxml" id="example-rdfxml"></a>4.1 RDF/XMLサービス記述</h3>
+
+<p>次のHTTPリクエストを与えられると、</p>
+
+<pre>GET /sparql/ HTTP/1.1
+Host: www.example
+</pre>
+
+<p>SPARQLサービスは、RDF/XMLでコード化されたサービス記述で応答します（内容交渉やRDFaコード化は用いられない）。</p>
+
+<pre>HTTP/1.1 200 OK
+Date: Fri, 09 Oct 2009 17:31:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/rdf+xml
+
+&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;rdf:RDF
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:sd="http://www.w3.org/ns/sparql-service-description#"
+   xmlns:prof="http://www.w3.org/ns/owl-profile/"
+   xmlns:void="http://rdfs.org/ns/void#"&gt;
+  &lt;sd:Service&gt;
+    &lt;sd:endpoint rdf:resource="http://www.example/sparql/"/&gt;
+    &lt;sd:supportedLanguage rdf:resource="http://www.w3.org/ns/sparql-service-description#SPARQL11Query"/&gt;
+    &lt;sd:resultFormat rdf:resource="http://www.w3.org/ns/formats/RDF_XML"/&gt;
+    &lt;sd:resultFormat rdf:resource="http://www.w3.org/ns/formats/Turtle"/&gt;
+    &lt;sd:feature rdf:resource="http://www.w3.org/ns/sparql-service-description#DereferencesURIs"/&gt;
+    &lt;sd:defaultEntailmentRegime rdf:resource="http://www.w3.org/ns/entailment/RDFS"/&gt;
+    &lt;sd:extensionFunction&gt;
+      &lt;sd:Function rdf:about="http://example.org/Distance"/&gt;
+    &lt;/sd:extensionFunction&gt;
+    &lt;sd:defaultDataset&gt;
+      &lt;sd:Dataset&gt;
+        &lt;sd:defaultGraph&gt;
+          &lt;sd:Graph&gt;
+            &lt;void:triples rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"&gt;100&lt;/void:triples&gt;
+          &lt;/sd:Graph&gt;
+        &lt;/sd:defaultGraph&gt;
+        &lt;sd:namedGraph&gt;
+          &lt;sd:NamedGraph&gt;
+            &lt;sd:name rdf:resource="http://www.example/named-graph"/&gt;
+            &lt;sd:entailmentRegime rdf:resource="http://www.w3.org/ns/entailment/OWL-RDF-Based"/&gt;
+            &lt;sd:supportedEntailmentProfile rdf:resource="http://www.w3.org/ns/owl-profile/RL"/&gt;
+            &lt;sd:graph&gt;
+              &lt;sd:Graph&gt;
+                &lt;void:triples rdf:datatype="http://www.w3.org/2001/XMLSchema#integer"&gt;2000&lt;/void:triples&gt;
+              &lt;/sd:Graph&gt;
+            &lt;/sd:graph&gt;
+          &lt;/sd:NamedGraph&gt;
+        &lt;/sd:namedGraph&gt;
+      &lt;/sd:Dataset&gt;
+    &lt;/sd:defaultDataset&gt;
+  &lt;/sd:Service&gt;
+&lt;/rdf:RDF&gt;
+</pre>
+</div>
+<div class="div2">
+
+<h3>
+<a name="example-turtle" id="example-turtle"></a>4.2 Turtleサービス記述</h3>
+
+<p>次のHTTPリクエストを与えられると、</p>
+
+<pre>GET /sparql/ HTTP/1.1
+Host: www.example
+Accept: text/turtle
+</pre>
+
+<p>SPARQLサービスは、<a class="inform" href="www.w3.org/TeamSubmission/turtle/">Turtle</a>[<a href="#TURTLE">TURTLE</a>]でコード化されたサービス記述で応答します。</p>
+
+<pre>HTTP/1.1 200 OK
+Date: Fri, 09 Oct 2009 17:31:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: text/turtle
+
+@prefix sd: &lt;http://www.w3.org/ns/sparql-service-description#&gt; .
+@prefix ent: &lt;http://www.w3.org/ns/entailment/&gt; .
+@prefix prof: &lt;http://www.w3.org/ns/owl-profile/&gt; .
+@prefix void: &lt;http://rdfs.org/ns/void#&gt; .
+
+[] a sd:Service ;
+    sd:endpoint &lt;http://www.example/sparql/&gt; ;
+    sd:supportedLanguage sd:SPARQL11Query ;
+    sd:resultFormat &lt;http://www.w3.org/ns/formats/RDF_XML&gt;, &lt;http://www.w3.org/ns/formats/Turtle&gt; ;
+    sd:extensionFunction &lt;http://example.org/Distance&gt; ;
+    sd:feature sd:DereferencesURIs ;
+    sd:defaultEntailmentRegime ent:RDFS ;
+    sd:defaultDataset [
+        a sd:Dataset ;
+        sd:defaultGraph [
+            a sd:Graph ;
+            void:triples 100
+        ] ;
+        sd:namedGraph [
+            a sd:NamedGraph ;
+            sd:name &lt;http://www.example/named-graph&gt; ;
+            sd:entailmentRegime ent:OWL-RDF-Based ;
+            sd:supportedEntailmentProfile prof:RL ;
+            sd:graph [
+                a sd:Graph ;
+                void:triples 2000
+            ]
+        ]
+    ] .
+
+&lt;http://example.org/Distance&gt; a sd:Function .
+</pre>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="conformance" id="conformance"></a>5 適合性</h2>
+
+<p>SPARQLサービスは、次の仕様に適合しています。</p>
+
+<ol>
+  <li>
+<a href="#accessing">2 サービス記述へのアクセス</a>の項で記述しているとおり、サービス・エンドポイントのURLにアクセスがあれば、RDFの内容を返さなければならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</li>
+  <li>サービス・エンドポイントのURL<code>&lt;service-endpoint-URL&gt;</code>の逆参照により返されたRDFの内容には、下記とマッチングするトリプルが少なくとも1つ含まれていなければならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）
+<pre>?service sd:endpoint &lt;service-endpoint-URL&gt; .</pre>
+</li>
+
+  <li>返されたRDFの内容は、<a href="#vocab">3 サービス記述語彙</a>の項で指定されている用法に従って、このドキュメントで定義されている語彙を使用しなければならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</li>
+</ol>
+
+</div>
+</div>
+<div class="back">
+<div class="div1">
+
+<h2>
+<a name="sec-bibliography" id="sec-bibliography"></a>A 参考文献</h2>
+
+<div class="div2">
+
+<h3>
+<a name="sec-normative-refs" id="sec-normative-refs"></a>A.1 規範的な参考文献</h3>
+
+<dl class="bib">
+					<dt><a id="CONNEG" name="CONNEG">[CONNEG]</a></dt>
+					<dd>
+						<a href="www.w3.org/Protocols/rfc2616/rfc2616-sec12.html">Hypertext Transfer Protocol -- HTTP/1.1, Content Negotiation</a>,
+						Fielding, et al., IETF. June 1999. This document is http://www.w3.org/Protocols/rfc2616/rfc2616-sec12.html .
+					</dd>
+					<dt><a id="RFC2119" name="RFC2119">[RFC2119]</a></dt>
+					<dd>
+						<a href="www.ietf.org/rfc/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>,
+						S. Bradner, IETF. March 1997. This document is http://www.ietf.org/rfc/rfc2119.txt .
+					</dd>
+					<dt><a id="QUERY10" name="QUERY10">[QUERY10]</a></dt>
+					<dd>
+						<a href="www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</a>, E. Prud'hommeaux and Andy Seaborne, Editors, W3C Recommendation, 15 January 2008. This document is http://www.w3.org/TR/rdf-sparql-query/ .
+					</dd>
+					<dt><a id="QUERY11" name="QUERY11">[QUERY11]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1 Query Language</a></cite>, S. Harris, A. Seaborne, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-query-20130321. <a href="www.w3.org/TR/sparql11-query/" title="Latest version of SPARQL 1.1 Query Language">Latest version</a> available at http://www.w3.org/TR/sparql11-query. </dd> 
+
+					<dt><a id="SPROT" name="SPROT">[SPROT]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1 Protocol</a></cite>, L. Feigenbaum, G. Williams, K. Clark, E. Torres, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321. <a href="www.w3.org/TR/sparql11-protocol/" title="Latest version of SPARQL 1.1 Protocol">Latest version</a> available at http://www.w3.org/TR/sparql11-protocol.</dd>
+
+					<dt><a id="UPDATE11" name="UPDATE11">[UPDATE11]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1 Update</a></cite>, P. Gearon, A. Passant, A. Polleres, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-update-20130321. <a href="www.w3.org/TR/sparql11-update/" title="Latest version of SPARQL 1.1 Update">Latest version</a> available at http://www.w3.org/TR/sparql11-update.</dd>
+				</dl>
+</div>
+<div class="div2">
+
+<h3>
+<a name="sec-non-normative-refs" id="sec-non-normative-refs"></a>A.2 その他の参考文献</h3>
+
+<dl class="bib">
+					<dt><a id="AWWW" name="AWWW">[AWWW]</a></dt>
+					<dd>
+						<a href="www.w3.org/TR/webarch/">Architecture of the World Wide Web, Volume One</a>, I. Jacobs and N. Walsh, Editors, W3C Recommendation, 15 December 2004. http://www.w3.org/TR/webarch/ .
+					</dd>
+					
+					<dt><a id="ENTAILMENT" name="ENTAILMENT">[ENTAILMENT]</a></dt>
+					<dd>
+						<a href="www.w3.org/ns/entailment/">Unique URIs for Semantic Web Entailment Regimes</a>
+					</dd>
+					
+					<dt><a id="FORMATS" name="FORMATS">[FORMATS]</a></dt>
+					<dd>
+						<a href="www.w3.org/ns/formats/">Unique URIs for File Formats</a>
+					</dd>
+					
+					<dt><a id="OWL2PROF" name="OWL2PROF">[OWL2PROF]</a></dt>
+					<dd>
+						<a href="www.w3.org/ns/owl-profile/">Unique URIs for OWL 2 Profiles</a>
+					</dd>
+					
+					<dt><a id="RDFA" name="RDFA">[RDFA]</a></dt>
+					<dd>
+						<a href="www.w3.org/TR/rdfa-syntax/">RDFa in XHTML: Syntax and Processing</a>, B. Adida, M. Birbeck, S. McCarron, and S. Pemberton, Editors, W3C Recommendation, 14 October 2008. http://www.w3.org/TR/rdfa-syntax/ .
+					</dd>
+					
+					<dt><a id="SPARQLENT" name="SPARQLENT">[SPARQLENT]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1 Entailment Regimes</a></cite>, B. Glimm, C. Ogbuji, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-entailment-20130321. <a href="www.w3.org/TR/sparql11-entailment/" title="Latest version of SPARQL 1.1 Entailment Regimes">Latest version</a> available at http://www.w3.org/TR/sparql11-entailment.</dd>
+					
+					<dt><a id="SPARQLFED" name="SPARQLFED">[SPARQLFED]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1 Federated Query</a></cite>, E. Prud'hommeaux, C. Buil-Aranda, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-federated-query-20130321. <a href="www.w3.org/TR/sparql11-federated-query/" title="Latest version of SPARQL 1.1 Federated Query">Latest version</a> available at http://www.w3.org/TR/sparql11-federated-query.</dd>
+					
+					<dt><a name="TURTLE" id="TURTLE">[TURTLE]</a></dt>
+					<dd>
+<cite><a href="www.w3.org/TR/2013/CR-turtle-20130219/">Turtle:
+Terse RDF Triple Language</a></cite>, E Prud'hommeaux, G Carothers, Editors, W3C Candidate Recommendation, 19 February 2013, http://www.w3.org/TR/2013/CR-turtle-20130219/. <a href="www.w3.org/TR/turtle/" title="Latest version of Turtle">Latest version</a> available at http://www.w3.org/TR/turtle/.</dd>
+					
+					<dt><a id="VOID" name="VOID">[VOID]</a></dt>
+					<dd>
+						<a href="www.w3.org/TR/2011/NOTE-void-20110303/">Describing Linked Datasets with the voiD Vocabulary</a>,
+						K. Alexander, R. Cyganiak, M. Hausenblas, and J. Zhao, Authors, W3C Interest Group Note, 3 March 2011, http://www.w3.org/TR/2011/NOTE-void-20110303/ .
+						<a title="Latest version of Describing Linked Datasets with the voiD Vocabulary" href="www.w3.org/TR/void/">Latest version</a> available at http://www.w3.org/TR/void/ .
+					</dd>
+				</dl>
+</div>
+</div>
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>使用されていない名前空間接頭辞を削除するために例を変更</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>用語をプロトコル・ドキュメントに合わせて調整し、SDアクセスに関する文言を改善した。</li>
+  <li>指摘に基づき、sd:availableGraphsの用法を明確にした。</li>
+  <li>参考文献を更新、変更履歴を削除、cvs履歴を非表示にした。</li>
+</ul>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="EN" xml:lang="EN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>SPARQL 1.1クエリ結果JSONフォーマット</title>
+
+<style type="text/css">@import url("www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/local_json.css");
+
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+
+em.rfc2119 { text-transform: lowercase;
+             font-variant: small-caps;
+             font-style: normal; }</style>
+<link rel="stylesheet" type="text/css" href="www.w3.org/StyleSheets/TR/W3C-REC.css">
+</head>
+
+<body>
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321/">SPARQL 1.1 Query Results JSON Format W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2014年2月20日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a></p>
+
+<h1>
+<a name="title" id="title"></a>SPARQL 1.1クエリ結果JSONフォーマット</h1>
+
+<h2>
+<a name="w3c-doctype" id="w3c-doctype"></a>W3C勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321/">http://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/</a></dd>
+  <dt>最新バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-results-json/">http://www.w3.org/TR/sparql11-results-json/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2012/PR-sparql11-results-json-20121108/">http://www.w3.org/TR/2012/PR-sparql11-results-json-20121108/</a></dd>
+  <dt>編集者:</dt>
+  <dd>Andy Seaborne, The Apache Software Foundation</dd>
+  <dt>旧編集者:</dt>
+  <dd>Kendall Grant Clark, UMD Mindswap</dd>
+  <dd>Lee Feigenbaum, IBM</dd>
+  <dd>Elias Torres, IBM</dd>
+</dl>
+
+<p>このドキュメントに対する<a href="www.w3.org/2013/sparql-errata#sparql11-results-json"><strong>正誤表</strong></a>を参照してください。いくつかの規範的な修正が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-results-json"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+</div>
+
+<hr>
+
+<div>
+
+<h2>
+<a name="abstract" id="abstract"></a>要約</h2>
+
+<p><a href="www.w3.org/TR/sparql11-query/">SPARQL</a>は、ウェブ上のRDFデータなどのデータにアクセスする方法の標準であるとともに、RDFデータのクエリと更新のための標準です。このドキュメントは、<a href="www.ietf.org/rfc/rfc4627.txt">JSON</a>を用いたSELECTとASKのクエリ結果の表現について記述しています。</p>
+
+</div>
+<div>
+
+<h2>
+<a name="status" id="status"></a>このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL 1.1サービス記述</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1統合クエリ</a></li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a>（このドキュメント）</li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a></li>
+<li><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2012/PR-sparql11-results-json-20121108/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+</div>
+<div class="toc">
+
+<h2>
+<a name="contents" id="contents"></a>目次</h2>
+
+<p class="toc">1 <b><a href="#introduction">はじめに</a></b><br>
+2 <b><a href="#json-result-object">JSON結果オブジェクト</a></b><br>
+3 <b><a href="#select-results-form">変数バインディング結果</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 <a href="#select-head">「head」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.1 <a href="#select-vars">「vars」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.2 <a href="#select-link">「link」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 <a href="#select-results">「results」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 <a href="#select-bindings">「bindings」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.2 <a href="#select-encode-terms">RDF用語のエンコード</a><br>
+4 <b><a href="#ask-result-form">ブール結果</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.1 <a href="#ask-head">「head」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1.1 <a href="#ask-link">「link」</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.2 <a href="#ask-boolean">「boolean」</a><br>
+5 <b><a href="#example">例</a></b><br>
+6 <b><a href="#content-type">インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</a></b><br>
+</p>
+
+<h3>
+<a name="appendices" id="appendices"></a>付録</h3>
+
+<p class="toc">A <b><a href="#sec-bibliography">参考文献</a></b><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.1 <a href="#sec-normative-refs">規範的な参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.2 <a href="#sec-non-normative-refs">その他の参考文献</a><br>
+</p>
+
+</div>
+
+<hr>
+
+<div class="body">
+<div class="div1">
+
+<h2>
+<a name="introduction" id="introduction"></a>1 はじめに</h2>
+
+<p>このドキュメントは、SPARQL結果（SELECTとASKのクエリ形式）を<a href="www.ietf.org/rfc/rfc4627.txt">JSON</a>フォーマットでシリアル化する方法について記述しています。このフォーマットは、クエリ結果の情報を完全に表現するものとなるように設計されています。SELECTクエリの結果は、配列としてシリアル化され、個々の配列エレメントはクエリ結果の1つの「列」です。ASKクエリの結果、クエリ結果のブール値が得られます。</p>
+
+<p>インターネット・メディア・タイプは、<code>application/sparql-results+json</code>に規定されています。</p>
+
+<p>同じような設計でありながら、シリアル化にXMLを用いる<a href="www.w3.org/TR/rdf-sparql-XMLres/">SPARQLクエリ結果XMLフォーマット</a>[<a href="#SRX">SRX</a>]もあります。</p>
+
+<p>項の先頭で特に注記がなければ、このドキュメントのすべての項と付録は規範的です。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="json-result-object" id="json-result-object"></a>2 JSON結果オブジェクト</h2>
+
+<p>SPARQLクエリの結果は、1つのトップレベルのJSONオブジェクトとしてJSONでシリアル化されます。このオブジェクトは、「<code>head</code>」メンバーを持ち、また、クエリ形式により「<code>results</code>」メンバーか「<code>boolean</code>」メンバーのいずれかを持ちます。</p>
+
+<p>この例は、<code>SELECT</code>クエリの結果を示しています。クエリ・ソリューションは、「<code>bindings</code>」キーの値である配列で表され、次に「<code>results</code>」キーの値であるオブジェクトの一部が表されます。</p>
+
+<pre class="json">{
+  "head": { "vars": [ "book" , "title" ]
+  } ,
+  "results": { 
+    "bindings": [
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book6" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Half-Blood Prince" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book7" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Deathly Hallows" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book5" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Order of the Phoenix" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book4" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Goblet of Fire" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book2" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Chamber of Secrets" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book3" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Prisoner Of Azkaban" }
+      } ,
+      {
+        "book": { "type": "uri" , "value": "http://example.org/book/book1" } ,
+        "title": { "type": "literal" , "value": "Harry Potter and the Philosopher's Stone" }
+      }
+    ]
+  }
+}</pre>
+
+<p>この例は、<code>ASK</code>クエリの結果を示しています。</p>
+
+<pre class="json">{ 
+  "head" : { } ,
+  "boolean" : true
+}</pre>
+
+<p>その他のキー（違う名前を持つ）もJSON結果オブジェクトに存在できますが、この仕様では定義していません。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="select-results-form" id="select-results-form"></a>3 変数バインディング結果</h2>
+
+<p>SPARQLのSELECTクエリの結果は、変数のバインディングの配列としてシリアル化されます。「<code>head</code>」キーの値は、クエリの<code>SELECT</code>句で射影されたすべての変数の配列です。</p>
+
+<div class="div2">
+
+<h3>
+<a name="select-head" id="select-head"></a>3.1 「head」</h3>
+
+<p>「<code>head</code>」メンバーは、結果に記述される変数を表し、「<code>link</code>」メンバーを含むことができます。</p>
+
+<pre class="json">{
+"head" { 
+   "vars" : [ ... ] ,
+   "link" : [ ... ] }</pre>
+<div class="div3">
+
+<h4>
+<a name="select-vars" id="select-vars"></a>3.1.1 「vars」</h4>
+
+<p>「<code>vars</code>」メンバーは、結果で使用されている変数の名前を示す配列です。これらはクエリから射影された変数です。変数は、必ずしも結果のすべてのクエリ・ソリューションの値が与えられているとは限りません。</p>
+
+<pre class="json">"vars" : [ "book" , "title" ] </pre>
+
+<p>クエリが<code>SELECT*</code>という形式でなければ（その場合には順序は重要ではない）、変数名の順序は、クエリのSELECT句内の変数と一致すべきです。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-link" id="select-link"></a>3.1.2 「link」</h4>
+
+<p>オプションの「<code>link</code>」メンバーにより、さらに詳しい情報を得るための参照用のURIの配列が文字列として得られます。これらのリンク参照のフォーマットと内容はこのドキュメントでは定義していません。</p>
+
+<pre class="json">"link" : [ "http://example/dataset/metadata.ttl" ] </pre>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="select-results" id="select-results"></a>3.2 「results」</h3>
+
+<p>「<code>results</code>」メンバーの値は、「<code>bindings</code>」という1つのキーを持つオブジェクトです。</p>
+
+<div class="div3">
+
+<h4>
+<a name="select-bindings" id="select-bindings"></a>3.2.1 「bindings」</h4>
+
+<p>「<code>bindings</code>」メンバーの値は、0以上の要素の配列で、クエリ・ソリューションごとに1つの要素があります。個々のクエリ・ソリューションはJSONオブジェクトです。このオブジェクトの個々のキーは、クエリ・ソリューションの変数名です。与えられる変数名の値は、<a href="#select-encode-terms">変数のバインディングされた値（RDF用語）をエンコードした</a>JSONオブジェクトです。クエリが空のソリューション・シーケンスを返すとき、配列には0の要素が存在します。変数名の先頭には、「?」または「$」の文字は含まれません。「<code>bindings</code>」配列内のキーとして表示される個々の変数名は、結果ヘッダー内の<a href="#select-vars">「<code>vars</code>」</a>配列に表示されるようになるでしょう。</p>
+
+<p>変数は、その特定のクエリ・ソリューションでバインディングされていなければ、配列要素に表示されません。</p>
+
+<p>バインディング配列内の要素の順序は、（もしあれば）クエリ・ソリューション・シーケンスの順序を反映します。</p>
+
+<pre class="json">"bindings" : [
+               {
+                 "a" : { ... } ,
+                 "b" : { ... } 
+               } ,
+               {
+                 "a" : { ... } ,
+                 "b" : { ... } 
+               }
+             ]</pre>
+
+<p>クエリがソリューションを返さなければ、空の配列が用いられます。</p>
+
+<pre class="json">"bindings" : []</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-encode-terms" id="select-encode-terms"></a>3.2.2 RDF用語のエンコード</h4>
+
+<p>RDF用語（IRI、リテラルまたは空白ノード）は、JSONオブジェクトとしてエンコードされます。RDF用語のすべての側面が表されます。JSONオブジェクトには、「<code>type</code>」メンバーが存在し、さらに特定の種類のRDF用語によりその他のメンバーが存在します。</p>
+
+<table style="border-collapse: collapse; border-color: #000000" border="1" cellpadding="5">
+  <tr>
+    <th>RDF用語</th>
+    <th>JSON形式</th>
+  </tr>
+  <tr>
+    <td>IRI <em><b>I</b></em>
+</td>
+    <td><code>{"type": "uri", "value": "<em><b>I</b></em>"}</code></td>
+  </tr>
+  <tr>
+    <td>Literal <em><b>S</b></em>
+</td>
+    <td><code>{"type": "literal","value": "<em><b>S</b></em>"}</code></td>
+  </tr>
+  <tr>
+    <td>Literal <em><b>S</b></em>  with language tag <em><b>L</b></em>
+</td>
+    <td><code>{ "type": "literal", "value": "<em><b>S</b></em>", "xml:lang": "<em><b>L</b></em>"}</code></td>
+  </tr>
+  <tr>
+    <td>Literal <em><b>S</b></em> with datatype IRI <em><b>D</b></em>
+</td>
+    <td><code>{ "type": "literal", "value": "<em><b>S</b></em>", "datatype": "<em><b>D</b></em>"}</code></td>
+  </tr>
+  <tr>
+    <td>Blank node, label <em><b>B</b></em>
+</td>
+    <td><code>{"type": "bnode", "value": "<em><b>B</b></em>"}</code></td>
+  </tr>
+</table>
+
+<p>空白ノード・ラベルのスコープは、結果オブジェクトです。すなわち、1つのSPARQL結果JSONオブジェクト内で同じラベルを持つ2つの空白ノードは、同じ空白ノードです。これは、SPARQLプロセッサが使用できる内部のシステム識別子（system identifier）を示すものではありません。別のSPARQL結果JSONオブジェクト内で同じラベルを使用しても、それが同じ空白ノードであることを意味するわけではありません。</p>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="ask-result-form" id="ask-result-form"></a>4 ブール結果</h2>
+
+<p>SPARQL <code>ASK</code>クエリの結果は、ブール値としてシリアル化され、クエリ評価の結果を示します。</p>
+
+<div class="div2">
+
+<h3>
+<a name="ask-head" id="ask-head"></a>4.1 「head」</h3>
+
+<div class="div3">
+
+<h4>
+<a name="ask-link" id="ask-link"></a>4.1.1 「link」</h4>
+
+<p>「<code>link</code>」メンバーは、<a href="#select-link">SELECTの「<code>link</code>」</a>メンバーと同じフォーマットを持っています。</p>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="ask-boolean" id="ask-boolean"></a>4.2 「boolean」</h3>
+
+<p><code>ASK</code>クエリ形式の結果は、「<code>boolean</code>」メンバーによってエンコードされ、<code>true</code>（真）のJSON値か<code>false</code>（偽）のJSON値のいずれかをとります。</p>
+
+<pre class="json">"boolean" : true </pre>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="example" id="example"></a>5 例</h2>
+
+<p>この項は、規範的ではありません。</p>
+
+<p>次のJSONは、<a class="reference" href="www.w3.org/TR/rdf-sparql-XMLres/output.srx">output.srx</a>というXMLドキュメントのシリアル化です。</p>
+
+<pre class="json">{
+   "head": {
+       "link": [
+           "http://www.w3.org/TR/rdf-sparql-XMLres/example.rq"
+           ],
+       "vars": [
+           "x",
+           "hpage",
+           "name",
+           "mbox",
+           "age",
+           "blurb",
+           "friend"
+           ]
+       },
+   "results": {
+       "bindings": [
+               {
+                   "x" : { "type": "bnode", "value": "r1" },
+
+                   "hpage" : { "type": "uri", "value": "http://work.example.org/alice/" },
+
+                   "name" : {  "type": "literal", "value": "Alice" } ,
+                   
+		   "mbox" : {  "type": "literal", "value": "" } ,
+
+                   "blurb" : {
+                     "datatype": "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
+                     "type": "literal",
+                     "value": "&lt;p xmlns=\"http://www.w3.org/1999/xhtml\"&gt;My name is &lt;b&gt;alice&lt;/b&gt;&lt;/p&gt;"
+                   },
+
+                   "friend" : { "type": "bnode", "value": "r2" }
+               },
+               {
+                   "x" : { "type": "bnode", "value": "r2" },
+                   
+                   "hpage" : { "type": "uri", "value": "http://work.example.org/bob/" },
+                   
+                   "name" : { "type": "literal", "value": "Bob", "xml:lang": "en" },
+
+                   "mbox" : { "type": "uri", "value": "mailto:bob@work.example.org" },
+
+                   "friend" : { "type": "bnode", "value": "r1" }
+               }
+           ]
+       }
+}</pre>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="content-type" id="content-type"></a>6 インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</h2>
+
+<p>SPARQLクエリ結果JSONフォーマットのインターネット・メディア・タイプ/MIMEタイプは、「application/sparql-results+json」です。</p>
+
+<p>SPARQLクエリ結果JSONフォーマット・ファイルは、すべてのプラットフォーム上で拡張子「.srj」（すべて小文字）であることが推奨されます。</p>
+
+<p>マッキントッシュHFSファイル・システム上に保存されたSPARQLクエリ結果JSONフォーマット・ファイルには、ファイル・タイプ「TEXT」が付与されていることが推奨されます。</p>
+
+<p>下記のこの情報は、IANAでのレビュー、承認、および登録のためにIESGに提出する予定です。</p>
+
+<dl>
+  <dt>タイプ名:</dt>
+  <dd>application</dd>
+  <dt>サブタイプ名:</dt>
+  <dd>sparql-results+json</dd>
+  <dt>必須パラメータ:</dt>
+  <dd>なし</dd>
+  <dt>任意のパラメータ:</dt>
+  <dd>なし</dd>
+  <dt>コード化に関する留意点:</dt>
+  <dd>SPARQLクエリ結果JSONフォーマットのコード化に関する留意点は、[<a href="#JSON-RFC">JSON-RFC</a>]で指定されている「application/json」のものと同じです。</dd>
+  <dt>セキュリティに関する留意点:</dt>
+  <dd>SPARQLクエリ結果はURIを使用します。[<a href="#RFC3986">RFC3986</a>]の7項を参照してください。<br>
+SPARQLクエリ結果はIRIを使用します。[<a href="#RFC3987">RFC3987</a>]の8項を参照してください。<br>
+SPARQLクエリ結果JSONフォーマットのセキュリティに関する留意点は、[JSON-RFC]で指定されている「application/json」のものと同じです。</dd>
+  <dt>互換性に関する留意点:</dt>
+  <dd>互換性の問題は知られていません。</dd>
+  <dt>公開済み仕様書:</dt>
+  <dd>http://www.w3.org/TR/sparql11-results-json/</dd>
+  <dt>このメディア・タイプを使用するアプリケーション:</dt>
+  <dd>現時点でこのメディア・タイプを使用するアプリケーションは知られていません。</dd>
+  <dt>追加情報:</dt>
+  <dt>マジック・ナンバー:</dt>
+  <dd>n/a</dd>
+  <dt>ファイル拡張子:</dt>
+  <dd>「.srj」</dd>
+  <dt>マッキントッシュ・ファイル・タイプ・コード:</dt>
+  <dd>「TEXT」</dd>
+  <dt>詳細情報に関する連絡先:</dt>
+  <dd>Andy Seaborne &lt;public-rdf-dawg-comments@w3.org&gt;</dd>
+  <dt>意図する用途:</dt>
+  <dd>汎用</dd>
+  <dt>使用上の制限:</dt>
+  <dd>なし</dd>
+  <dt>著者／改版管理者:</dt>
+  <dd>SPARQL仕様は、ワールド・ワイド・ウェブ・コンソーシアム（World Wide Web Consortium）のSPARQLワーキンググループ（SPARQL Working Group）の作業の成果です。W3Cは、これらの仕様の変更に対する管理権を有します。</dd>
+</dl>
+
+</div>
+</div>
+<div class="back">
+<div class="div1">
+
+<h2>
+<a name="sec-bibliography" id="sec-bibliography"></a>A 参考文献</h2>
+
+<div class="div2">
+
+<h3>
+<a name="sec-normative-refs" id="sec-normative-refs"></a>A.1 規範的な参考文献</h3>
+
+<dl>
+  <dt><a name="JSON-RFC" id="JSON-RFC">[JSON-RFC]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>,<br>
+The application/json Media Type for JavaScript Object Notation (JSON),<br>
+D. Crockford,<br>
+<a href="www.ietf.org/rfc/rfc4627.txt">http://www.ietf.org/rfc/rfc4627.txt</a>
+</dd>
+  <dt><a name="RFC3986" id="RFC3986">[RFC3986]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc3986.txt">RFC 3986</a>,<br>
+Uniform Resource Identifier (URI): Generic Syntax,<br>
+T. Berners-Lee, R. Fielding, L. Masinter, <br>
+<a href="www.ietf.org/rfc/rfc3986.txt">http://www.ietf.org/rfc/rfc3986.txt</a>
+</dd>
+  <dt><a name="RFC3987" id="RFC3987">[RFC3987]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc3987.txt">RFC 3987</a>,<br>
+Internationalized Resource Identifiers (IRIs),<br>
+M. Durst, M. Suignard, <br>
+<a href="www.ietf.org/rfc/rfc3987.txt">http://www.ietf.org/rfc/rfc3987.txt</a>
+</dd>
+</dl>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="sec-non-normative-refs" id="sec-non-normative-refs"></a>A.2 その他の参考文献</h3>
+
+<dl>
+  <dt><a name="SRX" id="SRX">[SRX]</a></dt>
+  <dd>
+<cite><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQL Query Results XML Format (Second Edition)</a></cite>, D. Beckett, J. Broekstra, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321. <a href="www.w3.org/TR/rdf-sparql-XMLres/" title="Latest version of SPARQL Query Results XML Format (Second Edition)">Latest version</a> available at http://www.w3.org/TR/rdf-sparql-XMLres.</dd>
+</dl>
+
+</div>
+</div>
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>なし</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>例の誤植を修正</li>
+  <li>参考文献を更新</li>
+</ul>
+
+</div>
+</div>
+
+</body>
+</html>

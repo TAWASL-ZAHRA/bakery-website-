@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" typeof="bibo:Document w3p:REC" about="" property="dcterms:language" content="ja" prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>RDF 1.1 XML構文</title>
+    
+    
+    
+    <style type="text/css">
+     figure { width: 76% ;  text-align: center}
+     table { border-collapse:collapse; }
+     table, td, th { border:1px solid black; }
+     caption { font-weight: bold; text-align: left ; }
+    </style>
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}
+</style><style>/* --- ISSUES/NOTES --- */
+div.issue-title, div.note-title {
+    padding-right:  1em;
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.issue-title { color: #e05252; }
+div.note-title { color: #2b2; }
+div.issue-title span, div.note-title span {
+    text-transform: uppercase;
+}
+div.note, div.issue {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.note > p:first-child, .issue > p:first-child { margin-top: 0 }
+.issue, .note {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+}
+div.issue, div.note {
+    padding: 1em 1.2em 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+span.note, span.issue { padding: .1em .5em .15em; }
+
+.issue {
+    border-color: #e05252;
+    background: #fbe9e9;
+}
+.note {
+    border-color: #52e052;
+    background: #e9fbe9;
+}
+
+
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-REC">
+<!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+
+<body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+
+<p><a href="../../index.html"><img src="../../images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="http://www.w3.org/TR/2014/REC-rdf-syntax-grammar-20140225/">RDF 1.1 XML Syntax W3C Recommendation 25 February 2014</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="../../mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2014年7月14日</p>
+
+<hr>
+
+<p><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="https://www.w3.org/Icons/w3c_home"></a></p>
+
+<h1 property="dcterms:title" id="title" class="title p-name">RDF 1.1 XML構文</h1>
+
+<h2 content="2014-02-24T23:00:00.000Z" datatype="xsd:dateTime" property="dcterms:issued" id="w3c-recommendation-25-february-2014"><abbr title="World Wide Web Consortium">W3C</abbr> 勧告 <time datetime="2014-02-25" class="dt-published">2014年2月25日</time></h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/REC-rdf-syntax-grammar-20140225/" class="u-url">http://www.w3.org/TR/2014/REC-rdf-syntax-grammar-20140225/</a></dd>
+  <dt>最新公開バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/rdf-syntax-grammar/">http://www.w3.org/TR/rdf-syntax-grammar/</a></dd>
+  <dt>テスト・スイート:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/">http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/PER-rdf-syntax-grammar-20140109/" rel="dcterms:replaces">http://www.w3.org/TR/2014/PER-rdf-syntax-grammar-20140109/</a></dd>
+  <dt>編集者:</dt>
+  <dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://fabien.info/" content="Fabien Gandon" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Fabien Gandon</a>, <a href="http://www.inria.fr" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">INRIA</a></span></dd>
+  <dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.cs.vu.nl/~guus/" content="Guus Schreiber" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Guus Schreiber</a>, <a href="http://www.vu.nl" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">VU University Amsterdam</a></span></dd>
+  <dt>旧編集者:</dt>
+  <dd>Dave Beckett</dd>
+</dl>
+  
+<p>公開以後に報告されたエラーや問題がないか<a href="http://www.w3.org/2014/rdf1.1-errata"><strong>正誤表</strong></a>を確認してください。</p>
+
+<p>このドキュメントは、規範以外の形式でも入手できます: <a href="http://www.w3.org/TR/2014/REC-rdf-syntax-grammar-20140225/diff.html" rel="alternate">2004年勧告との差分</a></p>
+
+<p>この仕様の英語版が唯一の規範のバージョンです。非規範の<a href="http://www.w3.org/Consortium/Translation/">翻訳版</a>も入手可能かもしれません。</p>
+
+<p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9;
+        2004-2014
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>&#xae;</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+      </p>
+
+<hr>
+
+</div>
+
+<section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_abstract">要約</h2>
+
+<p>このドキュメントでは、RDF/XMLと呼ばれるRDF用のXML構文を、XMLの名前空間、XML情報セットおよびXMLベースに関して定義しています。</p>
+
+</section><section class="introductory" id="sotd" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_sotd">このドキュメントのステータス</h2>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行の<abbr title="World Wide Web Consortium">W3C</abbr>の刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr>技術報告インデックス</a>にあります。</em></p>
+
+<p>このドキュメントは、2004年のRDF XML構文仕様勧告を編集したバージョンです。この改訂の目的は、このドキュメントをRDF 1.1ドキュメント集合の一部として利用できるようにすることです。変更は、参考文献の改訂、用語の更新、「はじめに」の調節に限定されます。ドキュメントの技術的な内容は、RDF 1.1ではデータ型XMLLiiteralが非規範的であると示したという事実を除いて変わっていません。変更の詳細は、<a href="#changes-rdf11">変更</a>の項に記載しています。XML技術の現状に合わせるため、XMLLiteral解析のための（非規範的）アルゴリズム（<a href="#parseTypeLiteralPropertyElt">7.2.17項</a>）を更新しました。このドキュメントへの編集により以前の実装が無効とはならないため、管理者は、新たな実装報告書は必要ないと決定しました。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/2011/rdf-wg/">RDFワーキンググループ</a>によって勧告として公開されました。このドキュメントに関してコメントを行いたい場合には、<a href="mailto:public-rdf-comments@w3.org">public-rdf-comments@w3.org</a>（<a href="mailto:public-rdf-comments-request@w3.org?subject=subscribe">購読</a>、<a href="http://lists.w3.org/Archives/Public/public-rdf-comments/">アーカイブ</a>）にお送りください。どのようなコメントでも歓迎します。</p>
+
+<p>このドキュメントは、<abbr title="World Wide Web Consortium">W3C</abbr>メンバー、ソフトウェア開発者、他の<abbr title="World Wide Web Consortium">W3C</abbr>グループ、および他の利害関係者によりレビューされ、<abbr title="World Wide Web Consortium">W3C</abbr>勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成における<abbr title="World Wide Web Consortium">W3C</abbr>の役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/" rel="w3p:patentRules" about="" id="sotd_patent">2004年2月5日の<abbr title="World Wide Web Consortium">W3C</abbr>特許方針</a>の下で活動しているグループによって作成されました。<abbr title="World Wide Web Consortium">W3C</abbr>は、このグループの成果物に関連する<a rel="disclosure" href="http://www.w3.org/2004/01/pp-impl/46168/status">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許方針の6項</a>に従って情報を開示しなければなりません。</p>
+
+</section><section id="toc">
+
+<h2 class="introductory" aria-level="1" role="heading" id="h2_toc">目次</h2>
+
+<ul class="toc" role="directory" id="respecContents">
+  <li class="tocline"><a href="#section-Introduction" class="tocxref"><span class="secno">1. </span>はじめに</a></li>
+  <li class="tocline"><a href="#section-Syntax" class="tocxref"><span class="secno">2. </span>RDFのXML構文</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#section-Syntax-intro" class="tocxref"><span class="secno">2.1 </span>序論</a></li>
+    <li class="tocline"><a href="#section-Syntax-node-property-elements" class="tocxref"><span class="secno">2.2 </span>ノード要素とプロパティー要素</a></li>
+    <li class="tocline"><a href="#section-Syntax-multiple-property-elements" class="tocxref"><span class="secno">2.3 </span>複数のプロパティー要素</a></li>
+    <li class="tocline"><a href="#section-Syntax-empty-property-elements" class="tocxref"><span class="secno">2.4 </span>空白のプロパティー要素</a></li>
+    <li class="tocline"><a href="#section-Syntax-property-attributes" class="tocxref"><span class="secno">2.5 </span>プロパティー属性</a></li>
+    <li class="tocline"><a href="#section-Syntax-complete-document" class="tocxref"><span class="secno">2.6 </span>ドキュメントの完成: ドキュメント要素とXML宣言</a></li>
+    <li class="tocline"><a href="#section-Syntax-languages" class="tocxref"><span class="secno">2.7 </span>言語: <code>xml:lang</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-XML-literals" class="tocxref"><span class="secno">2.8 </span>XMLリテラル: <code>rdf:parseType=&quot;Literal&quot;</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-datatyped-literals" class="tocxref"><span class="secno">2.9 </span>型付きリテラル: <code>rdf:datatype</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-blank-nodes" class="tocxref"><span class="secno">2.10 </span>空白ノードの識別: <code>rdf:nodeID</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-parsetype-resource" class="tocxref"><span class="secno">2.11 </span>空白ノードの省略: <code>rdf:parseType=&quot;Resource&quot;</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-property-attributes-on-property-element" class="tocxref"><span class="secno">2.12 </span>ノードの省略: 空白プロパティー要素のプロパティー属性</a></li>
+    <li class="tocline"><a href="#section-Syntax-typed-nodes" class="tocxref"><span class="secno">2.13 </span>型付きノード要素</a></li>
+    <li class="tocline"><a href="#section-Syntax-ID-xml-base" class="tocxref"><span class="secno">2.14 </span>URIの省略: <code>rdf:ID</code> and <code>xml:base</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-list-elements" class="tocxref"><span class="secno">2.15 </span>コンテナ・メンバーシップ・プロパティー要素: <code>rdf:li</code> and <code>rdf:_</code><em>n</em></a></li>
+    <li class="tocline"><a href="#section-Syntax-parsetype-Collection" class="tocxref"><span class="secno">2.16 </span>コレクション: <code>rdf:parseType=&quot;Collection&quot;</code></a></li>
+    <li class="tocline"><a href="#section-Syntax-reifying" class="tocxref"><span class="secno">2.17 </span>ステートメントの具体化: <code>rdf:ID</code></a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#section-Terminology" class="tocxref"><span class="secno">3. </span>用語</a></li>
+  <li class="tocline"><a href="#section-MIME-Type" class="tocxref"><span class="secno">4. </span>RDF MIMEタイプ、ファイル拡張子、マッキントッシュ・ファイル・タイプ</a></li>
+  <li class="tocline"><a href="#section-Global" class="tocxref"><span class="secno">5. </span>グローバルな問題</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#section-Namespace" class="tocxref"><span class="secno">5.1 </span>RDF名前空間と語彙</a></li>
+    <li class="tocline"><a href="#section-Identifiers" class="tocxref"><span class="secno">5.2 </span>識別子</a></li>
+    <li class="tocline"><a href="#section-baseURIs" class="tocxref"><span class="secno">5.3 </span>IRIの解決</a></li>
+    <li class="tocline"><a href="#section-constraints" class="tocxref"><span class="secno">5.4 </span>制約</a></li>
+    <li class="tocline"><a href="#section-conformance" class="tocxref"><span class="secno">5.5 </span>適合性</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#section-Data-Model" class="tocxref"><span class="secno">6. </span>構文データ・モデル</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#section-Nodes" class="tocxref"><span class="secno">6.1 </span>イベント</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#section-root-node" class="tocxref"><span class="secno">6.1.1 </span>ルート・イベント</a></li>
+      <li class="tocline"><a href="#section-element-node" class="tocxref"><span class="secno">6.1.2 </span>要素イベント</a></li>
+      <li class="tocline"><a href="#section-end-element-node" class="tocxref"><span class="secno">6.1.3 </span>終了要素イベント</a></li>
+      <li class="tocline"><a href="#section-attribute-node" class="tocxref"><span class="secno">6.1.4 </span>属性イベント</a></li>
+      <li class="tocline"><a href="#section-text-node" class="tocxref"><span class="secno">6.1.5 </span>テキスト・イベント</a></li>
+      <li class="tocline"><a href="#section-identifier-node" class="tocxref"><span class="secno">6.1.6 </span>IRIイベント</a></li>
+      <li class="tocline"><a href="#section-blank-nodeid-event" class="tocxref"><span class="secno">6.1.7 </span>空白ノード識別子イベント</a></li>
+      <li class="tocline"><a href="#section-literal-node" class="tocxref"><span class="secno">6.1.8 </span>プレーン・リテラル・イベント</a></li>
+      <li class="tocline"><a href="#section-typed-literal-node" class="tocxref"><span class="secno">6.1.9 </span>型付きリテラル・イベント</a></li>
+    </ul>
+    </li>
+    <li class="tocline"><a href="#section-Infoset-Mapping" class="tocxref"><span class="secno">6.2 </span>情報セット・マッピング</a></li>
+    <li class="tocline"><a href="#section-Infoset-Grammar-Notation" class="tocxref"><span class="secno">6.3 </span>文法表記法</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#section-Infoset-Grammar-General" class="tocxref"><span class="secno">6.3.1 </span>文法一般記法</a></li>
+      <li class="tocline"><a href="#section-Infoset-Grammar-Matching" class="tocxref"><span class="secno">6.3.2 </span>文法イベント一致表記法</a></li>
+      <li class="tocline"><a href="#section-Infoset-Grammar-Action" class="tocxref"><span class="secno">6.3.3 </span>文法アクション表記法</a></li>
+    </ul>
+    </li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#section-Infoset-Grammar" class="tocxref"><span class="secno">7. </span>RDF/XML文法</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#section-grammar-summary" class="tocxref"><span class="secno">7.1 </span>文法の要約</a></li>
+    <li class="tocline"><a href="#section-grammar-productions" class="tocxref"><span class="secno">7.2 </span>文法生成規則</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#start" class="tocxref"><span class="secno">7.2.1 </span>文法の開始</a></li>
+      <li class="tocline"><a href="#coreSyntaxTerms" class="tocxref"><span class="secno">7.2.2 </span>生成規則coreSyntaxTerms</a></li>
+      <li class="tocline"><a href="#syntaxTerms" class="tocxref"><span class="secno">7.2.3 </span>生成規則syntaxTerms</a></li>
+      <li class="tocline"><a href="#oldTerms" class="tocxref"><span class="secno">7.2.4 </span>生成規則oldTerms</a></li>
+      <li class="tocline"><a href="#nodeElementURIs" class="tocxref"><span class="secno">7.2.5 </span>生成規則nodeElementURIs</a></li>
+      <li class="tocline"><a href="#propertyElementURIs" class="tocxref"><span class="secno">7.2.6 </span>生成規則propertyElementURIs</a></li>
+      <li class="tocline"><a href="#propertyAttributeURIs" class="tocxref"><span class="secno">7.2.7 </span>生成規則propertyAttributeURIs</a></li>
+      <li class="tocline"><a href="#doc" class="tocxref"><span class="secno">7.2.8 </span>生成規則doc</a></li>
+      <li class="tocline"><a href="#RDF" class="tocxref"><span class="secno">7.2.9 </span>生成規則RDF</a></li>
+      <li class="tocline"><a href="#nodeElementList" class="tocxref"><span class="secno">7.2.10 </span>生成規則nodeElementList</a></li>
+      <li class="tocline"><a href="#nodeElement" class="tocxref"><span class="secno">7.2.11 </span>生成規則nodeElement</a></li>
+      <li class="tocline"><a href="#ws" class="tocxref"><span class="secno">7.2.12 </span>生成規則ws</a></li>
+      <li class="tocline"><a href="#propertyEltList" class="tocxref"><span class="secno">7.2.13 </span>生成規則propertyEltList</a></li>
+      <li class="tocline"><a href="#propertyElt" class="tocxref"><span class="secno">7.2.14 </span>生成規則propertyElt</a></li>
+      <li class="tocline"><a href="#resourcePropertyElt" class="tocxref"><span class="secno">7.2.15 </span>生成規則resourcePropertyElt</a></li>
+      <li class="tocline"><a href="#literalPropertyElt" class="tocxref"><span class="secno">7.2.16 </span>生成規則literalPropertyElt</a></li>
+      <li class="tocline"><a href="#parseTypeLiteralPropertyElt" class="tocxref"><span class="secno">7.2.17 </span>生成規則parseTypeLiteralPropertyElt</a></li>
+      <li class="tocline"><a href="#parseTypeResourcePropertyElt" class="tocxref"><span class="secno">7.2.18 </span>生成規則parseTypeResourcePropertyElt</a></li>
+      <li class="tocline"><a href="#parseTypeCollectionPropertyElt" class="tocxref"><span class="secno">7.2.19 </span>生成規則parseTypeCollectionPropertyElt</a></li>
+      <li class="tocline"><a href="#parseTypeOtherPropertyElt" class="tocxref"><span class="secno">7.2.20 </span>生成規則parseTypeOtherPropertyElt</a></li>
+      <li class="tocline"><a href="#emptyPropertyElt" class="tocxref"><span class="secno">7.2.21 </span>生成規則emptyPropertyElt</a></li>
+      <li class="tocline"><a href="#idAttr" class="tocxref"><span class="secno">7.2.22 </span>生成規則idAttr</a></li>
+      <li class="tocline"><a href="#nodeIdAttr" class="tocxref"><span class="secno">7.2.23 </span>生成規則nodeIdAttr</a></li>
+      <li class="tocline"><a href="#aboutAttr" class="tocxref"><span class="secno">7.2.24 </span>生成規則aboutAttr</a></li>
+      <li class="tocline"><a href="#propertyAttr" class="tocxref"><span class="secno">7.2.25 </span>生成規則propertyAttr</a></li>
+      <li class="tocline"><a href="#resourceAttr" class="tocxref"><span class="secno">7.2.26 </span>生成規則resourceAttr</a></li>
+      <li class="tocline"><a href="#datatypeAttr" class="tocxref"><span class="secno">7.2.27 </span>生成規則datatypeAttr</a></li>
+      <li class="tocline"><a href="#parseLiteral" class="tocxref"><span class="secno">7.2.28 </span>生成規則parseLiteral</a></li>
+      <li class="tocline"><a href="#parseResource" class="tocxref"><span class="secno">7.2.29 </span>生成規則parseResource</a></li>
+      <li class="tocline"><a href="#parseCollection" class="tocxref"><span class="secno">7.2.30 </span>生成規則parseCollection</a></li>
+      <li class="tocline"><a href="#parseOther" class="tocxref"><span class="secno">7.2.31 </span>生成規則parseOther</a></li>
+      <li class="tocline"><a href="#URI-reference" class="tocxref"><span class="secno">7.2.32 </span>生成規則IRI</a></li>
+      <li class="tocline"><a href="#literal" class="tocxref"><span class="secno">7.2.33 </span>生成規則literal</a></li>
+      <li class="tocline"><a href="#rdf-id" class="tocxref"><span class="secno">7.2.34 </span>生成規則rdf-id</a></li>
+    </ul>
+    </li>
+    <li class="tocline"><a href="#section-Reification" class="tocxref"><span class="secno">7.3 </span>具体化規則</a></li>
+    <li class="tocline"><a href="#section-List-Expand" class="tocxref"><span class="secno">7.4 </span>リスト拡張規則</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#section-Serialising" class="tocxref"><span class="secno">8. </span>RDF/XMLへのRDFグラフのシリアル化</a></li>
+  <li class="tocline"><a href="#section-rdf-in-SVG" class="tocxref"><span class="secno">9. </span>SVGとRDF/XMLとの使用（参考情報）</a></li>
+  <li class="tocline"><a href="#section-Acknowledgments" class="tocxref"><span class="secno">A. </span>謝辞</a></li>
+  <li class="tocline"><a href="#changes-rdf11" class="tocxref"><span class="secno">B. </span>2004年勧告以後の変更</a></li>
+  <li class="tocline"><a href="#section-Schemas" class="tocxref"><span class="secno">C. </span>構文スキーマ</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#section-RELAXNG-Schema" class="tocxref"><span class="secno">C.1 </span>RELAX NGコンパクト・スキーマ</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#references" class="tocxref"><span class="secno">D. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">D.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">D.2 </span>参考情報の参考文献</a></li>
+  </ul>
+  </li>
+</ul>
+
+</section>
+<section id="section-Introduction" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Introduction"><span class="secno">1. </span>はじめに</h2>
+
+<p>このドキュメントでは、RDFグラフ用のXML[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]構文を定義しています。</p>
+  
+<p>このドキュメントでは、空白要素の特定の形式のような、少々低レベルであったXMLの細部を変更したXML情報セット [<cite><a class="bibref" href="#bib-XML-INFOSET">XML-INFOSET</a></cite>]の情報項目（information item）に関して当初のRDF/XML文法[<cite><a class="bibref" href="#bib-RDFMS">RDFMS</a></cite>]を改訂しています。これによって、文法をより正確に記録でき、XML構文からRDFグラフへのマッピングをより明確に示すことができます。RDFグラフへのマッピングは、N-トリプル[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]形式でステートメントを作成することで行えます。</p>
+
+<p>このドキュメントは、一連のRDF 1.1ドキュメントの一部です。その一連のドキュメントに含まれているその他のドキュメントは次のとおりです。</p>
+
+<ul>
+  <li>RDFの基礎となる基本的な概念と抽象構文を記述したドキュメント（「RDF概念および抽象構文」）[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]</li>
+  <li>RDFの形式モデル理論セマンティクスを記述したドキュメント（「RDFセマンティクス」）[<cite><a class="bibref" href="#bib-RDF11-MT">RDF11-MT</a></cite>]</li>
+  <li>RDFの具象構文の仕様:
+  <ul>
+    <li>Turtle[<cite><a class="bibref" href="#bib-TURTLE">TURTLE</a></cite>]とTriG[<cite><a class="bibref" href="#bib-TRIG">TRIG</a></cite>]</li>
+    <li>JSON-LD[<cite><a class="bibref" href="#bib-JSON-LD">JSON-LD</a></cite>]（JSONベース）</li>
+    <li>RDFa[<cite><a class="bibref" href="#bib-RDFA-PRIMER">RDFA-PRIMER</a></cite>]（HTML組み込み用）</li>
+    <li>N-TriplesとN-Quads（行ベースの交換フォーマット）</li>
+  </ul>
+  </li> 
+  <li>RDFスキーマを記述したドキュメント[<cite><a class="bibref" href="#bib-RDF11-SCHEMA">RDF11-SCHEMA</a></cite>]。これはRDFデータにデータモデリング語彙を提供する。</li>
+</ul>
+
+<p>過去の概観を含むRDF/XML構文のより詳細な概論に関しては、「RDF: ストライプRDF/XML構文の理解」[<cite><a class="bibref" href="#bib-STRIPEDRDF">STRIPEDRDF</a></cite>]を参照してください。</p>
+
+</section>
+<!-- FIRST PART : THE SYNTAX -->
+<section id="section-Syntax" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Syntax"><span class="secno">2. </span>RDFのXML構文</h2>
+
+<p>この項では、RDF/XML構文を紹介し、RDF/XML構文によるRDFグラフのコード化方法を記述し、例を使用してこれを解説しています。この非形式的な記述と、<a href="#section-Data-Model">6 構文データ・モデル</a>や<a href="#section-Infoset-Grammar">7 RDF/XML文法</a>の項の構文や文法の形式的な記述との間に矛盾がある場合は、後者の2つの項が優先します。</p>
+
+<!-- intro -->
+
+<section id="section-Syntax-intro" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-intro"><span class="secno">2.1 </span>序論</h3>
+
+<p>RDF概念および抽象構文ドキュメント[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]では、RDFグラフ・データ・モデルとRDFグラフ抽象構文を定義しています。これは、RDFセマンティクス [<cite><a class="bibref" href="#bib-RDF11-MT">RDF11-MT</a></cite>]とともに、抽象構文に必要な形式意味論を提供します。RDFグラフは、<em>ノード</em>と、対になったノードをリンクするラベル付きの有向の<em>アーク</em>を持っており、各トリプルは<em>主語ノード</em>、<em>述語</em>、<em>目的語ノード</em>を含んでいる1組のRDFトリプルとして表現されます。ノードは、IRI、リテラルや空白ノードです。空白ノードには、空白ノード識別子と呼ばれる、ドキュメント内のみで有効な識別子を付与できます。述語は、IRIであり、2つのノード間の関係、あるいは、ある主語ノードに対する属性値（目的語ノード）の定義のどちらかとして解釈できます。</p>
+
+<p>XMLでグラフをコード化するためには、ノードと述語はXML用語 &mdash; 要素名、属性名、要素コンテンツ、属性値で表されなければなりません。RDF/XMLでは、XMLの名前空間[<cite><a class="bibref" href="#bib-XML-NAMES">XML-NAMES</a></cite>]で定義されているとおりにIRIを表すためにXMLQNameを用います。すべてのQNameは、IRIや短い<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-LocalPart">ローカル</a>名の<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#dt-NSName">名前空間名</a>を持っています。さらに、QNameは、短い<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-Prefix">接頭辞</a>を持っているか、デフォルトの名前空間宣言で宣言して何も持たないかのどちらかです（しかし、依然として名前空間名を持っている）。</p>
+
+<p>QNameによって表現されたIRIは、QNameの<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#dt-NSName">名前空間名</a>（IRI）部分の後に、QNameの<a href="http://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-LocalPart">ローカル名</a>部分を追加することによって定まります。これは、すべての述語と一部のノードのIRIを短縮化するために使用されます。主語ノードと目的語ノードを識別するIRIは、XML属性値としても格納できます。目的語ノードでしかありえないRDFリテラルは、XML要素テキスト・コンテンツかXML属性値かのどちらかになります。</p>
+
+<p>グラフは、全体のグラフをカバーする、ノード、述語アーク、ノード、述語アーク、ノード、述語アーク…ノードという形式のパスの集合であると考えることができます。RDF/XMLでは、これらは、ノードと述語アークの要素を交互に繰り返した要素内の要素順になります。これは、一連のノード／アークのストライプと呼ばれます。このシーケンスの最初のノードは最外部の要素になり、次の述語アークは子要素などになります。このストライプは通常、RDF/XMLドキュメントの最上部で始まり、常にノードで始まります。</p>
+
+<p>以下の項では、完全なRDF/XMLドキュメントになるまで、いくつかのRDF/XMLの例を追加提供していきます。<a href="#example7">例7</a>が、最初の完全なRDF/XMLドキュメントです。</p>
+
+</section>
+<!-- node and property elements -->
+<section id="section-Syntax-node-property-elements" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-node-property-elements"><span class="secno">2.2 </span>ノード要素とプロパティー要素</h3>
+
+<figure id="figure1">
+<img alt="RDF/XMLのグラフの例" src="rdf11xml_images/figure1.png">
+<figcaption>図<span class="figno">1</span> <span class="fig-title">RDF/XMLのグラフの例 (<a href="rdf11xml_images/figure1.svg">SVGバージョン</a>)</span></figcaption>
+</figure>
+
+<p>RDFグラフを<a href="#figure1" class="fig-ref">図1</a>で示しています。このRDFグラフでは、ノードを楕円形で表してそれを持つIRIを含み、すべての述語アークをIRIでラベル付けし、文字列リテラルのノードを長方形で書いてあります。</p>
+
+<p>1つのノード、述語アーク ... と辿って行けば、グラフのノード・パスは<a href="#figure2" class="fig-ref">図2</a>のようになります。</p>
+
+<figure id="figure2">
+<img alt="One Path Through the Graph" src="rdf11xml_images/figure2.png">
+<figcaption>図<span class="figno">2</span> <span class="fig-title">グラフの1つのパス（<a href="rdf11xml_images/figure2.svg">SVGバージョン</a>）</span></figcaption>
+</figure>
+
+<p><a href="#figure2" class="fig-ref">図2</a>のグラフの左側は、以下のノード／述語アークのストライプに対応しています。</p> 
+
+<ol>
+  <li>IRI <code>http://www.w3.org/TR/rdf-syntax-grammar</code>を持つノード</li>
+  <li>IRI <code>http://example.org/terms/editor</code>でラベル付けされた述語Arc</li>
+  <li>IRIを持たないノード</li>
+  <li>IRI <code>http://example.org/terms/homePage</code>でラベル付けされた述語Arc</li>
+  <li>IRI <code>http://purl.org/net/dajobe/</code>を持つノード</li>
+</ol>
+
+<p>RDF/XMLでは、<a href="#figure2" class="fig-ref">図2</a>の左側の5つのノードと述語アークのシーケンスは、グラフのノードと述語アークに対する、2種類の5つのXML要素の使用に対応しています。これらは、慣習的にそれぞれ<em>ノード要素</em>と<em>プロパティー要素</em>と呼ばれます。<a href="#example1">例1</a>のストライピングでは、<code>rdf:Description</code>はノード要素（3つのノードで3回使用）で、<code>ex:editor</code>と<code>ex:homePage</code>は2つのプロパティー要素です。</p>
+
+<div class="example"><div class="example-title"><span>例1</span></div><pre id="example1" class="example"><strong>ストライプ状のRDF/XML（ノードと述語アーク）</strong>
+
+<code>&lt;rdf:Description&gt;</code>
+  &lt;ex:editor&gt;
+    <code>&lt;rdf:Description&gt;</code>
+      &lt;ex:homePage&gt;
+        <code>&lt;rdf:Description&gt;</code>
+        <code>&lt;/rdf:Description&gt;</code>
+      &lt;/ex:homePage&gt;
+    <code>&lt;/rdf:Description&gt;</code>
+  &lt;/ex:editor&gt;
+<code>&lt;/rdf:Description&gt;</code></pre></div>
+
+<p><a href="#figure2" class="fig-ref">図2</a>のグラフは、IRIであるいくつかのノード（および、その他のIRIではないもの）で構成され、ノード要素に<code>rdf:about</code>属性を使用してRDF/XMLにこれを追加すると<a href="#example2">例2</a>になります。</p>
+
+<div class="example"><div class="example-title"><span>例2</span></div><pre id="example2" class="example"><strong>IRIを追加したノード要素</strong>
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:homePage&gt;
+        &lt;rdf:Description rdf:about=&quot;http://purl.org/net/dajobe/&quot;&gt;
+        &lt;/rdf:Description&gt;
+      &lt;/ex:homePage&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;</pre></div>
+
+<p><a href="#figure1" class="fig-ref">図1</a>のグラフで<a href="#example2">例2</a>のRDF/XMLに他の2つのパスを加えると<a href="#example3">例3</a>になります（この例では、空白ノードが2つのパスの間で共有されていることが示されていません。<a href="#section-Syntax-blank-nodes">2.10</a>を参照。）</p>
+
+<div class="example"><div class="example-title"><span>例3</span></div><pre id="example3" class="example"><strong>すべてのグラフ・パスの完全な記述</strong>
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:homePage&gt;
+        &lt;rdf:Description rdf:about=&quot;http://purl.org/net/dajobe/&quot;&gt;
+        &lt;/rdf:Description&gt;
+      &lt;/ex:homePage&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:fullName&gt;Dave Beckett&lt;/ex:fullName&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;dc:title&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;</pre></div>
+
+</section>
+<!-- multiple properties -->
+<section id="section-Syntax-multiple-property-elements" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-multiple-property-elements"><span class="secno">2.3 </span>複数のプロパティー要素</h3>
+
+<p>共通する部分をより簡単に記述するために使用できる省略形がいくつかあります。特に、RDFグラフの主語ノードは、一般的に複数の外向きの述語アークを持っています。資源に関するノード要素が複数のプロパティー要素を持つ場合には、RDF/XMLでは対応する構文に省略形を提供します。これは、主語ノードを記述しているノード要素内で複数の子プロパティー要素を使用して省略形にできます。</p>
+
+<p><a href="#example3">例3</a>を例に挙げると、複数のプロパティー要素をとることができる2つのノード要素があります。IRI <code>http://www.w3.org/TR/rdf-syntax-grammar</code>を持つ主語ノードはプロパティー要素<code>ex:editor</code>と<code>ex:title</code>を持ち、空白ノードのノード要素は<code>ex:homePage</code>と<code>ex:fullName</code>をとることができます。この省略形によって、<a href="#example4">例4</a>で示している結果になります（この例は、1つの空白ノードがあることを示しています）。</p>
+
+<div class="example"><div class="example-title"><span>例4</span></div><pre id="example4" class="example"><strong>ノード要素で複数のプロパティー要素を使用</strong>
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:homePage&gt;
+        &lt;rdf:Description rdf:about=&quot;http://purl.org/net/dajobe/&quot;&gt;
+        &lt;/rdf:Description&gt;
+      &lt;/ex:homePage&gt;
+      &lt;ex:fullName&gt;Dave Beckett&lt;/ex:fullName&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+  &lt;dc:title&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;</pre></div>
+
+</section>
+<!-- empty property elements -->
+<section id="section-Syntax-empty-property-elements" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-empty-property-elements"><span class="secno">2.4 </span>空白のプロパティー要素</h3>
+
+<p>RDFグラフの述語アークが、それ以上の述語アークがない目的語ノードを指し、RDF/XMLで空白ノード要素<code>&lt;rdf:Description rdf:about=&quot;...&quot;&gt;</code> <code>&lt;/rdf:Description&gt;</code>（または、<code>&lt;rdf:Description rdf:about=&quot;...&quot; /&gt;</code>) として表示される場合、この形式は短縮化できます。これは、包含しているプロパティー要素において、目的語ノードのIRIをXML属性<code>rdf:resource</code>の値として使用し、プロパティー要素を空にすることで行えます。</p>
+
+<p>この例では、プロパティー要素<code>ex:homePage</code>には、IRI <code>http://purl.org/net/dajobe/</code>を持つ空白ノード要素が含まれています。これは、<a href="#example5">例5</a>で示しているような空白プロパティー要素の形式に置き換えることができます。</p>
+
+<div class="example"><div class="example-title"><span>例5</span></div><pre id="example5" class="example"><strong>空白プロパティー要素</strong>
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description&gt;
+      &lt;ex:homePage rdf:resource=&quot;http://purl.org/net/dajobe/&quot;/&gt;
+      &lt;ex:fullName&gt;Dave Beckett&lt;/ex:fullName&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+  &lt;dc:title&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+&lt;/rdf:Description&gt;</pre></div>
+
+</section>
+<!-- empty property attributes -->
+<section id="section-Syntax-property-attributes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-property-attributes"><span class="secno">2.5 </span>プロパティー属性</h3>
+
+<p>プロパティー要素のコンテンツが文字列リテラルである場合には、これを包含しているノード要素のXML属性として使用できるかもしれません。これは、プロパティーの要素名が繰り返されず（XMLで要求される &mdash; XML要素には属性名は1つのみ）、プロパティー要素の文字列リテラル（もしあれば）のスコープ内の<code>xml:lang</code>が同じである場合にのみ、同じノード要素の複数のプロパティーに対して可能となります（<a href="#section-Syntax-languages">2.7項</a>を参照）。この省略形は、<em>プロパティー属性</em>として知られており、あらゆるノード要素に適用できます。</p>
+
+<p>この省略形は、プロパティー要素が<code>rdf:type</code>であり、その値がIRIの目的語ノードとして解釈される<code>rdf:resource</code>属性を持っている場合にも使用できます。</p>
+
+<p><a href="#example5">例5</a>には、文字列リテラル・コンテンツを持つ、<code>dc:title</code>と<code>ex:fullName</code>プロパティー要素という2つのプロパティー要素があります。これらは、<a href="#example6">例6</a>で示している結果になるプロパティー属性に置き換えることができます。</p>
+
+<div class="example"><div class="example-title"><span>例6</span></div><pre id="example6" class="example"><strong>文字列リテラル・コンテンツを持つプロパティー要素のプロパティー属性への置き換え</strong>
+
+&lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;
+           dc:title=&quot;RDF 1.1 XML Syntax&quot;&gt;
+  &lt;ex:editor&gt;
+    &lt;rdf:Description ex:fullName=&quot;Dave Beckett&quot;&gt;
+      &lt;ex:homePage rdf:resource=&quot;http://purl.org/net/dajobe/&quot;/&gt;
+    &lt;/rdf:Description&gt;
+  &lt;/ex:editor&gt;
+&lt;/rdf:Description&gt;</pre></div>
+
+</section>
+<!-- complete rdf/xml document -->
+<section id="section-Syntax-complete-document" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-complete-document"><span class="secno">2.6 </span>ドキュメントの完成: ドキュメント要素とXML宣言</h3>
+
+<p>完全なRDF/XMLドキュメントを作成するためには、最上位のXMLドキュメント要素として<code>rdf:RDF</code>のXML要素内には、通常はXMLへのグラフのシリアル化が含まれています。慣習上、<code>rdf:RDF</code>要素は、使用しているXML名前空間を宣言するためにも使用されますが、これは必須ではありません。<code>rdf:RDF</code>内に最上位のノード要素が1つしかないときにであっても、XML名前空間は宣言しなければなりませんが、この<code>rdf:RDF</code>は省略できます。</p>
+
+<p>XMLの仕様では、ドキュメントの先頭に、XMLバージョンと恐らくXMLコンテンツのコード化を含むXML宣言も許されています。これはオプションですが、推薦されます。</p>
+
+<p>RDF/XMLの完成は、<a href="#example4">例4</a>以後の正しい完全なグラフの例のいずれに対しても可能ですが、最も小さな<a href="#example6">例6</a>の場合、最終的な構成要素を加えれば<a href="#example7">例7</a>の最初の<a href="#figure1" class="fig-ref">図1</a>のグラフの完全なRDF/XML表現になります。</p>
+
+<div class="example"><div class="example-title"><span>例7</span></div><pre id="example7" class="example"><strong>図1グラフの完全なRDF/XML記述（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example07.rdf">example07.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example07.nt">example07.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;
+             dc:title=&quot;RDF1.1 XML Syntax&quot;&gt;
+    &lt;ex:editor&gt;
+      &lt;rdf:Description ex:fullName=&quot;Dave Beckett&quot;&gt;
+        &lt;ex:homePage rdf:resource=&quot;http://purl.org/net/dajobe/&quot; /&gt;
+      &lt;/rdf:Description&gt;
+    &lt;/ex:editor&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+<p><code>rdf:RDF</code>内には<code>rdf:Description</code>が1つのみ存在するため、上記<a href="#example7">例7</a>の<code>rdf:RDF</code>を省略できますが、これはここでは示していません。</p>
+
+</section>
+<!-- language attribute -->
+<section id="section-Syntax-languages" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-languages"><span class="secno">2.7 </span>言語: <code>xml:lang</code></h3>
+
+<p>RDF/XMLでは、コンテンツの言語の識別が可能になるように、XML 1.0 [<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]の<a href="http://www.w3.org/TR/REC-xml#sec-lang-tag">2.12 言語識別</a>で定義されているような<code>xml:lang</code>属性の使用が許されています。<code>xml:lang</code>属性は、あらゆるノード要素やプロパティー要素で使用でき、含まれているコンテンツがその言語であることを示せます。<a href="#section-Syntax-XML-literals">XMLリテラル</a>を含んでいる<a href="#section-Syntax-datatyped-literals">型付きリテラル</a>は、この属性に影響されません。この現在最も特定的なスコープ内の言語（もしあれば）は、文字列リテラル・コンテンツやプロパティー属性値に適用されます。<code>xml:lang=&quot;&quot;</code>の形式は、言語識別子の欠如を示します。</p>
+
+<p>RDFプロパティーのコンテンツの言語をマークアップするいくつかの例を<a href="#example8">例8</a>で示しています。</p>
+
+<div class="example"><div class="example-title"><span>例8</span></div><pre id="example8" class="example"><strong><code>xml:lang</code>の完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example08.rdf">example08.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example08.nt">example08.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;&gt;
+    &lt;dc:title&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+    &lt;dc:title xml:lang=&quot;en&quot;&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+    &lt;dc:title xml:lang=&quot;en-US&quot;&gt;RDF 1.1 XML Syntax&lt;/dc:title&gt;
+  &lt;/rdf:Description&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://example.org/buecher/baum&quot; xml:lang=&quot;de&quot;&gt;
+    &lt;dc:title&gt;Der Baum&lt;/dc:title&gt;
+    &lt;dc:description&gt;Das Buch ist ausergewohnlich&lt;/dc:description&gt;
+    &lt;dc:title xml:lang=&quot;en&quot;&gt;The Tree&lt;/dc:title&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- XML Literal -->
+<section class="informative" id="section-Syntax-XML-literals" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-XML-literals"><span class="secno">2.8 </span>XMLリテラル: <code>rdf:parseType=&quot;Literal&quot;</code></h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>RDFでは、XMLリテラル[RDF11-CONCEPTS]を述語の目的語ノードとして付与できます。これは、プロパティー要素（プロパティー属性ではなく）のコンテンツとしてRDF/XMLで記述され、包含するプロパティー要素において<code>rdf:parseType=&quot;Literal&quot;</code>属性を使用して示されます。</p>
+
+<p>XMLリテラルの記述例を<a href="#example9">例9</a>で示しており、ここには、主語ノードIRI <code>http://example.org/item01</code>、述語IRI <code>http://example.org/stuff/1.0/prop</code>（<code>ex:prop</code>の）、<code>a:Box</code>で始まるXMLリテラル・コンテンツを持つ目的語ノードを持つ1つのRDFがあります。</p>
+
+<div class="example"><div class="example-title"><span>例9</span></div><pre id="example9" class="example"><strong><code>rdf:parseType=&quot;Literal&quot;</code>の完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example09.rdf">example09.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example09.nt">example09.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://example.org/item01&quot;&gt; 
+    &lt;ex:prop rdf:parseType=&quot;Literal&quot; xmlns:a=&quot;http://example.org/a#&quot;&gt;
+      &lt;a:Box required=&quot;true&quot;&gt;
+        &lt;a:widget size=&quot;10&quot; /&gt;
+        &lt;a:grommit id=&quot;23&quot; /&gt;
+      &lt;/a:Box&gt;
+    &lt;/ex:prop&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- datatyped literals -->
+<section id="section-Syntax-datatyped-literals" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-datatyped-literals"><span class="secno">2.9 </span>型付きリテラル: <code>rdf:datatype</code></h3>
+
+<p>RDFでは、型付きリテラルを述語の目的語ノードとして付与できます。型付きリテラルは、リテラルの文字列とデータ型IRIで構成されています。これは、プロパティー要素形式（プロパティー属性ではない）のリテラルの文字列ノードに対するものと同じ構文を使用してRDF/XMLで書かれていますが、プロパティー要素に<code>rdf:datatype=&quot;</code><em>datatypeURI</em><code>&quot;</code>属性が追加使用されています。属性ではあらゆるIRIが使用できます。</p>
+
+<p>RDFの型付きリテラルの例を<a href="#example10">例10</a>で示しており、ここには、主語ノードIRI <code>http://example.org/item01</code>、述語IRI <code>http://example.org/stuff/1.0/size</code>（<code>ex:size</code>の）、XMLスキーマ [<cite><a class="bibref" href="#bib-XMLSCHEMA-2">XMLSCHEMA-2</a></cite>]データ型<code>int</code>として解釈される型付きリテラル（「123」、<code>http://www.w3.org/2001/XMLSchema#int</code>）を持つ目的語ノードを持つ1つのRDFトリプルがあります。</p>
+
+<div class="example"><div class="example-title"><span>例10</span></div><pre id="example10" class="example"><strong><code>rdf:datatype</code>の完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example10.rdf">example10.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example10.nt">example10.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://example.org/item01&quot;&gt;
+    &lt;ex:size rdf:datatype=&quot;http://www.w3.org/2001/XMLSchema#int&quot;&gt;123&lt;/ex:size&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- blank nodes -->
+<section id="section-Syntax-blank-nodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-blank-nodes"><span class="secno">2.10 </span>空白ノードの識別: <code>rdf:nodeID</code></h3>
+
+<p>RDFグラフの空白ノードは多様ですが、IRI識別子を持っていません。同じグラフの空白ノードを、いくつかのRDFトリプルの主語や述語などのような複数の場所のRDF/XMLで参照する必要があることもあります。この場合、それをドキュメントで識別するために、空白ノードに空白ノード識別子を付与できます。RDF/XMLの空白ノード識別子は、包含するXML情報セットの<a href="http://www.w3.org/TR/xml-infoset/#infoitem.document">文書情報項目</a>で詳述されています。空白ノード識別子は、ノード要素では<code>rdf:about=&quot;</code><em>IRI</em><code>&quot;</code>を、プロパティー要素では<code>rdf:resource=&quot;</code><em>IRI</em><code>&quot;</code>を、どちらの場合も<code>rdf:nodeID=&quot;</code><em>blank node identifier</em><code>&quot;</code>と置き換えるために使用されます。</p>
+
+<p><a href="#example7">例7</a>を例にとり、<code>abc</code>の空白ノード識別子をその空白ノードに明示的に付与すると、<a href="#example11">例11</a>で示す結果が得られます。2番目の<code>rdf:Description</code>プロパティー要素が空白ノードに関するものです。</p>
+
+<div class="example"><div class="example-title"><span>例11</span></div><pre id="example11" class="example"><strong>空白ノードを識別する<code>rdf:nodeID</code>を使用したグラフの完全なRDF/XML記述（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example11.rdf">example11.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example11.nt">example11.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;
+             dc:title=&quot;RDF 1.1 XML Syntax&quot;&gt;
+    &lt;ex:editor rdf:nodeID=&quot;abc&quot;/&gt;
+  &lt;/rdf:Description&gt;
+
+  &lt;rdf:Description rdf:nodeID=&quot;abc&quot; ex:fullName=&quot;Dave Beckett&quot;&gt;
+    &lt;ex:homePage rdf:resource=&quot;http://purl.org/net/dajobe/&quot;/&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- parsetype resource -->
+<section id="section-Syntax-parsetype-resource" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-parsetype-resource"><span class="secno">2.11 </span>空白ノードの省略: <code>rdf:parseType=&quot;Resource&quot;</code></h3>
+
+<p>RDFグラフの空白ノード（IRIノードではない）は、<code>&lt;rdf:Description&gt;</code> <code>&lt;/rdf:Description&gt;</code>の対を省略した形式で記述できます。この省略は、プロパティー要素をプロパティーとノードの要素（property-and-node element）に変える<code>rdf:parseType=&quot;Resource&quot;</code>属性を、包含しているプロパティー要素に置くことで行われ、それ自身はプロパティー要素とプロパティー属性の両方を持つことができます。プロパティー属性と<code>rdf:nodeID</code>属性は、プロパティーとノードの要素（property-and-node）では許されていません。</p>
+
+<p>以前の<a href="#example7">例7</a>を例にとると、<code>ex:editor</code>プロパティー要素のコンテンツはこのような方法でも行うことができ、<a href="#example12">例12</a>で示している形式になります。</p>
+
+<div class="example"><div class="example-title"><span>例12</span></div><pre id="example12" class="example"><strong><code>rdf:parseType=&quot;Resource&quot;</code>を使用した完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example12.rdf">example12.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example12.nt">example12.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+  &lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;
+                   dc:title=&quot;RDF 1.1 XML Syntax&quot;&gt;
+    &lt;ex:editor rdf:parseType=&quot;Resource&quot;&gt;
+      &lt;ex:fullName&gt;Dave Beckett&lt;/ex:fullName&gt;
+      &lt;ex:homePage rdf:resource=&quot;http://purl.org/net/dajobe/&quot;/&gt;
+    &lt;/ex:editor&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- attributes on property elements -->
+<section id="section-Syntax-property-attributes-on-property-element" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-property-attributes-on-property-element"><span class="secno">2.12 </span>ノードの省略: 空白プロパティー要素のプロパティー属性</h3>
+
+<p>空白ノード要素のすべてのプロパティー要素が、同じスコープ内の<code>xml:lang</code>値（存在していれば）を持つ文字列リテラル値を持っており、これらのプロパティー要素のそれぞれが高々1度現れ、IRI目的語ノードを持つ<code>rdf:type</code>プロパティー要素が高々1つ存在する場合、これらは、これらを移動し、空白要素になった包含するプロパティー要素のプロパティー属性にすることで省略形にできます。</p>
+
+<p>以前の<a href="#example5">例5</a>を例にとると、<code>ex:editor</code>プロパティー要素には、2つのプロパティー要素<code>ex:fullname</code>と<code>ex:homePage</code>を持つ空白ノード要素が含まれています。<code>ex:homePage</code>は、文字列リテラル値を持っていないため、ここでは適合せず、そのため、この例の目的により<em>無視</em>しています。省略形は、<code>ex:fullName</code>プロパティー要素を削除し、この削除したプロパティー要素の文字列リテラル値を持つ新しいプロパティー属性<code>ex:fullName</code>を<code>ex:editor</code>プロパティー要素に追加します。空白ノード要素は、現在空白の<code>ex:editor</code>プロパティー要素で暗黙的になります。この結果は、<a href="#example13">例13</a>で示しています。</p>
+
+<div class="example"><div class="example-title"><span>例13</span></div><pre id="example13" class="example"><strong>空白プロパティー要素のプロパティー属性の完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example13.rdf">example13.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example13.nt">example13.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://www.w3.org/TR/rdf-syntax-grammar&quot;
+            dc:title=&quot;RDF 1.1 XML Syntax&quot;&gt;
+    &lt;ex:editor ex:fullName=&quot;Dave Beckett&quot; /&gt;
+            &lt;!-- Note the ex:homePage property has been ignored for this example --&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- typed nodes -->
+<section id="section-Syntax-typed-nodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-typed-nodes"><span class="secno">2.13 </span>型付きノード要素</h3>
+
+<p>RDFグラフが主語ノードに属する<code>rdf:type</code>述語を持っていることは普通です。これは慣習的に、グラフでは<em>型付きノード</em>と呼び、RDF/XMLでは<em>型付きノード要素</em>と呼びます。RDF/XMLでは、<code>rdf:Description</code>ノード要素を、タイプ関係の値のIRIに対応する名前空間要素（namespaced-element）に置き換えることによって、このトリプルをより簡潔に表現できます。もちろん、複数の<code>rdf:type</code>述語が存在しえますが、この方法では1つしか使用できず、他はプロパティー要素かプロパティー属性のままでなければなりません。</p>
+
+<p>型付きノード要素は、<a href="#section-Namespace">RDF語彙</a>の組み込みクラスを持つRDF/XMLで一般に使用されます：<code>rdf:Seq</code>、<code>rdf:Bag</code>、<code>rdf:Alt</code>、<code>rdf:Statement</code>、<code>rdf:Property</code>、<code>rdf:List</code>。</p>
+
+<p>例えば、<a href="#example14">例14</a>のRDF/XMLは<a href="#example15">例15</a>のように記述できます。</p>
+
+<div class="example"><div class="example-title"><span>例14</span></div><pre id="example14" class="example"><strong><code>rdf:type</code>を持つ完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example14.rdf">example14.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example14.nt">example14.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://example.org/thing&quot;&gt;
+    &lt;rdf:type rdf:resource=&quot;http://example.org/stuff/1.0/Document&quot;/&gt;
+    &lt;dc:title&gt;A marvelous thing&lt;/dc:title&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;</pre></div>
+
+<div class="example"><div class="example-title"><span>例15</span></div><pre id="example15" class="example"><strong><code>rdf:type</code>を置き換えるために型付きノード要素を使用した完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example15.rdf">example15.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example15.nt">example15.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;ex:Document rdf:about=&quot;http://example.org/thing&quot;&gt;
+    &lt;dc:title&gt;A marvelous thing&lt;/dc:title&gt;
+  &lt;/ex:Document&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- xml base -->
+<section id="section-Syntax-ID-xml-base" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-ID-xml-base"><span class="secno">2.14 </span>URIの省略: <code>rdf:ID</code> and <code>xml:base</code></h3>
+
+<p>RDF/XMLでは、さらに2つの方法でXML属性のIRIを省略化できます。XML Infosetは、相対IRIを解決するために基底URIを定めた基底URI属性xml:baseを提供しますが、そうでない場合には基底URIはドキュメントのものです。基底URIは、<code>rdf:about</code>、<code>rdf:resource</code>、<code>rdf:ID</code>、<code>rdf:datatype</code>といったIRIを処理するすべてのRDF/XML属性に適用されます。</p>
+
+<p>ノード要素（プロパティー要素ではなく）の<code>rdf:ID</code>属性は、<code>rdf:about</code>の代わりに使用でき、<code>rdf:ID</code>属性値と連結した<code>#</code>と同等の相対IRIを提供します。今までの例では、<code>rdf:ID=&quot;name&quot;</code>であれば、<code>rdf:about=&quot;#name&quot;</code>と同等です。<code>xml:base</code>値（または、提供されない場合には、ドキュメント）のスコープ内では同じ<em>名前</em>は1度しか出現できないため、<code>rdf:ID</code>は付加的なチェックを提供し、同じIRIと相対関係にある、別個で、関連する用語の集合を定義するためにも役に立ちます。</p>
+
+<p>両方の形式では、スコープ内の<code>xml:base</code>かRDF/XMLドキュメントのURIのどちらかの基底URIが分かっている必要があります。</p>
+
+<p><a href="#example16">例16</a>では、<code>http://example.org/here/</code>の<code>xml:base</code>と<code>rdf:Description</code>ノード要素の<code>rdf:ID</code>を使用した<code>http://example.org/here/#snack</code>のノードIRIの省略を示しています。<code>ex:prop</code>述語の目的語ノードは、IRI <code>http://example.org/here/fruit/apple</code>になるようにスコープ内の基底URIを使用して<code>rdf:resource</code>のXML属性値を解決した絶対IRIです。</p>
+
+<div class="example"><div class="example-title"><span>例16</span></div><pre id="example16" class="example"><strong>URIを短縮するために<code>rdf:ID</code>と<code>xml:base</code>を使用した完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example16.rdf">example16.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example16.nt">example16.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;
+            xml:base=&quot;http://example.org/here/&quot;&gt;
+
+  &lt;rdf:Description rdf:ID=&quot;snack&quot;&gt;
+    &lt;ex:prop rdf:resource=&quot;fruit/apple&quot;/&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- list elements -->
+<section id="section-Syntax-list-elements" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-list-elements"><span class="secno">2.15 </span>コンテナ・メンバーシップ・プロパティー要素: <code>rdf:li</code> and <code>rdf:_</code><em>n</em></h3>
+
+<p>RDFには、型付きノード要素として記述できる<code>rdf:Seq</code>クラス、<code>rdf:Bag</code>クラス、<code>rdf:Alt</code>クラスのインスタンスと一緒に通常用いられる、コンテナ・メンバーシップ・プロパティーと対応するプロパティー要素とのまとまりがあります。リスト・プロパティーは、<code>rdf:_1</code>、<code>rdf:_2</code>などで、<a href="#example17">例17</a>で示しているプロパティー要素やプロパティー属性として記述できます。<code>rdf:_1</code>、<code>rdf:_2</code>の順序のものと同等な<code>rdf:li</code>という特別なプロパティー要素があり、<a href="#section-List-Expand">7.4項</a>で詳細を説明しています。コンテナ・メンバーシップ・プロパティーへのマッピングは、常に<code>rdf:li</code>という特別なプロパティー要素がXMLに出現する順序で行われます &mdash; ドキュメントの順序は重要です。この方法で記述した、<a href="#example17">例17</a>と同等なRDF/XMLを<a href="#example18">例18</a>で示しています。</p>
+
+<div class="example"><div class="example-title"><span>例17</span></div><pre id="example17" class="example"><strong>RDFリスト・プロパティーを使用した複雑な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example17.rdf">example17.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example17.nt">example17.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+
+  &lt;rdf:Seq rdf:about=&quot;http://example.org/favourite-fruit&quot;&gt;
+    &lt;rdf:_1 rdf:resource=&quot;http://example.org/banana&quot;/&gt;
+    &lt;rdf:_2 rdf:resource=&quot;http://example.org/apple&quot;/&gt;
+    &lt;rdf:_3 rdf:resource=&quot;http://example.org/pear&quot;/&gt;
+  &lt;/rdf:Seq&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+<div class="example"><div class="example-title"><span>例18</span></div><pre id="example18" class="example"><strong>リスト・プロパティーに対して<code>rdf:li</code>プロパティー要素を使用した完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example18.rdf">example18.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example18.nt">example18.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;&gt;
+
+  &lt;rdf:Seq rdf:about=&quot;http://example.org/favourite-fruit&quot;&gt;
+    &lt;rdf:li rdf:resource=&quot;http://example.org/banana&quot;/&gt;
+    &lt;rdf:li rdf:resource=&quot;http://example.org/apple&quot;/&gt;
+    &lt;rdf:li rdf:resource=&quot;http://example.org/pear&quot;/&gt;
+  &lt;/rdf:Seq&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- parsetype collection -->
+<section id="section-Syntax-parsetype-Collection" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-parsetype-Collection"><span class="secno">2.16 </span>コレクション: <code>rdf:parseType=&quot;Collection&quot;</code></h3>
+
+<p>RDF/XMLでは、プロパティー要素でにおいて<code>rdf:parseType=&quot;Collection&quot;</code>属性を使用して複数のノード要素を含むことができます。これらの含まれたノード要素は、コレクションの主語ノードの集合を示します。この構文形式は、主語ノードのコレクションをつなげた1組のトリプルに対応しており、生成された厳密なトリプルに関しては、<a href="#parseTypeCollectionPropertyElt">7.2.19項 生成規則parseTypeCollectionPropertyElt</a>で詳細に説明しています。コレクションは常に、ノード要素がXMLドキュメントで出現する順序で構築されます。ノードのコレクションの順序が重要かどうかは、アプリケーションの問題であるため、ここでは定義していません。</p>
+
+<p><a href="#example19">例19</a>では、この形式を使用して、<code>ex:hasFruit</code>プロパティー要素の終わりに3つのノード要素のコレクションを示しています。</p>
+
+<div class="example"><div class="example-title"><span>例19</span></div><pre id="example19" class="example"><strong><code>rdf:parseType=&quot;Collection&quot;</code>を使用したノードのRDFコレクションの完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example19.rdf">example19.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example19.nt">example19.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;&gt;
+
+  &lt;rdf:Description rdf:about=&quot;http://example.org/basket&quot;&gt;
+    &lt;ex:hasFruit rdf:parseType=&quot;Collection&quot;&gt;
+      &lt;rdf:Description rdf:about=&quot;http://example.org/banana&quot;/&gt;
+      &lt;rdf:Description rdf:about=&quot;http://example.org/apple&quot;/&gt;
+      &lt;rdf:Description rdf:about=&quot;http://example.org/pear&quot;/&gt;
+    &lt;/ex:hasFruit&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+<!-- reification -->
+<section id="section-Syntax-reifying" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Syntax-reifying"><span class="secno">2.17 </span>ステートメントの具体化: <code>rdf:ID</code></h3>
+
+<p><code>rdf:ID</code>属性をプロパティー要素で使用してそれが生成するトリプルを具体化できます（完全な詳細に関しては、<a href="#section-Reification">7.3項 具体化規則</a>を参照）。トリプルの識別子は、<code>rdf:ID</code>属性値に連結された相対IRI <code>#</code>から作成されたIRIとして構築されるべきで、スコープ内の基底URIに対して解決されます。そのため、例えば、<code>rdf:ID=&quot;triple&quot;</code>である場合、基底URIに対する相対IRI <code>#triple</code>から作成されたIRIと同等です。それぞれの（<code>rdf:ID</code>属性値、基底URI）の対は、RDF/XMLドキュメントで1つでなければなりません。<a href="#constraint-id">constraint-id</a>を参照してください。</p>
+
+<p><a href="#example20">例20</a>では、<code>rdf:ID</code>が、具体化されたトリプルにIRI <code>http://example.org/triples/#triple1</code>を提供する<code>ex:prop</code>プロパティー要素から作成されたトリプルを具体化するために使用されていることを示しています。</p>
+
+<div class="example"><div class="example-title"><span>例20</span></div><pre id="example20" class="example"><strong>プロパティー要素を具体化する<code>rdf:ID</code>の完全な例（<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example20.rdf">example20.rdf</a>、出力<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/example20.nt">example20.nt</a>）</strong>
+
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;rdf:RDF xmlns:rdf=&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+            xmlns:ex=&quot;http://example.org/stuff/1.0/&quot;
+            xml:base=&quot;http://example.org/triples/&quot;&gt;
+  &lt;rdf:Description rdf:about=&quot;http://example.org/&quot;&gt;
+    &lt;ex:prop rdf:ID=&quot;triple1&quot;&gt;blah&lt;/ex:prop&gt;
+  &lt;/rdf:Description&gt;
+
+&lt;/rdf:RDF&gt;</pre></div>
+
+</section>
+</section>
+<!-- SECOND PART : TERMINILOGY -->
+<section id="section-Terminology" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Terminology"><span class="secno">3. </span>用語</h2>
+
+<p>このドキュメントの「しなければならない（<em class="rfc2119" title="MUST">MUST</em>）」「してはならない（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）」「必須である／要求される（<em class="rfc2119" title="REQUIRED">REQUIRED</em>）」「することになる（<em class="rfc2119" title="SHALL">SHALL</em>）」「することはない（<em class="rfc2119" title="SHALL NOT">SHALL NOT</em>）」「すべきである／する必要がある（<em class="rfc2119" title="SHOULD">SHOULD</em>）」「すべきでない／する必要がない（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）」「推奨される（<em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em>）」「することができる／してもよい（<em class="rfc2119" title="MAY">MAY</em>）」「選択できる／任意である（<em class="rfc2119" title="OPTIONAL">OPTIONAL</em>）」というキーワードは、RFC 2119 [<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>]で記述されているように解釈されるべきです。</p>
+
+<p>修飾がない文字列の使用はすべてUnicode[<cite><a class="bibref" href="#bib-UNICODE">UNICODE</a></cite>]の文字列、つまり、Unicodeの区点位置で表される文字列を示します。</p></section>
+
+<!-- THIRD PART : MIME Type -->
+<section id="section-MIME-Type" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-MIME-Type"><span class="secno">4. </span>RDF MIMEタイプ、ファイル拡張子、マッキントッシュ・ファイル・タイプ</h2>
+
+<p>RDF/XMLのインターネット・メディア・タイプ/MIMEタイプは、<code>application/rdf+xml</code>です &mdash; RFC 3023 [<cite><a class="bibref" href="#bib-RFC3023">RFC3023</a></cite>]の8.18項を参照。</p>
+
+<div class="note"><div class="note-title" aria-level="2" role="heading" id="h_note_1"><span>注</span></div>
+
+<p class=""><strong>（参考情報）: </strong>MIMEタイプの登録状況に関しては、IANA MIMEメディア・タイプ [<cite><a class="bibref" href="#bib-IANA-MEDIA-TYPES">IANA-MEDIA-TYPES</a></cite>]を参照してください。</p></div>
+
+<p>RDF/XMLファイルは、すべてのプラットホーム上で拡張子「<code>.rdf</code>」（すべて小文字）であることが推奨されます。</p>
+
+<p>IマッキントッシュHFSファイル・システム上に保存されたRDF/XMLファイルには、ファイル・タイプ「<code>rdf</code>」（すべて小文字、4文字目に空白文字）が付与されていることが推奨されます。</p>
+
+</section>
+<!-- FOURTH PART : Global Issues -->
+<section id="section-Global" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Global"><span class="secno">5. </span>グローバルな問題</h2>
+
+<!-- namespace -->
+<section id="section-Namespace" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Namespace"><span class="secno">5.1 </span>RDF名前空間と語彙</h3>
+
+<p>RDF名前空間IRI（または、名前空間名）は、<code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code>であり、他の接頭辞文字列が使用されることもありますが、通常は接頭辞<code>rdf</code>を持つXMLで使用されます。<dfn id="rdf-vocabulary">RDF語彙</dfn>は、この名前空間名によって識別され、以下の名前のみで構成されています。</p>
+
+<dl>
+  <dt>構文名 &mdash; 概念ではない</dt>
+  <dd><p><code>RDF Description ID about parseType resource li nodeID datatype</code></p></dd>
+  <dt>クラス名</dt>
+  <dd><p><code>Seq Bag Alt Statement Property XMLLiteral List</code></p></dd>
+  <dt>プロパティー名</dt>
+  <dd><p><code>subject predicate object type value first rest _</code><em>n</em><br>
+<em>n</em>が先行する0を持たない0以上の10進の整数である場合。</p></dd>
+  <dt>資源名</dt>
+  <dd><p><code>nil</code></p></dd>
+</dl>
+
+<p>これら以外の名前は定義されておらず、問題に遭遇した場合には警告を発するべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）が、それ以外の場合には、通常に動作すべきです。</p>
+
+<p>RDF/XMLドキュメント内では、その名前空間名を追加文字に連結した<a class="termref" href="#rdf-ns-uri"><span class="arrow">・</span>RDF名前空間IRI<span class="arrow">・</span></a>であるXML名前空間の使用が許されています。</p>
+
+<p>このドキュメント内では、用語<code>rdf:</code><em>name</em><em>名前</em>は、<em>名前</em>がRDF語彙に由来し、名前を<a class="termref" href="#rdf-ns-uri"><span class="arrow">・</span>RDF名前空間IRI<span class="arrow">・</span></a>と連結したIRIを持っているということを示すために使用されます。例えば、<code>rdf:type</code>は、IRI <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</code>を持っています。</p>
+
+</section>
+<!-- identifiers -->
+<section id="section-Identifiers" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Identifiers"><span class="secno">5.2 </span>識別子</h3>
+
+<p>RDF概念ドキュメント[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]は、ノードおよび/または述語として機能する、以下の3種類のRDFデータを定義しています。</p>
+
+<dl>
+  <dt>IRI</dt>
+  <dd><p>IRIは、ノード（主語と目的語の両方）、および述語として機能することができます。</p>
+  <p><a href="http://www.w3.org/TR/rdf11-concepts/#section-IRIs">IRIs</a>は、以下のいずれかでありえます。</p>
+  <ul>
+    <li>スコープ内の基底URIに対して解決される相対IRIであると解釈されるXML属性値として付与し、<a href="#section-baseURIs">5.3項</a>で述べられているように絶対IRIを付与。</li>
+    <li>XMLの名前空間修飾要素（namespace-qualified element）や属性名（QName）から変換。</li>
+    <li><code>rdf:ID</code>属性値から変換。</li>
+  </ul>
+  <p>RDF/XML内では、XML QNameは、XMLローカル名を名前空間名（IRI）に追加することによって、IRIに変換されます。例えば、XML名前空間接頭辞<code>foo</code>が、名前空間名（IRI）<code>http://example.org/somewhere/</code>を持っている場合、QName <code>foo:bar</code>がIRI <code>http://example.org/somewhere/bar</code>に対応しています。これは、どのIRIを作成できるかということや、同じIRIを様々な方法で付与できるということは制限されることに注意してください。</p>
+  <p><a href="#idAttr"><code>rdf:ID</code></a>値は、<a href="#section-baseURIs">5.3項 IRIの解決</a>で定義されているスコープ内の基底URIに「#」を追加したものに属性値を追加することによって、IRIに変換されます。</p></dd>
+<dt>リテラル</dt>
+  <dd><p>リテラルは、目的語ノードとしてのみ機能することができます。</p>
+  <p><a href="http://www.w3.org/TR/rdf11-concepts/#section-Graph-Literal">リテラル</a>には常にデータ型があります。言語タグ付き文字列は、データ型<code>rdf:langString</code>を持ちます。言語タグがなかったり、データ型が指定されていない場合には、リテラルはデータ型<code>xsd:string</code>を持つと仮定されます。</p></dd>
+  <dt>空白ノード</dt>
+  <dd><p>空白ノードは、主語ノードおよび目的ノードとして機能することができます。</p>
+  <p><a href="http://www.w3.org/TR/rdf11-concepts/#section-blank-nodes">空白ノード</a>は、RDFグラフにおいて固有のアイデンティティーを持ってます。グラフがRDF/XMLなどの構文で記述されているときには、この空白ノードには、この特徴を保持するためにグラフ・ローカルな（graph-local）識別子と構文が必要です。このローカルな識別子は、空白ノード識別子と呼ばれ、<a href="#nodeIdAttr">生成規則nodeIdAttr</a>で提供されている構文とともに<code>rdf:nodeID</code>属性の値としてRDF/XMLで使用されます。RDF/XMLの空白ノード識別子は、XML情報セット<a href="http://www.w3.org/TR/xml-infoset/#infoitem.document">文書情報項目</a>で詳述されています。</p>
+  <p>空白ノード識別子が<code>rdf:nodeID</code>属性値として明示的に付与されていない場合は、作成する必要があります（作成した空白ノードID（generated-blank-node-id）の使用に関しては、<a href="#section-Infoset-Grammar-Action">6.3.3項</a>を参照してください）。このような空白ノード識別子は、<code>rdf:nodeID</code>属性値から作成されたいかなる空白ノード識別子とも衝突してはなりません。これは、グラフのすべての空白ノードの固有のアイデンティティーを保持するという方法で行えます、すなわち、同じ空白ノード識別子を異なる空白ノードに付与しません。可能な方法の1つは、不変な接頭辞をすべての<code>rdf:nodeID</code>属性値に加えて、作成済みの空白ノード識別子がその接頭辞を確実に使用していないようにすることです。もう1つの方法は、すべての<code>rdf:nodeID</code>属性値を新しく作成した空白ノード識別子にマッピングし、このようなすべての値においてRDF/XMLドキュメントでそのマッピングを実行することです。</p></dd>
+</dl>
+
+</section>
+<!-- uri resolution -->
+<section id="section-baseURIs" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-baseURIs"><span class="secno">5.3 </span>IRIの解決</h3>
+
+<p>RDF/XMLは、<a href="#section-root-node"><span class="arrow">・</span>root event<span class="arrow">・</span></a>と<a href="#section-element-node"><span class="arrow">・</span>element event<span class="arrow">・</span></a>のそれぞれに対して<a class="termref" href="#eventterm-element-base-uri"><span class="arrow">・</span>base-uri<span class="arrow">・</span></a>アクセサを定義するXMLベース[<cite><a class="bibref" href="#bib-XMLBASE">XMLBASE</a></cite>]をサポートしています。相対IRIは、[<cite><a class="bibref" href="#bib-XMLBASE">XMLBASE</a></cite>]（およびRFC 2396）で指定されているアルゴリズムに従ってIRIに変換されます。これらの仕様では、IRIへの<code>#foo</code>や空の文字列<code>&quot;&quot;</code>のような、フラグメント識別子のみを解決するためのアルゴリズムを定めていません。フラグメント識別子は、フラグメント識別子をスコープ内の基底URIに追加することによって、IRIに変換されます。空の文字列は、スコープ内の基底URIを置き換えることによって、IRIに変換されます。</p>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_2"><span>注</span></div>
+
+<p class=""><strong>テスト:</strong>
+下記で示されています。: <br>
+<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test001.rdf">test001.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test001.nt">test001.nt</a><br>
+<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test004.rdf">test004.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test004.nt">test004.nt</a><br>
+<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test008.rdf">test008.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test008.nt">test008.nt</a></p>
+</div>
+
+<p>空の同じドキュメントの参照、&quot;&quot;は、基底URIのURI部分に対して解決し、フラグメント部分は無視されます。URI（Uniform Resource Identifier）[<cite><a class="bibref" href="#bib-RFC3986">RFC3986</a></cite>]を参照してください。</p>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_3"><span>注</span></div>
+
+<p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test013.rdf">test013.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test013.nt">test013.nt</a>で示されています。</p></div>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_4"><span>注</span></div>
+
+<p class=""><strong>実装注意（参考情報）:</strong> パス要素（/）がない階層的な基底URIを使用する際には、解決のために基底URIを使用する前にこれを追加しなければなりません。</p></div>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_5"><span>注</span></div>
+
+<p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test011.rdf">test011.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test011.nt">test011.nt</a>で示されています。</p>
+
+</div>
+</section>
+<!-- constraints -->
+<section id="section-constraints" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-constraints"><span class="secno">5.4 </span>制約</h3>
+
+<dl>
+  <dt><dfn id="constraint-id">constraint-id</dfn></dt>
+  <dd><p>生成規則<a href="#idAttr">idAttr</a>の各アプリケーションは、属性と一致します。一致した属性の<a class="termref" href="#eventterm-attribute-string-value"><span class="arrow">・</span>string-value<span class="arrow">・</span></a>アクセサと、一致した属性の<a class="termref" href="#eventterm-element-base-uri"><span class="arrow">・</span>base-uri<span class="arrow">・</span></a>アクセサによって形成される対は、1つのRDF/XMLドキュメント内に1つしか存在しません。</p>
+  <p>この名前の構文は、<a href="#rdf-id">rdf-id生成規則</a>と一致しなければなりません。</p>
+  <div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_6"><span>注</span></div>
+  <p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test014.rdf">test014.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/xmlbase/test014.nt">test014.nt</a>で示されています。</p></div></dd>
+</dl>
+
+</section>
+<!-- conformance -->
+<section id="section-conformance" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-conformance"><span class="secno">5.5 </span>適合性</h3>
+
+<dl>
+  <dt>定義:</dt>
+  <dd><dfn id="dfn-rdf-document">RDFドキュメント</dfn>は、具象構文への<a href="http://www.w3.org/TR/rdf-concepts/#dfn-rdf-graph">RDFグラフ</a>のシリアル化です。</dd>
+  <dt>定義:<br></dt>
+  <dd><dfn id="dfn-rdf-xml-document">RDF/XMLドキュメント</dfn>は、このドキュメントで定義されているとおりに、RDFに対するXML構文で記述されている<a class="termref" href="#dfn-rdf-document">RDFドキュメント</a>です。
+</dd>
+  <dt>適合性:<br></dt>
+  <dd>このドキュメントで定義されている仕様に従わない場合は、<a class="termref" href="#dfn-rdf-xml-document">RDF/XMLドキュメント</a>は<dfn id="dfn-conforming-document">適合RDF/XMLドキュメント</dfn>です。</dd>
+</dl>
+
+</section>
+</section>
+<!-- FIFTH PART : Data Model -->
+<section id="section-Data-Model" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+<h2 aria-level="1" role="heading" id="h2_section-Data-Model"><span class="secno">6. </span>構文データ・モデル</h2>
+
+<div>
+
+<p>このドキュメントでは、RDF/XMLの構文を記号のアルファベットに基く文法であると明記しています。記号は、XPATHの<a href="http://www.w3.org/TR/xpath#infoset">情報セット・マッピング</a>の形式では<em>イベント</em>と呼ばれています。イベントのシーケンスは通常、XMLドキュメントから得られ、その場合、以下の<a href="#section-Infoset-Mapping">6.2項 情報セット・マッピング</a>で定義しているように、イベントはドキュメント順です。これらのイベントが形成するシーケンスは、同じXMLドキュメントの[<cite><a class="bibref" href="#bib-SAX">SAX</a></cite>] XML APIによって作成されるイベントのシーケンスと同じようなものにすることを意図しています。イベントの順序を文法と照合すれば、構文的に整形式のRDF/XMLかどうかを判断できます。</p>
+
+<p>文法の生成規則には、その生成規則が認識される際に起こす動作を含むことができます。これらの動作をもとに、構文的に整形式のRDF/XMLのイベントのシーケンスからN-トリプル[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]言語で表現されたRDFグラフへの変換が定義されます。</p>
+
+<p>ここで示したモデルは、RDF/XMLドキュメントからRDFグラフの表現を作成する1つの方法を例示しています。実装方法を強いるものではありません &mdash; 他の方法で同じRDFグラフの表現を作成してもかまいません。</p>
+
+<p>特に、</p>
+
+<ul>
+  <li>この仕様では、RDFグラフのどのような表現も可能です特に、N-トリプル[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]の使用は必須ではありません。</li>
+  <li>この仕様では、[<cite><a class="bibref" href="#bib-XPATH">XPATH</a></cite>]や[<cite><a class="bibref" href="#bib-SAX">SAX</a></cite>]の使用は必須ではありません。</li>
+  <li>この仕様では、RDF/XMLをグラフの表現に変換するソフトウェアがグラフの表現をどの順序で構築するかに制約を置きません。</li>
+  <li>RDF/XMLをグラフの表現に変換するソフトウェアは、述語のアークの複製を排除できます（<em class="rfc2119" title="MAY">MAY</em>）。</li>
+</ul>
+
+<p>構文は、非整形のXMLドキュメントも、XML情報セットを持っていないドキュメントもサポートしていません。例えば、XMLの名前空間[<cite><a class="bibref" href="#bib-XML-NAMES">XML-NAMES</a></cite>]に準拠していないドキュメントをサポートしていません。</p>
+
+<p>Infosetには、XMLベース[<cite><a class="bibref" href="#bib-XMLBASE">XMLBASE</a></cite>]に対するサポートが必要です。RDF/XMLでは、<a href="#section-baseURIs">5.3項</a>で論じた情報項目のプロパティー[base URI]を使用します。</p>
+
+<p>この仕様には、少なくとも以下の情報項目とRDF/XMLのプロパティーをサポートするXML情報セット[<cite><a class="bibref" href="#bib-XML-INFOSET">XML-INFOSET</a></cite>]が必要です。</p>
+
+<dl>
+  <dt><a href="http://www.w3.org/TR/xml-infoset/#infoitem.document">ドキュメント情報項目</a>（document information item）</dt>
+  <dd>[document element], [children], [base URI]</dd>
+  <dt><a href="http://www.w3.org/TR/xml-infoset/#infoitem.element">要素情報項目</a>（element information item）</dt>
+  <dd>[local name], [namespace name], [children], [attributes], [parent], [base URI]</dd>
+  <dt><a href="http://www.w3.org/TR/xml-infoset/#infoitem.attribute">属性情報項目</a>（attribute information item）</dt>
+  <dd>[local name], [namespace name], [normalized value]</dd>
+  <dt><a href="http://www.w3.org/TR/xml-infoset/#infoitem.character">文字情報項目</a>（character information item）</dt>
+  <dd>[character code]</dd>
+</dl>
+
+<p>以下の項目のデータ・モデルイ・ベントへのマッピングは存在していません。</p>
+
+<ul>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.pi">処理命令情報項目</a>（processing instruction information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.rse">非展開実体参照情報項目</a>（processing instruction information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.comment">コメント情報項目</a>（comment information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.doctype">ドキュメント・タイプ宣言情報項目</a>（document type declaration information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.entity.unparsed">非解析実体情報項目</a>（unparsed entity information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.notation">表記法情報項目</a>（notation information item）</li>
+  <li><a href="http://www.w3.org/TR/xml-infoset/#infoitem.namespace">名前空間情報項目</a>（namespace information item）</li>
+</ul>
+
+<p>他の情報項目とプロパティーには、構文データ・モデル・イベントへのマッピングがありません。</p>
+
+<p>予約済みのXML名（<a href="http://www.w3.org/TR/2000/REC-xml-20001006">XML 1.0</a>の<a href="http://www.w3.org/TR/2000/REC-xml-20001006#dt-name">名前</a>を参照）を持つ要素情報の項目は、データ・モデル要素イベントにマッピングされません。これは、<code>xml</code>（大文字と小文字を区別しない比較）で始まるプロパティー[prefix]を持つものすべてであり、値を持たない[prefix]プロパティーを持つもので、<code>xml</code>（大文字と小文字を区別しない比較）で始まる[local name]を持つものすべてです。</p>
+
+<p><a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a>生成規則と一致するXML要素内に含まているすべての情報項目はXMLリテラルを形成し、このマッピングに従いません。詳細に関しては、<a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a>を参照してください。</p>
+
+<p>この項は、[<cite><a class="bibref" href="#bib-XML-INFOSET">XML-INFOSET</a></cite>]仕様の<a href="http://www.w3.org/TR/xml-infoset/#conformance">適合性</a>の要件を満たすことを目的としています。ここでは、この仕様を実装するために必要な情報項目とプロパティーを明記しています。</p>
+
+</div>
+<!-- events -->
+<section id="section-Nodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Nodes"><span class="secno">6.1 </span>イベント</h3>
+
+<p>以下の小項目では、9種類のイベントを定義しています。ほとんどのイベントがInfoset情報項目（<a href="#section-identifier-node">IRI</a>、<a href="#section-blank-nodeid-event">空白ノード</a>、<a href="#section-literal-node">プレーン・リテラル</a>、<a href="#section-typed-literal-node">型付きリテラル</a>を除く）で構成されています。イベント・コンストラクタには、すべての他のイベントと異なる、固有のアイデンティティを持つ新しいイベントを作成するという効果があります。イベントにはアクセサの操作が備わっており、大部分は、静的な値か算出された<em>文字列値</em>（string-value）のアクセサを持っています。</p>
+
+<!-- root event -->
+<section id="section-root-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-root-node"><span class="secno">6.1.1 </span>ルート・イベント</h4>
+
+<p><a href="http://www.w3.org/TR/xml-infoset/#infoitem.document">ドキュメント情報項目</a>から構築され、以下のアクセサと値をとります。</p>
+
+<dl>
+  <dt id="eventterm-root-document-element">document-element</dt>
+  <dd>ドキュメント情報項目プロパティー[document-element]の値に設定。</dd>
+  <dt id="eventterm-root-children">children</dt>
+  <dd>ドキュメント情報項目プロパティー[children]の値に設定。</dd>
+  <dt id="eventterm-root-base-uri">base-uri</dt>
+  <dd>ドキュメント情報項目プロパティー[base URI]の値に設定。</dd>
+  <dt id="eventterm-root-language">language</dt>
+  <dd>空の文字列に設定。</dd>
+</dl>
+
+</section>
+<!-- root event -->
+<section id="section-element-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-element-node"><span class="secno">6.1.2 </span>要素イベント</h4>
+
+<p><a href="http://www.w3.org/TR/xml-infoset/#infoitem.element">要素情報項目</a>から構築され、以下のアクセサと値をとります。</p>
+
+<dl>
+  <dt id="eventterm-element-local-name">local-name</dt>
+  <dd>要素情報項目プロパティー[local name]の値に設定。</dd>
+  <dt id="eventterm-element-namespace-name">namespace-name</dt>
+  <dd>要素情報項目プロパティー[namespace name]の値に設定。</dd>
+  <dt id="eventterm-element-children">children</dt>
+  <dd>要素情報項目プロパティー[children]の値に設定。</dd>
+  <dt id="eventterm-element-parent">parent</dt>
+  <dd>要素情報項目プロパティー[parent]の値に設定。</dd>
+  <dt id="eventterm-element-base-uri">base-uri</dt>
+  <dd>要素情報項目プロパティー[base URI]の値に設定。</dd>
+  <dt id="eventterm-element-attributes">attributes</dt>
+  <dd><p>1組の属性情報項目である要素情報項目プロパティー[attributes]の値から作成。</p>
+  <p>この集合が属性情報項目xml:lang（値「http://www.w3.org/XML/1998/namespace」を持つ[namespace name]プロパティーと[local name]プロパティーの値「lang」）を含んでいる場合、これは属性情報項目の集合から削除され、<a class="termref" href="#eventterm-element-language"><span class="arrow">・</span>language<span class="arrow">・</span></a>アクセサが属性情報項目の[normalized-value]プロパティーに設定されます。</p>
+  <p>残りすべての予約されたXML名（<a href="http://www.w3.org/TR/2000/REC-xml-20001006">XML 1.0</a>の<a href="http://www.w3.org/TR/2000/REC-xml-20001006#dt-name">名前</a>を参照）は現在、この集合から削除されています。これは、<code>xml</code>（大文字と小文字を区別しない比較）で始まるプロパティー[prefix]を持つ集合のすべての属性情報項目であり、値を持たない[prefix]プロパティーを持つすべての属性情報項目で、<code>xml</code>（大文字と小文字を区別しない比較）で始まる[local name]を持つものは削除されています。[base URI]アクセサは、<code>xml:base</code>属性情報項目が削除される前にXMLベースで計算されることに注意してください。</p>
+  <p>その後、属性情報項目の残りの集合は、このアクセサの値として割り当てられた<a href="#section-attribute-node">属性イベント</a>の新しい集合を構築するために使用されます。</p></dd>
+  <dt id="eventterm-element-URI">URI</dt>
+  <dd>名前空間名アクセサの値とローカル名アクセサの値を連結した文字列値に設定。 </dd>
+  <dt id="eventterm-element-URI-string-value">URI-string-value</dt>
+  <dd><p>値は、「&lt;」、<a class="termref" href="#eventterm-element-URI"><span class="arrow">・</span>URI<span class="arrow">・</span></a>アクセサのエスケープされた値、「&gt;」を、この順序で連結したものです。</p>
+  <p><a class="termref" href="#eventterm-element-URI"><span class="arrow">・</span>URI<span class="arrow">・</span></a>アクセサのエスケープは、IRIにN-トリプル・エスケープ[[N_TRIPLES]]を使用します。</p></dd>
+  <dt id="eventterm-element-liCounter">li-counter</dt>
+  <dd>整数値1に設定。</dd>
+  <dt id="eventterm-element-language">language</dt>
+  <dd>上記で述べたように、<a class="termref" href="#eventterm-element-attributes"><span class="arrow">・</span>attributes<span class="arrow">・</span></a>から設定。値が属性から得られない場合、この値は、親イベント（<a href="#section-root-node">ルート・イベント</a>か<a href="#section-element-node">要素イベント</a>のどちらか）における言語アクセサの値に設定し、これは空の文字列でありえます。</dd>
+  <dt id="eventterm-element-subject">subject</dt>
+  <dd>初期値がありません。<a href="#section-identifier-node">識別子</a>イベントである値をとります。このアクセサは、RDFグラフの1つのノードを処理する要素で使用され、一般にこれはステートメントの主語です。</dd>
+</dl>
+
+</section>
+<!-- end element event -->
+<section id="section-end-element-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-end-element-node"><span class="secno">6.1.3 </span>終了要素イベント</h4>
+
+<p>アクセサがありません。その順序の包含要素の終了を示します。</p>
+
+</section>
+<!-- attribute event -->
+<section id="section-attribute-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-attribute-node"><span class="secno">6.1.4 </span>属性イベント</h4>
+
+<p><a href="http://www.w3.org/TR/xml-infoset/#infoitem.attribute">属性情報項目</a>から構築され、以下のアクセサと値をとります。</p>
+<dl>
+  <dt id="eventterm-attribute-local-name">local-name</dt>
+  <dd>属性情報項目プロパティー[local name]の値に設定。</dd>
+  <dt id="eventterm-attribute-namespace-name">namespace-name</dt>
+  <dd>属性情報項目プロパティー[namespace name]の値に設定。</dd>
+  <dt id="eventterm-attribute-string-value">string-value</dt>
+  <dd>[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]で指定されているように、属性情報項目プロパティー[normalized value]の値に設定（正規化した値がゼロの長さの文字である属性である場合、文字列値もゼロの長さの文字列です）。</dd>
+  <dt id="eventterm-attribute-URI">URI</dt>
+  <dd><p><a class="termref" href="#eventterm-attribute-namespace-name"><span class="arrow">・</span>namespace-name<span class="arrow">・</span></a>が存在する場合、<a class="termref" href="#eventterm-attribute-namespace-name"><span class="arrow">・</span>namespace-name<span class="arrow">・</span></a>アクセサの値と、<a class="termref" href="#eventterm-attribute-local-name"><span class="arrow">・</span>local-name<span class="arrow">・</span></a>アクセサの値を連結した文字列値に設定します。そうでない場合には、<a class="termref" href="#eventterm-attribute-local-name"><span class="arrow">・</span>local-name<span class="arrow">・</span></a>が、<code>ID</code>や<code>about</code>、<code>resource</code>、<code>parseType</code>、<code>type</code>である場合、<a class="termref" href="#rdf-ns-uri"><span class="arrow">・</span>RDF namespace IRI<span class="arrow">・</span></a>と・<a class="termref" href="#eventterm-attribute-local-name"><span class="arrow">・</span>local-name<span class="arrow">・</span></a>アクセサの値を結合した文字列値に設定します。他の非名前空間<a class="termref" href="#eventterm-attribute-local-name"><span class="arrow">・</span>local-name<span class="arrow">・</span></a>アクセサ値は禁じられています。</p>
+  <p>限られた集合の非名前空間名のサポートが必要で（<em class="rfc2119" title="REQUIRED">REQUIRED</em>）、[<cite><a class="bibref" href="#bib-RDFMS">RDFMS</a></cite>]で指定されているRDF/XMLドキュメントが有効なままでありえるようにすることを目的としています。つまり、新しいドキュメントはこれらの非修飾属性を使用べきではなく（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）、アプリケーションは非修飾形式がドキュメントにある時に警告することを選択できます（<em class="rfc2119" title="MAY">MAY</em>）。</p>
+  <p>XML属性のIRIの構築により、異なるXML属性の同じIRIを生成できます。これによって、属性イベントを一致させる際に、文法があいまいになる可能性があります（<code>rdf:about</code>と<code>about</code>の両方のXML属性が存在しているときなどに）。これがあるドキュメントは、不正です。</p></dd>
+  <dt id="eventterm-attribute-URI-string-value">URI-string-value</dt>
+  <dd><p>値は、「&lt;」、<a class="termref" href="#eventterm-attribute-URI"><span class="arrow">・</span>URI<span class="arrow">・</span></a>アクセサのエスケープされた値、・URI・アクセサ、「&gt;」を、この順で連結させたものです。</p>
+  <p><a class="termref" href="#eventterm-attribute-URI"><span class="arrow">・</span>URI<span class="arrow">・</span></a>アクセサのエスケープは、IRIにN-トリプル・エスケープ[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]を使用します。</p></dd>
+</dl>
+
+</section>
+<!-- text event -->
+<section id="section-text-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-text-node"><span class="secno">6.1.5 </span>テキスト・イベント</h4>
+
+<p>一連の1つ以上の<a href="http://www.w3.org/TR/xml-infoset/#infoitem.character">文字情報項目</a>のシーケンスから構築されます。1つのアクセサを持っています。</p>
+
+<dl>
+  <dt id="eventterm-text-string-value">string-value</dt>
+  <dd>各文字情報項目の[<a href="http://www.w3.org/TR/xml-infoset/#infoitem.character">character code</a>]プロパティーの連結から作られる文字列の値に設定。</dd>
+</dl>
+
+</section>
+<!-- uri reference event -->
+<section id="section-identifier-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-identifier-node"><span class="secno">6.1.6 </span>IRIイベント</h4>
+
+<p id="eventterm-identifier-identifier-type">以下のアクセサを持っているIRIのイベント。</p>
+
+<dl>
+  <dt id="eventterm-identifier-identifier">identifier</dt>
+  <dd>IRIとして使用される文字列値をとる。</dd>
+  <dt id="eventterm-identifier-string-value">string-value</dt>
+  <dd><p>値は、「&lt;」、<a class="termref" href="#eventterm-identifier-identifier"><span class="arrow">・</span>identifier<span class="arrow">・</span></a>アクセサのエスケープされた値、「&gt;」を連結したものです。</p>
+<p><a class="termref" href="#eventterm-identifier-identifier"><span class="arrow">・</span>identifier<span class="arrow">・</span></a>アクセサ値のエスケープは、IRIにN-トリプル・エスケープ[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]を使用します。</p></dd>
+</dl>
+
+<p>これらのイベントは、<a class="termref" href="#eventterm-identifier-identifier"><span class="arrow">・</span>identifier<span class="arrow">・</span></a>アクセサに値を与えることによって構築されます。</p>
+
+<p>RDFグラフの識別子の詳細に関しては、<a href="#section-Identifiers">5.2項</a>を参照してください。</p>
+
+</section>
+<!-- blank node identifier event -->
+<section id="section-blank-nodeid-event" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-blank-nodeid-event"><span class="secno">6.1.7 </span>空白ノード識別子イベント</h4>
+
+<p>以下のアクセサを持っている空白ノード識別子のイベント。</p>
+
+<dl>
+  <dt id="eventterm-blanknodeid-identifier">identifier</dt>
+  <dd>文字列値をとります。</dd>
+  <dt id="eventterm-blanknodeid-string-value">string-value</dt>
+  <dd>値は、<a class="termref" href="#eventterm-blanknodeid-identifier"><span class="arrow">・</span>identifier<span class="arrow">・</span></a>アクセサの値の関数です。値は「_:」で始まり、全体の値はN-トリプル<a href="http://www.w3.org/TR/n-triples/#grammar-production-BLANK_NODE_LABEL">BLANK_NODE_LABELD</a>生成規則に一致していなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。関数は、<a href="#section-Identifiers">5.2項 識別子</a>で論じたように、固有の空白ノードのアイデンティティーを保持していなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。</dd> 
+</dl>
+
+<p>これらのイベントは、<a class="termref" href="#eventterm-blanknodeid-identifier"><span class="arrow">・</span>identifier<span class="arrow">・</span></a>アクセサに値を与えることによって構築されます。</p>
+
+<p>RDFグラフの識別子の詳細に関しては、<a href="#section-Identifiers">5.2項</a>を参照してください。</p>
+
+</section>
+<!-- plain literal event -->
+<section id="section-literal-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-literal-node"><span class="secno">6.1.8 </span>プレーン・リテラル・イベント</h4>
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_7"><span>注</span></div>
+
+<p class="">RDF 1.1では、RDF/XMLのプレーン・リテラルは、データ型<code>xsd:string</code>を持つリテラルに対する糖衣構文として扱われるか（言語タグが存在しないとき）、データ型<code>rdf:langString</code>を備えたリテラルとして扱われます（言語タグが存在するとき）。この小項目で定義しているN-トリプルへのマッピングには、この変更による影響はありません。</p></div>
+
+<p>以下のアクセサを持つことができるプレーン・リテラルのイベント。</p> 
+
+<dl>  <dt id="eventterm-literal-literal-value">literal-value</dt>
+  <dd>文字列値をとります。</dd>
+  <dt id="eventterm-literal-literal-language">literal-language</dt>
+  <dd>RDFのプレーン・リテラルで言語タグとして使用される文字列値を取ります。</dd>
+  <dt id="eventterm-literal-string-value">string-value</dt>
+  <dd><p>値は以下の他のアクセサから計算されます。</p>
+  <p><a class="termref" href="#eventterm-literal-literal-language"><span class="arrow">・</span>literal-language<span class="arrow">・</span></a>が空の文字列である場合、値は、「&quot;」（1つのダブル引用符）、<a class="termref" href="#eventterm-literal-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>アクセサのエスケープされた値、「&quot;」（1つのダブル引用符）を連結したものです。</p>
+  <p>そうでない場合には、値は、「&quot;」（1つのダブル引用符）、<a class="termref" href="#eventterm-literal-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>アクセサのエスケープされた値、「&quot;@」（1つのダブル引用符と「@」）、<a class="termref" href="#eventterm-literal-literal-language"><span class="arrow">・</span>literal-language<span class="arrow">・</span></a>アクセサの値を連結したものです。</p>
+
+
+<p><a class="termref" href="#eventterm-literal-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>アクセサ値のエスケープは、[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]で述べたように、&quot;などの特定の文字をエスケープするために文字列にN-トリプル・エスケープ[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]を使用します。</p></dd>
+</dl>
+
+<p>これらのイベントは、<a class="termref" href="#eventterm-literal-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>と<a class="termref" href="#eventterm-literal-literal-language"><span class="arrow">・</span>literal-language<span class="arrow">・</span></a>のアクセサの値を与えることによって構築されます。</p> 
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_8"><span>注</span></div>
+
+<p id="literal-comb-char-note1" class="">
+<strong>相互運用性注記（参考情報）:</strong> Unicodeの結合文字で始まるリテラルは、相互運用性の問題を引き起こすかもしれませんが、許されています。詳細に関しては、[<cite><a class="bibref" href="#bib-CHARMOD">CHARMOD</a></cite>]を参照してください。</p>
+
+</div>
+</section>
+<!-- typed literal event -->
+<section id="section-typed-literal-node" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-typed-literal-node"><span class="secno">6.1.9 </span>型付きリテラル・イベント</h4>
+
+<p>以下のアクセサを持つことができる型付きリテラルのイベント</p>
+
+<dl>
+  <dt id="eventterm-typedliteral-literal-value">literal-value</dt>
+  <dd>文字列値をとります。</dd>
+  <dt id="eventterm-typedliteral-literal-datatype">literal-datatype</dt>
+  <dd>IRIとして使用される文字列値をとります。</dd>
+  <dt id="eventterm-typedliteral-string-value">string-value</dt>
+  <dd><p>値は、「&quot;」（1つのダブル引用符）、<a class="termref" href="#eventterm-typedliteral-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>アクセサのエスケープされた値、「&quot;」（1つのダブル引用符）、「^^&lt;」、<a class="termref" href="#eventterm-typedliteral-literal-datatype"><span class="arrow">・</span>literal-datatype<span class="arrow">・</span></a>アクセサのエスケープされた値、「&gt;」をこの順序で連結したものです。</p>
+  <p><a class="termref" href="#eventterm-typedliteral-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>アクセサ値のエスケープは、&quot;などの特定の文字をエスケープするために、文字列にN-トリプル・エスケープ[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]を使用します。<a class="termref" href="#eventterm-typedliteral-literal-datatype"><span class="arrow">・</span>literal-datatype<span class="arrow">・</span></a>アクセサ値のエスケープは、IRIにN-トリプル・エスケープ[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]を使用しなければなりません。</p></dd>
+</dl>
+
+<p>これらのイベントは、<a class="termref" href="#eventterm-typedliteral-literal-value"><span class="arrow">・</span>literal-value<span class="arrow">・</span></a>と<a class="termref" href="#eventterm-typedliteral-literal-datatype"><span class="arrow">・</span>literal-datatype<span class="arrow">・</span></a>のアクセサに値を与えることによって構築されます。</p> 
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_9"><span>注</span></div>
+
+<p class="" id="literal-comb-char-note2"><strong>相互運用性注記（参考情報）:</strong> Unicodeの結合文字で始まるリテラルは、相互運用性の問題を引き起こすかもしれませんが、許されています。詳細に関しては、[<cite><a class="bibref" href="#bib-CHARMOD">CHARMOD</a></cite>]を参照してください。</p></div>
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_10"><span>注</span></div>
+
+<p id="literal-white-space-normalization-note" class=""><strong>実装注記（参考情報）: </strong> XMLスキーマ（パート1）[<cite><a class="bibref" href="#bib-XMLSCHEMA-1">XMLSCHEMA-1</a></cite>]では、<a href="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#section-White-Space-Normalization-during-Validation">空白（white space）の正規化</a>は、whiteSpace相（facet）の値による妥当性検証の間に起こります。このドキュメントで使用される構文マッピングはこの後に起こるため、whiteSpace相には形式的にはそれ以上の効果はありません。</p></div>
+
+</section>
+</section>
+<!-- infoset mapping -->
+<section id="section-Infoset-Mapping" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 id="section-Infoset-Conformance" aria-level="2" role="heading"><span class="secno">6.2 </span>情報セット・マッピング</h3>
+
+<p>Infosetを<em>ドキュメント順</em>でイベントのシーケンスに変換するためには、各情報項目を上記で述べたように変換して、アクセサと値でイベントのツリー（tree）を生成します。その後に、以下で述べるように各要素イベントを置き換え、イベントのツリーをドキュメント順のシーケンスに変えます。</p>
+
+<ol>
+  <li>最初の<a href="#section-element-node">要素イベント</a></li>
+  <li>再帰的に変換された<a href="http://www.w3.org/TR/xml-infoset/#infoitem.element">子</a>アクセサの値、恐らくイベントの空の順序付きリスト。</li>
+  <li><a href="#section-end-element-node">終了要素イベント</a></li>
+</ol>
+
+</section>
+<!-- grammar notation -->
+<section id="section-Infoset-Grammar-Notation" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 id="section-Notation-Forms" aria-level="2" role="heading"><span class="secno">6.3 </span>文法表記法</h3>
+
+<p>以下の表記法は、<a href="#section-Data-Model">6項</a>で示したようなデータ・モデル・イベントのシーケンスの一致と、この一致のために実行する動作を記述するために使用します。RDF/XML文法は、これらの一致したデータ・モデル・イベントからトリプルへのマッピングに関して、以下の形式の表記法を使用して定義されます。</p>
+
+<blockquote><div class="productionOuter"><div class="productionInner">
+
+<p>number <em>event-type</em> <em>event-content</em></p>
+
+</div></div>
+
+<div>
+<em>action</em>...
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code>N-Triples</code></p>
+
+</div></div>
+</div>
+</blockquote>
+
+<p>このとき、<em>イベント・コンテンツ</em>は、<em>イベント・タイプ</em>（<a href="#section-Nodes">6.1項</a>で定義されているように）に一致している表現で、以下の項で示された表記法を使用しています。数は参考のために使用しています。<em>動作</em>という文法には、N-トリプル[<cite><a class="bibref" href="#bib-N-TRIPLES">N-TRIPLES</a></cite>]形式で記述された、グラフに対する新しいトリプルの生成が含まれています。</p>
+
+<p>以下の項では、使用している一般的な表記法と、イベントの一致とアクションの表記法について記述しています。</p>
+
+<!-- general grammar notation -->
+<section id="section-Infoset-Grammar-General" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-Infoset-Grammar-General"><span class="secno">6.3.1 </span>文法一般記法</h4>
+
+<table>
+<tbody>
+  <tr>
+    <th>表記</th>
+    <th>意味</th>
+  </tr>
+  <tr>
+    <td><em>event</em>.<em>accessor</em></td>
+    <td>イベント・アクセサの値。</td>
+  </tr>
+  <tr>
+    <td><code>rdf:</code><em>X</em></td>
+    <td><a href="#section-Namespace">5.1項</a>で定義されているようなURI。</td>
+  </tr>
+  <tr>
+    <td>&quot;ABC&quot;</td>
+    <td>A、B、Cの順の文字列。</td>
+  </tr>
+</tbody>
+</table>
+
+</section>
+<!-- grammar event matching notation -->
+<section id="section-Infoset-Grammar-Matching" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-Infoset-Grammar-Matching"><span class="secno">6.3.2 </span>文法イベント一致表記法</h4>
+
+<table>
+<tbody>
+  <tr>
+    <th>表記</th>
+    <th>意味</th>
+  </tr>
+  <tr>
+    <td>A == B</td> 
+    <td>イベント・アクセサAは式Bに一致する。</td>
+  </tr>
+  <tr>
+    <td>A != B</td>
+    <td>AはBと等しくない。</td>
+  </tr>
+  <tr>
+    <td>A | B | ...</td>
+    <td>A、B、... 用語は択一的である。</td>
+  </tr>
+  <tr>
+    <td>A - B</td>
+    <td>Bのすべての用語を除いたAの用語。</td>
+  </tr>
+  <tr>
+    <td><dfn id="anyURI">anyURI</dfn>.</td>
+    <td>任意のURI。</td>
+  </tr>
+  <tr>
+    <td><dfn id="anyString">anyString</dfn>.</td>
+    <td>任意の文字列。</td>
+  </tr>
+  <tr>
+    <td>list(item1, item2, ...); list()</td>
+    <td>イベントの順序付きリスト。空のリスト。</td>
+  </tr>
+  <tr>
+    <td>set(item1, item2, ...); set()</td>
+    <td>順不同のイベントの集合。空の集合。</td>
+  </tr>
+  <tr>
+    <td>*</td>
+    <td>0以上の先行する用語。</td>
+  </tr>
+  <tr>
+    <td>?</td>
+    <td>0か1の先行する用語。</td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td>1以上の先行する用語。</td>
+  </tr>
+  <tr>
+    <td>root(acc1 == value1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;acc2 == value2, ...)</td>
+    <td><a href="#section-root-node">ルート・イベント</a>をアクセサに一致。</td>
+  </tr>
+  <tr>
+    <td>start-element(acc1 == value1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;acc2 == value2, ...)<br>
+<em>children</em><br>
+end-element()</td>
+    <td><a href="#section-element-node">要素イベント</a>のシーケンスをアクセサに一致。恐らく、要素コンテンツと<a href="#section-end-element-node">終了要素イベント</a>としてのイベントの空のリスト。</td>
+  </tr>
+  <tr>
+    <td>attribute(acc1 == value1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;acc2 == value2, ...)</td>
+    <td><a href="#section-attribute-node">属性イベント</a>をアクセサに一致。</td>
+  </tr>
+  <tr>
+    <td>text()</td>
+    <td><a href="#section-text-node">テキスト・イベント</a>に一致。</td>
+  </tr>
+</tbody>
+</table>
+
+</section>
+<!-- grammar action notation -->
+<section id="section-Infoset-Grammar-Action" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_section-Infoset-Grammar-Action"><span class="secno">6.3.3 </span>文法アクション表記法</h4>
+
+<table>
+<tbody>
+  <tr>
+    <th>表記</th>
+    <th>意味</th>
+  </tr>
+  <tr>
+    <td>A := B</td>
+    <td>Aを値Bに割り当てる。</td>
+  </tr>
+  <tr>
+    <td>concat(A, B, ..)</td>
+    <td>用語を順番に連結することによって作成された文字列。</td>
+  </tr>
+  <tr>
+    <td>resolve(<em>e</em>, <em>s</em>)</td>
+    <td><a href="#section-baseURIs">5.3項 URIの解決</a>で定義されているように、文字列<em>s</em>を<a href="#section-element-node" class="sec-ref"><span class="secno">6.1.2</span> <span class="sec-title">要素イベント</span></a><em>e</em>の<a class="termref" href="#eventterm-element-base-uri"><span class="arrow">・</span>base-uri<span class="arrow">・</span></a>アクセサに対する相対IRIとして解釈することで作成される文字列。その結果作成される文字列は、IRIを表現します。</td>
+  </tr>
+  <tr>
+    <td>generated-blank-node-id()</td>
+    <td><a href="#section-Identifiers">5.2項 識別子</a>で定義されているように、生成した新しい固有の空白ノード識別子の文字列値。</td>
+  </tr>
+  <tr>
+    <td><em>event</em>.<em>accessor</em> := <em>value</em></td>
+    <td>与えられた値にイベント・アクセサを設定。</td>
+  </tr>
+  <tr>
+    <td>uri(identifier := value)</td>
+    <td>新しい<a href="#section-identifier-node">URI参照イベント</a>を作成。</td>
+  </tr>
+  <tr>
+    <td>bnodeid(identifier := value)</td>
+    <td>新しい<a href="#section-blank-nodeid-event">空白ノード識別子イベント</a>を作成。<a href="#section-Identifiers">5.2 識別子</a>の項も参照。</td>
+  </tr>
+  <tr>
+    <td>literal(literal-value := string,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;literal-language := language, ...)</td>
+    <td>新しい<a href="#section-literal-node">プレーン・リテラル・イベント</a>を作成。</td>
+  </tr>
+  <tr>
+    <td>typed-literal(literal-value := string, ...)</td>
+    <td>新しい<a href="#section-typed-literal-node">型付きリテラル・イベント</a>を作成。</td>
+  </tr>
+</tbody>
+</table>
+
+</section>
+</section>
+</section>
+<!-- SIXTH PART : RDF/XML grammar -->
+<section id="section-Infoset-Grammar" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Infoset-Grammar"><span class="secno">7. </span>RDF/XML文法</h2>
+
+<!-- grammar summary -->
+<section id="section-grammar-summary" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h3 aria-level="2" role="heading" id="h3_section-grammar-summary"><span class="secno">7.1 </span>文法の要約</h3>
+
+<div class="productionOuter"><div class="productionInner">
+
+<table>
+<tbody>
+  <tr>
+    <td><a href="#coreSyntaxTerms">7.2.2</a> <a href="#coreSyntaxTerms">coreSyntaxTerms</a></td>
+    <td><code>rdf:RDF</code> | <code>rdf:ID</code> | <code>rdf:about</code> | <code>rdf:parseType</code> | <code>rdf:resource</code> | <code>rdf:nodeID</code> | <code>rdf:datatype</code></td>
+  </tr>
+  <tr>
+    <td><a href="#syntaxTerms">7.2.3</a> <a href="#syntaxTerms">syntaxTerms</a></td>
+    <td><a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:Description</code> | <code>rdf:li</code></td>
+  </tr>
+  <tr>
+    <td><a href="#oldTerms">7.2.4</a> <a href="#oldTerms">oldTerms</a></td>
+    <td><code>rdf:aboutEach</code> | <code>rdf:aboutEachPrefix</code> | <code>rdf:bagID</code></td>
+  </tr>
+  <tr>
+    <td><a href="#nodeElementURIs">7.2.5</a> <a href="#nodeElementURIs">nodeElementURIs</a></td>
+    <td><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:li</code> | <a href="#oldTerms">oldTerms</a> )</td>
+  </tr>
+  <tr>
+    <td><a href="#propertyElementURIs">7.2.6</a> <a href="#propertyElementURIs">propertyElementURIs</a></td>
+    <td><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:Description</code> | <a href="#oldTerms">oldTerms</a> )</td>
+  </tr>
+  <tr>
+    <td><a href="#propertyAttributeURIs">7.2.7</a> <a href="#propertyAttributeURIs">propertyAttributeURIs</a></td>
+    <td><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a>  | <code>rdf:Description</code> | <code>rdf:li</code> | <a href="#oldTerms">oldTerms</a> )</td>
+  </tr>
+  <tr>
+    <td><a href="#doc">7.2.8</a> <a href="#doc">doc</a></td>
+    <td>root(<a href="#eventterm-root-document-element">document-element</a> == <a href="#RDF">RDF</a>, <a href="#eventterm-root-children">children</a> == list(<a href="#RDF">RDF</a>))</td>
+  </tr>
+  <tr>
+    <td><a href="#RDF">7.2.9</a> <a href="#RDF">RDF</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <code>rdf:RDF</code>, <a href="#eventterm-element-attributes">attributes</a> == set())<br>
+<a href="#nodeElementList">nodeElementList</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#nodeElementList">7.2.10</a> <a href="#nodeElementList">nodeElementList</a></td>
+    <td><a href="#ws">ws</a>* (<a href="#nodeElement">nodeElement</a> <a href="#ws">ws</a>* )*</td>
+  </tr>
+  <tr>
+    <td><a href="#nodeElement">7.2.11</a> <a href="#nodeElement">nodeElement</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#nodeElementURIs">nodeElementURIs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set((<a href="#idAttr">idAttr</a> | <a href="#nodeIdAttr">nodeIdAttr</a> | <a href="#aboutAttr">aboutAttr</a> )?, <a href="#propertyAttr">propertyAttr</a>*))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#ws">7.2.12</a> <a href="#ws">ws</a></td>
+    <td><a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-common-syn">共通構文構成子</a>（Common Syntactic Constructs）の項のXML[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]定義<em>空白</em>規則[3]<a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-S">S</a>で定義されている空白に一致している<a href="#section-text-node">テキスト・イベント</a></td>
+  </tr>
+  <tr>
+    <td><a href="#propertyEltList">7.2.13</a> <a href="#propertyEltList">propertyEltList</a></td>
+    <td><a href="#ws">ws</a>* (<a href="#propertyElt">propertyElt</a> <a href="#ws">ws</a>* ) *</td>
+  </tr>
+  <tr>
+    <td><a href="#propertyElt">7.2.14</a> <a href="#propertyElt">propertyElt</a></td>
+    <td><a href="#resourcePropertyElt">resourcePropertyElt</a> | <a href="#literalPropertyElt">literalPropertyElt</a> | <a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a> | <a href="#parseTypeResourcePropertyElt">parseTypeResourcePropertyElt</a> | <a href="#parseTypeCollectionPropertyElt">parseTypeCollectionPropertyElt</a> | <a href="#parseTypeOtherPropertyElt">parseTypeOtherPropertyElt</a> | <a href="#emptyPropertyElt">emptyPropertyElt</a></td>
+  </tr>
+  <tr>
+    <td><a href="#resourcePropertyElt">7.2.15</a> <a href="#resourcePropertyElt">resourcePropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?))<br>
+<a href="#ws">ws</a>* <a href="#nodeElement">nodeElement</a> <a href="#ws">ws</a>*<br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#literalPropertyElt">7.2.16</a> <a href="#literalPropertyElt">literalPropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#datatypeAttr">datatypeAttr</a>?))<br>
+<a href="#section-text-node">text()</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#parseTypeLiteralPropertyElt">7.2.17</a> <a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a></td> <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseLiteral">parseLiteral</a>))<br>
+<a href="#literal">literal</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#parseTypeResourcePropertyElt">7.2.18</a> <a href="#parseTypeResourcePropertyElt">parseTypeResourcePropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseResource">parseResource</a>))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#parseTypeCollectionPropertyElt">7.2.19</a> <a href="#parseTypeCollectionPropertyElt">parseTypeCollectionPropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseCollection">parseCollection</a>))<br>
+<a href="#nodeElementList">nodeElementList</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#parseTypeOtherPropertyElt">7.2.20</a> <a href="#parseTypeOtherPropertyElt">parseTypeOtherPropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseOther">parseOther</a>))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#emptyPropertyElt">7.2.21</a> <a href="#emptyPropertyElt">emptyPropertyElt</a></td>
+    <td>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ), <a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, ( <a href="#resourceAttr">resourceAttr</a> | <a href="#nodeIdAttr">nodeIdAttr</a> | <a href="#datatypeAttr">datatypeAttr</a> )?, <a href="#propertyAttr">propertyAttr</a>*))<br>
+end-element()</td>
+  </tr>
+  <tr>
+    <td><a href="#idAttr">7.2.22</a> <a href="#idAttr">idAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:ID</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#rdf-id">rdf-id</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#nodeIdAttr">7.2.23</a> <a href="#nodeIdAttr">nodeIdAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:nodeID</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#rdf-id">rdf-id</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#aboutAttr">7.2.24</a> <a href="#aboutAttr">aboutAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:about</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#propertyAttr">7.2.25</a> <a href="#propertyAttr">propertyAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <a href="#propertyAttributeURIs">propertyAttributeURIs</a>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#anyString">anyString</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#resourceAttr">7.2.26</a> <a href="#resourceAttr">resourceAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:resource</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#datatypeAttr">7.2.27</a> <a href="#datatypeAttr">datatypeAttr</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:datatype</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</td>
+  </tr>
+  <tr>
+    <td><a href="#parseLiteral">7.2.28</a> <a href="#parseLiteral">parseLiteral</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>, <a href="#eventterm-attribute-string-value">string-value</a> == &quot;Literal&quot;)</td>
+  </tr>
+  <tr>
+    <td><a href="#parseResource">7.2.29</a> <a href="#parseResource">parseResource</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>, <a href="#eventterm-attribute-string-value">string-value</a> == &quot;Resource&quot;)</td>
+  </tr>
+  <tr>
+    <td><a href="#parseCollection">7.2.30</a> <a href="#parseCollection">parseCollection</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>, <a href="#eventterm-attribute-string-value">string-value</a> == &quot;Collection&quot;)</td>
+  </tr>
+  <tr>
+    <td><a href="#parseOther">7.2.31</a> <a href="#parseOther">parseOther</a></td>
+    <td>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>, <a href="#eventterm-attribute-string-value">string-value</a> == <a href="#anyString">anyString</a> - (&quot;Resource&quot; | &quot;Literal&quot; | &quot;Collection&quot;) )</td>
+  </tr>
+  <tr>
+    <td><a href="#URI-reference">7.2.32</a> <a href="#URI-reference">URI-reference</a></td>
+    <td>IRI。</td>
+  </tr>
+  <tr>
+    <td><a href="#literal">7.2.33</a> <a href="#literal">literal</a></td>
+    <td><a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-starttags">3.1 開始タグ、終了タグ、空要素タグ</a>の項の[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]定義<em>要素のコンテンツ</em>（Content of Elements）規則[43]<a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-content">コンテンツ</a>によって許されているXML要素コンテンツ。</td>
+  </tr>
+  <tr>
+    <td><a href="#rdf-id">7.2.34</a> <a href="#rdf-id">rdf-id</a></td>
+    <td>正当な[<cite><a class="bibref" href="#bib-XML-NAMES">XML-NAMES</a></cite>]トークン<a href="http://www.w3.org/TR/REC-xml-names/#NT-NCName">NCName</a>に一致している属性<a class="termref" href="#eventterm-attribute-string-value"><span class="arrow">・</span>string-value<span class="arrow">・</span></a>。</td>
+  </tr>
+</tbody>
+</table>
+
+</div></div>
+</section>
+<!-- grammar productions -->
+<section id="section-grammar-productions" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h3 aria-level="2" role="heading" id="h3_section-grammar-productions"><span class="secno">7.2 </span>文法生成規則</h3>
+
+<!-- grammar start -->
+<section id="start" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h4 aria-level="3" role="heading" id="h4_start"><span class="secno">7.2.1 </span>文法の開始</h4>
+
+<p>RDF/XMLが独立型のXMLドキュメント（application/rdf+xml <a href="#section-MIME-Type">RDF MIMEタイプ</a>オブジェクトとしての表現やその他の手段で識別される）である場合、文法は生成規則<a href="#doc">doc</a>や生成規則<a href="#nodeElement">nodeElement</a>で開始できます。</p>
+
+<p>RDF/XMLが他のXMLコンテンツに組み込まれているときなどの、文脈によってコンテンツがRDF/XMLであると判明している場合には、<a href="#section-element-node">要素イベント</a> <a href="#RDF">RDF</a>（要素がその時点でXMLにおいて正当であるときにのみ）において、または、生成規則<a href="#nodeElementList">nodeElementList</a>（これは要素のリストであるため、要素コンテンツが正当であるときにのみ)において文法を開始できます。このような組み込みRDF/XMLには、<a href="#section-root-node">ルート・イベント</a>は利用できないため、最外部要素の<a class="termref" href="#eventterm-element-base-uri"><span class="arrow">・</span>base-uri<span class="arrow">・</span></a>値を、包含するXMLから初期化しなければなりません。このような組み込みが行われた場合、文法を何度か入力できますが、状態は保存されそうにないということに注意してください。</p>
+
+</section>
+<!-- core syntax terms -->
+<section id="coreSyntaxTerms" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_coreSyntaxTerms"><span class="secno">7.2.2 </span>生成規則coreSyntaxTerms</h4>
+
+<div class="productionOuter"><div class="productionInner"><p><code>rdf:RDF</code> | <code>rdf:ID</code> | <code>rdf:about</code> | <code>rdf:parseType</code> | <code>rdf:resource</code> | <code>rdf:nodeID</code> | <code>rdf:datatype</code></p>
+
+</div></div>
+
+<p>RDF/XMLで使用される<a href="#section-Namespace">5.1項</a>のRDF語彙の構文用語のサブセット。</p>
+
+</section>
+<!-- syntax terms -->
+<section id="syntaxTerms" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_syntaxTerms"><span class="secno">7.2.3 </span>生成規則syntaxTerms</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:Description</code> | <code>rdf:li</code></p>
+
+</div></div>
+
+<p>RDF/XMLで使用される<a href="#section-Namespace">5.1項</a>のRDF語彙のすべての構文用語。</p>
+
+</section>
+<!-- old terms -->
+<section id="oldTerms" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 id="section-Bag-Expand" aria-level="3" role="heading"><span class="secno">7.2.4 </span>生成規則oldTerms</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><code>rdf:aboutEach</code> | <code>rdf:aboutEachPrefix</code> | <code>rdf:bagID</code></p>
+
+</div></div>
+
+<p>これらは言語から抜き出した<a href="#section-Namespace">RDF語彙</a>の名前です。詳細に関しては、問題<a href="http://www.w3.org/2000/03/rdf-tracking/#rdfms-aboutEach-on-object">rdfms-aboutEach-on-object</a>、問題<a href="http://www.w3.org/2000/03/rdf-tracking/#rdfms-abouteachprefix">rdfms-abouteachprefix</a>、最終草案問題<a href="http://www.w3.org/2001/sw/RDFCore/20030123-issues/#timbl-01">timbl-01</a>の解決を参照してください。</p>
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_11"><span>注</span></div>
+
+<p class=""><strong>エラー・テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-abouteach/error001.rdf">error001.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-abouteach/error002.rdf">error002.rdf</a>で示されています。</p></div>
+
+</section>
+<!-- node element uri -->
+<section id="nodeElementURIs" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_nodeElementURIs"><span class="secno">7.2.5 </span>生成規則nodeElementURIs</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:li</code> | <a href="#oldTerms">oldTerms</a> )</p>
+
+</div></div>
+
+<p>ノード要素で許されているIRI。</p>
+
+</section>
+<!-- property element URIs -->
+<section id="propertyElementURIs" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h4 aria-level="3" role="heading" id="h4_propertyElementURIs"><span class="secno">7.2.6 </span>生成規則propertyElementURIs</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a> | <code>rdf:Description</code> | <a href="#oldTerms">oldTerms</a> )</p>
+
+</div></div>
+
+<p>プロパティー要素で許されているURI。</p>
+
+</section>
+<!-- property attribute URIs -->
+<section id="propertyAttributeURIs" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h4 aria-level="3" role="heading" id="h4_propertyAttributeURIs"><span class="secno">7.2.7 </span>生成規則propertyAttributeURIs</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#anyURI">anyURI</a> - ( <a href="#coreSyntaxTerms">coreSyntaxTerms</a>  | <code>rdf:Description</code> | <code>rdf:li</code> | <a href="#oldTerms">oldTerms</a> )</p>
+
+</div></div>
+
+<p>プロパティー属性で許されているIRI。</p>
+
+</section>
+<!-- production doc -->
+<section id="doc" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_doc"><span class="secno">7.2.8 </span>生成規則doc</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>root(<a href="#eventterm-root-document-element">document-element</a> == <a href="#RDF">RDF</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-root-children">children</a> == list(<a href="#RDF">RDF</a>))</p></div></div>
+
+</section>
+<!-- production RDF -->
+<section id="RDF" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_RDF"><span class="secno">7.2.9 </span>生成規則RDF</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <code>rdf:RDF</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set())<br>
+<a href="#nodeElementList">nodeElementList</a><br>
+end-element()</p>
+
+</div></div>
+</section>
+<!-- node element list -->
+
+<section id="nodeElementList" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_nodeElementList"><span class="secno">7.2.10 </span>生成規則nodeElementList</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#ws">ws</a>* (<a href="#nodeElement">nodeElement</a> <a href="#ws">ws</a>* )*</p>
+
+</div></div>
+</section>
+<!-- production node element -->
+<section id="nodeElement" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 id="typedNode" aria-level="3" role="heading"><span class="secno">7.2.11 </span>生成規則nodeElement</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#nodeElementURIs">nodeElementURIs</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set((<a href="#idAttr">idAttr</a> | <a href="#nodeIdAttr">nodeIdAttr</a> | <a href="#aboutAttr">aboutAttr</a> )?, <a href="#propertyAttr">propertyAttr</a>*))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>ノード要素<em>e</em>に関しては、子イベントやその他の属性の処理などの他の作業の前に、いくつかの属性の処理を行わなければなりません。これらは、順不同で処理できます。</p>
+
+<ul>
+  <li><em>a</em>.<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:ID</code>を持つ属性<em>a</em>がある場合、<em>e</em>.<a href="#eventterm-element-subject">subject</a> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))です。</li>
+  <li><em>a</em>.<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:nodeID</code>を持つ属性<em>a</em>がある場合、<em>e</em>.<a href="#eventterm-element-subject">subject</a> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a>:=<em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)です。</li>
+  <li><em>a</em>.<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:about</code>を持つ属性<em>a</em>がある場合、<em>e</em>.<a href="#eventterm-element-subject">subject</a> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>))です。</li>
+</ul>
+
+<p><em>e</em>.<a href="#eventterm-element-subject">subject</a>が空である場合、<em>e</em>.<a href="#eventterm-element-subject">subject</a> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a> := generated-blank-node-id())です。</p>
+
+<p>次に、以下を順不同で実行できます。</p>
+
+<ul>
+  <li id="nodeElementStatement1"><em>e</em>.<a href="#eventterm-element-URI">URI</a> != <code>rdf:Description</code>である場合、以下のステートメントがグラフに追加されます。 
+<div class="ntripleOuter"><div class="ntripleInner">
+<p><code><em>e</em>.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> .</code></p>
+</div></div></li>
+  <li id="nodeElementStatement2"><em>a</em>.<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:type</code>を持つ<a href="#propertyAttr">propertyAttr</a>に属性<em>a</em>がある場合、 <em>u</em>:=uri(identifier:=resolve(<em>e</em>, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>))であり、以下のトリプルがグラフに追加されます。
+<div class="ntripleOuter"><div class="ntripleInner">
+<p><code><em>e</em>.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; <em>u</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+</div></div></li>
+  <li id="nodeElementStatement3">それぞれの<a href="#propertyAttr">propertyAttr</a>（<code>rdf:type</code>ではなく）と一致する属性<em>a</em>に対し、Unicode文字列<em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>は正規形C[<cite><a class="bibref" href="#bib-NFC">NFC</a></cite>]であるべきで（<em class="rfc2119" title="SHOULD">SHOULD</em>）、<em>o</em> := literal(<a href="#eventterm-literal-literal-value">literal-value</a> := <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>, <a href="#eventterm-literal-literal-language">literal-language</a> := <em>e</em>.<a href="#eventterm-element-language">language</a>)であり、以下のステートメントがグラフに追加されます。 
+<div class="ntripleOuter"><div class="ntripleInner">
+<p><code><em>e</em>.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>a</em>.<a href="#eventterm-attribute-URI-string-value">URI-string-value</a> <em>o</em>.<a href="#eventterm-literal-string-value">string-value</a> .</code></p>
+</div></div></li>
+  <li id="nodeElementStatement4">ドキュメント順で<a href="#propertyEltList">propertyEltList</a>子イベントを扱います。</li>
+</ul>
+
+</section>
+<!-- production ws -->
+<section id="ws" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_ws"><span class="secno">7.2.12 </span>生成規則ws</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-common-syn">共通構文構成子</a>の項の[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]定義空白（White Space）規則[3]<a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-S">S</a>で定義されている空白と一致している<a href="#section-text-node">テキスト・イベント</a>。</p>
+
+</div></div>
+</section>
+<!-- property elt list -->
+<section id="propertyEltList" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_propertyEltList"><span class="secno">7.2.13 </span>生成規則propertyEltList</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#ws">ws</a>* (<a href="#propertyElt">propertyElt</a> <a href="#ws">ws</a>* ) *</p>
+
+</div></div>
+</section>
+<!-- property elt -->
+<section id="propertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_propertyElt"><span class="secno">7.2.14 </span>生成規則propertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="#resourcePropertyElt">resourcePropertyElt</a> | <a href="#literalPropertyElt">literalPropertyElt</a> | <a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a> | <a href="#parseTypeResourcePropertyElt">parseTypeResourcePropertyElt</a> | <a href="#parseTypeCollectionPropertyElt">parseTypeCollectionPropertyElt</a> | <a href="#parseTypeOtherPropertyElt">parseTypeOtherPropertyElt</a> | <a href="#emptyPropertyElt">emptyPropertyElt</a></p>
+
+</div></div>
+
+<p>要素<em>e</em>に<em>e</em>.<a href="#eventterm-element-URI">URI</a> = <code>rdf:li</code>がある場合、<a href="#section-List-Expand">7.4項</a>の要素<em>e</em>.parentにリスト拡張規則を適用し、新しいURI <em>u</em>と<em>e</em>.<a href="#eventterm-element-URI">URI</a> := <em>u</em>を付与します。</p>
+
+<p>サブマッチ（<a href="#resourcePropertyElt">resourcePropertyElt</a> ... <a href="#emptyPropertyElt">emptyPropertyElt</a>）のアクションの前に、この生成規則のアクションを行わなければなりません。そうでない場合は、すべてのサブマッチのうちの最初の動作として実行するなどように、その結果は、まるでこのアクションが最初に実行されたかのようでなければなりません。</p>
+
+</section>
+<!-- resource property element -->
+<section id="resourcePropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_resourcePropertyElt"><span class="secno">7.2.15 </span>生成規則resourcePropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?))<br>
+<a href="#ws">ws</a>* <a href="#nodeElement">nodeElement</a> <a href="#ws">ws</a>*<br>
+end-element()</p>
+
+</div></div>
+
+<p>要素<em>e</em>、および1つの包含されているnodeElement <em>n</em>に関して、最初に生成規則<a href="#nodeElement">nodeElement</a>を使用して<em>n</em>を処理しなければなりません。すると、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p>&nbsp;&nbsp;<code> <em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>n</em>.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+
+</div></div>
+
+<p><code>rdf:ID</code>属性<em>a</em>が与えられた場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則と<em>e</em>.<a href="#eventterm-element-subject">subject</a> := <em>i</em>を使用して、<em>i</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+
+</section>
+<!-- literal property element -->
+<section id="literalPropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_literalPropertyElt"><span class="secno">7.2.16 </span>生成規則literalPropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#datatypeAttr">datatypeAttr</a>?))<br>
+<a href="#section-text-node">text()</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>空のリテラルの事例が生成規則<a href="#emptyPropertyElt">emptyPropertyElt</a>で定義されることに注意してください。</p>
+
+<p>要素<em>e</em>、およびテキスト・イベント<em>t</em>に関して。Unicodeの文字列<em>t</em>.<a href="#eventterm-text-string-value">string-value</a>は、正規形C[<cite><a class="bibref" href="#bib-NFC">NFC</a></cite>]であるべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）。<code>rdf:datatype</code>属性<em>d</em>が与えられた場合、<em>o</em> := typed-literal(<a href="#eventterm-typedliteral-literal-value">literal-value</a> := <em>t</em>.<a href="#eventterm-text-string-value">string-value</a>, <a href="#eventterm-typedliteral-literal-datatype">literal-datatype</a> := <em>d</em>.<a href="#eventterm-attribute-string-value">string-value</a>)であり、そうでない場合は、<em>o</em> := literal(<a href="#eventterm-literal-literal-value">literal-value</a> := <em>t</em>.<a href="#eventterm-text-string-value">string-value</a>, <a href="#eventterm-literal-literal-language">literal-language</a> := <em>e</em>.<a href="#eventterm-element-language">language</a>)であり、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>o</em>.<a href="#eventterm-literal-string-value">string-value</a> .</code></p>
+
+</div></div>
+
+<p><code>rdf:ID</code>属性<em>a</em>が与えられた場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則と<em>e</em>.<a href="#eventterm-element-subject">subject</a> := <em>i</em>を使用して、<em>i</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+
+</section>
+<!-- parse type literal property element -->
+<section class="informative" id="parseTypeLiteralPropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseTypeLiteralPropertyElt"><span class="secno">7.2.17 </span>生成規則parseTypeLiteralPropertyElt</h4>
+
+<p><em>この項は非規範的です。</em></p>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseLiteral">parseLiteral</a>))<br>
+<a href="#literal">literal</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>要素<em>e</em>と<code>rdf:parseType=&quot;Literal&quot;</code>コンテンツであるリテラル<em>l</em>に関して。<em>l</em>は、構文データ・モデル・マッピングによってイベントに変換されずに（<a href="#section-Data-Model">6 構文データ・モデル</a>で述べたように）XML情報項目のXML Infosetのままです。</p>
+
+<p><em>l</em>は、以下のアルゴリズムによって、RDFグラフ<em>x</em>（Unicodeの文字列）における<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-xmlliteral">XMLリテラル</a>の字句形式に変換されます。これは、実装方法を強いません &mdash; 同じ結果が得られる他の方法を使用できます。</p>
+
+<ol>
+<!-- old algorithm
+	<li>Use <em>l</em> to construct an XPath <a
+        href="http://www.w3.org/TR/1999/REC-xpath-19991116#infoset">node-set</a> 
+        (a <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-document-subset">document
+        subset</a>)</li> 
+        <li>Apply <a
+        href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/">Exclusive
+        XML Canonicalization</a> [[XML-EXC-C14N]]) 
+        with comments and with empty
+        <a href="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-InclusiveNamespaces-PrefixList">InclusiveNamespaces PrefixList</a>
+        to this node-set to give a sequence of octets <em>s</em>
+        </li>
+        <li>This sequence of octets <em>s</em> can be considered to be
+        a UTF-8 encoding of some Unicode string <em>x</em> (sequence
+        of Unicode characters)</li>
+        -->
+  <li><em>l</em>を使用して、<a href="http://www.w3.org/TR/xpath-datamodel-30/#sequences">XPathシーケンス</a>[<cite><a class="bibref" href="#bib-XPATH-DATAMODEL-30">XPATH-DATAMODEL-30</a></cite>]を構築します。</li> 
+  <li>xsd:string <em>x</em>を付与するためにこのシーケンスに<a href="http://www.w3.org/TR/xpath-functions-30/#func-serialize">http://www.w3.org/TR/xpath-functions-30/#func-serialize</a>[<cite><a class="bibref" href="#bib-XPATH-FUNCTIONS-30">XPATH-FUNCTIONS-30</a></cite>]を適用します。</li>
+  <li>Unicodeの文字列<em>x</em>は、<em>l</em>の字句形式として使用されます。</li>
+  <li>このUnicodeの文字列<em>x</em>は、正規形C[<cite><a class="bibref" href="#bib-NFC">NFC</a></cite>]であるべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）。</li>
+</ol>
+
+<p>そうすれば、<em>o</em> := typed-literal(<a href="#eventterm-typedliteral-literal-value">literal-value</a> := <em>x</em>, <a href="#eventterm-typedliteral-literal-datatype">literal-datatype</a> := <code>http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral</code> )であり、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>o</em>.<a href="#eventterm-typedliteral-string-value">string-value</a> .</code></p>
+
+</div></div>
+
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_12"><span>注</span></div>
+
+<p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test009.rdf">test009.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test009.nt">test009.nt</a>で示されている空のリテラルの事例</p></div>
+
+<p><code>rdf:ID</code>属性<em>a</em>が与えられた場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則<em>e</em>.<a href="#eventterm-element-subject">subject</a> := <em>i</em>を使用して、<em>i</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+
+</section>
+<!-- parse type resource property element -->
+<section id="parseTypeResourcePropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseTypeResourcePropertyElt"><span class="secno">7.2.18 </span>生成規則parseTypeResourcePropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseResource">parseResource</a>))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>空である可能性のある要素コンテンツ<em>c</em>を持つ要素<em>e</em>に関して。</p>
+
+<p><em>n</em> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a> := generated-blank-node-id())です。</p>
+
+<p>以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>n</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+
+</div></div>
+<div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_13"><span>注</span></div>
+
+<p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test004.rdf">test004.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test004.nt">test004.nt</a>で示されています。</p>
+
+</div>
+
+<p><code>rdf:ID</code>属性<em>a</em>が与えられた場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則と<em>e</em>.<a href="#eventterm-element-subject">subject</a> := <em>i</em>を使用して、<em>i</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+
+<p>要素コンテンツ<em>c</em>が空でない場合、イベント<em>n</em>を使用して、以下のようなイベントの新しいシーケンスを作成します。</p>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> := <code>rdf:Description</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-subject">subject</a> := <em>n</em>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> := set())<br>
+<em>c</em><br>
+end-element()</p>
+
+</div></div>
+
+<p>次に、生成規則<a href="#nodeElementList">nodeElement</a>を使用して、結果として作成されたシーケンスを処理します。</p>
+
+</section>
+<!-- parse type collection property element -->
+<section id="parseTypeCollectionPropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseTypeCollectionPropertyElt"><span class="secno">7.2.19 </span>生成規則parseTypeCollectionPropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseCollection">parseCollection</a>))<br>
+<a href="#nodeElementList">nodeElementList</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>空である可能性のある<a href="#nodeElementList">nodeElementList</a> <em>l</em>を持つ要素イベント<em>e</em>に関して。<em>s</em>:=list()を設定。</p>
+
+<p><em>l</em>のそれぞれの要素イベント<em>f</em>に対し、<em>n</em> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a> := generated-blank-node-id())であり、<em>s</em>に<em>n</em>を追加して、イベントのシーケンスを付与します。</p>
+
+<p><em>s</em>が空でない場合、<em>n</em>は<em>s</em>の最初のイベント識別子であり、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>n</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+
+</div></div>
+
+<p>そうでない場合は、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&gt; .</code></p>
+
+</div></div>
+
+<p><code>rdf:ID</code>属性<em>a</em>が与えられた場合、上記のステートメントのどちらかは、<a href="#section-Reification">7.3項</a>の具体化規則を使用して、<em>i</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+
+<p><em>s</em>が空である場合、さらなる作業は行われません。</p>
+
+<p><em>s</em>のそれぞれのイベント<em>n</em>と、<em>l</em>の対応する要素イベント<em>f</em>に対し、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code> <em>n</em>.<a href="#eventterm-identifier-string-value">string-value</a>  &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#first&gt; <em>f</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+
+</div></div>
+
+<p><em>s</em>のそれぞれの連続し重複している対のイベント（<em>n</em>, <em>o</em>）に対し、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>n</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#rest&gt; <em>o</em>.<a href="#eventterm-identifier-string-value">string-value</a>  .</code></p>
+
+</div></div>
+
+<p><em>s</em>が空でない場合、<em>n</em>が<em>s</em>の最後のイベント識別子で、以下のステートメントがグラフに追加されます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>n</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#rest&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#nil&gt; .</code></p>
+
+</div></div>
+</section>
+<!-- parse type other property element -->
+<section id="parseTypeOtherPropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseTypeOtherPropertyElt"><span class="secno">7.2.20 </span>生成規則parseTypeOtherPropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, <a href="#parseOther">parseOther</a>))<br>
+<a href="#propertyEltList">propertyEltList</a><br>
+end-element()</p>
+
+</div></div>
+
+<p>文字列「Resource」「Literal」「Collection」以外のすべての<code>rdf:parseType</code>属性値は、その値が「Literal」であるかのように扱われます。この生成規則は、生成規則<a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a>が一致したかのように一致し、動作します。他の<code>rdf:parseType</code>値に対しては、余分なトリプルは作成されません。</p>
+
+</section>
+<!-- empty property element -->
+<section id="emptyPropertyElt" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_emptyPropertyElt"><span class="secno">7.2.21 </span>生成規則emptyPropertyElt</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>start-element(<a href="#eventterm-element-URI">URI</a> == <a href="#propertyElementURIs">propertyElementURIs</a> ),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-element-attributes">attributes</a> == set(<a href="#idAttr">idAttr</a>?, ( <a href="#resourceAttr">resourceAttr</a> | <a href="#nodeIdAttr">nodeIdAttr</a> | <a href="#datatypeAttr">datatypeAttr</a> )?, <a href="#propertyAttr">propertyAttr</a>*))<br>
+end-element()</p>
+
+</div></div>
+
+<ul>
+  <li>
+  <p>属性がない場合、<strong>または</strong>、オプションの<code>rdf:ID</code>属性<em>i</em>のみがある場合、<em>o</em> := literal(<a href="#eventterm-literal-literal-value">literal-value</a>:=&quot;&quot;, <a href="#eventterm-literal-literal-language">literal-language</a> := <em>e</em>.<a href="#eventterm-element-language">language</a>)であり、以下のステートメントがグラフに追加されます。</p>
+  <div class="ntripleOuter"><div class="ntripleInner">
+  <p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>o</em>.<a href="#eventterm-literal-string-value">string-value</a> .</code></p>
+  </div></div>
+  <p>そして、<em>i</em>が与えられた場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則を使用して、uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>i</em>.<a href="#eventterm-attribute-string-value">string-value</a>)))で具体化されます。</p>
+  <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_14"><span>注</span></div>
+  <p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test002.rdf">test002.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test002.nt">test002.nt</a>で示されています。</p></div>
+  <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_15"><span>注</span></div>
+  <p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test005.rdf">test005.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test005.nt">test005.nt</a>で示されています。</p></div></li>
+  <li><p>そうでない場合は、</p>
+  <ul>
+    <li><code>rdf:resource</code>属性<em>i</em>がある場合、<em>r</em> := uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, <em>i</em>.<a href="#eventterm-attribute-string-value">string-value</a>))です。</li>
+    <li><code>rdf:nodeID</code>属性<em>i</em>がある場合、<em>r</em> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a> := <em>i</em>.<a href="#eventterm-attribute-string-value">string-value</a>)です。</li>
+    <li>どちらでもない場合、<em>r</em> := bnodeid(<a href="#eventterm-identifier-identifier">identifier</a> := generated-blank-node-id())です。</li>
+  </ul>
+  <p>以下は順不同で行われます。</p>
+  <ul>
+    <li><p>すべての<a href="#propertyAttr">propertyAttr</a>属性<em>a</em>に関し（順不同）、</p>
+    <ul>
+      <li><p><em>a</em>.<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:type</code>である場合、<em>u</em>:=uri(identifier:=resolve(<em>e</em>, <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>))であり、以下のトリプルがグラフに追加されます。</p>
+      <div class="ntripleOuter"><div class="ntripleInner">
+      <p><code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; <em>u</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+      </div></div></li>
+      <li><p>そうでない場合は、Unicodeの文字列<em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>は、正規形C[<cite><a class="bibref" href="#bib-NFC">NFC</a></cite>]であるべきで（<em class="rfc2119" title="SHOULD">SHOULD</em>）、<em>o</em> := literal(<a href="#eventterm-literal-literal-value">literal-value</a> := <em>a</em>.<a href="#eventterm-attribute-string-value">string-value</a>, <a href="#eventterm-literal-literal-language">literal-language</a> := <em>e</em>.<a href="#eventterm-element-language">language</a>)であり、以下のステートメントがグラフに追加されます。</p>
+      <div class="ntripleOuter"><div class="ntripleInner">
+      <p><code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> <em>a</em>.<a href="#eventterm-attribute-URI-string-value">URI-string-value</a> <em>o</em>.<a href="#eventterm-literal-string-value">string-value</a> .</code></p>
+      </div></div></li>
+    </ul>
+    <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_16"><span>注</span></div>
+    <p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test013.rdf">test013.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test013.nt">test013.nt</a>で示されています。</p></div>
+    <div class="note"><div class="note-title" aria-level="4" role="heading" id="h_note_17"><span>注</span></div>
+    <p class=""><strong>テスト:</strong> <a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test014.rdf">test014.rdf</a>と<a href="http://www.w3.org/2013/RDFXMLTests/rdfms-empty-property-elements/test014.nt">test014.nt</a>で示されています。</p>
+    </div></li>
+    <li><p>以下のステートメントをグラフに追加します。</p>
+    <div class="ntripleOuter"><div class="ntripleInner">
+    <p><code><em>e</em>.parent.<a href="#eventterm-element-subject">subject</a>.<a href="#eventterm-identifier-string-value">string-value</a> <em>e</em>.<a href="#eventterm-element-URI-string-value">URI-string-value</a> <em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> .</code></p>
+    </div></div>
+    <p>そうすれば、<code>rdf:ID</code>属性<em>i</em>が与えられる場合、上記のステートメントは、<a href="#section-Reification">7.3項</a>の具体化規則を使用して、uri(<a href="#eventterm-identifier-identifier">identifier</a> := resolve(<em>e</em>, concat(&quot;#&quot;, <em>i</em>.<a href="#eventterm-identifier-string-value">string-value</a>)))で具体化されます。</p></li>
+  </ul>
+  </li>
+</ul>
+
+</section>
+<!-- id attribute -->
+<section id="idAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 id="idAboutAttr" aria-level="3" role="heading"><span class="secno">7.2.22 </span>生成規則idAttr</h4>
+
+<!-- idAboutAttr one has gone; id is closest thing replacing it -->
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:ID</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#rdf-id">rdf-id</a>)</p>
+
+</div></div>
+
+<p><strong>制約:</strong>: <a href="#constraint-id">constraint-id</a>は、<code>rdf:ID</code>属性の値に適用されます。</p>
+
+</section>
+<!-- node id attribute -->
+<section id="nodeIdAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_nodeIdAttr"><span class="secno">7.2.23 </span>生成規則nodeIdAttr</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:nodeID</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#rdf-id">rdf-id</a>)</p>
+
+</div></div>
+</section>
+<!-- about attribute -->
+<section id="aboutAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">    
+
+<h4 aria-level="3" role="heading" id="h4_aboutAttr"><span class="secno">7.2.24 </span>生成規則aboutAttr</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:about</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</p>
+
+</div></div>
+</section>
+<!-- property attribute -->
+<section id="propertyAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 id="propAttr" aria-level="3" role="heading"><span class="secno">7.2.25 </span>生成規則propertyAttr</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <a href="#propertyAttributeURIs">propertyAttributeURIs</a>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#anyString">anyString</a>)</p>
+
+</div></div>
+</section>
+<!-- resource attribute -->
+<section id="resourceAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_resourceAttr"><span class="secno">7.2.26 </span>生成規則resourceAttr</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:resource</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</p>
+
+</div></div>
+</section>
+<!-- datatype attribute -->
+<section id="datatypeAttr" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_datatypeAttr"><span class="secno">7.2.27 </span>生成規則datatypeAttr</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:datatype</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#URI-reference">URI-reference</a>)</p>
+
+</div></div>
+</section>
+<!-- parse literal -->
+<section id="parseLiteral" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<h4 aria-level="3" role="heading" id="h4_parseLiteral"><span class="secno">7.2.28 </span>生成規則parseLiteral</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == &quot;Literal&quot;)</p>
+
+</div></div>
+</section>
+<!-- parse resource -->
+<section id="parseResource" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseResource"><span class="secno">7.2.29 </span>生成規則parseResource</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == &quot;Resource&quot;)</p>
+
+</div></div>
+</section>
+<!-- parse collection -->
+<section id="parseCollection" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseCollection"><span class="secno">7.2.30 </span>生成規則parseCollection</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == &quot;Collection&quot;)</p>
+
+</div></div>
+</section>
+<!-- parse other -->
+<section id="parseOther" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_parseOther"><span class="secno">7.2.31 </span>生成規則parseOther</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>attribute(<a href="#eventterm-attribute-URI">URI</a> == <code>rdf:parseType</code>,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#eventterm-attribute-string-value">string-value</a> == <a href="#anyString">anyString</a> - (&quot;Resource&quot; | &quot;Literal&quot; | &quot;Collection&quot;) )</p>
+</div></div>
+</section>
+<!-- URI reference -->
+<section id="URI-reference" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_URI-reference"><span class="secno">7.2.32 </span>生成規則IRI</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>IRI。</p>
+
+</div></div>
+</section>
+<!-- litteral -->
+<section id="literal" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_literal"><span class="secno">7.2.33 </span>生成規則literal</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p><a href="http://www.w3.org/TR/2000/REC-xml-20001006#sec-starttags">3.1 開始タグ、終了タグ、および空要素タグ</a>の項のXML定義<em>要素のコンテンツ</em>（Content of Elements）規則[43]<a href="http://www.w3.org/TR/2000/REC-xml-20001006#NT-content">コンテンツ</a>に従って許されているXML要素コンテンツです。</p>
+
+<p>結果として作成されるイベントに対する文字列値に関しては、<a href="#parseTypeLiteralPropertyElt">7.2.17項</a>で論じます。</p>
+
+</div></div>
+</section>
+<!-- RDF id -->
+<section id="rdf-id" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h4 aria-level="3" role="heading" id="h4_rdf-id"><span class="secno">7.2.34 </span>生成規則rdf-id</h4>
+
+<div class="productionOuter"><div class="productionInner">
+
+<p>正当な[<cite><a class="bibref" href="#bib-XML-NAMES">XML-NAMES</a></cite>]トークン<a href="http://www.w3.org/TR/REC-xml-names/#NT-NCName">NCName</a>と一致する属性<a class="termref" href="#eventterm-attribute-string-value"><span class="arrow">・</span>string-value<span class="arrow">・</span></a>です。</p>
+
+</div></div>
+</section>
+</section>
+<!-- reification rules -->
+<section id="section-Reification" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-Reification"><span class="secno">7.3 </span>具体化規則</h3>
+
+<p>以下の、ある与えられたIRIイベントrと、N-トリプルに対応している用語<em>s</em>、<em>p</em>、<em>o</em>を持つステートメントに関して、</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>s</em> <em>p</em> <em>o</em>  .</code></p>
+
+</div></div>
+
+<p>グラフに以下のステートメントを加えます。</p>
+
+<div class="ntripleOuter"><div class="ntripleInner">
+
+<p><code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#subject&gt; <em>s</em> .</code><br>
+<code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate&gt; <em>p</em> .</code><br>
+<code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#object&gt; <em>o</em> .</code><br>
+<code><em>r</em>.<a href="#eventterm-identifier-string-value">string-value</a> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#type&gt; &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement&gt; .</code><br></p>
+
+</div></div>
+</section>
+<!-- expansion rules -->
+<section id="section-List-Expand" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-List-Expand"><span class="secno">7.4 </span>リスト拡張規則</h3>
+
+<p>与えられた要素<em>e</em>に対し、新しいIRI <em>u</em> := concat(&quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#_&quot;, <em>e</em>.<a href="#eventterm-element-liCounter">li-counter</a>)を作成し、<em>e</em>.<a href="#eventterm-element-liCounter">li-counter</a>プロパティーを1つ増やし、<em>u</em>を返します。</p>
+
+</section>
+</section>
+<!-- SEVENTH PART : serialising -->
+<section id="section-Serialising" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Serialising"><span class="secno">8. </span>RDF/XMLへのRDFグラフのシリアル化</h2>
+
+<p>[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]で定義されているように、RDF/XMLでシリアル化できないいくつかのRDFグラフがあります。これらは、以下に該当するものです。</p>
+
+<dl>
+  <dt>XML名前空間修飾名にすることができないプロパティー名を使用するもの。<br></dt>
+  <dd>XML名前空間修飾名（<a href="http://www.w3.org/TR/REC-xml-names/#ns-qualnames">QName</a>）は、すべてのプロパティーURIをこれらの名前として表現できるというわけではないなどの、正当な文字において制限があります。RDFシリアライザの実装者は、URIを名前空間名とローカル名に分けるために、最後のXML非<a href="http://www.w3.org/TR/REC-xml-names/#NT-NCName">NCName</a>文字の後で分割し、名前の最初の文字が<a href="http://www.w3.org/TR/REC-xml#NT-Letter">Letter</a>や「_」であることを確保することをお勧めします。URIが非<a href="http://www.w3.org/TR/REC-xml-names/#NT-NCName">NCName</a>文字で終了する場合は、「このグラフはRDF/XMLではシリアル化できない」という例外やエラーを出してください。</dd>
+  <dt>不適当な予約された名前をプロパティーとして使用するもの。<br></dt>
+  <dd>例えば、<a href="#syntaxTerms">syntaxTerms</a>生成規則と同じURIを持つプロパティー。</dd>
+  <dt><code>rdf:HTML</code>データ型を使用するもの。</dt>
+  <dd>RDF 1.1[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]で紹介されているこのデータ型。</dd>
+</dl>
+
+<div class="note"><div class="note-title" aria-level="2" role="heading" id="h_note_18"><span>注</span></div>
+
+<p class=""><strong>実装注記（参考情報）:</strong> RDFがRDF/XMLにシリアル化されていて、XMLスキーマ・データ型（XSD）を持っているときには、空白の処理を必要としない形式で書かれているべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）。XSDサポートは、RDFやRDF/XMLでは必須でない（NOT）ため、これはオプションです。</p></div>
+
+</section>
+<!-- NINETH PART : RDF XML with SVG -->
+<section class="informative" id="section-rdf-in-SVG" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-rdf-in-SVG"><span class="secno">9. </span>SVGとのRDF/XMLの使用（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>TRDF互換メタデータをSVG &mdash; <a href="http://www.w3.org/TR/2001/REC-SVG-20010904/">Scalable Vector Graphics（SVG）1.0仕様</a>[<cite><a class="bibref" href="#bib-SVG10">SVG10</a></cite>]の<a href="http://www.w3.org/TR/SVG/metadata.html">21項 メタデータ</a>と<a href="http://www.w3.org/TR/2003/REC-SVG11-20030114/">Scalable Vector Graphics（SVG）1.1仕様</a>[<cite><a class="bibref" href="#bib-SVG11">SVG11</a></cite>]の<a href="http://www.w3.org/TR/SVG11/metadata.html">21項 メタデータ</a>で定義されているように、この目的のために明確に設計されたメタデータ要素 &mdash; に関連付ける標準化された方法があります。</p>
+
+<p>このドキュメントには、このようなメタデータ要素内に組み込まれたRDF/XMLを持つSVGの2つのグラフの例が含まれています（<a href="http://www.w3.org/TR/rdf-syntax-grammar/figure1.svg">図1</a>と<a href="http://www.w3.org/TR/rdf-syntax-grammar/figure2.svg">図2</a>）。</p>
+
+</section>
+<!-- TENTH PART : Acknowledgments -->
+<section class="appendix informative" id="section-Acknowledgments" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Acknowledgments"><span class="secno">A. </span>謝辞</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>Gavin Carothersは、<a href="#parseTypeLiteralPropertyElt">生成規則parseTypeLiteralPropertyElt</a>に関してRDF 1.1の更新を行いました。Ivan Hermanは、有益な指摘を行い、図1と図2を作り替えました。</p>
+
+<p>この仕様は、RDFコア・ワーキンググループおよびRDFとRDFスキーマ・ワーキンググループのメンバーにより積み重ねられた議論の成果です。</p>
+
+<p>以下の人々は、このドキュメントに有益な貢献をしてくださいました。</p>
+
+<ul>
+  <li>Dan Brickley、<abbr title="World Wide Web Consortium">W3C</abbr>/ILRT</li>
+  <li>Jeremy Carroll、ブリストルのHP研究所</li>
+  <li>Graham Klyne、Nine by Nine</li>
+  <li>Bijan Parsia、メリーランド大学カレッジ・パーク校のMIND研究所</li>
+</ul>
+
+<p>このドキュメントは、RDFコア・ワーキンググループによって積み重ねられた検討の成果です。そのメンバーは、Art Barstow (<abbr title="World Wide Web Consortium">W3C</abbr>)、Dave Beckett (ILRT)、Dan Brickley (<abbr title="World Wide Web Consortium">W3C</abbr>/ILRT)、Dan Connolly (<abbr title="World Wide Web Consortium">W3C</abbr>)、Jeremy Carroll (Hewlett Packard)、Ron Daniel (Interwoven Inc)、Bill dehOra (InterX)、Jos De Roo (AGFA)、Jan Grant (ILRT)、Graham Klyne (Clearswift and Nine by Nine)、Frank Manola (MITRE Corporation)、Brian McBride (Hewlett Packard)、Eric Miller (<abbr title="World Wide Web Consortium">W3C</abbr>)、Stephen Petschulat (IBM)、Patrick Stickler (Nokia)、Aaron Swartz (HWG)、Mike Dean (BBN Technologies / Verizon)、R. V. Guha (Alpiri Inc)、Pat Hayes (IHMC)、Sergey Melnik (Stanford University)、Martyn Horner (Profium Ltd)です。</p>
+
+<p>また、この仕様は、Ora LassillaとRalph Swickの編集による以前のRDFモデルおよび構文ドキュメント、Dan BrickleyとR. V. Guhaの編集によるRDFスキーマを参考にしています。この以前の作業に貢献したRDFおよびRDFスキーマ・ワーキンググループのメンバーは、Nick Arnett (Verity)、Tim Berners-Lee (<abbr title="World Wide Web Consortium">W3C</abbr>)、Tim Bray (Textuality)、Dan Brickley (ILRT / University of Bristol)、Walter Chang (Adobe)、Sailesh Chutani (Oracle)、Dan Connolly (<abbr title="World Wide Web Consortium">W3C</abbr>)、Ron Daniel (DATAFUSION)、Charles Frankston (Microsoft)、Patrick Gannon (CommerceNet)、RV Guha (Epinions、以前はNetscape Communications)、Tom Hill (Apple Computer)、Arthur van Hoff (Marimba)、Renato Iannella (DSTC)、Sandeep Jain (Oracle)、Kevin Jones (InterMind)、Emiko Kezuka (Digital Vision Laboratories)、Joe Lapp (webMethods Inc.)、Ora Lassila (Nokia Research Center)、Andrew Layman (Microsoft)、Ralph LeVan (OCLC)、John McCarthy (Lawrence Berkeley National Laboratory)、Chris McConnell (Microsoft)、Murray Maloney (Grif)、Michael Mealling (Network Solutions)、Norbert Mikula (DataChannel)、Eric Miller (OCLC)、Jim Miller (<abbr title="World Wide Web Consortium">W3C</abbr>、emeritus)、Frank Olken (Lawrence Berkeley National Laboratory)、Jean Paoli (Microsoft)、Sri Raghavan (Digital/Compaq)、Lisa Rein (webMethods Inc.)、Paul Resnick (University of Michigan)、Bill Roberts (KnowledgeCite)、Tsuyoshi Sakata (Digital Vision Laboratories)、Bob Schloss (IBM)、Leon Shklar (Pencom Web Works)、David Singer (IBM)、Wei (William) Song (SISU)、Neel Sundaresan (IBM)、Ralph Swick (<abbr title="World Wide Web Consortium">W3C</abbr>)、Naohiko Uramoto (IBM)、Charles Wicksteed (Reuters Ltd.)、Misha Wolf (Reuters Ltd.)、Lauren Wood (SoftQuad)です。</p>
+
+</section>
+<section class="appendix informative" id="changes-rdf11" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_changes-rdf11"><span class="secno">B. </span>2004年勧告以後の変更</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>RDF 1.1勧告に対する変更</p>
+
+<ul>
+  <li>変更なし。</li>
+</ul>
+
+<p>RDF 1.1勧告編集案の変更</p>
+
+<ol>
+  <li>ReSpecへの転換。</li>
+  <li>RDF 2004の正誤表の処理
+  <ol>
+    <li>XMLとUnicodeのバージョンに対するハードコードされた参考文献を置き換えた（<a href="http://www.w3.org/2011/rdf-wg/wiki/TF-RDF-XML#Change_2:_hard_coded_reference_to_XML_and_Unicode_versions">背景情報</a>）。</li>
+    <li>解決記号(e, s)を持つ解決アクションを修正した（<a href="http://www.w3.org/2011/rdf-wg/wiki/TF-RDF-XML#Change_3:_signature_resolve.28e.2C_s.29">背景情報</a>）。</li>
+    <li>要素イベントに親アクセサーを追加した（<a href="http://www.w3.org/2011/rdf-wg/wiki/TF-RDF-XML#Change_4:_missing_parent_accessor">背景情報</a>）。</li>
+    <li>データ型付きの空のリテラルを可能とした（<a href="http://www.w3.org/2011/rdf-wg/wiki/TF-RDF-XML#Change_5:_datatyped_empty_literals">背景情報</a>）。</li>
+    <li>リテラルのプロパティーにおけるIDとデータ型の排他性を削除した（<a href="http://www.w3.org/2011/rdf-wg/wiki/TF-RDF-XML#Change_6:_ID_and_datatype_exclusion_on_literal_property">背景情報</a>）。</li>
+  </ol>
+  </li>
+  <li>RDF 1.1を反映するため、「はじめに」を調節して短縮した。</li>
+  <li>RDF 1.1ドキュメントへの参考文献を更新した。</li>
+  <li>「（RDF）URI参照」を「IRI」に置き換えた。</li>
+  <li>HTMLへのRDF/XMLの組み込みに関する項を削除した。</li>
+  <li>他のRDF 1.1ドキュメントのタイトルと合わせるため、タイトルから「仕様」を削除した。</li>
+  <li>他のドキュメントへの参考文献を更新した。</li>
+  <li>2項の例のリンクを相対URIから絶対URIに変更した。付録のRELAXスキーマも同様。</li>
+  <li>プレーン・リテラルのイベントに関する項に注を追加した。</li>
+  <li>XML-NAMESのQName定義へのリンクを更新した。</li>
+  <li>2004年勧告との差分を追加した。</li>
+  <li><code>rdf:XMLLiteral</code>に関する項（<a href="#section-Syntax-XML-literals">2.8項</a>と<a href="#parseTypeLiteralPropertyElt">7.2.17項</a>）を非規範であると示した。</li>
+  <li><code>rdf:XMLLiteral</code>の非規範なステータスに対応するように生成規則<a href="#parseTypeLiteralPropertyElt">parseTypeLiteralPropertyElt</a>を適合させた。</li>
+  <li>図1と図2（同じ内容）を改良版にした。</li>
+  <li>古い変更の項を削除した。</li>
+  <li>適切でなくなったため、5.1項の冒頭の参考情報の注を削除した。</li>
+  <li>新たなデータ型<code>rdf:HTML</code>をRDF/XMLでシリアル化できないもののリストに追加した。</li>
+  <li>2004年のN-トリプル<code>nodeID</code>生成規則へのリンクを、RDF 1.1 N-トリプル<code>BLANK_NODE_LABEL</code>生成規則に置き換えた。</li>
+</ol> 
+
+</section>
+<!-- TWELVETH PART : Syntax Schemas -->
+<section class="appendix informative" id="section-Schemas" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-Schemas"><span class="secno">C. </span>構文スキーマ</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>この付録には、RDF/XML形式の妥当性検証のためのXMLスキーマが含まれています。これらは、参考情報のみとしてのスキーマの例であり、この仕様の一部ではありません。</p>
+
+<!-- Compact Schema -->
+<section class="informative" id="section-RELAXNG-Schema" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_section-RELAXNG-Schema"><span class="secno">C.1 </span>RELAX NGコンパクト・スキーマ</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>これは、RDF/XMLに対する<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/rdfxml.rnc">RELAX NGコンパクトのスキーマの例</a>（読みやすさのため）です。アプリケーションは、<a href="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/rdfxml.rng">RELAX NG XMLバージョン</a>を使用することもできます。これらの形式は、RELAX NG[<cite><a class="bibref" href="#bib-RELAXNG">RELAXNG</a></cite>]とRELAX NG Compact[<cite><a class="bibref" href="#bib-RELAXNG-COMPACT">RELAXNG-COMPACT</a></cite>]で記述されています。</p>
+
+<div class="note"><div class="note-title" aria-level="3" role="heading" id="h_note_19"><span>注</span></div>
+
+<p class="">文法の一致を試みるためにRNGCスキーマを更新しましたが、これは、確認したり、RDF/XMLの妥当性検証に使用したりしていません。</p></div>
+
+        <pre>        #
+        # RELAX NG Compact Schema for RDF/XML Syntax
+        #
+        # This schema is for information only and NON-NORMATIVE
+        #
+        # It is based on one originally written by James Clark in
+        # http://lists.w3.org/Archives/Public/www-rdf-comments/2001JulSep/0248.html
+        # and updated with later changes.
+        #
+
+        namespace local = &quot;&quot;
+        namespace rdf = &quot;http://www.w3.org/1999/02/22-rdf-syntax-ns#&quot;
+        datatypes xsd = &quot;http://www.w3.org/2001/XMLSchema-datatypes&quot;
+
+        start = doc
+
+        # I cannot seem to do this in RNGC so they are expanded in-line
+
+        # coreSyntaxTerms = rdf:RDF | rdf:ID | rdf:about | rdf:parseType | rdf:resource | rdf:nodeID | rdf:datatype
+        # syntaxTerms = coreSyntaxTerms | rdf:Description | rdf:li
+        # oldTerms    = rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID
+        # nodeElementURIs       = * - ( coreSyntaxTerms | rdf:li | oldTerms )
+        # propertyElementURIs   = * - ( coreSyntaxTerms | rdf:Description | oldTerms )
+        # propertyAttributeURIs = * - ( coreSyntaxTerms | rdf:Description | rdf:li | oldTerms )
+
+        # Also needed to allow rdf:li on all property element productions
+        # since we can't capture the rdf:li rewriting to rdf_&lt;n&gt; in relaxng
+
+        # Need to add these explicitly
+        xmllang = attribute xml:lang { text }
+        xmlbase = attribute xml:base { text }
+        # and to forbid every other xml:* attribute, element
+
+        doc = 
+          RDF | nodeElement
+
+        RDF =
+          element rdf:RDF { 
+             xmllang?, xmlbase?, nodeElementList
+        }
+
+        nodeElementList = 
+          nodeElement*
+
+          # Should be something like:
+          #  ws* , (  nodeElement , ws* )*
+          # but RELAXNG does this by default, ignoring whitespace separating tags.
+
+        nodeElement =
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype | rdf:li |
+                        rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID ) {
+              (idAttr | nodeIdAttr | aboutAttr )?, xmllang?, xmlbase?, propertyAttr*, propertyEltList
+          }
+
+          # It is not possible to say &quot;and not things
+          # beginning with _ in the rdf: namespace&quot; in RELAX NG.
+
+        ws = 
+          &quot; &quot;
+
+          # Not used in this RELAX NG schema; but should be any legal XML
+          # whitespace defined by http://www.w3.org/TR/2000/REC-xml-20001006#NT-S
+
+
+        propertyEltList = 
+          propertyElt*
+
+          # Should be something like:
+          #  ws* , ( propertyElt , ws* )*
+          # but RELAXNG does this by default, ignoring whitespace separating tags.
+
+        propertyElt = 
+          resourcePropertyElt | 
+          literalPropertyElt | 
+          parseTypeLiteralPropertyElt |
+          parseTypeResourcePropertyElt |
+          parseTypeCollectionPropertyElt |
+          parseTypeOtherPropertyElt |
+          emptyPropertyElt
+
+        resourcePropertyElt = 
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr?, xmllang?, xmlbase?, nodeElement
+          }
+
+        literalPropertyElt =
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr? , datatypeAttr?, xmllang?, xmlbase?, text 
+          }
+
+        parseTypeLiteralPropertyElt = 
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr?, parseLiteral, xmllang?, xmlbase?, literal 
+          }
+
+        parseTypeResourcePropertyElt = 
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr?, parseResource, xmllang?, xmlbase?, propertyEltList
+          }
+
+        parseTypeCollectionPropertyElt = 
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr?, xmllang?, xmlbase?, parseCollection, nodeElementList
+          }
+
+        parseTypeOtherPropertyElt = 
+          element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                        rdf:resource | rdf:nodeID | rdf:datatype |
+                        rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                        xml:* ) {
+              idAttr?, xmllang?, xmlbase?, parseOther, any
+          }
+
+        emptyPropertyElt =
+           element * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                         rdf:resource | rdf:nodeID | rdf:datatype |
+                         rdf:Description | rdf:aboutEach | rdf:aboutEachPrefix | rdf:bagID |
+                         xml:* ) {
+               idAttr?, (resourceAttr | nodeIdAttr | datatypeAttr )?, xmllang?, xmlbase?, propertyAttr*
+           }
+
+        idAttr = 
+          attribute rdf:ID { 
+              IDsymbol 
+          }
+
+        nodeIdAttr = 
+          attribute rdf:nodeID { 
+              IDsymbol 
+          }
+
+        aboutAttr = 
+          attribute rdf:about { 
+              URI-reference 
+          }
+
+        propertyAttr = 
+          attribute * - ( local:* | rdf:RDF | rdf:ID | rdf:about | rdf:parseType |
+                          rdf:resource | rdf:nodeID | rdf:datatype | rdf:li |
+                          rdf:Description | rdf:aboutEach |
+                  rdf:aboutEachPrefix | rdf:bagID |
+                          xml:* ) {
+              string
+          }
+
+        resourceAttr = 
+          attribute rdf:resource {
+              URI-reference 
+          }
+
+        datatypeAttr = 
+          attribute rdf:datatype {
+              URI-reference 
+          }
+
+        parseLiteral = 
+          attribute rdf:parseType {
+              &quot;Literal&quot; 
+          }
+
+        parseResource = 
+          attribute rdf:parseType {
+              &quot;Resource&quot;
+          }
+
+        parseCollection = 
+          attribute rdf:parseType {
+              &quot;Collection&quot;
+          }
+
+        parseOther = 
+          attribute rdf:parseType {
+              text
+          }
+
+        URI-reference = 
+          string
+
+        literal =
+          any
+
+        IDsymbol = 
+          xsd:NMTOKEN
+
+        any =
+          mixed { element * { attribute * { text }*, any }* }
+        </pre>
+
+</section>
+</section>
+<section class="appendix" id="references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_references"><span class="secno">D. </span>参考文献</h2>
+
+<section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">D.1 </span>規範的な参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-JSON-LD">[JSON-LD]</dt>
+  <dd rel="dcterms:requires">Manu Sporny, Gregg Kellogg, Markus Lanthaler, Editors. <cite><a href="http://www.w3.org/TR/json-ld/">JSON-LD 1.0</a></cite>. 16 January 2014. W3C Recommendation. URL: <a href="http://www.w3.org/TR/json-ld/">http://www.w3.org/TR/json-ld/</a></dd>
+  <dt id="bib-N-TRIPLES">[N-TRIPLES]</dt>
+  <dd rel="dcterms:requires">Gavin Carothers, Andy Seabourne. <cite><a href="http://www.w3.org/TR/2014/REC-n-triples-20140225/">RDF 1.1 N-Triples</a></cite>. W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-n-triples-20140225/">http://www.w3.org/TR/2014/REC-n-triples-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/n-triples/">http://www.w3.org/TR/n-triples/</a></dd>
+  <dt id="bib-RDF11-CONCEPTS">[RDF11-CONCEPTS]</dt>
+  <dd rel="dcterms:requires">Richard Cyganiak, David Wood, Markus Lanthaler. <cite><a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">RDF 1.1 Concepts and Abstract Syntax.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/rdf11-concepts/">http://www.w3.org/TR/rdf11-concepts/</a></dd>
+  <dt id="bib-RDF11-MT">[RDF11-MT]</dt>
+  <dd rel="dcterms:requires">Patrick J. Hayes, Peter F. Patel-Schneider. <cite><a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/">RDF 1.1 Semantics.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/">http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/rdf11-mt/">http://www.w3.org/TR/rdf11-mt/</a></dd>
+  <dt id="bib-RDF11-SCHEMA">[RDF11-SCHEMA]</dt>
+  <dd rel="dcterms:requires">Dan Brickley, R. V. Guha. <cite><a href="http://www.w3.org/TR/2014/REC-rdf-schema-20140225/">RDF Schema 1.1</a></cite>. W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf-schema-20140225/">http://www.w3.org/TR/2014/REC-rdf-schema-20140225/</a>. The latest published version is available at <a href="http://www.w3.org/TR/rdf-schema/">http://www.w3.org/TR/rdf-schema/</a>.</dd>
+  <dt id="bib-RDFA-PRIMER">[RDFA-PRIMER]</dt>
+  <dd rel="dcterms:requires">Ivan Herman; Ben Adida; Manu Sporny; Mark Birbeck. <a href="http://www.w3.org/TR/rdfa-primer/"><cite>RDFa 1.1 Primer - Second Edition</cite></a>. 22 August 2013. W3C Note. URL: <a href="http://www.w3.org/TR/rdfa-primer/">http://www.w3.org/TR/rdfa-primer/</a></dd>
+  <dt id="bib-RFC3023">[RFC3023]</dt>
+  <dd rel="dcterms:requires">M. Murata; S. St.Laurent; D. Kohn. <a href="http://www.ietf.org/rfc/rfc3023.txt"><cite>XML Media Types (RFC 3023)</cite></a>. January 2001. RFC. URL: <a href="http://www.ietf.org/rfc/rfc3023.txt">http://www.ietf.org/rfc/rfc3023.txt</a></dd>
+  <dt id="bib-TRIG">[TRIG]</dt>
+  <dd rel="dcterms:requires">Gavin Carothers, Andy Seaborne. <cite><a href="http://www.w3.org/TR/2014/REC-trig-20140225/">TriG: RDF Dataset Language</a></cite>. W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-trig-20140225/">http://www.w3.org/TR/2014/REC-trig-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/trig/">http://www.w3.org/TR/trig/</a></dd>
+  <dt id="bib-TURTLE">[TURTLE]</dt>
+  <dd rel="dcterms:requires">Eric Prud'hommeaux, Gavin Carothers. <cite><a href="http://www.w3.org/TR/2014/REC-turtle-20140225/">RDF 1.1 Turtle: Terse RDF Triple Language.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-turtle-20140225/">http://www.w3.org/TR/2014/REC-turtle-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a></dd>
+  <dt id="bib-XML-INFOSET">[XML-INFOSET]</dt>
+  <dd rel="dcterms:requires">John Cowan; Richard Tobin. <a href="http://www.w3.org/TR/xml-infoset"><cite>XML Information Set (Second Edition)</cite></a>. 4 February 2004. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml-infoset">http://www.w3.org/TR/xml-infoset</a></dd>
+  <dt id="bib-XML-NAMES">[XML-NAMES]</dt>
+  <dd rel="dcterms:requires">Tim Bray; Dave Hollander; Andrew Layman; Richard Tobin; Henry Thompson et al. <a href="http://www.w3.org/TR/xml-names"><cite>Namespaces in XML 1.0 (Third Edition)</cite></a>. 8 December 2009. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml-names">http://www.w3.org/TR/xml-names</a></dd>
+  <dt id="bib-XML10">[XML10]</dt>
+  <dd rel="dcterms:requires">Tim Bray; Jean Paoli; Michael Sperberg-McQueen; Eve Maler; Francois Yergeau et al. <a href="http://www.w3.org/TR/xml"><cite>Extensible Markup Language (XML) 1.0 (Fifth Edition)</cite></a>. 26 November 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a></dd>
+  <dt id="bib-XMLSCHEMA-2">[XMLSCHEMA-2]</dt>
+  <dd rel="dcterms:requires">Paul V. Biron; Ashok Malhotra. <a href="http://www.w3.org/TR/xmlschema-2/"><cite>XML Schema Part 2: Datatypes Second Edition</cite></a>. 28 October 2004. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xmlschema-2/">http://www.w3.org/TR/xmlschema-2/</a></dd>
+</dl>
+
+</section><section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">D.2 </span>参考情報の参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-CHARMOD">[CHARMOD]</dt>
+  <dd rel="dcterms:references">Martin Durst; Francois Yergeau; Richard Ishida; Misha Wolf; Tex Texin et al. <a href="http://www.w3.org/TR/charmod/"><cite>Character Model for the World Wide Web 1.0: Fundamentals</cite></a>. 15 February 2005. W3C Recommendation. URL: <a href="http://www.w3.org/TR/charmod/">http://www.w3.org/TR/charmod/</a></dd>
+  <dt id="bib-IANA-MEDIA-TYPES">[IANA-MEDIA-TYPES]</dt>
+  <dd rel="dcterms:references"><cite><a href="http://www.iana.org/assignments/media-types/">MIME Media Types</a></cite>. The Internet Assigned Numbers Authority (IANA). The registration for application/rdf+xml is archived at <a href="http://www.w3.org/2001/sw/RDFCore/mediatype-registration">http://www.w3.org/2001/sw/RDFCore/mediatype-registration</a>.</dd>
+  <dt id="bib-NFC">[NFC]</dt>
+  <dd rel="dcterms:references">M. Davis, Ken Whistler. <a href="http://www.unicode.org/reports/tr15/"><cite>TR15, Unicode Normalization Forms.</cite></a>. 17 September 2010, URL: <a href="http://www.unicode.org/reports/tr15/">http://www.unicode.org/reports/tr15/</a></dd>
+  <dt id="bib-RDFMS">[RDFMS]</dt>
+  <dd rel="dcterms:references">Ora Lassila; Ralph R. Swick. <cite><a href="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/">Resource Description Framework (RDF) Model and Syntax Specification</a></cite>. 22 February 1999. W3C Recommendation. URL: <a href="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/">http://www.w3.org/TR/1999/REC-rdf-syntax-19990222</a>.</dd>
+  <dt id="bib-RELAXNG">[RELAXNG]</dt>
+  <dd rel="dcterms:references">James Clark and Murata Makoto, editors. <cite><a href="http://www.oasis-open.org/committees/relax-ng/spec-20011203.html">RELAX NG Specification</a></cite>. OASIS Committee Specification, 3 December 2001. Latest version: <a href="http://www.oasis-open.org/committees/relax-ng/spec.html">http://www.oasis-open.org/committees/relax-ng/spec.html</a>.</dd>
+  <dt id="bib-RELAXNG-COMPACT">[RELAXNG-COMPACT]</dt>
+  <dd rel="dcterms:references">James Clark, editor. <cite><a href="http://www.oasis-open.org/committees/relax-ng/compact-20021121.html">RELAX NG Compact Syntax</a></cite>. OASIS Committee Specification, 21 November 2002. URI: <a href="http://www.oasis-open.org/committees/relax-ng/compact-20021121.html">http://www.oasis-open.org/committees/relax-ng/compact-20021121.html</a>.</dd>
+  <dt id="bib-RFC2119">[RFC2119]</dt>
+  <dd rel="dcterms:references">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> </dd>
+  <dt id="bib-RFC3986">[RFC3986]</dt>
+  <dd rel="dcterms:references">T. Berners-Lee; R. Fielding; L. Masinter. <a href="http://www.ietf.org/rfc/rfc3986.txt"><cite>Uniform Resource Identifier (URI): Generic Syntax (RFC 3986)</cite></a>. January 2005. RFC. URL: <a href="http://www.ietf.org/rfc/rfc3986.txt">http://www.ietf.org/rfc/rfc3986.txt</a></dd>
+  <dt id="bib-SAX">[SAX]</dt>
+  <dd rel="dcterms:references">D. Megginson, et al. <a href="http://www.megginson.com/downloads/SAX/"><cite>SAX: The Simple API for XML</cite></a>. May 1998. URL: <a href="http://www.megginson.com/downloads/SAX/"> http://www.megginson.com/downloads/SAX/</a></dd>
+  <dt id="bib-STRIPEDRDF">[STRIPEDRDF]</dt>
+  <dd rel="dcterms:references">D. Brickley. <cite><a href="http://www.w3.org/2001/10/stripes/">RDF: Understanding the Striped RDF/XML Syntax</a>. W3C, 2001. URI: <a href="http://www.w3.org/2001/10/stripes/">http://www.w3.org/2001/10/stripes/</a>.</cite></dd>
+  <dt id="bib-SVG10">[SVG10]</dt>
+  <dd rel="dcterms:references">Jon Ferraiolo. <a href="http://www.w3.org/TR/SVG/"><cite>Scalable Vector Graphics (SVG) 1.0 Specification</cite></a>. 4 September 2001. W3C Recommendation. URL: <a href="http://www.w3.org/TR/SVG/">http://www.w3.org/TR/SVG/</a></dd>
+  <dt id="bib-SVG11">[SVG11]</dt>
+  <dd rel="dcterms:references">Erik Dahlstrom; Patrick Dengler; Anthony Grasso; Chris Lilley; Cameron McCormack; Doug Schepers; Jonathan Watt; Jon Ferraiolo; Jun Fujisawa; Dean Jackson et al. <a href="http://www.w3.org/TR/SVG11/"><cite>Scalable Vector Graphics (SVG) 1.1 (Second Edition)</cite></a>. 16 August 2011. W3C Recommendation. URL: <a href="http://www.w3.org/TR/SVG11/">http://www.w3.org/TR/SVG11/</a></dd>
+  <dt id="bib-UNICODE">[UNICODE]</dt>
+  <dd rel="dcterms:references"><a href="http://www.unicode.org/versions/latest/"><cite>The Unicode Standard</cite></a>. URL: <a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a></dd>
+  <dt id="bib-XMLBASE">[XMLBASE]</dt>
+  <dd rel="dcterms:references">Jonathan Marsh; Richard Tobin. <a href="http://www.w3.org/TR/xmlbase/"><cite>XML Base (Second Edition)</cite></a>. 28 January 2009. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xmlbase/">http://www.w3.org/TR/xmlbase/</a></dd>
+  <dt id="bib-XMLSCHEMA-1">[XMLSCHEMA-1]</dt>
+  <dd rel="dcterms:references">Henry Thompson; David Beech; Murray Maloney; Noah Mendelsohn et al. <a href="http://www.w3.org/TR/xmlschema-1/"><cite>XML Schema Part 1: Structures Second Edition</cite></a>. 28 October 2004. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xmlschema-1/">http://www.w3.org/TR/xmlschema-1/</a></dd>
+  <dt id="bib-XPATH">[XPATH]</dt>
+  <dd rel="dcterms:references">James Clark; Steven DeRose. <a href="http://www.w3.org/TR/xpath"><cite>XML Path Language (XPath) Version 1.0</cite></a>. 16 November 1999. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a></dd>
+  <dt id="bib-XPATH-DATAMODEL-30">[XPATH-DATAMODEL-30]</dt>
+  <dd rel="dcterms:references">Norman Walsh; Anders Berglund; John Snelson. <a href="http://www.w3.org/TR/xpath-datamodel-30/"><cite>XQuery and XPath Data Model 3.0</cite></a>. 22 October 2013. W3C Proposed Recommendation. URL: <a href="http://www.w3.org/TR/xpath-datamodel-30/">http://www.w3.org/TR/xpath-datamodel-30/</a></dd>
+  <dt id="bib-XPATH-FUNCTIONS-30">[XPATH-FUNCTIONS-30]</dt>
+  <dd rel="dcterms:references">Michael Kay. <a href="http://www.w3.org/TR/xpath-functions-30/"><cite>XPath and XQuery Functions and Operators 3.0</cite></a>. 22 October 2013. W3C Proposed Recommendation. URL: <a href="http://www.w3.org/TR/xpath-functions-30/">http://www.w3.org/TR/xpath-functions-30/</a></dd>
+</dl>
+
+</section></section>
+
+</body>
+</html>

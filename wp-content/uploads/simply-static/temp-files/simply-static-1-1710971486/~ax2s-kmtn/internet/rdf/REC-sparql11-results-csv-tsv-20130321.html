@@ -1,0 +1,1025 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</title>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    
+<!--  ReSpec http://dev.w3.org/2009/dap/ReSpec.js/documentation.html  -->
+
+    
+    
+
+    <style type="text/css">.box     { border: thin solid #888888;
+           page-break-inside: avoid ;
+           background-color: #F8F8F8 ; padding:1em ;
+         }
+
+pre		 { margin: 1em 4em 1em 2.5em ; /* Top Right Bottom Left */
+           padding: 1ex;
+           page-break-inside: avoid ; }
+
+pre.csv::before {
+    content:    "CSV" ;
+    display:    block;
+    float:      right ;
+    width:      100px;
+    background: #a0ffa0;
+    font-family:    sans-serif;
+    font-size:   80% ;
+    padding:    2px 2px 2px 20px ;
+    font-weight:    bold;
+    margin: -1em 0 0.5em 1em;
+}
+pre.tsv::before {
+    content:    "TSV" ;
+    display:    block;
+    float:      right ;
+    width:      100px;
+    background: #a0ffa0;
+    font-family:    sans-serif;
+    font-size:   80% ;
+    padding:    2px 2px 2px 20px ;
+    font-weight:    bold;
+    margin: -1em 0 0.5em 1em;
+}
+
+table, td	{ border-spacing: 0px; 
+              padding: 0px ; 
+              border-collapse: collapse;
+              text-align: left; }
+td, th   { 
+           padding-left:      1em;
+           padding-right:     1em;
+           border-style: solid;
+           border-width: 1px;
+           border-color: black;
+           border-bottom-color: gray;
+           border-right-color: gray; }
+.result	 { border: thin solid  #888888 ;
+           background-color: #F0F0F0 ; }
+.tablecomment {  border: 0 ;  background-color: #FFFFFF ; }</style>
+
+  <style type="text/css">/*****************************************************************
+ * ReSpec CSS
+ * Robin Berjon (robin at berjon dot com)
+ * v0.05 - 2009-07-31
+ *****************************************************************/
+
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+code {
+    color:  #ff4500;
+}
+
+
+/* --- WEB IDL --- */
+pre.idl {
+    border-top: 1px solid #90b8de;
+    border-bottom: 1px solid #90b8de;
+    padding:    1em;
+    line-height:    120%;
+}
+
+pre.idl::before {
+    content:    "WebIDL";
+    display:    block;
+    width:      150px;
+    background: #90b8de;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+.idlType {
+    color:  #ff4500;
+    font-weight:    bold;
+    text-decoration:    none;
+}
+
+/*.idlModule*/
+/*.idlModuleID*/
+/*.idlInterface*/
+.idlInterfaceID, .idlDictionaryID {
+    font-weight:    bold;
+    color:  #005a9c;
+}
+
+.idlSuperclass {
+    font-style: italic;
+    color:  #005a9c;
+}
+
+/*.idlAttribute*/
+.idlAttrType, .idlFieldType, .idlMemberType {
+    color:  #005a9c;
+}
+.idlAttrName, .idlFieldName, .idlMemberName {
+    color:  #ff4500;
+}
+.idlAttrName a, .idlFieldName a, .idlMemberName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlMethod*/
+.idlMethType {
+    color:  #005a9c;
+}
+.idlMethName {
+    color:  #ff4500;
+}
+.idlMethName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlParam*/
+.idlParamType {
+    color:  #005a9c;
+}
+.idlParamName {
+    font-style: italic;
+}
+
+.extAttr {
+    color:  #666;
+}
+
+/*.idlConst*/
+.idlConstType {
+    color:  #005a9c;
+}
+.idlConstName {
+    color:  #ff4500;
+}
+.idlConstName a {
+    color:  #ff4500;
+    border-bottom:  1px dotted #ff4500;
+    text-decoration: none;
+}
+
+/*.idlException*/
+.idlExceptionID {
+    font-weight:    bold;
+    color:  #c00;
+}
+
+.idlTypedefID, .idlTypedefType {
+    color:  #005a9c;
+}
+
+.idlRaises, .idlRaises a.idlType, .idlRaises a.idlType code, .excName a, .excName a code {
+    color:  #c00;
+    font-weight:    normal;
+}
+
+.excName a {
+    font-family:    monospace;
+}
+
+.idlRaises a.idlType, .excName a.idlType {
+    border-bottom:  1px dotted #c00;
+}
+
+.excGetSetTrue, .excGetSetFalse, .prmNullTrue, .prmNullFalse, .prmOptTrue, .prmOptFalse {
+    width:  45px;
+    text-align: center;
+}
+.excGetSetTrue, .prmNullTrue, .prmOptTrue { color:  #0c0; }
+.excGetSetFalse, .prmNullFalse, .prmOptFalse { color:  #c00; }
+
+.idlImplements a {
+    font-weight:    bold;
+}
+
+dl.attributes, dl.methods, dl.constants, dl.fields, dl.dictionary-members {
+    margin-left:    2em;
+}
+
+.attributes dt, .methods dt, .constants dt, .fields dt, .dictionary-members dt {
+    font-weight:    normal;
+}
+
+.attributes dt code, .methods dt code, .constants dt code, .fields dt code, .dictionary-members dt code {
+    font-weight:    bold;
+    color:  #000;
+    font-family:    monospace;
+}
+
+.attributes dt code, .fields dt code, .dictionary-members dt code {
+    background:  #ffffd2;
+}
+
+.attributes dt .idlAttrType code, .fields dt .idlFieldType code, .dictionary-members dt .idlMemberType code {
+    color:  #005a9c;
+    background:  transparent;
+    font-family:    inherit;
+    font-weight:    normal;
+    font-style: italic;
+}
+
+.methods dt code {
+    background:  #d9e6f8;
+}
+
+.constants dt code {
+    background:  #ddffd2;
+}
+
+.attributes dd, .methods dd, .constants dd, .fields dd, .dictionary-members dd {
+    margin-bottom:  1em;
+}
+
+table.parameters, table.exceptions {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    margin: 0.5em 0;
+    width:  100%;
+}
+table.parameters { border-bottom:  1px solid #90b8de; }
+table.exceptions { border-bottom:  1px solid #deb890; }
+
+.parameters th, .exceptions th {
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+    font-family:    initial;
+    font-weight:    normal;
+    text-shadow:    #666 1px 1px 0;
+}
+.parameters th { background: #90b8de; }
+.exceptions th { background: #deb890; }
+
+.parameters td, .exceptions td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+    vertical-align: top;
+}
+
+.parameters tr:first-child td, .exceptions tr:first-child td {
+    border-top: none;
+}
+
+.parameters td.prmName, .exceptions td.excName, .exceptions td.excCodeName {
+    width:  100px;
+}
+
+.parameters td.prmType {
+    width:  120px;
+}
+
+table.exceptions table {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    width:  100%;
+}
+
+/* --- TOC --- */
+.toc a {
+    text-decoration:    none;
+}
+
+a .secno {
+    color:  #000;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+/* --- EXAMPLES --- */
+pre.example {
+    border-top: 1px solid #ff4500;
+    border-bottom: 1px solid #ff4500;
+    padding:    1em;
+    margin-top: 1em;
+}
+
+pre.example::before {
+    content:    "Example";
+    display:    block;
+    width:      150px;
+    background: #ff4500;
+    color:  #fff;
+    font-family:    initial;
+    padding:    3px;
+    font-weight:    bold;
+    margin: -1em 0 1em -1em;
+}
+
+/* --- EDITORIAL NOTES --- */
+.issue {
+    padding:    1em;
+    margin: 1em 0em 0em;
+    border: 1px solid #f00;
+    background: #ffc;
+}
+
+.issue::before {
+    content:    "Issue";
+    display:    block;
+    width:  150px;
+    margin: -1.5em 0 0.5em 0;
+    font-weight:    bold;
+    border: 1px solid #f00;
+    background: #fff;
+    padding:    3px 1em;
+}
+
+.note {
+    margin: 1em 0em 0em;
+    padding:    1em;
+    border: 2px solid #cff6d9;
+    background: #e2fff0;
+}
+
+.note::before {
+    content:    "Note";
+    display:    block;
+    width:  150px;
+    margin: -1.5em 0 0.5em 0;
+    font-weight:    bold;
+    border: 1px solid #cff6d9;
+    background: #fff;
+    padding:    3px 1em;
+}
+
+/* --- Best Practices --- */
+div.practice {
+    border: solid #bebebe 1px;
+    margin: 2em 1em 1em 2em;
+}
+
+span.practicelab {
+    margin: 1.5em 0.5em 1em 1em;
+    font-weight: bold;
+    font-style: italic;
+}
+
+span.practicelab   { background: #dfffff; }
+
+span.practicelab {
+    position: relative;
+    padding: 0 0.5em;
+    top: -1.5em;
+}
+
+p.practicedesc {
+    margin: 1.5em 0.5em 1em 1em;
+}
+
+@media screen {
+    p.practicedesc {
+        position: relative;
+        top: -2em;
+        padding: 0;
+        margin: 1.5em 0.5em -1em 1em;
+    }
+}
+
+/* --- SYNTAX HIGHLIGHTING --- */
+pre.sh_sourceCode {
+  background-color: white;
+  color: black;
+  font-style: normal;
+  font-weight: normal;
+}
+
+pre.sh_sourceCode .sh_keyword { color: #005a9c; font-weight: bold; }           /* language keywords */
+pre.sh_sourceCode .sh_type { color: #666; }                            /* basic types */
+pre.sh_sourceCode .sh_usertype { color: teal; }                             /* user defined types */
+pre.sh_sourceCode .sh_string { color: red; font-family: monospace; }        /* strings and chars */
+pre.sh_sourceCode .sh_regexp { color: orange; font-family: monospace; }     /* regular expressions */
+pre.sh_sourceCode .sh_specialchar { color: 	#ffc0cb; font-family: monospace; }  /* e.g., \n, \t, \\ */
+pre.sh_sourceCode .sh_comment { color: #A52A2A; font-style: italic; }         /* comments */
+pre.sh_sourceCode .sh_number { color: purple; }                             /* literal numbers */
+pre.sh_sourceCode .sh_preproc { color: #00008B; font-weight: bold; }       /* e.g., #include, import */
+pre.sh_sourceCode .sh_symbol { color: blue; }                            /* e.g., *, + */
+pre.sh_sourceCode .sh_function { color: black; font-weight: bold; }         /* function calls and declarations */
+pre.sh_sourceCode .sh_cbracket { color: red; }                              /* block brackets (e.g., {, }) */
+pre.sh_sourceCode .sh_todo { font-weight: bold; background-color: #00FFFF; }   /* TODO and FIXME */
+
+/* Predefined variables and functions (for instance glsl) */
+pre.sh_sourceCode .sh_predef_var { color: #00008B; }
+pre.sh_sourceCode .sh_predef_func { color: #00008B; font-weight: bold; }
+
+/* for OOP */
+pre.sh_sourceCode .sh_classname { color: teal; }
+
+/* line numbers (not yet implemented) */
+pre.sh_sourceCode .sh_linenum { display: none; }
+
+/* Internet related */
+pre.sh_sourceCode .sh_url { color: blue; text-decoration: underline; font-family: monospace; }
+
+/* for ChangeLog and Log files */
+pre.sh_sourceCode .sh_date { color: blue; font-weight: bold; }
+pre.sh_sourceCode .sh_time, pre.sh_sourceCode .sh_file { color: #00008B; font-weight: bold; }
+pre.sh_sourceCode .sh_ip, pre.sh_sourceCode .sh_name { color: #006400; }
+
+/* for Prolog, Perl... */
+pre.sh_sourceCode .sh_variable { color: #006400; }
+
+/* for LaTeX */
+pre.sh_sourceCode .sh_italics { color: #006400; font-style: italic; }
+pre.sh_sourceCode .sh_bold { color: #006400; font-weight: bold; }
+pre.sh_sourceCode .sh_underline { color: #006400; text-decoration: underline; }
+pre.sh_sourceCode .sh_fixed { color: green; font-family: monospace; }
+pre.sh_sourceCode .sh_argument { color: #006400; }
+pre.sh_sourceCode .sh_optionalargument { color: purple; }
+pre.sh_sourceCode .sh_math { color: orange; }
+pre.sh_sourceCode .sh_bibtex { color: blue; }
+
+/* for diffs */
+pre.sh_sourceCode .sh_oldfile { color: orange; }
+pre.sh_sourceCode .sh_newfile { color: #006400; }
+pre.sh_sourceCode .sh_difflines { color: blue; }
+
+/* for css */
+pre.sh_sourceCode .sh_selector { color: purple; }
+pre.sh_sourceCode .sh_property { color: blue; }
+pre.sh_sourceCode .sh_value { color: #006400; font-style: italic; }
+
+/* other */
+pre.sh_sourceCode .sh_section { color: black; font-weight: bold; }
+pre.sh_sourceCode .sh_paren { color: red; }
+pre.sh_sourceCode .sh_attribute { color: #006400; }</style>
+<link href="www.w3.org/StyleSheets/TR/W3C-REC" rel="stylesheet" type="text/css" charset="utf-8">
+</head>
+<body style="display: inherit;">
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321/">SPARQL 1.1 Query Results CSV and TSV Formats W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2014年2月23日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img width="72" height="48" alt="W3C" src="www.w3.org/Icons/w3c_home"></a></p>
+
+<h1 id="title" class="title">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</h1>
+
+<h2 id="w3c-recommendation-21-march-2013">
+<acronym title="World Wide Web Consortium">W3C</acronym>勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321/">http://www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321/</a></dd>
+
+  <dt>最新公開バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-results-csv-tsv/">http://www.w3.org/TR/sparql11-results-csv-tsv/</a></dd>
+
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2012/PR-sparql11-results-csv-tsv-20121108/">http://www.w3.org/TR/PR-sparql11-results-csv-tsv-20121108/</a></dd>
+
+  <dt>編集者:</dt>
+  <dd>
+<span>Andy Seaborne</span>, The Apache Software Foundation</dd>
+</dl>
+
+<p>このドキュメントに対する<a href="www.w3.org/2013/sparql-errata#sparql11-results-csv-tsv"><strong>正誤表</strong></a>を参照してください。いくつかの規範的な修正が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-results-csv-tsv"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+<hr>
+
+</div>
+
+<div id="abstract" class="introductory section">
+<h2>要約</h2>
+
+<p>CSV[<cite><a class="bibref" rel="biblioentry" href="#bib-RFC4180">RFC4180</a></cite>]（comma separated values；コンマ区切り）とTSV[<cite><a class="bibref" rel="biblioentry" href="#bib-IANA-TSV">IANA-TSV</a></cite>]（tab separated values；タブ区切り）のフォーマットは、単純で、処理が容易な、表形式のデータ送信用フォーマットです。これらは多くのツール（特にスプレッドシート）に対する入力データ・フォーマットとして利用されています。このドキュメントは、<code>SELECT</code>クエリに基づくSPARQLクエリ結果を表現するためにこれらのフォーマットを使用する方法について記述しています。</p>
+
+</div>
+<div class="introductory section" id="sotd">
+
+<h2 id="status">このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a><!-- sparql11-overview -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a><!-- sparql11-query -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a><!-- sparql11-update -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL 1.1サービス記述</a><!-- sparql11-service-description -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1統合クエリ</a><!-- sparql11-federated-query -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a><!-- sparql11-results-json -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a><!-- sparql11-results-csv-tsv -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a><!-- rdf-sparql-XMLres -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a><!-- sparql11-entailment -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a><!-- sparql11-protocol -->
+</li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a><!-- sparql11-http-rdf-update -->
+</li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2012/PR-sparql11-results-csv-tsv-20121108/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+<hr>
+
+</div>
+
+<div id="toc" class="section">
+<h2 class="introductory">目次</h2>
+
+<ul class="toc">
+  <li class="tocline">
+<a href="#intro" class="tocxref"><span class="secno">1. </span>はじめに</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#example" class="tocxref"><span class="secno">1.1 </span>例</a></li>  </ul>
+  </li>
+  <li class="tocline"><a href="#general-comments" class="tocxref"><span class="secno">2. </span>CSVとTSVのフォーマットを用いた送信の課題</a></li>
+  <li class="tocline">
+<a href="#csv" class="tocxref"><span class="secno">3. </span>CSV - コンマ区切り</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#csv-table" class="tocxref"><span class="secno">3.1 </span>結果の表のシリアル化</a></li>
+    <li class="tocline"><a href="#csv-terms" class="tocxref"><span class="secno">3.2 </span>RDF用語のシリアル化</a></li>
+    <li class="tocline"><a href="#csv-example" class="tocxref"><span class="secno">3.3 </span>CSVシリアル化の結果の例</a></li>
+  </ul>
+  </li>
+  <li class="tocline">
+<a href="#tsv" class="tocxref"><span class="secno">4. </span>TSV - タブ区切り</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#tsv-table" class="tocxref"><span class="secno">4.1 </span>結果の表のシリアル化</a></li>
+    <li class="tocline"><a href="#tsv-terms" class="tocxref"><span class="secno">4.2 </span>RDF用語のシリアル化</a></li>
+    <li class="tocline"><a href="#tsv-example" class="tocxref"><span class="secno">4.3 </span>TSVシリアル化の結果の例</a></li>
+  </ul>
+  </li>
+  <li class="tocline">
+<a href="#references-1" class="tocxref"><span class="secno">A. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references-1" class="tocxref"><span class="secno">A.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#non-normative-references" class="tocxref"><span class="secno">A.2 </span>非規範的な参考文献</a></li>
+  </ul>
+  </li>
+  <li class="tocline">
+<a href="#references" class="tocxref"><span class="secno">B. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">B.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">B.2 </span>参考情報の参考文献</a></li>
+  </ul>
+  </li>
+</ul>
+
+</div>
+
+<div id="intro" class="section">
+
+<!-- OddPage -->
+
+<h2>
+<span class="secno">1. </span>はじめに</h2>
+
+<p>このドキュメントは、SPARQL <code>SELECT</code>クエリの結果を表現するためのCSVとTSVのフォーマットについて記述しています。これらは、様々な実装技術を用いているシステム間の共通項（lowest common denominator）となっているフォーマットです。</p>
+
+<p>SPARQL結果を表現するためのその他のフォーマットには、SPARQL XML結果フォーマット[<cite><a class="bibref" rel="biblioentry" href="#bib-RDF-SPARQL-XMLRES">RDF-SPARQL-XMLRES</a></cite>]とSPARQL JSON結果フォーマット<!-- [[SPARQL11-JSON-RES]] -->[<a href="#SPARQL11-JSON-RES">SPARQL11-JSON-RES</a>]があります。それぞれのフォーマットは、異なるアプリケーションのシナリオに役立ちます。</p>
+
+<p>SPARQL結果のCSV結果フォーマットは、結果の表のロッシー・エンコーディングです。結果の各RDF用語を細部まですべてエンコードするわけではなく、用語の型（IRI、リテラル、データ型付きリテラル、言語付きリテラル、空白ノード）を示さずに、文字列を提供するだけです。これにより、RDFの詳細を理解する必要なく、アプリケーションでテキストや数値などのデータを利用することが容易になります。例えば、「http://」で始まる文字列はリンクであると推測することで、どの要素がハイパーリンクかの推測を実際的に行うアプリケーションもあります。</p>
+
+<p>SPARQL結果のTSV結果フォーマットは、SPARQL<!-- [[!SPARQL11-QUERY]] -->[<a href="#SPARQL11-QUERY">SPARQL11-QUERY</a>]とTurtle[<cite><a class="bibref" rel="biblioentry" href="#bib-TURTLE">TURTLE</a></cite>]の構文を用いて、結果の表内のRDF用語を詳細にエンコードします。TSVエンコードされた結果を受け取ったアプリケーションは、各行を結果の行の要素に分割し、より複雑なSPARQL結果フォーマットで必要とされる完全なXMLやJSONパーサなしに、欲しい詳細データをすべて抽出し、シンプルな文字列処理でRDF用語を処理できます。</p>
+
+<p>このドキュメントが、しなければならない（<em class="rfc2119" title="must">must</em>）、してはならない（<em class="rfc2119" title="must not">must not</em>）、すべきである／する必要がある（<em class="rfc2119" title="should">should</em>）、すべきでない／する必要がない（<em class="rfc2119" title="should not">should not</em>）、することができる／してもよい（<em class="rfc2119" title="may">may</em>）、推奨される（<em class="rfc2119" title="recommended">recommended</em>）という単語を使用するとき、RFC 2119[<cite><a class="bibref" rel="biblioentry" href="#bib-RFC2119">RFC2119</a></cite>]で記述されているとおりに解釈されなければなりません。</p>
+
+<div id="example" class="section">
+
+<h3>
+<span class="secno">1.1 </span>例</h3>
+
+<p>次の人工的に作成した例は、各フォーマットによる結果のシリアル化の特徴を説明するために使用しています。</p>
+
+<table class="result">
+  <tbody>
+  <tr>
+    <th>x</th>
+    <th>リテラル</th>
+    <th class="tablecomment"><i>解説（表の一部ではない）</i></th>
+  </tr>
+  <tr>
+    <td>&lt;http://example/x&gt;</td>
+    <td>String</td>
+    <td class="tablecomment">IRIと、S-t-r-i-n-gという文字で構成される文字列</td>
+  </tr>
+  <tr>
+    <td>&lt;http://example/x&gt;</td>
+    <td>String-with-dquote&quot;</td>
+    <td class="tablecomment">ダブル引用符が含まれている文字列</td>
+  </tr>
+  <tr>
+    <td>_:b0</td>
+    <td>Blank node</td>
+    <td class="tablecomment">空白ノード</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td>Missing 'x'</td>
+    <td class="tablecomment">
+<b>x</b>列にはRDF用語がない。</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td class="tablecomment">この行には用語がない。</td>
+  </tr>
+  <tr>
+    <td>&lt;http://example/x&gt;</td>
+    <td></td>
+    <td class="tablecomment">
+<b>リテラル</b>の列には用語がない。</td>
+  </tr>
+  <tr>
+    <td>_:b1</td>
+    <td>&quot;String-with-lang&quot;@en</td>
+    <td class="tablecomment">言語タグ付きのRDFリテラル</td>
+  </tr>
+  <tr>
+    <td>_:b1</td>
+    <td>123</td>
+    <td class="tablecomment">RDFリテラル、データ型xsd:integer、字句形式123</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+</div>
+
+<div id="general-comments" class="section">
+
+<!-- OddPage -->
+
+<h2>
+<span class="secno">2. </span>CSVとTSVのフォーマットを用いた送信の課題</h2>
+
+<p>ここで記述しているSPARQL結果フォーマットは、関連フォーマットであるCSV（Comma Separated values）[<cite><a class="bibref" rel="biblioentry" href="#bib-RFC4180">RFC4180</a></cite>]とTSV（Tab Separated Value）[<cite><a class="bibref" rel="biblioentry" href="#bib-IANA-TSV">IANA-TSV</a></cite>]の正式な仕様に準拠します。</p>
+
+<p>これらのフォーマットを提供するシステムは、CSVのコンテンツ・タイプは<tt>text/csv</tt>で、TSVのコンテンツ・タイプは<tt>text/tab-separated-values</tt>であることに注意すべきです。<tt>text/*</tt>の場合、デフォルトの文字集合はUS-ASCIIです。<tt>charset</tt>パラメータは、SPARQL結果とともに用いるべきです（<em class="rfc2119" title="should">should</em>）。<tt>text/csv; charset=utf-8</tt>や<tt>text/tab-separated-values; charset=utf-8</tt>のように、UTF-8が推奨されます。</p>
+
+<p>CSVの行末は<tt>CRLF</tt>（Unicodeコードポイントの13（0x0D）と10（0x0A））です。</p> 
+
+<p>TSVの行末は<tt>EOL</tt>（Unicodeコードポイントの10（0x0A））です。</p>
+
+<p>これらのフォーマットを読み込むアプリケーションは、正式な仕様との適合性に依存せず、CRLFとLFの両方を行端マーカーとして処理する方がよいでしょう。</p>
+
+</div>
+
+<div id="csv" class="section">
+
+<!-- OddPage -->
+
+<h2>
+<span class="secno">3. </span>CSV - コンマ区切り</h2>
+
+<p>SPARQL結果CSVフォーマットでは、結果の表は、結果の変数を列記した1行としてシリアル化されます。CSVヘッダー行を用い、その後にクエリ・ソリューションが1行ずつ続きます（1行はデータ内の改行で分割終了）。結果内の値は、URI、リテラル、空白ノードの場合は文字列で、リテラルが数値のXSDデータ型である場合は数値です。</p>
+
+<div id="csv-table" class="section">
+
+<h3>
+<span class="secno">3.1 </span>結果の表のシリアル化</h3>
+
+<p>SPARQL CSV結果フォーマット応答の最初の行は、結果で用いる変数の名前を示すヘッダー行です。ヘッダー行は、先頭に<tt>?</tt>がない、コンマ区切りの変数名で構成されます。</p>
+
+<p><tt>text/csv</tt>フォーマットではヘッダー行は必須ではありませんが、SPARQL CSV結果フォーマットではヘッダー行を用いなければなりません（<em class="rfc2119" title="must">must</em>）。コンテンツ・タイプのパラメータに<tt>header</tt>を用いる場合は、<tt>header=present</tt>でなければなりません（<em class="rfc2119" title="must">must</em>）。</p>
+
+<p>残りの行は結果の値で、各バインディングは行内の位置によって決まり、それらはヘッダー行の見出しに対応しています。</p>
+
+<p>変数がバインドされていなければ、空のフィールドが用いられます（例えば、<tt>,,</tt>）。各行には、同じ数のフィールドがなければならず（<em class="rfc2119" title="must">must</em>）、各フィールドは、ヘッダー行の同じフィールド・ポジションにある変数のバインディングに対応しています。</p>
+
+</div>
+
+<div id="csv-terms" class="section">
+
+<h3>
+<span class="secno">3.2 </span>RDF用語のシリアル化</h3>
+
+<p>各フィールドの見出しは、RDF用語の値に対応する文字列です。（SPARQL STR()を参照）どのような種類の用語かを示す構文はありません。CSVフォーマットの引用符エンコード規則を使用しなければなりません。</p>
+
+<p>空白ノードは、TurtleとSPARQLに基づく<tt>_:label</tt>形式を用います。同じラベルの使用は、結果の中では同じ空白ノードを示しますが、結果の外では意味を持ちません。</p>
+
+<p><tt>&quot;</tt>（<small>引用符</small>。コードポイントの34、Unicode[<cite><a class="bibref" rel="biblioentry" href="#bib-UNICODE">UNICODE</a></cite>]では0x22）、<tt>,</tt>（<small>コンマ</small>。コードポイントの44、0x2C）、<tt>LF</tt>（コードポイントの10、0x0A）、<tt>CR</tt>（コードポイントの13、0x0D）のいずれかを含んでいるフィールドは、RFC4180[<cite><a class="bibref" rel="biblioentry" href="#bib-RFC4180">RFC4180</a></cite>]の引用符号法を用いて引用形式にしなければなりません。フィールドの境界は、1組の引用符である<tt>&quot;</tt>（コードポイントの0x22）で区切られます。引用文字列内では、<tt>&quot;</tt>以外のすべての文字は、改行文字も含め、それぞれに厳密な意味を有しています - 改行によってCSVデータは終了しません。<tt>&quot;<!--  For emacs " --></tt>は、1組の引用符<tt>&quot;&quot;</tt>を用いて記述します。</p>
+
+<p>標準的なCSVフォーマットは、値の欠落と空の文字列を区別しません。SPARQL 1.1 CSV結果フォーマットは、バインドされていない変数と、空の文字列リテラルにバインドされている変数に同じ表現を用います。この区別が必要な場合は、他のSPARQL結果フォーマット（JSON、TSVまたはXMLに基づく）を使用できます。</p>
+
+</div>
+<div id="csv-example" class="section">
+
+<h3>
+<span class="secno">3.3 </span>CSVシリアル化の結果の例</h3>
+
+<pre class="box csv">x,literal
+http://example/x,String
+http://example/x,&quot;String-with-dquote&quot;&quot;&quot;
+_:b0,Blank node
+,Missing 'x'
+,
+http://example/x,
+_:b1,String-with-lang
+_:b1,123</pre>
+
+</div>
+</div>
+
+<div id="tsv" class="section">
+
+<!-- OddPage -->
+
+<h2>
+<span class="secno">4. </span>TSV - タブ区切り</h2>
+
+<p>SPARQL結果TSVフォーマットでは、結果の表は、結果内に変数を列記した1行としてシリアル化されます。そして、その後にクエリ・ソリューションが1行ずつ続きます。フォーマットで用いられているすべてのRDF用語は、リテラルの字句部分にトリプル引用符形式を用いてはならない（<em class="rfc2119" title="must not">must not</em>）という点を除き、Turtle[<cite><a class="bibref" rel="biblioentry" href="#bib-TURTLE">TURTLE</a></cite>]で定められているフォーマットでエンコードされます。これらの形式により、生の（raw）改行とタブをTSVフォーマットの一部として使用できるようになります。TSVフォーマットSPARQL結果は、<tt>\t</tt>、<tt>\n</tt>、<tt>\r</tt>などの必要なエスケープとともに、シングル引用符付きリテラル形式を用いなければなりません。</p>
+
+<div id="tsv-table" class="section">
+
+<h3>
+<span class="secno">4.1 </span>結果の表のシリアル化</h3>
+
+<p>結果の表は、結果の変数を列記した1行としてシリアル化されます。そして、その後にクエリ・ソリューションが1行ずつ続きます。この先頭行は、CSVではオプションでしたが、TSVフォーマット[<cite><a class="bibref" rel="biblioentry" href="#bib-IANA-TSV">IANA-TSV</a></cite>]では必須です。</p>
+
+<p>変数は、前に疑問符<tt>?</tt>が付いた変数名を用いて、SPARQL構文でシリアル化されます。</p> 
+
+<p>結果の各行は、タブ文字（水平タブ。Unicodeコードポイントの9）で区切られた、SPARQL構文のRDF用語のシーケンスでシリアル化されます。</p>
+
+<p>変数が行内でバインドされていなければ、空のフィールドが用いられます。各行には、同じ数のフィールドがなければならず（<em class="rfc2119" title="must">must</em>）、それらは1行目に列記されている変数に対応しています。</p>
+
+</div>
+
+<div id="tsv-terms" class="section">
+
+<h3>
+<span class="secno">4.2 </span>RDF用語のシリアル化</h3>
+
+<p>SPARQL結果TSV結果フォーマットは、SPARQL<!-- [[!SPARQL11-QUERY]] -->[<a href="#SPARQL11-QUERY">SPARQL11-QUERY</a>]とTurtle[<cite><a class="bibref" rel="biblioentry" href="#bib-TURTLE">TURTLE</a></cite>]の構文を用いて、結果の表内のRDF用語をシリアル化します。</p>
+
+<p>IRIは<tt>&lt;...&gt;</tt>で囲まれ、リテラルは、オプションで<tt>@lang</tt>またはデータ型を示す<tt>^^</tt>が付き、ダブル引用符<tt>&quot;</tt>...<tt>&quot;</tt>またはシングル引用符<tt>'</tt> ...<tt>'</tt>で囲まれます。字句形式の前後の引用符は必須です。タブ、改行、復帰の文字（Unicodeコードポイントの0x09、0x0A（改行）、0x0D（復帰））は、それぞれ、<tt>\t</tt>、<tt>\n</tt>、<tt>\r</tt>という文字列でエンコードされます。トリプル引用符<tt>&quot;&quot;&quot;</tt>および<tt>'''</tt>を用いた長い文字列形式は使用してはなりません（<em class="rfc2119" title="must not">must not</em>）。<!--  Emacs: " --></p>
+<p>数値（XSD整数、10進数、倍精度浮動小数点）には省略形を用いるべきです（<em class="rfc2119" title="should">should</em>）。</p>
+
+<p>空白ノードは、TurtleとSPARQLに基づく<tt>_:label</tt>形式を用います。同じラベルの使用は、結果の中では同じ空白ノードを示しますが、結果の外では意味を持ちません。</p>
+
+</div>
+
+<div id="tsv-example" class="section">
+
+<h3>
+<span class="secno">4.3 </span>TSVシリアル化の結果の例</h3>
+
+<p>生の（raw）タブ文字（Unicodeコードポイントの9）を<tt>&lt;TAB&gt;</tt>と記述しています。</p>
+
+<pre class="box tsv">?x&lt;TAB&gt;?literal
+&lt;http://example/x&gt;&lt;TAB&gt;&quot;String&quot;
+&lt;http://example/x&gt;&lt;TAB&gt;&quot;String-with-dquote\&quot;&quot; 
+<!--  " Unconfuse ...  -->
+
+_:blank0&lt;TAB&gt;&quot;Blank node&quot;
+&lt;TAB&gt;&quot;Missing 'x'&quot;
+&lt;TAB&gt;
+&lt;http://example/x&gt;&lt;TAB&gt;
+_:blank1&lt;TAB&gt;&quot;String-with-lang&quot;@en
+_:blank1&lt;TAB&gt;123</pre>
+</div>
+</div>
+
+
+<!--  Auto generated are [[!name]] in the text
+         section class='appendix references'>
+       -->
+
+
+<!--  Manual  -->
+
+<div class="appendix section" id="references-1">
+
+<!-- OddPage -->
+
+<h2>
+<span class="secno">A. </span>参考文献</h2>
+
+<p>この項には、標準のbiblio DBにまだ含まれていない参考文献が含まれています。</p>
+
+<div id="normative-references-1" class="section">
+
+<h3>
+<span class="secno">A.1 </span>規範的な参考文献</h3>
+
+<dl class="biblography">
+
+<!-- 
+          <dt>RFC4180</dt>
+          <dd>Y. Shafranovich. <a href="http://www.ietf.org/rfc/rfc4180.txt">
+<cite>Common Format and MIME Type for Comma-Separated Values (CSV) Files</cite></a>
+            October 2005. Internet RFC 3987. URL: 
+            <a href="http://www.ietf.org/rfc/rfc4180.txt">http://www.ietf.org/rfc/rfc4180.txt</a>
+          </dd>
+          <dt>IANA-TSV</dt>
+          <dd>Paul Lindner. <a
+href="http://www.iana.org/assignments/media-types/text/tab-separated-values"
+           ><cite>Definition of tab-separated-values (tsv)</cite></a>
+            June 1993. IANA Media Type Registration. URL: 
+            <a href="http://www.iana.org/assignments/media-types/text/tab-separated-values">http://www.iana.org/assignments/media-types/text/tab-separated-values</a>
+            </dd>
+ -->
+
+  <dt><a id="SPARQL11-JSON-RES">SPARQL11-JSON-RES</a></dt>
+  <dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1 Query Results JSON Format</a></cite>, A. Seaborne, Editor, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-results-json-20130321. <a href="www.w3.org/TR/sparql11-results-json/" title="Latest version of SPARQL 1.1 Query Results JSON Format">Latest version</a> available at http://www.w3.org/TR/sparql11-results-json.</dd>
+
+  <dt><a id="SPARQL11-QUERY">SPARQL11-QUERY</a></dt>
+  <dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1 Query Language</a></cite>, S. Harris, A. Seaborne, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-query-20130321. <a href="www.w3.org/TR/sparql11-query/" title="Latest version of SPARQL 1.1 Query Language">Latest version</a> available at http://www.w3.org/TR/sparql11-query.</dd>
+</dl>
+
+</div>
+<div id="non-normative-references" class="section">
+
+<h3>
+<span class="secno">A.2 </span>非規範的な参考文献</h3>
+
+</div>
+</div>
+
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>なし</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>なし</li>
+</ul>
+
+</div>
+
+<div id="references" class="appendix section">
+<!-- OddPage -->
+
+<h2>
+<span class="secno">B. </span>参考文献</h2>
+
+<div id="normative-references" class="section">
+
+<h3>
+<span class="secno">B.1 </span>規範的な参考文献</h3>
+
+<dl class="bibliography">
+  <dt id="bib-IANA-TSV">[IANA-TSV]</dt>
+  <dd>Paul Lindner. <a href="www.iana.org/assignments/media-types/text/tab-separated-values"><cite>Definition of tab-separated-values (tsv)</cite></a> June 1993. IANA Media Type Registration. URL: <a href="www.iana.org/assignments/media-types/text/tab-separated-values">http://www.iana.org/assignments/media-types/text/tab-separated-values</a>
+</dd>
+  <dt id="bib-RFC2119">[RFC2119]</dt>
+  <dd>S. Bradner. <a href="www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a> </dd>
+
+  <dt id="bib-RFC4180">[RFC4180]</dt>
+  <dd>Y. Shafranovich. <a href="www.ietf.org/rfc/rfc4180.txt"> <cite>Common Format and MIME Type for Comma-Separated Values (CSV) Files</cite></a> October 2005. Internet RFC 3987. URL: <a href="www.ietf.org/rfc/rfc4180.txt">http://www.ietf.org/rfc/rfc4180.txt</a>
+</dd>
+
+  <dt id="bib-TURTLE">[TURTLE]</dt>
+  <dd>David Beckett, Tim Berners-Lee. <a href="www.w3.org/TeamSubmission/turtle/"><cite>Turtle: Terse RDF Triple Language.</cite></a> January 2008. W3C Team Submission. URL: <a href="www.w3.org/TeamSubmission/turtle/">http://www.w3.org/TeamSubmission/turtle/</a>
+</dd>
+</dl>
+
+</div>
+<div id="informative-references" class="section">
+
+<h3>
+<span class="secno">B.2 </span>参考情報の参考文献</h3>
+
+<dl class="bibliography">
+  <dt id="bib-RDF-SPARQL-XMLRES">[RDF-SPARQL-XMLRES]</dt>
+  <dd>Jeen Broekstra; Dave Beckett. <a href="www.w3.org/TR/2008/REC-rdf-sparql-XMLres-20080115"><cite>SPARQL Query Results XML Format.</cite></a> 15 January 2008. W3C Recommendation. URL: <a href="www.w3.org/TR/2008/REC-rdf-sparql-XMLres-20080115">http://www.w3.org/TR/2008/REC-rdf-sparql-XMLres-20080115</a> </dd>
+
+  <dt id="bib-UNICODE">[UNICODE]</dt>
+  <dd>The Unicode Consortium. <a href="www.unicode.org/unicode/standard/versions/enumeratedversions.html"><cite>The Unicode Standard.</cite></a> 2003. Defined by: The Unicode Standard, Version 4.0 (Boston, MA, Addison-Wesley, ISBN 0-321-18578-1), as updated from time to time by the publication of new versions URL: <a href="www.unicode.org/unicode/standard/versions/enumeratedversions.html">http://www.unicode.org/unicode/standard/versions/enumeratedversions.html</a>
+</dd>
+</dl>
+
+</div>
+</div>
+
+</body>
+</html>

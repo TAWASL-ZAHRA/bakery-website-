@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Performance Timeline（日本語訳）</title>
+
+<link rel="stylesheet" href="triple-underscore.github.io/common.css" type="text/css">
+<link rel="stylesheet" href="triple-underscore.github.io/common-w3c.css" type="text/css">
+
+<script src="triple-underscore.github.io/common0.js"></script>
+<script src="triple-underscore.github.io/common1.js" async></script>
+
+<script>
+
+Util.ready = function(){
+	const source_data = {
+		generate: expand
+	};
+	Util.switchWordsInit(source_data);
+}
+
+function expand(){
+	const class_map = this.class_map;
+	const tag_map = this.tag_map;
+	const link_map = this.link_map;
+
+	return this.html.replace(
+		/%[\w\-~一-鿆あ-ん]+|`(.+?)([$@\^])(\w*)/g,
+		create_html
+	);
+
+	function create_html(match, key, indicator, klass){
+
+if(!key) {//%
+	return `<var>${match.slice(1)}<\/var>`;
+}
+
+let text = key;
+let href = '';
+
+switch(klass){
+case 'r': // ref
+	text = `[${key}]`;
+	href = `#bib-${key.toLowerCase()}`;
+	break;
+case 'l': // literal
+	text = `"<code class="literal">${text}<\/code>"`
+	break;
+case 'm': // IDL member
+case 'mO':
+	const n = text.indexOf('(');
+	if(n > 0){
+		key = text.slice(0, n);
+		text = key + text.slice(n).replace(/\w+/g, '<var>$&<\/var>');
+	}
+	break;
+case 'en':
+	text = `<span lang="en">${key}<\/span>`;
+	break;
+}
+
+let tag = tag_map[klass];
+if(tag) {
+	let classname = class_map[klass];
+	classname = classname ? ` class="${classname}"` : '';
+	text = `<${tag}${classname}>${text}<\/${tag}>`;
+}
+
+if(indicator !== '^'){
+	href = link_map[ klass ? `${klass}.${key}` : key ] || href;
+	if(!href){
+		console.log(match); // check error
+		return match;
+	}
+
+	switch(indicator){
+	case '!':
+	case '$':
+		text = `<a href="${href}">${text}<\/a>`;
+		break;
+	case '@':
+		text = `<dfn id="${href.slice(1)}">${text}<\/dfn>`;
+		break;
+	default:
+		console.log(match);
+		return match;
+	}
+}
+
+return text;
+
+
+	}
+}
+
+</script>
+
+
+<script type="text/plain" id="_source_data">
+
+
+●●options
+
+spec_title:Performance Timeline
+spec_date:2024-02-02
+trans_update:2024-02-04
+source_checked:221110
+page_state_key:TIMING
+original_url:https://w3c.github.io/performance-timeline/
+	abbr_url:TIMELINE
+spec_status:ED
+ref_id_prefix:bib-
+ref_id_lowercase:true
+copyright:2024,permissive
+trans_1st_pub:2015-07-27
+
+
+●●class_map
+E:error
+
+●●tag_map
+I:code
+m:code
+mO:code
+d:code
+c:code
+E:code
+v:var
+V:var
+b:b
+i:i
+cite:cite
+
+●●original_id_map
+
+dom-performanceobserver-performanceobserver:
+
+	dom-performanceentrylist:idl-def-performanceentrylist
+	dom-performanceobservercallback:idl-def-performanceobservercallback
+	dom-performanceobserverentrylist:idl-def-performanceobserverentrylist
+	dom-performanceobserverinit:idl-def-performanceobserverinit
+
+●●mdn_urls
+
+dom-performanceentry:API/PerformanceEntry
+dom-performanceobserver:API/PerformanceObserver
+dom-performanceobserverentrylist:API/PerformanceObserverEntryList
+	dom-performanceentrylist:API/PerformanceEntryList
+	dom-performanceobservercallback:API/PerformanceObserverCallback
+	dom-performanceobserverinit:API/PerformanceObserverInit
+dom-performance-getentries:API/Performance/getEntries
+dom-performance-getentriesbyname:API/Performance/getEntriesByName
+dom-performance-getentriesbytype:API/Performance/getEntriesByType
+dom-performanceentry-name:API/PerformanceEntry/name
+dom-performanceentry-starttime:API/PerformanceEntry/startTime
+dom-performanceentry-entrytype:API/PerformanceEntry/entryType
+dom-performanceentry-duration:API/PerformanceEntry/duration
+dom-performanceentry-tojson:API/PerformanceEntry/toJSON
+dom-performanceobserver-performanceobserver:API/PerformanceObserver/PerformanceObserver
+dom-performanceobserver-observe:API/PerformanceObserver/observe
+dom-performanceobserver-disconnect:API/PerformanceObserver/disconnect
+dom-performanceobserver-takerecords:API/PerformanceObserver/takeRecords
+	dom-performanceobserver-supportedentrytypes:API/PerformanceObserver/supportedEntryTypes
+dom-performanceobserverentrylist-getentries:API/PerformanceEntryList/getEntries
+dom-performanceobserverentrylist-getentriesbyname:API/PerformanceEntryList/getEntriesByName
+dom-performanceobserverentrylist-getentriesbytype:API/PerformanceEntryList/getEntriesByType
+
+●●link_map
+
+Exposed:~WEBIDLjs#Exposed
+Default:~WEBIDLjs#Default
+SameObject:~WEBIDLjs#SameObject
+
+E.TypeError:~WEBIDL#exceptiondef-typeerror
+E.InvalidModificationError:~WEBIDL#invalidmodificationerror
+
+I.DOMHighResTimeStamp:~HRTIME#dom-domhighrestimestamp
+I.Performance:~HRTIME#dom-performance
+I.PerformanceEntry:#dom-performanceentry
+I.PerformanceEntryList:#dom-performanceentrylist
+I.PerformanceObserver:#dom-performanceobserver
+I.PerformanceObserverCallback:#dom-performanceobservercallback
+I.PerformanceObserverEntryList:#dom-performanceobserverentrylist
+I.PerformanceObserverInit:#dom-performanceobserverinit
+I.PerformanceObserverCallbackOptions:#dom-performanceobservercallbackoptions
+
+DOMString:~WEBIDL#idl-DOMString
+undefined:~WEBIDL#idl-undefined
+boolean:~WEBIDL#idl-boolean
+unsigned long long:~WEBIDL#idl-unsigned-long-long
+object:~WEBIDL#idl-object
+sequence:~WEBIDL#idl-sequence
+FrozenArray:~WEBIDL#idl-frozen-array
+I.FrozenArray:~WEBIDL#idl-frozen-array
+
+constructor:#dom-performanceobserver-performanceobserver
+m.new PerformanceObserver:#dom-performanceobserver-performanceobserver
+
+m.id:#dom-performanceentry-id
+m.name:#dom-performanceentry-name
+m.navigationId:#dom-performanceentry-navigationid
+m.startTime:#dom-performanceentry-starttime
+m.entryType:#dom-performanceentry-entrytype
+m.duration:#dom-performanceentry-duration
+m.toJSON:#dom-performanceentry-tojson
+
+m.getEntries:#dom-performance-getentries
+m.getEntriesByName:#dom-performance-getentriesbyname
+m.getEntriesByType:#dom-performance-getentriesbytype
+
+mO.getEntries:#dom-performanceobserverentrylist-getentries
+mO.getEntriesByName:#dom-performanceobserverentrylist-getentriesbyname
+mO.getEntriesByType:#dom-performanceobserverentrylist-getentriesbytype
+
+m.observe:#dom-performanceobserver-observe
+m.disconnect:#dom-performanceobserver-disconnect
+m.takeRecords:#dom-performanceobserver-takerecords
+m.supportedEntryTypes:#dom-performanceobserver-supportedentrytypes
+
+d.entryTypes:#dom-performanceobserverinit-entrytypes
+d.type:#dom-performanceobserverinit-type
+d.buffered:#dom-performanceobserverinit-buffered
+
+d.droppedEntriesCount:#dom-performanceobservercallbackoptions-droppedentriescount
+
+	m.PerformanceObserverInit.entryTypes:#dom-performanceobserverinit-entrytypes
+
+~buffer~mapを名前と型で絞込む:#dfn-filter-buffer-map-by-name-and-type
+~bufferを名前と型で絞込む:#dfn-filter-buffer-by-name-and-type
+処理能~時列線:#dfn-performance-timeline
+	Performance Timeline
+
+pO.~buffer:#dfn-observer-buffer
+pO.種別:#dfn-observer-type
+pO.~callback:#dfn-observer-callback
+pO.~option群~list:#dfn-options-list
+pO.落とされた~entry群を要求するか:#dfn-requires-dropped-entries
+
+処理能~entry~buffer~map:#dfn-performance-entry-buffer-map
+処理能~entry~buffer:#dfn-performance-entry-buffer
+最大~buffer~size:#dfn-maxbuffersize
+時列線から可用か:#dfn-availablefromtimeline
+落とした~entry数:#dfn-dropped-entries-count
+
+処理能~entry~tupleを得る:#dfn-relevant-performance-entry-tuple
+
+処理能~観測器~taskは~queue済みか:#dfn-performance-observer-task-queued-flag
+処理能~entryを~queueする:#dfn-queue-a-performanceentry
+処理能~観測器~taskを~queueする:#dfn-queue-the-performanceobserver-task
+	登録する:#dfn-register-the-observer
+登録-済み:#dfn-register-the-observer
+
+~entry~list:#dfn-entry-list
+
+処理能~観測器:#_performanceobserver-interface
+処理能~観測器~list:#dfn-list-of-registered-performance-observer-objects
+	（未利用）登録-済み処理能~観測器:#dfn-registered-performance-observer
+処理能~時列線~task~source:#dfn-performance-timeline-task-source
+
+~supportする~entry型~群:#dfn-frozen-array-of-supported-entry-types
+~bufferは満杯かどうか決定する:#dfn-determine-if-a-performance-entry-buffer-is-full
+
+pT.終了~時刻:#dfn-endtime
+
+~entry型:#_entry-type
+~registry:~TETregistry#registry
+
+最後の処理能~entry~ID:#dfn-last-performance-entry-id
+最も近過去な~navi:#dfn-most-recent-navigation
+~navi処理能~entryを~queueする:#dfn-queue-a-navigation-performanceentry
+~IDを生成する:#dfn-generate-an-id
+
+PE.初期化する:#dfn-initialize-a-performanceentry
+
+	●用語（外部
+~entryを追加するべきか？:~TETregistry#dfn-should-add-entry
+
+~interface~obj:~WEBIDLjs#dfn-interface-object
+辞書~member:~WEBIDL#dfn-dictionary-member
+~callback this 値:~WEBIDLjs#dfn-callback-this-value
+既定の~toJSON手続き:~WEBIDLjs#default-tojson-steps
+投出-:~WEBIDL#dfn-throw
+~callback関数を呼出す:~WEBIDLjs#invoke-a-callback-function
+
+文書:~DOM4#concept-document
+結付けられた文書:~WINDOW#concept-document-window
+~window:~WINDOW#the-window-object
+
+例外を報告する:~WAPI#report-the-exception
+~taskを~queueする:~WAPI#queue-a-task
+~task~queue:~WAPI#task-queue
+~task~source:~WAPI#task-source
+関連な大域~obj:~WAPI#concept-relevant-global
+大域~obj:~WAPI#global-object
+enV.大域~obj:~WAPI#concept-settings-object-global
+
+~list:~INFRA#list
+集合:~INFRA#ordered-set
+付加する:~INFRA#list-append
+~cloneする:~INFRA#list-clone
+~map:~INFRA#ordered-map
+値~listを取得する:~INFRA#map-getting-the-values
+map.~entry:~INFRA#map-entry
+map.値:~INFRA#map-value
+map.~key:~INFRA#map-key
+	[]:~INFRA#map-get
+構造体:~INFRA#struct
+拡張する:~INFRA#list-extend
+
+●●words_table1
+TETregistry:timing-entrytypes-registry-ja.html
+	https://w3c.github.io/timing-entrytypes-registry/
+
+●●words_table
+
+	●peroformance
+時系列順:chronological order::~
+	処理能~時列線:Performance Timeline
+disconnect:
+計量:metric:~
+計測-:instrument::~
+
+分解能:resolution::~
+	interested:
+一個:single:~
+複数個:multiple:~
+
+	●処理
+toJSON:
+overhead::::オーバーヘッド
+	登録-済み:registered
+遊休中:idle 中:~
+	during idle periods
+低優先度:low priority:~
+全存続期間:full lifecycle::~
+絞込む:filterする::絞り込む
+絞込み:filtering::絞り込み
+	~filter:取り除いた
+満杯:full:~
+近過去:recent:~
+増やす:increaseする:~
+増やさ:increaseさ:~
+増分:increment:~
+	量:amount
+	ε:unset
+
+	%大域~obj:relevantGlobal
+	%大域~obj:globalObject
+	%新たな~entry:newEntry
+	%通知-~list:notifyList
+	%~ID:id
+	%~entry:entry
+	%開始~時刻:startTime
+	%~entry型:entryType
+	%名前:name
+	%終了~時刻:endTime
+
+	●仕様
+別法:alternative:~
+警告:warning:~
+保つ:keepする:~
+排せる:eliminateできる:~
+参照r:refer:参照
+故意:deliberate:~
+
+	-:discouraged
+	足りる:suffice
+	polling
+	調べる:poll する
+	関心ある:interested in
+	選ぶ:choose
+	が選ぶ:chosen by
+	選んで:chooseして
+	に関する:regarding
+	正式~化:formalize
+
+	●未分類
+	~NEQ:does not match
+申込む:subscribeする:申し込む
+申込んで:subscribeして:申し込んで
+繰返して:repeatして:繰り返して
+積重なる:stackされる:積み重なる
+alphabet-:alphabetical:::アルファベット
+消費器:consumer:~
+解析:analytics:~
+高-:high-:~
+競争:race condition:~
+存続期間:lifetime:~
+
+	~queue済み:queued
+	~member:parameter
+	~clone:copy
+	run
+	subscription
+	-:with respect to
+	-:check
+	-:instruct
+	-:assert
+	-:emit
+	-:modified
+	-:update
+	挙げ:listing
+	-:obs
+	-:currentOption
+	~costがかかる:costly
+	^en:deduplication
+	^en:critical path:
+	no longer
+	together
+	より速く:faster
+	大量に:significant volume の
+	-:between
+	初回:first
+	その上限個数まで:not unbounded
+	同じ一定な:pick a single global random
+	同じ一定な:not just pick a unique random integer 〜 as a consistent
+	毎回~randomに変えて:choose to 〜 random
+	小さな:small
+	整数:number
+	回ごと／毎回:every time
+
+●●ref_normative
+
+[dom]
+    DOM Standard. Anne van Kesteren. WHATWG. Living Standard. URL: https://dom.spec.whatwg.org/ 
+[HR-TIME-3]
+    High Resolution Time. Yoav Weiss. W3C. 19 July 2023. W3C Working Draft. URL: https://www.w3.org/TR/hr-time-3/ 
+[HTML]
+    HTML Standard. Anne van Kesteren; Domenic Denicola; Ian Hickson; Philip Jägenstedt; Simon Pieters. WHATWG. Living Standard. URL: https://html.spec.whatwg.org/multipage/ 
+[INFRA]
+    Infra Standard. Anne van Kesteren; Domenic Denicola. WHATWG. Living Standard. URL: https://infra.spec.whatwg.org/ 
+[RFC2119]
+    Key words for use in RFCs to Indicate Requirement Levels. S. Bradner. IETF. March 1997. Best Current Practice. URL: https://www.rfc-editor.org/rfc/rfc2119 
+[RFC8174]
+    Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words. B. Leiba. IETF. May 2017. Best Current Practice. URL: https://www.rfc-editor.org/rfc/rfc8174 
+[WebIDL]
+    Web IDL Standard. Edgar Chen; Timothy Gu. WHATWG. Living Standard. URL: https://webidl.spec.whatwg.org/ 
+
+●●ref_informative
+
+[NAVIGATION-TIMING-2]
+    Navigation Timing Level 2. Yoav Weiss; Noam Rosenthal. W3C. 7 June 2023. W3C Working Draft. URL: https://www.w3.org/TR/navigation-timing-2/ 
+[PERFORMANCE-TIMELINE]
+    Performance Timeline. Nicolas Pena Moreno. W3C. 11 October 2023. W3C Candidate Recommendation. URL: https://www.w3.org/TR/performance-timeline/ 
+[RESOURCE-TIMING-2]
+    Resource Timing. Yoav Weiss; Noam Rosenthal. W3C. 4 October 2022. W3C Candidate Recommendation. URL: https://www.w3.org/TR/resource-timing-2/ 
+[USER-TIMING-2]
+    User Timing Level 2. Ilya Grigorik. W3C. 26 February 2019. W3C Recommendation. URL: https://www.w3.org/TR/user-timing-2/ 
+[WORKERS]
+    Web Workers. Ian Hickson. W3C. 28 January 2021. W3C Working Group Note. URL: https://www.w3.org/TR/workers/
+
+
+●●trans_metadata
+
+<p>
+~THIS_PAGEは、~W3Cにより編集者草案として公開された
+<a href="~SPEC_URL">Performance Timeline<\/a>
+を日本語に翻訳したものです。
+~PUB
+<\/p>
+
+
+●●spec_metadata
+
+最新公表バージョン
+	https://www.w3.org/TR/performance-timeline/
+公表履歴
+	https://www.w3.org/standards/history/performance-timeline/
+編集者草案
+	https://w3c.github.io/performance-timeline/
+commit 履歴
+	https://github.com/w3c/performance-timeline/commits/
+テスト一式
+	https://github.com/web-platform-tests/wpt/tree/master/performance-timeline
+編集
+	<a href="https://github.com/npm1">Nicolás Peña Moreno<\/a> (Google)
+前任編集者
+	<a href="https://www.igvita.com/">Ilya Grigorik<\/a> (Google)
+	<a href="mailto:jmann@microsoft.com">Jatinder Mann<\/a> (Microsoft Corp.) (Until November 2014)
+	Zhiheng Wang (Google) (Until July 2013)
+フィードバック
+	<a href="https://github.com/w3c/performance-timeline/">GitHub w3c/performance-timeline<\/a> (<a href="https://github.com/w3c/performance-timeline/pulls/">pull requests<\/a>, <a href="https://github.com/w3c/performance-timeline/issues/new/choose">new issue<\/a>, <a href="https://github.com/w3c/performance-timeline/issues/">open issues<\/a>)
+公表者
+	<a href="https://www.w3.org/groups/wg/webperf">Web Performance WG<\/a>
+
+</script>
+
+
+</head>
+
+<body>
+
+<header>
+	<hgroup>
+<h1>処理能 時列線 — Performance Timeline</h1>
+	</hgroup>
+</header>
+
+<div id="MAIN" hidden>
+	<section id="abstract">
+◎要約
+
+<p>
+この仕様は、
+`High Resolution Time^cite 仕様 `HR-TIME-3$r
+を拡張して、
+より高-分解能な処理能~計量~dataを［
+検索取得する／格納する
+］~methodを供する。
+◎
+This specification extends the High Resolution Time specification [HR-TIME-3] by providing methods to store and retrieve high resolution performance metric data.
+</p>
+
+	</section>
+	<section id="sotd">
+◎位置付け
+
+<p>
+これは編集者草案の公な複製です…
+【以下、この節の他の内容は，~SOTD-W3Cに移譲。】
+</p>
+
+<p>
+この `Performance Timeline^cite 仕様は、
+その最初の~version `PERFORMANCE-TIMELINE$r を置換し，次を含む：
+◎
+This Performance Timeline specification replaces the first version of [PERFORMANCE-TIMELINE] and includes:
+</p>
+<ul>
+	<li>
+`HR-TIME-3$r に定義される `Performance$I ~interfaceを拡張する。
+◎
+Extends the base definition of the Performance interface defined by [HR-TIME-3];
+</li>
+	<li>
+`WORKERS$r に
+`PerformanceEntry$I を公開する。
+◎
+Exposes PerformanceEntry in Web Workers [WORKERS];
+</li>
+	<li>
+文書の存続期間にわたる複数の~navi~event用の~supportを正式~化する。
+◎
+Formalizes support for multiple navigation events over a document's lifetime.
+</li>
+	<li>
+`PerformanceObserver$I 用の~supportを追加する。
+◎
+Adds support for PerformanceObserver.
+</li>
+</ul>
+
+	</section>
+
+<main id="MAIN0">
+
+	<section id="introduction">
+<h2 title="Introduction">1. 序論</h2>
+
+◎非規範的
+
+<p>
+~web~appの処理能~特性を正確aに測定することは、
+~web~appを より速くするための重要な側面である。
+この仕様は、
+~web開発者が，
+~web~appの全存続期間にわたる様々な処理能~計量［
+に~accessする ／ を計測する ／ を検索取得する
+］ことを可能化するために必要yな`処理能~時列線$の~primitiveを定義する。
+◎
+Accurately measuring performance characteristics of web applications is an important aspect of making web applications faster. This specification defines the necessary Performance Timeline primitives that enable web developers to access, instrument, and retrieve various performance metrics from the full lifecycle of a web application.
+</p>
+
+<p>
+［
+`NAVIGATION-TIMING-2$r は文書の~navi ／
+`RESOURCE-TIMING-2$r は~page上の資源 ／
+`USER-TIMING-2$r は開発者~script
+］に関係する計時~情報を定義する仕様の例である。
+これらは、
+他の処理能~interfaceと伴に，~web~appの`処理能~時列線$を述べる処理能の計量を定義する。
+例えば，次の~scriptは、
+開発者が［
+文書の~navi ／
+~page上の資源 ／
+開発者~script
+］（同順）に関係する処理能~計量を得するために
+`処理能~時列線$に~accessする方法を示すものである：
+◎
+[NAVIGATION-TIMING-2], [RESOURCE-TIMING-2], and [USER-TIMING-2] are examples of specifications that define timing information related to the navigation of the document, resources on the page, and developer scripts, respectively. Together these and other performance interfaces define performance metrics that describe the Performance Timeline of a web application. For example, the following script shows how a developer can access the Performance Timeline to obtain performance metrics related to the navigation of the document, resources on the page, and developer scripts:
+</p>
+
+<div class="example">
+
+<pre class="lang-html">
+&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;
+&lt;body onload="init()"&gt;
+&lt;img id="image0" src="https://www.w3.org/Icons/w3c_main.png" /&gt;
+&lt;script&gt;
+
+function init()
+{
+  /* <span class="comment">
+`USER-TIMING-2$r を見よ
+◎
+see [[USER-TIMING-2]]
+</span> */
+  performance.mark("startWork");
+  doWork(); /* <span class="comment">
+何らかの開発者~code
+◎
+Some developer code
+</span> */
+  performance.mark("endWork");
+  measurePerf();
+}
+
+function measurePerf() {
+  performance
+    .getEntries()
+    .map(%entry =&gt; JSON.stringify(%entry, null, 2))
+    .forEach(%json =&gt; console.log(%json));
+}
+
+&lt;/script&gt;
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+
+</div>
+
+<p>
+別法として，開発者は、
+`処理能~時列線$を観測して，新たな処理能~計量が記録される度に
+`PerformanceObserver$I ~interfaceを介して通知させられる
+— 加えて，任意選択で、
+指定した`~entry型$の，それまでに~bufferされた処理能~計量も通知させられる。
+◎
+Alternatively, the developer can observe the Performance Timeline and be notified of new performance metrics and, optionally, previously buffered performance metrics of specified type, via the PerformanceObserver interface.
+</p>
+
+<p>
+`PerformanceObserver$I ~interfaceは、
+最初の例に示した~bufferに基づく~approachにおける制限に取組むように設計されている。
+`PerformanceObserver$I ~interfaceを利用すれば、
+~appは：
+◎
+The PerformanceObserver interface was added and is designed to address limitations of the buffer-based approach shown in the first example. By using the PerformanceObserver interface, the application can:
+</p>
+
+<ul>
+	<li>
+時列線を調べ続ける（ `polling^en ）ことなく，新たな計量を検出できる。
+◎
+Avoid polling the timeline to detect new metrics
+</li>
+	<li>
+~costがかかる~~重複排除~logic（ `deduplication^en ）なしに，新たな計量を識別できる。
+◎
+Eliminate costly deduplication logic to identify new metrics
+</li>
+	<li>
+~bufferを操作しようと求める他の消費器との競争を排せる。
+◎
+Eliminate race conditions with other consumers that may want to manipulate the buffer
+</li>
+</ul>
+
+<p>
+開発者には、
+アリな所では `PerformanceObserver$I を利用することが奨励される。
+更には、
+新たな処理能~APIの計量は，
+`PerformanceObserver$I ~interfaceを通す以外に可用にならないこともある。
+観測器は、
+構築子に~callbackを指定して，関心のある処理能~entryを
+`observe()$m ~methodを介して指定することにより働く。
+~callbackをいつ実行するかは、
+~UAが選ぶ
+— それは、
+~queueされた処理能~entryたちを受取る。
+◎
+The developer is encouraged to use PerformanceObserver where possible. Further, new performance API's and metrics may only be available through the PerformanceObserver interface. The observer works by specifying a callback in the constructor and specifying the performance entries it's interested in via the observe() method. The user agent chooses when to execute the callback, which receives performance entries that have been queued.
+</p>
+
+<p>
+`PerformanceObserver$I ~interfaceの利用に際し、
+初期~page読込nに関する特別な考慮点がある：
+登録が~eventを受取るためには，作動中でなければならないが、
+登録~scriptは［
+その時点で可用でないか， `critical path^en 内には欲されない
+］こともあろう。
+これに取組むため、
+~UAは，~pageが構築されている間 ある個数までの~eventを~bufferする
+— ~bufferされたこれらの~eventは、
+観測器を登録するときに `buffered$d ~flagを介して~accessできる。
+この~flagが ~T にされた場合、
+~UAは，指定された`~entry型$用に~bufferされた~eventを検索取得して配送し、
+それらを `observe()$m ~callが生じた後の初回の~callbackに送達する。
+◎
+There are special considerations regarding initial page load when using the PerformanceObserver interface: a registration must be active to receive events but the registration script may not be available or may not be desired in the critical path. To address this, user agents buffer some number of events while the page is being constructed, and these buffered events can be accessed via the buffered flag when registering the observer. When this flag is set, the user agent retrieves and dispatches events that it has buffered, for the specified entry type, and delivers them in the first callback after the observe() call occurs.
+</p>
+
+<p class="note">注記：
+~bufferされる~eventの個数の上限は、
+当の計量を定義する仕様により決定される。
+~buffer法は、
+その上限個数までの~eventに限り利用されるものと意図され，継続的でもない。
+◎
+Note
+
+The number of buffered events is determined by the specification that defines the metric and buffering is intended to used for first-N events only; buffering is not unbounded or continuous.
+</p>
+
+<div class="example">
+
+<pre class="lang-html">
+&lt;!doctype html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;img id="image0" src="https://www.w3.org/Icons/w3c_main.png" /&gt;
+&lt;script&gt;
+
+/* <span class="comment">
+利用したい`~entry型$は~supportされているかどうかを知る関数
+◎
+Know when the entry types we would like to use are not supported.
+</span> */
+function detectSupport(%entryTypes) {
+  for (const %entryType of %entryTypes) {
+    if (!PerformanceObserver.supportedEntryTypes.includes(%entryType)) {
+      /* <span class="comment">
+%entryType は~supportされていないことを~client側~解析に指示する。
+◎
+Indicate to client-side analytics that entryType is not supported.
+</span> */
+    }
+  }
+}
+detectSupport(["resource", "mark", "measure"]);
+const %userTimingObserver = new PerformanceObserver(%list => {
+  %list
+    .getEntries()
+    /* <span class="comment">
+挿入された値を取得する
+◎
+Get the values we are interested in
+</span> */
+    .map(({ %name, %entryType, %startTime, %duration }) => {
+      const %obj = {
+        "Duration": %duration,
+        "Entry Type": %entryType,
+        "Name": %name,
+        "Start Time": %startTime,
+      };
+      return JSON.stringify(%obj, null, 2);
+    })
+    /* <span class="comment">
+それらを~consoleに表示する
+◎
+Display them to the console.
+</span> */
+    .forEach(console.log);
+
+    /* <span class="comment">
+~eventを処理したなら~disconnectする
+◎
+Disconnect after processing the events.
+</span> */
+  %userTimingObserver.disconnect();
+});
+/* <span class="comment">
+User-Timing 用に新たな~eventを申込む
+◎
+Subscribe to new events for User-Timing.
+</span> */
+%userTimingObserver.observe({entryTypes: ["mark", "measure"]});
+const %resourceObserver = new PerformanceObserver(list =&gt; {
+  list
+    .getEntries()
+    /* <span class="comment">
+関心ある値を取得する
+◎
+Get the values we are interested in
+</span> */
+    .map(({ name, startTime, fetchStart, responseStart, responseEnd }) =&gt; {
+      const %obj = {
+        "Name": name,
+        "Start Time": startTime,
+        "Fetch Start": fetchStart,
+        "Response Start": responseStart,
+        "Response End": responseEnd,
+      };
+      return JSON.stringify(%obj, null, 2);
+    })
+    /* <span class="comment">
+それらを~consoleに表示する
+◎
+Display them to the console.
+</span> */
+    .forEach(console.log);
+  /* <span class="comment">
+~eventを処理したなら~disconnectする
+◎
+Disconnect after processing the events.
+</span> */
+  %resourceObserver.disconnect();
+});
+/* <span class="comment">
+Resource Timing 用に~bufferされた~eventを検索取得するとともに，それ用に新たな~eventも申込む
+◎
+Retrieve buffered events and subscribe to newer events for Resource Timing.
+</span> */
+%resourceObserver.observe({type: "resource", buffered: true});
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div>
+
+	</section>
+	<section id="_conventions">
+<h2>【この訳に特有な表記規約】</h2>
+
+◎表記記号
+
+	</section>
+	<section id="conformance">
+<h2 title="Conformance">2. 適合性</h2>
+
+<p class="trans-note">【
+この節の内容は
+<a href="triple-underscore.github.io/~W3Ccommon#conformance">~W3C日本語訳 共通~page</a>
+に移譲
+】</p>
+	</section>
+	<section id="performance-timeline">
+<h2 title="Performance Timeline" id="dfn-performance-timeline">3. 処理能~時列線</h2>
+
+<p>
+各 `大域~obj$は、
+次に挙げるものを有する：
+◎
+Each global object has:
+</p>
+<ul>
+	<li>
+`処理能~観測器~taskは~queue済みか@
+⇒
+真偽値
+【初期~時は ~F 】
+◎
+a performance observer task queued flag
+</li>
+	<li>
+<p>
+`処理能~観測器~list@
+⇒
+`処理能~観測器$たちが成す~list【実質的には`集合$】
+— 初期~時は空とする。
+◎
+a list of registered performance observer objects that is initially empty
+</p>
+
+<p>
+`処理能~観測器$は、
+この~list内にあることを
+`登録-済み@
+であるともいう。
+</p>
+	</li>
+	<li>
+<p>
+`処理能~entry~buffer~map@
+⇒
+ある`~map$。
+◎
+a performance entry buffer map map,＼
+</p>
+
+<p>
+この~mapを成す各`~entry$mapの：
+◎
+↓</p>
+<ul>
+	<li>
+`~key$mapは、
+当の~bufferが所属する`~entry型$を表現する文字列を与える。
+◎
+keyed on a DOMString, representing the entry type to which the buffer belongs.＼
+</li>
+	<li>
+<p>
+`値$mapは、
+次に挙げるものからなる~tupleを与える：
+◎
+The map's value is the following tuple:
+</p>
+				<ul>
+					<li>
+`処理能~entry~buffer@
+⇒
+`PerformanceEntry$I ~objたちを格納する。
+初期~時は空とする。
+◎
+A performance entry buffer to store PerformanceEntry objects, that is initially empty.
+</li>
+					<li>
+`最大~buffer~size@
+⇒
+整数をとり，この`~entry型$用の`~registry$値に初期化される。
+◎
+An integer maxBufferSize, initialized to the registry value for this entry type.
+</li>
+					<li>
+`時列線から可用か@
+⇒
+真偽値をとり，この`~entry型$用の`~registry$値に初期化される。
+◎
+A boolean availableFromTimeline, initialized to the registry value for this entry type.
+</li>
+					<li>
+`落とした~entry数@
+⇒
+整数
+— 初期~時は 0 とする。
+◎
+An integer dropped entries count that is initially 0.
+</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+`最後の処理能~entry~ID@
+⇒
+整数
+— 初期~時は、
+~randomな整数 ~IN { 100 〜 10000 } に設定されるとする。
+◎
+An integer last performance entry id that is initially set to a random integer between 100 and 10000.
+</li>
+</ul>
+
+<p>
+各 `文書$は、
+次に挙げるものを有する：
+◎
+Each Document has:
+</p>
+<ul>
+	<li>
+`最も近過去な~navi@
+⇒
+ある `PerformanceEntry$I
+— 初期~時は ε とする。
+◎
+A most recent navigation, which is a PerformanceEntry, initially unset.
+</li>
+</ul>
+
+<div class="algo">
+<p>
+`処理能~entry~tupleを得る@
+ときは、
+所与の
+( %~entry型, %大域~obj )
+に対し
+⇒
+~RET %大域~obj の`処理能~entry~buffer~map$[ %~entry型 ]
+◎
+In order to get the relevant performance entry tuple, given entryType and globalObject as input, run the following steps:
+• Let map be the performance entry buffer map associated with globalObject.
+• Return the result of getting the value of an entry from map, given entryType as the key.
+</p>
+</div>
+
+		<section id="extensions-to-the-performance-interface">
+<h3 title="Extensions to the Performance interface">3.1. `Performance^I ~interfaceに対する拡張</h3>
+
+<p>
+この節では、
+`HR-TIME-3$r の `Performance$I ~interfaceを拡張して，［
+処理能に関係する各種~属性, および［
+`処理能~時列線$からの処理能~計量~dataを検索取得する
+］ために利用される 各種~method
+］を~hostするようにする。
+◎
+This extends the Performance interface from [HR-TIME-3] and hosts performance related attributes and methods used to retrieve the performance metric data from the Performance Timeline.
+</p>
+
+<pre class="idl">
+partial interface `Performance$I {
+    `PerformanceEntryList$I `getEntries$m();
+    `PerformanceEntryList$I `getEntriesByType$m(`DOMString$ %type);
+    `PerformanceEntryList$I `getEntriesByName$m(`DOMString$ %name, optional `DOMString$ %type);
+};
+
+typedef `sequence$&lt;`PerformanceEntry$I&gt; `PerformanceEntryList$I;
+</pre>
+
+<p>
+`PerformanceEntryList@I
+は、
+`PerformanceEntry$I たちが成す連列を表現する
+— それは、
+開発者に~JS配列~用の便利~methodすべてを供する。
+◎
+The PerformanceEntryList represents a sequence of PerformanceEntry, providing developers with all the convenience methods found on JavaScript arrays.
+</p>
+
+<p class="trans-note">【
+この仕様の各所では、
+`PerformanceEntry$I たちが成す`~list$は，暗黙的に `PerformanceEntryList$I ~objを成すものとして扱われる。
+】</p>
+
+<div class="algo">
+<p id="getentries-method">
+`getEntries()@m
+~method手続きは
+⇒
+~RET `~buffer~mapを名前と型で絞込む$( コレ, ~NULL, ~NULL )
+</p>
+◎
+3.1.1 getEntries() method
+◎
+Returns a PerformanceEntryList object returned by the filter buffer map by name and type algorithm with name and type set to null.
+</div>
+
+<div class="algo">
+<p id="getentriesbytype-method">
+`getEntriesByType(type)@m
+~method手続きは
+⇒
+~RET `~buffer~mapを名前と型で絞込む$( コレ, ~NULL, %type )
+</p>
+◎
+3.1.2 getEntriesByType() method
+◎
+Returns a PerformanceEntryList object returned by filter buffer map by name and type algorithm with name set to null, and type set to the method's input type parameter.
+</div>
+
+<div class="algo">
+<p id="getentriesbyname-method">
+`getEntriesByName(name, type)@m
+~method手続きは：
+</p>
+<ol>
+	<li>
+~IF［
+%type ~EQ ε
+］
+⇒
+%type ~SET ~NULL
+</li>
+	<li>
+~RET `~buffer~mapを名前と型で絞込む$( コレ, %name, %type )
+</li>
+</ol>
+◎
+3.1.3 getEntriesByName() method
+◎
+Returns a PerformanceEntryList object returned by filter buffer map by name and type algorithm with name set to the method input name parameter, and type set to null if optional entryType is omitted, or set to the method's input type parameter otherwise.
+</div>
+
+		</section>
+	</section>
+	<section id="the-performanceentry-interface">
+<h2 title="The PerformanceEntry interface">4. `PerformanceEntry^I ~interface</h2>
+
+<p>
+`PerformanceEntry$I ~interfaceは、
+様々な計量による処理能~dataを~hostする。
+◎
+The PerformanceEntry interface hosts the performance data of various metrics.
+</p>
+
+<pre class="idl">
+[`Exposed$=(Window,Worker)]
+interface `PerformanceEntry@I {
+  readonly attribute `unsigned long long$  `id@m;
+  readonly attribute `DOMString$           `name$m;
+  readonly attribute `DOMString$           `entryType$m;
+  readonly attribute `DOMHighResTimeStamp$I `startTime$m;
+  readonly attribute `DOMHighResTimeStamp$I `duration$m;
+  readonly attribute `unsigned long long$  `navigationId$m;
+  [`Default$] `object$ `toJSON$m();
+};
+</pre>
+
+<div class="algo">
+<p>
+`name@m
+取得子~手続きは
+⇒
+~RET 初期化-時の値
+◎
+name
+• This attribute must return the value it is initialized to.＼
+</p>
+
+<p>
+これは、
+この `PerformanceEntry$I ~obj用の~an識別子を表現する。
+この識別子は、
+一意になる必要はない。
+◎
+It represents an identifier for this PerformanceEntry object. This identifier does not have to be unique.
+</p>
+</div>
+
+<div class="algo">
+<p>
+`entryType@m
+取得子~手続きは
+⇒
+~RET 初期化-時の値
+◎
+entryType
+• This attribute must return the value it is initialized to.
+</p>
+
+<p class="trans-note">【
+`PerformanceEntry$I を継承している各~interfaceごとに，対応する
+`~entry型@
+を表現する。
+他から継承される基底~interfaceとして~serveする（~instance化されない）。
+
+】</p>
+
+<p class="note">注記：
+`entryType$m 用の値は、
+すべて，関連な`~registry$にて定義される。
+例えば
+⇒＃
+`mark^l, `measure^l `USER-TIMING-2$r ／
+`navigation^l `NAVIGATION-TIMING-2$r ／
+`resource^l `RESOURCE-TIMING-2$r
+◎
+Note
+
+All entryType values are defined in the relevantregistry. Examples include: "mark" and "measure" [USER-TIMING-2], "navigation" [NAVIGATION-TIMING-2], and "resource" [RESOURCE-TIMING-2].
+</p>
+</div>
+
+<div class="algo">
+<p>
+`startTime@m
+取得子~手続きは
+⇒
+~RET 初期化-時の値
+</p>
+
+<p>
+これは、
+コレの処理能~計量にて最初に記録された時刻~値を表現する。
+</p>
+◎
+startTime
+• This attribute must return the value it is initialized to.＼
+It represents the time value of the first recorded timestamp of this performance metric.
+</div>
+
+<div class="algo">
+<p>
+`duration@m
+取得子~手続きは
+</p>
+<ol>
+	<li>
+%終了~時刻 ~LET コレの`終了~時刻$pT
+</li>
+	<li>
+~IF［
+%終了~時刻 ~EQ 0
+］
+⇒
+~RET 0
+</li>
+	<li>
+~RET %終了~時刻 ~MINUS コレの `startTime$m
+</li>
+</ol>
+◎
+duration
+The getter steps for the duration attribute are to return 0 if this's endTime is 0; otherwise this's endTime - this's startTime.
+</div>
+
+<div class="algo">
+`navigationId@m
+取得子~手続きは
+⇒
+~RET 初期化-時の値
+◎
+navigationId
+• This attribute MUST return the value it is initialized to.
+</div>
+
+<p>
+`toJSON()@m
+は、
+`WebIDL$r の`既定の~toJSON手続き$に従うとする。
+◎
+When toJSON is called, run [WebIDL]'s default toJSON steps.
+</p>
+
+<p>
+各 `PerformanceEntry$I は
+`終了~時刻@pT
+を有する
+— それは `DOMHighResTimeStamp$I であり，初期~時は 0 とする。
+◎
+A PerformanceEntry has a DOMHighResTimeStamp endTime, initially 0.
+</p>
+
+<div class="algo">
+<p>
+`PerformanceEntry$I %~entry を
+`初期化する@PE
+ときは、
+所与の
+⇒＃
+`DOMHighResTimeStamp$I %開始~時刻,
+文字列 %~entry型,
+文字列 %名前,
+`DOMHighResTimeStamp$I %終了~時刻 （省略時は 0 ）
+◎終
+に対し：
+◎
+To initialize a PerformanceEntry entry given a DOMHighResTimeStamp startTime, a DOMString entryType, a DOMString name, and an optional DOMHighResTimeStamp endTime (default 0):
+</p>
+<ol>
+	<li>
+~Assert：
+%~entry型 は`~registry$内に定義-済みである
+◎
+Assert: entryType is defined in the entry type registry.
+</li>
+	<li>
+%~entry の
+⇒＃
+`startTime$m ~SET %開始~時刻,
+`entryType$m ~SET %~entry型,
+`name$m ~SET %名前,
+`終了~時刻$pT ~SET %終了~時刻
+◎
+Initialize entry's startTime to startTime.
+◎
+Initialize entry's entryType to entryType.
+◎
+Initialize entry's name to name.
+◎
+Initialize entry's endTime to endTime.
+</li>
+</ol>
+</div>
+
+	</section>
+	<section id="the-performanceobserver-interface">
+<h2 title="The PerformanceObserver interface">5. `PerformanceObserver^I ~interface</h2>
+
+<p>
+`PerformanceObserver$I ~interfaceを利用すれば、
+`処理能~時列線$を観測して，新たな処理能~計量（ `PerformanceEntry$I ~obj）が記録される度に通知させられる
+— 加えて、
+任意選択で，~bufferされた処理能~計量も通知させられる。
+◎
+The PerformanceObserver interface can be used to observe the Performance Timeline to be notified of new performance metrics as they are recorded, and optionally buffered performance metrics.
+</p>
+
+<p>
+`PerformanceObserver$I ~objは、
+単に
+`処理能~観測器@
+とも称される。
+各 `処理能~観測器$には、
+次に挙げるものが結付けられる：
+◎
+Each PerformanceObserver has these associated concepts:
+</p>
+<ul>
+	<li>
+`~callback@pO
+⇒
+作成-時に設定される，
+`PerformanceObserverCallback$I ~callback。
+◎
+A PerformanceObserverCallback observer callback set on creation.
+</li>
+	<li>
+`~buffer@pO
+⇒
+`PerformanceEntryList$I ~obj。
+この~objが表現する連列は、
+初期~時は空とする。
+◎
+A PerformanceEntryList object called the observer buffer that is initially empty.
+</li>
+	<li>
+`種別@pO
+⇒
+次に挙げるいずれか
+— 初期~時は `未定義^i とする
+【`登録-済み$になった時点で、他の値に更新される】
+⇒＃
+`未定義^i ／
+`一個^i ／
+`複数個^i
+◎
+A DOMString observer type which is initially "undefined".
+</li>
+	<li>
+`落とされた~entry群を要求するか@pO
+⇒
+真偽値
+— 初期~時は ~F とする。
+◎
+A boolean requires dropped entries which is initially set to false.
+</li>
+	<li>
+<p>
+`~option群~list@pO
+⇒
+`PerformanceObserverInit$I 辞書たちが成す~list, または ε （なし）。
+初期~時は ε とする。
+`登録-済み$である間は非 ε になる。
+</p>
+
+<p class="trans-note">【
+原文では、
+“登録-済み処理能~観測器”
+という構造体を別に定義して，それに
+— `処理能~観測器$への参照とともに —
+`~option群~list$pOを保たせているが、
+この構造体は，実質的に［
+処理能~観測器は`処理能~観測器~list$内に含まれるかどうか
+］の区別を表現するだけに過ぎず，無為に冗長なので、
+この訳では ε を利用して単純~化している。
+】</p>
+◎
+↓</li>
+</ul>
+
+<div class="algo">
+`new PerformanceObserver(callback)@m
+構築子~手続きは
+⇒
+コレの`~callback$pO ~SET %callback
+◎
+The PerformanceObserver(callback) constructor must create a new PerformanceObserver object with its observer callback set to callback and then return it.
+◎
+↑↑A registered performance observer is a struct consisting of an observer member (a PerformanceObserver object) and an options list member (a list of PerformanceObserverInit dictionaries).
+</div>
+
+<pre class="idl">
+callback `PerformanceObserverCallback@I = `undefined$ (
+    `PerformanceObserverEntryList$I %entries,
+    `PerformanceObserver$I %observer,
+    optional `PerformanceObserverCallbackOptions$I %options = {}
+);
+
+[`Exposed$=(Window,Worker)]
+interface `PerformanceObserver@I {
+    `constructor$(`PerformanceObserverCallback$I %callback);
+    `undefined$ `observe$m(optional `PerformanceObserverInit$I %options = {});
+    `undefined$ `disconnect$m();
+    `PerformanceEntryList$I `takeRecords$m();
+    [`SameObject$] static readonly attribute `FrozenArray$&lt;`DOMString$&gt; `supportedEntryTypes$m;
+};
+</pre>
+
+<p class="note">注記：
+処理能~overheadを最小に保つためには、
+~appは，関心ある~event型【`~entry型$】のみを申込んで、
+処理能~dataを観測する必要がなくなったなら，観測器を
+`disconnect()$m するべきである。
+名前（ `name$m ）による絞込みは~supportされない
+— それは、［
+暗黙的にすべての~event型を申込む結果，大量の~eventを生成することになる
+］ので，アリではあるが忌避される。
+◎
+Note
+
+To keep the performance overhead to minimum the application ought to only subscribe to event types that it is interested in, and disconnect the observer once it no longer needs to observe the performance data. Filtering by name is not supported, as it would implicitly require a subscription for all event types — this is possible, but discouraged, as it will generate a significant volume of events.
+</p>
+
+		<section id="performanceobservercallbackoptions-dictionary">
+<h3 title="PerformanceObserverCallbackOptions dictionary">5.1. `PerformanceObserverCallbackOptions^I 辞書</h3>
+
+<pre class="idl">
+dictionary `PerformanceObserverCallbackOptions@I {
+  unsigned long long `droppedEntriesCount$d;
+};
+</pre>
+
+<dl class="idl-def">
+	<dt>`droppedEntriesCount@d</dt>
+	<dd>
+［
+当の`処理能~観測器$の`落とされた~entry群を要求するか$pO ~EQ ~T
+］のときは、
+次を表現している整数
+【 ~F のときは、この~memberは無い】
+⇒
+観測器が観測している`~entry型$の~entryのうち落とされたものの個数
+◎
+An integer representing the dropped entries count for the entry types that the observer is observing when the PerformanceObserver's requires dropped entries is set.
+</dd>
+</dl>
+
+		</section>
+		<section id="observe-method">
+<h3 title="observe() method">5.2. `observe()^m ~method</h3>
+
+<p id="dfn-register-the-observer">
+`observe()$m ~methodは、
+コレが`登録-済み$であれば コレを更新し，そうでなければコレを`登録-済み$にする。
+◎
+The observe() method instructs the user agent to register the observer and＼
+</p>
+
+<div class="algo">
+<p>
+`observe(options)@m
+~method手続きは：
+◎
+must run these steps:
+• Let relevantGlobal be this's relevant global object.
+</p>
+<ol>
+	<li>
+%型たち ~LET %options[ "`entryTypes$d" ]
+◎
+↓</li>
+	<li>
+%型 ~LET %options[ "`type$d" ]
+◎
+↓</li>
+	<li>
+~IF［
+%型たち ~EQ ε 
+］~AND［
+%型 ~EQ ε
+］
+⇒
+~THROW `TypeError$E
+◎
+If options's entryTypes and type members are both omitted, then throw a "TypeError".
+</li>
+	<li>
+~IF［
+%型たち ~NEQ ε
+］~AND［
+%options に `entryTypes$d 以外の~memberは在る
+］
+⇒
+~THROW `TypeError$E
+◎
+If options's entryTypes is present and any other member is also present, then throw a "TypeError".
+</li>
+	<li>
+<p>
+コレの`種別$pOに応じて：
+◎
+Update or check this's observer type by running these steps: 
+</p>
+		<dl class="switch">
+			<dt>
+`未定義^i
+◎
+If this's observer type is "undefined":
+</dt>
+			<dd>
+コレの`種別$pO ~SET ［
+%型たち ~NEQ ε ならば `複数個^i ／
+~ELSE_ `一個^i
+］
+◎
+If options's entryTypes member is present, then set this's observer type to "multiple".
+◎
+If options's type member is present, then set this's observer type to "single".
+</dd>
+
+			<dt>`一個^i</dt>
+			<dd>
+~IF［
+%型たち ~NEQ ε
+］
+⇒
+~THROW `InvalidModificationError$E
+◎
+If this's observer type is "single" and options's entryTypes member is present, then throw an "InvalidModificationError".
+</dd>
+
+			<dt>`複数個^i</dt>
+			<dd>
+~IF［
+%型 ~NEQ ε
+］
+⇒
+~THROW `InvalidModificationError$E
+◎
+If this's observer type is "multiple" and options's type member is present, then throw an "InvalidModificationError".
+</dd>
+		</dl>
+	</li>
+	<li>
+%大域~obj ~LET コレに`関連な大域~obj$
+◎
+↑↑</li>
+	<li>
+%観測器~list ~LET %大域~obj の`処理能~観測器~list$
+◎
+↓</li>
+	<li>
+%~supportする~entry型~群 ~LET %大域~obj が`~supportする~entry型~群$
+◎
+↓</li>
+	<li>
+コレの`落とされた~entry群を要求するか$pO ~SET ~T
+◎
+Set this's requires dropped entries to true.
+</li>
+	<li>
+<p>
+~IF［
+コレの`種別$pO ~EQ `複数個^i
+］：
+◎
+If this's observer type is "multiple", run the following steps:
+• Let entry types be options's entryTypes sequence.
+</p>
+		<ol>
+			<li>
+%型たち から［
+%~supportする~entry型~群 に含まれない`~entry型$
+］をすべて除去する
+⇒
+~UAは、
+除去された型があれば，開発者に通知するベキである
+— 例えば、
+~console警告にそれらを挙げるのが適切になるであろう。
+◎
+Remove all types from entry types that are not contained in relevantGlobal's frozen array of supported entry types. The user agent SHOULD notify developers if entry types is modified. For example, a console warning listing removed types might be appropriate.
+</li>
+			<li>
+~IF［
+%型たち は空である
+］
+⇒
+~RET
+⇒
+~UAは、
+登録は中止されたことを開発者に通知するベキである
+— 例えば，~console警告が適切になるであろう。
+◎
+If the resulting entry types sequence is an empty sequence, abort these steps. The user agent SHOULD notify developers when the steps are aborted to notify that registration has been aborted. For example, a console warning might be appropriate.
+</li>
+			<li>
+~IF［
+コレ ~NIN %観測器~list
+］
+⇒
+コレを %観測器~list に付加する
+◎
+↓</li>
+			<li>
+コレの`~option群~list$pO ~SET « %options »
+◎
+If the list of registered performance observer objects of relevantGlobal contains a registered performance observer whose observer is this, replace its options list with a list containing options as its only item.
+◎
+Otherwise, create and append a registered performance observer object to the list of registered performance observer objects of relevantGlobal, with observer set to this and options list set to a list containing options as its only item.
+</li>
+		</ol>
+	</li>
+	<li>
+<p>
+~ELSE（ コレの`種別$pO ~EQ `一個^i ）：
+◎
+Otherwise, run the following steps:
+• Assert that this's observer type is "single".
+</p>
+		<ol>
+			<li>
+~IF［
+%型 ~NIN %~supportする~entry型~群
+］
+⇒
+~RET
+⇒
+~UAは、
+これが起きたことを開発者に通知するベキである
+— 例えば，~console警告を介して。
+◎
+If options's type is not contained in the relevantGlobal's frozen array of supported entry types, abort these steps. The user agent SHOULD notify developers when this happens, for instance via a console warning.
+</li>
+			<li>
+<p>
+~IF［
+コレ ~IN %観測器~list
+］：
+◎
+If the list of registered performance observer objects of relevantGlobal contains a registered performance observer obs whose observer is this:
+</p>
+				<ol>
+					<li>
+~IF［
+コレの`~option群~list$pOを成す ある~item %~item は［
+%~item[ "`type$d" ] ~EQ %型
+］を満たす
+］
+⇒
+コレの`~option群~list$pO内の %~item を %options に置換する
+◎
+If obs's options list contains a PerformanceObserverInit item currentOptions whose type is equal to options's type, replace currentOptions with options in obs's options list.
+</li>
+					<li>
+~ELSE
+⇒
+コレの`~option群~list$pOに %options を付加する
+◎
+Otherwise, append options to obs's options list.
+</li>
+				</ol>
+			</li>
+			<li>
+~ELSE
+⇒＃
+コレを %観測器~list に付加する；
+コレの`~option群~list$pO ~SET « %options »
+◎
+Otherwise, create and append a registered performance observer object to the list of registered performance observer objects of relevantGlobal, with observer set to the this and options list set to a list containing options as its only item.
+</li>
+			<li>
+<p>
+~IF［
+%options[ "`buffered$d" ] ~EQ ~T
+］：
+◎
+If options's buffered flag is set:
+</p>
+				<ol>
+					<li>
+%~tuple ~LET `処理能~entry~tupleを得る$( %型, %大域~obj )
+◎
+Let tuple be the relevant performance entry tuple of options's type and relevantGlobal.
+</li>
+					<li>
+%~tuple の`処理能~entry~buffer$を成す
+~EACH( %~entry )
+に対し
+⇒
+~IF［
+`~entryを追加するべきか？$( %~entry, %options ) ~EQ ~T
+］
+⇒
+コレの`~buffer$pOに %~entry を`付加する$
+◎
+For each entry in tuple's performance entry buffer:
+• If should add entry with entry and options as parameters returns true, append entry to the observer buffer.
+</li>
+					<li>
+`処理能~観測器~taskを~queueする$( %大域~obj )
+◎
+Queue the PerformanceObserver task with relevantGlobal as input.
+</li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+</ol>
+</div>
+
+<div class="note">
+<p>注記：
+同じ `PerformanceObserver$I ~obj上で `observe(options)$m を~callするときは、
+%options の［
+`entryTypes$d, `type$d
+］のうち，~~一貫して片方のみを利用する必要がある
+— 例えば `observe()$m を `entryTypes$d を与えて~callしてから，
+`type$d を与えて また~callした場合、
+例外が投出される。
+これには、
+~callがどう積重なるかについて混同を避けることが意味されている：
+◎
+Note
+
+A PerformanceObserver object needs to always call observe() with options's entryTypes set OR always call observe() with options's type set. If one PerformanceObserver calls observe() with entryTypes and also calls observe with type, then an exception is thrown. This is meant to avoid confusion with how calls would stack.＼
+</p>
+<ul>
+	<li>
+`entryTypes$d を利用する下では【すなわち， `種別$pO ~EQ `複数個^i 】
+⇒
+`PerformanceObserverInit$I 内の他の~memberは利用できないことに加え、
+後方-互換性を得るため，複数回の `observe()$m ~callは 以前のそれを上書きすることになる
+— この事例では一回の~callで足りるべきなので。
+◎
+When using entryTypes, no other parameters in PerformanceObserverInit can be used. In addition, multiple observe() calls will override for backwards compatibility and because a single call should suffice in this case.＼
+</li>
+	<li>
+`type$d を利用する下では【すなわち， `種別$pO ~EQ `一個^i 】
+⇒
+1 回の~callは 1 個の`~entry型$のみ指定するので，各~callは積重なることになる。
+この場合も、
+同じ `type$d を与えて `observe()$m を繰返して~callしたときは，上書きすることになる。
+◎
+On the other hand, when using type, calls will stack because a single call can only specify one type. Calling observe() with a repeated type will also override.
+</li>
+</ul>
+</div>
+
+			<section id="performanceobserverinit-dictionary">
+<h4 title="PerformanceObserverInit dictionary">5.2.1. `PerformanceObserverInit^I 辞書</h4>
+
+<pre class="idl">
+dictionary `PerformanceObserverInit@I {
+    `sequence$&lt;`DOMString$&gt; `entryTypes$d;
+    DOMString `type$d;
+    boolean `buffered$d;
+};
+</pre>
+
+<dl class="idl-def">
+	<dt>`entryTypes@d</dt>
+	<dd>
+観測されることになる一連の`~entry型$たちが成す~listを与える。
+この~listが在る場合、
+空であってはナラナイ, かつ
+他のすべての~memberも在ってはナラナイ。
+~UAは、
+この~list内の型のうち，自身が認識しないものは無視するモノトスル。
+◎
+A list of entry types to be observed. If present, the list MUST NOT be empty and all other members MUST NOT be present. Types not recognized by the user agent MUST be ignored.
+</dd>
+
+	<dt>`type@d</dt>
+	<dd>
+観測されることになる単独の`~entry型$を与える。
+~UAは、
+自身が認識しない型を無視するモノトスル。
+◎
+A single entry type to be observed. A type that is not recognized by the user agent MUST be ignored. Other members may be present.
+</dd>
+
+	<dt>`buffered@d</dt>
+	<dd>
+［
+~bufferされた~entryは，観測器の~bufferに~queueされる
+］べきかどうかを指示する~flag。
+◎
+A flag to indicate whether buffered entries should be queued into observer's buffer.
+</dd>
+</dl>
+
+			</section>
+			<section id="performanceobserverentrylist-interface">
+<h4 title="PerformanceObserverEntryList interface">5.2.2. `PerformanceObserverEntryList^I ~interface</h4>
+
+<pre class="idl">
+[`Exposed$=(Window,Worker)]
+interface `PerformanceObserverEntryList@I {
+    `PerformanceEntryList$I `getEntries$mO();
+    `PerformanceEntryList$I `getEntriesByType$mO(`DOMString$ %type);
+    `PerformanceEntryList$I `getEntriesByName$mO(`DOMString$ %name, optional `DOMString$ %type);
+};
+</pre>
+
+<p>
+各 `PerformanceObserverEntryList$I ~objには、
+`~entry~list@
+が結付けられる。
+それは、
+`PerformanceEntryList$I ~objであり，構築~時に初期化される
+【`処理能~観測器~taskを~queueする$とき，~queueされる~task内で】
+。
+◎
+Each PerformanceObserverEntryList object has an associated entry list, which consists of a PerformanceEntryList and is initialized upon construction.
+</p>
+
+<div class="algo">
+<p id="getentries-method-0">
+`getEntries()@mO
+~method手続きは
+⇒
+~RET `~bufferを名前と型で絞込む$( コレの`~entry~list$, ~NULL, ~NULL )
+</p>
+◎
+5.2.2.1 getEntries() method
+◎
+Returns a PerformanceEntryList object returned by filter buffer by name and type algorithm with this's entry list, name and type set to null.
+</div>
+
+<div class="algo">
+<p id="getentriesbytype-method-0">
+`getEntriesByType(type)@mO
+~method手続きは
+⇒
+~RET `~bufferを名前と型で絞込む$( コレの`~entry~list$, ~NULL, %type )
+</p>
+◎
+5.2.2.2 getEntriesByType() method
+◎
+Returns a PerformanceEntryList object returned by filter buffer by name and type algorithm with this's entry list, name set to null, and type set to the method's input type parameter.
+</div>
+
+<div class="algo">
+<p id="getentriesbyname-method-0">
+`getEntriesByName(name, type)@mO
+~method手続きは：
+</p>
+<ol>
+	<li>
+~IF［
+%type ~EQ ε
+］
+⇒
+%type ~SET ~NULL
+</li>
+	<li>
+~RET `~bufferを名前と型で絞込む$( コレの`~entry~list$, %name, %type )
+</li>
+</ol>
+◎
+5.2.2.3 getEntriesByName() method
+◎
+Returns a PerformanceEntryList object returned by filter buffer by name and type algorithm with this's entry list, name set to the method input name parameter, and type set to null if optional entryType is omitted, or set to the method's input type parameter otherwise.
+</div>
+
+			</section>
+		</section>
+		<section id="takerecords-method">
+<h3 title="takeRecords() method">5.3. `takeRecords()^m</h3>
+
+<div class="algo">
+<p>
+`takeRecords()@m
+~method手続きは：
+</p>
+<ol>
+	<li>
+%複製 ~LET コレの`~buffer$pOの複製
+</li>
+	<li>
+コレの`~buffer$pOを空にする
+</li>
+	<li>
+~RET %複製
+</li>
+</ol>
+◎
+The takeRecords() method must return a copy of this's observer buffer, and also empty this's observer buffer.
+</div>
+
+		</section>
+		<section id="disconnect-method">
+<h3 title="disconnect() method">5.4. `disconnect()^m ~method</h3>
+
+<div class="algo">
+<p>
+`disconnect()@m
+~method手続きは：
+◎
+The disconnect() method must do the following:
+</p>
+<ol>
+	<li>
+コレに`関連な大域~obj$の`処理能~観測器~list$から，コレを除去する
+◎
+Remove this from the list of registered performance observer objects of relevant global object.
+</li>
+	<li>
+コレの`~buffer$pOを空にする
+◎
+Empty this's observer buffer.
+</li>
+	<li>
+コレの`~option群~list$pO ~SET ε【！空にする】
+◎
+Empty this's options list.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="supportedentrytypes-attribute">
+<h3>5.5. `supportedEntryTypes^m 属性</h3>
+
+<p>
+各 `大域~obj$には、
+`~supportする~entry型~群@
+が結付けられる。
+それは、
+~alphabet-順序による文字列たちからなるよう初期化された `FrozenArray$I であり，［
+当の大域~obj用に~supportするものとして`~registry$に含められた`~entry型$たち
+］から作成される。
+◎
+Each global object has an associated frozen array of supported entry types, which is initialized to the FrozenArray created from the sequence of strings among the registry that are supported for the global object, in alphabetical order.
+</p>
+
+<div class="algo">
+`supportedEntryTypes@m
+取得子~手続きは
+⇒
+~RET 【！`大域~obj$enV】コレに`関連な大域~obj$が`~supportする~entry型~群$
+◎
+When supportedEntryTypes's attribute getter is called, run the following steps:
+• Let globalObject be the environment settings object's global object.
+• Return globalObject's frozen array of supported entry types.
+</div>
+
+<p class="note">注記：
+この属性は、［
+どの`~entry型$を，~UAが~supportするか
+］を容易に知ることを，~web開発者に許容する。
+◎
+Note
+
+This attribute allows web developers to easily know which entry types are supported by the user agent.
+</p>
+
+		</section>
+	</section>
+	<section id="processing">
+<h2 title="Processing">6. 処理</h2>
+
+		<section id="queue-a-performanceentry">
+<h3 title="Queue a PerformanceEntry">6.1. `PerformanceEntry^I を~queueする</h3>
+
+<div class="algo">
+<p>
+`処理能~entryを~queueする@
+ときは、
+所与の
+( `PerformanceEntry$I ~obj %新たな~entry )
+に対し，次を走らす：
+◎
+To queue a PerformanceEntry (newEntry), run these steps:
+</p>
+<ol>
+	<li>
+<p>
+~IF［
+%新たな~entry の `id$m `is unset^en 【？】
+］：
+◎
+If newEntry's id is unset:
+</p>
+		<ol>
+			<li>
+%~ID ~LET `~IDを生成する$( %新たな~entry )
+◎
+Let id be the result of running generate an id for newEntry.
+</li>
+			<li>
+%新たな~entry の `id$m ~SET %~ID
+◎
+Set newEntry's id to id.
+</li>
+		</ol>
+	</li>
+	<li>
+%~entry型 ~LET %新たな~entry の `entryType$m 値
+◎
+↓↓Let interested observers be an initially empty set of PerformanceObserver objects.
+◎
+Let entryType be newEntry’s entryType value.
+</li>
+	<li>
+%大域~obj ~LET %新たな~entry に`関連な大域~obj$
+◎
+Let relevantGlobal be newEntry's relevant global object.
+</li>
+	<li>
+~IF［
+%大域~obj `has an^en `結付けられた文書$
+【 %大域~obj は`~window$である？】
+］
+⇒
+%新たな~entry の `navigationId$m ~SET %大域~obj に`結付けられた文書$の`最も近過去な~navi$【 ε の場合は？】の `id$m
+◎
+If relevantGlobal has an associated document:
+• Set newEntry's navigationId to the value of relevantGlobal's associated document's most recent navigation's id.
+</li>
+	<li>
+~ELSE
+⇒
+%新たな~entry の `navigationId$m ~SET ~NULL
+【この属性は ~NULL をとり得ないが？】
+◎
+Otherwise, set newEntry's navigationId to null.
+</li>
+	<li>
+%大域~obj の`処理能~観測器~list$を成す
+~EACH( `処理能~観測器$ %観測器 )
+に対し
+⇒
+~IF［
+%観測器 の`~option群~list$pOを成す ある~item %~option群 は［
+%~entry型 ~IN %~option群[ "`entryTypes$d" ] ~NEQ ε
+］~OR［
+%~entry型 ~EQ %~option群[ "`type$d" ] ~NEQ ε
+］を満たす【該当する %~option群 は在っても 1 個に限られる（ `observe()$m を見よ）】
+］
+⇒
+~IF［
+`~entryを追加するべきか？$( %新たな~entry, %~option群 ) ~EQ ~T
+］
+⇒
+%観測器 の`~buffer$pOに %新たな~entry を付加する
+◎
+For each registered performance observer regObs in relevantGlobal's list of registered performance observer objects:
+• If regObs's options list contains a PerformanceObserverInit options whose entryTypes member includes entryType or whose type member equals to entryType:
+•• If should add entry with newEntry and options returns true, append regObs's observer to interested observers.
+◎
+For each observer in interested observers:
+• Append newEntry to observer's observer buffer.
+</li>
+	<li>
+%~tuple ~LET `処理能~entry~tupleを得る$( %~entry型, %大域~obj )
+◎
+Let tuple be the relevant performance entry tuple of entryType and relevantGlobal.
+</li>
+	<li>
+%~bufferは満杯か ~LET `~bufferは満杯かどうか決定する$( %~tuple )
+◎
+Let isBufferFull be the return value of the determine if a performance entry buffer is full algorithm with tuple as input.
+</li>
+	<li>
+%追加するべきか ~LET `~entryを追加するべきか？$( %新たな~entry )
+◎
+Let shouldAdd be the result of should add entry with newEntry as input.
+</li>
+	<li>
+~IF［
+%~bufferは満杯か ~EQ ~F
+］~AND［
+%追加するべきか ~EQ ~T
+］
+⇒
+%~tuple の`処理能~entry~buffer$に %新たな~entry を`付加する$
+◎
+If isBufferFull is false and shouldAdd is true, append newEntry to tuple's performance entry buffer.
+</li>
+	<li>
+`処理能~観測器~taskを~queueする$( %大域~obj )
+◎
+Queue the PerformanceObserver task with relevantGlobal as input.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="queue-a-navigation-performanceentry">
+<h3 title="Queue a navigation PerformanceEntry">6.2. ~navi `PerformanceEntry^I を~queueする</h3>
+
+<div class="algo">
+<p>
+`~navi処理能~entryを~queueする@
+ときは、
+所与の
+( %新たな~entry )
+に対し，次の手続きを走らす：
+◎
+To queue a navigation PerformanceEntry (newEntry), run these steps:
+</p>
+<ol>
+	<li>
+%~ID ~LET `~IDを生成する$( %新たな~entry )
+◎
+Let id be the result of running generate an id for newEntry.
+</li>
+	<li>
+%大域~obj ~LET %新たな~entry に`関連な大域~obj$
+◎
+Let relevantGlobal be newEntry's relevant global object.
+</li>
+	<li>
+%新たな~entry の `id$m ~SET %~ID
+◎
+Set newEntry's id to id.
+</li>
+	<li>
+%新たな~entry の `navigationId$m ~SET %~ID
+◎
+Set newEntry's navigationId to id.
+</li>
+	<li>
+~IF［
+%大域~obj `has an^en `結付けられた文書$
+【 %大域~obj は`~window$である？】
+］
+⇒
+%大域~obj に`結付けられた文書$の`最も近過去な~navi$ ~SET %新たな~entry
+◎
+If relevantGlobal has an associated document:
+• Set relevantGlobal's associated document's most recent navigation to newEntry.
+</li>
+	<li>
+`処理能~entryを~queueする$( %新たな~entry )
+◎
+Queue a PerformanceEntry with newEntry as input.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="queue-the-performanceobserver-task">
+<h3 title="Queue the PerformanceObserver task">6.3. 処理能~観測器~taskを~queueする</h3>
+
+<div class="algo">
+<p>
+`処理能~観測器~taskを~queueする@
+ときは、
+所与の
+( %大域~obj )
+に対し，次を走らす：
+◎
+When asked to queue the PerformanceObserver task, given relevantGlobal as input, run the following steps:
+</p>
+<ol>
+	<li>
+~IF［
+%大域~obj の`処理能~観測器~taskは~queue済みか$ ~EQ ~T
+］
+⇒
+~RET
+◎
+If relevantGlobal's performance observer task queued flag is set, terminate these steps.
+</li>
+	<li>
+%大域~obj の`処理能~観測器~taskは~queue済みか$ ~SET ~T
+◎
+Set relevantGlobal's performance observer task queued flag.
+</li>
+	<li>
+<p>
+`~taskを~queueする$(
+`処理能~時列線~task~source@
+,
+次に与える手続き )
+◎
+Queue a task that consists of running the following substeps. The task source for the queued task is the performance timeline task source.
+</p>
+
+<div class="algo">
+<p>
+手続きは：
+◎
+↑</p>
+		<ol>
+			<li>
+%大域~obj の`処理能~観測器~taskは~queue済みか$ ~SET ~F
+◎
+Unset performance observer task queued flag of relevantGlobal.
+</li>
+			<li>
+%通知-~list ~LET %大域~obj の`処理能~観測器~list$を`~cloneする$
+【~cloneするのは、後~段で~callされる~callbackによる~~影響を避けるため】
+◎
+Let notifyList be a copy of relevantGlobal's list of registered performance observer objects.
+</li>
+			<li>
+<p>
+%通知-~list を成す
+~EACH( `処理能~観測器$ %観測器 )
+に対し：
+◎
+For each registered performance observer object registeredObserver in notifyList, run these steps:
+• Let po be registeredObserver's observer.
+</p>
+				<ol>
+					<li>
+~IF［
+%観測器 の`~buffer$pOは空である
+］
+⇒
+~CONTINUE
+◎
+↓</li>
+					<li>
+%~entryたち ~LET %観測器 の`~buffer$pOの複製
+◎
+Let entries be a copy of po’s observer buffer.
+◎
+If entries is empty, return.
+</li>
+					<li>
+%観測器 の`~buffer$pOを空にする
+◎
+Empty po’s observer buffer.
+</li>
+					<li>
+%観測器~entry~list ~LET 新たな `PerformanceObserverEntryList$I
+◎
+Let observerEntryList be a new PerformanceObserverEntryList,＼
+</li>
+					<li>
+%観測器~entry~list の`~entry~list$ ~SET %~entryたち
+◎
+with its entry list set to entries.
+</li>
+					<li>
+%~callback~option群 ~LET 新たな `PerformanceObserverCallbackOptions$I
+◎
+↓</li>
+					<li>
+<p>
+~IF［
+%観測器 の`落とされた~entry群を要求するか$pO ~EQ ~T
+］：
+</p>
+						<ol>
+							<li>
+%落とした~entry数 ~LET 0
+</li>
+							<li>
+<p>
+%大域~obj の`処理能~entry~buffer~map$を成す
+~EACH( %~entry型 → %~tuple )
+に対し：
+</p>
+								<ol>
+									<li>
+<p>
+~IF［
+%観測器 の`~option群~list$pO内に ~OR↓ を満たす~item %~option群 は在る
+］…
+</p>
+										<ul>
+											<li>
+%~entry型 ~IN %~option群[ "`entryTypes$d" ] ~NEQ ε
+</li>
+											<li>
+%~entry型 ~EQ %~option群[ "`type$d" ] ~NEQ ε
+</li>
+										</ul>
+<p>
+…ならば
+⇒
+%落とした~entry数 ~INCBY %~tuple の`落とした~entry数$
+</p>
+									</li>
+								</ol>
+</li>
+							<li>
+%観測器 の`落とされた~entry群を要求するか$pO ~SET ~F
+</li>
+							<li>
+%~callback~option群[ "`droppedEntriesCount$d" ] ~SET %落とした~entry数
+</li>
+						</ol>
+
+◎
+Let droppedEntriesCount be null.
+◎
+If po's requires dropped entries is set, perform the following steps:
+• Set droppedEntriesCount to 0.
+• For each PerformanceObserverInit item in registeredObserver's options list:
+•• For each DOMString entryType that appears either as item's type or in item's entryTypes:
+••• Let map be relevantGlobal's performance entry buffer map.
+••• Let tuple be the result of getting the value of entry on map given entryType as key.
+••• Increase droppedEntriesCount by tuple's dropped entries count.
+• Set po's requires dropped entries to false.
+◎
+Let callbackOptions be a PerformanceObserverCallbackOptions with its droppedEntriesCount set to droppedEntriesCount if droppedEntriesCount is not null, otherwise unset.
+</li>
+					<li>
+<p>
+`~callback関数を呼出す$( ↓ )
+【！原文は単に “Call” 】
+⇒＃
+%観測器 の`~callback$pO,
+« %観測器~entry~list, %観測器, %~callback~option群 »,
+%観測器
+</p>
+
+<p>
+この段の中で例外が`投出-$されたときは【、~catchして】
+⇒
+その`例外を報告する$
+</p>
+◎
+Call po’s observer callback with observerEntryList as the first argument, with po as the second argument and as callback this value, and with callbackOptions as the third argument. If this throws an exception, report the exception. 
+</li>
+				</ol>
+			</li>
+		</ol>
+</div>
+<p>
+`処理能~時列線~task~source$用の`~task~queue$は、
+低優先度な~queueである
+— ~UAは、
+処理能~監視~codeの影響iを最小限にするため，アリなら遊休中に処理するべきである。
+◎
+The performance timeline task queue is a low priority queue that, if possible, should be processed by the user agent during idle periods to minimize impact of performance monitoring code.
+</p>
+	</li>
+</ol>
+</div>
+
+		</section>
+		<section id="filter-buffer-map-by-name-and-type">
+<h3 title="Filter buffer map by name and type">6.4. ~buffer~mapを ( 名前, 型 ) で絞込む</h3>
+
+<div class="algo">
+<p>
+`~buffer~mapを名前と型で絞込む@
+ときは、
+所与の
+( %~obj, %名前, %型 )
+に対し，次を走らす：
+◎
+When asked to run the filter buffer map by name and type algorithm with optional name and type, run the following steps:
+</p>
+<ol>
+	<li>
+%結果 ~LET 新たな`~list$
+◎
+Let result be an initially empty list.
+</li>
+	<li>
+%~map ~LET %~obj に`関連な大域~obj$の`処理能~entry~buffer~map$
+◎
+Let map be the performance entry buffer map associated with the relevant global object of this.
+</li>
+	<li>
+%~tuple~list ~LET %型 に応じて
+⇒＃
+~NULL ならば %~map の`値~listを取得する$ ／
+~ELSE_ « %~map[ %型 ] »
+◎
+Let tuple list be an empty list.
+◎
+If type is not null, append the result of getting the value of entry on map given type as key to tuple list. Otherwise, assign the result of get the values on map to tuple list.
+</li>
+	<li>
+<p>
+%~tuple~list を成す
+~EACH( %~tuple )
+に対し：
+◎
+For each tuple in tuple list, run the following steps:
+</p>
+		<ol>
+			<li>
+%~buffer ~LET %~tuple の`処理能~entry~buffer$
+◎
+Let buffer be tuple's performance entry buffer.
+</li>
+			<li>
+~IF［
+%~tuple の`時列線から可用か$ ~EQ ~F
+］
+⇒
+~CONTINUE
+◎
+If tuple's availableFromTimeline is false, continue to the next tuple.
+</li>
+			<li>
+%~entryたち ~LET `~bufferを名前と型で絞込む$( %~buffer, %名前, %型 )
+◎
+Let entries be the result of running filter buffer by name and type with buffer, name and type as inputs.
+</li>
+			<li>
+%結果 を %~entryたち で`拡張する$
+◎
+For each entry in entries, append entry to result.
+</li>
+		</ol>
+	</li>
+	<li>
+~RET %結果 を各~entryの `startTime$m の時系列順に~sortした結果
+【！＊~INFRA#list-sort-in-ascending-order】
+◎
+Sort results's entries in chronological order with respect to startTime
+◎
+Return result.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="filter-buffer-by-name-and-type">
+<h3 title="Filter buffer by name and type">6.5. ~bufferを ( 名前, 型 ) で絞込む</h3>
+
+<div class="algo">
+<p>
+`~bufferを名前と型で絞込む@
+ときは、
+所与の
+( %~buffer, %名前, %型 )
+に対し，次を走らす：
+◎
+When asked to run the filter buffer by name and type algorithm, with buffer, name, and type as inputs, run the following steps:
+</p>
+<ol>
+	<li>
+%~list ~LET 新たな`~list$
+◎
+Let result be an initially empty list.
+</li>
+	<li>
+<p>
+%~buffer を成す
+~EACH( `PerformanceEntry$I ~obj %~entry )
+に対し：
+◎
+For each PerformanceEntry entry in buffer, run the following steps:
+</p>
+		<ol>
+			<li>
+~IF［
+%型 ~NIN { ~NULL, %~entry の `entryType$m 属性~値 }
+］
+⇒
+~CONTINUE
+◎
+If type is not null and if type is not identical to entry's entryType attribute, continue to next entry.
+</li>
+			<li>
+~IF［
+%名前 ~NIN { ~NULL, %~entry の `name$m 属性~値 )
+］
+⇒
+~CONTINUE
+◎
+If name is not null and if name is not identical to entry's name attribute, continue to next entry.
+</li>
+			<li>
+%~list に %~entry を`付加する$
+◎
+append entry to result.
+</li>
+		</ol>
+	</li>
+	<li>
+~RET %~list を 各~entryの `startTime$m の時系列順に~sortした結果
+【！＊~INFRA#list-sort-in-ascending-order】
+◎
+Sort results's entries in chronological order with respect to startTime
+◎
+Return result.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="eligibility-for-adding-a-performanceentry-to-a-buffer">
+<h3 title="Determine if a performance entry buffer is full">6.6. ~bufferは満杯かどうか決定する</h3>
+
+<div class="algo">
+<p>
+`~bufferは満杯かどうか決定する@
+ときは、
+所与の
+( %~tuple )
+に対し，次を走らす：
+◎
+To determine if a performance entry buffer is full, with tuple as input, run the following steps:
+</p>
+<ol>
+	<li>
+~IF［
+%~tuple の`処理能~entry~buffer$の~size ~LT %~tuple の`最大~buffer~size$
+］
+⇒
+~RET ~F
+◎
+Let num current entries be the size of tuple's performance entry buffer.
+◎
+If num current entries is less than tuples's maxBufferSize, return false.
+</li>
+	<li>
+%~tuple の`落とした~entry数$ ~INCBY 1
+◎
+Increase tuple's dropped entries count by 1.
+</li>
+	<li>
+~RET ~T
+◎
+Return true.
+</li>
+</ol>
+</div>
+
+		</section>
+		<section id="generate-a-performance-entry-id">
+<h3 title="Generate a Performance Entry id">6.7. 処理能~entry~IDを生成する</h3>
+
+<div class="algo">
+<p>
+`~IDを生成する@
+ときは、
+所与の
+( `PerformanceEntry$I %~entry )
+に対し，次の手続きを走らす：
+◎
+When asked to generate an id for a PerformanceEntry entry, run the following steps:
+</p>
+<ol>
+	<li>
+%大域~obj ~LET %~entry に`関連な大域~obj$
+◎
+Let relevantGlobal be entry's relevant global object.
+</li>
+	<li>
+%大域~obj の`最後の処理能~entry~ID$ ~INCBY ~UAが選ぶ小さな整数
+◎
+Increase relevantGlobal's last performance entry id by a small number chosen by the user agent.
+</li>
+	<li>
+~RET %大域~obj の`最後の処理能~entry~ID$
+◎
+Return relevantGlobal's last performance entry id.
+</li>
+</ol>
+</div>
+
+<p>
+~UAは、
+`最後の処理能~entry~ID$を増やす小さな整数を毎回~randomに変えてもヨイ。
+~UAは、［
+どの大域~objに対しても，その`最後の処理能~entry~ID$を同じ一定な整数で増やす
+］ようにしないモノトスル
+— そうすると，非同一-生成元への漏洩を導入し得るので。
+◎
+A user agent may choose to increase the last performance entry idit by a small random integer every time. A user agent must not pick a single global random integer and increase the last performance entry id of all global objects by that amount because this could introduce cross origin leaks.
+</p>
+
+<p class="note">
+注記：
+`最後の処理能~entry~ID$は、
+~randomな初期~値をとり，~UAが選ぶ小さな整数で増やされる
+— 開発者が，それを［
+~web~app内で生成された~entryの個数を与える~counter
+］と見なすことを忌避するため。
+◎
+Note
+
+The last performance entry id has an initial random value, and is increased by a small number chosen by the user agent instead of 1 to discourage developers from considering it as a counter of the number of entries that have been generated in the web application.
+</p>
+
+		</section>
+	</section>
+	<section id="privacy">
+<h3 title="Privacy Considerations">7. ~privacyの考慮点</h3>
+
+<p>
+この仕様は、
+`HR-TIME-3$r に定義された `Performance$I ~interfaceを拡張して，`処理能~時列線$［
+に~entryを~queueする／から~entryを検索取得する
+］ための~methodを供する。
+高-分解能な計時~情報を公開することによる~privacyの考慮点については、
+`HR-TIME-3$r を参照rされたし。
+新たな各~仕様も、
+新たな処理能~entryを導入しているならば，自前の~security考慮点を与えるベキである
+◎
+This specification extends the Performance interface defined by [HR-TIME-3] and provides methods to queue and retrieve entries from the performance timeline. Please refer to [HR-TIME-3] for privacy considerations of exposing high-resoluting timing information. Each new specification introducing new performance entries should have its own privacy considerations as well.
+</p>
+
+<p>
+`最後の処理能~entry~ID$は、
+故意に~randomな値に初期化され，
+新たな `PerformanceEntry$I が~queueされる毎回ごとに別の小さな値で増分される。
+~UAは、
+利用する増分として［
+すべての利用者~用に一貫した量／
+各`大域~obj$に異なる量／
+各 `PerformanceEntry$I に新たな~randomな量
+］を選んでもヨイ。
+しかしながら，［
+非同一-生成元への漏洩を防止する／
+これが指紋収集を可能化しないことを確保する
+］ため、
+~UAは，［
+すべての`大域~obj$にまたがる，すべての `PerformanceEntry$I ~obj
+］用に同じ一定な増分を利用しないモノトスル。
+◎
+The last performance entry id is deliberately initialized to a random value, and is incremented by another small value every time a new PerformanceEntry is queued. User agents may choose to use a consistent increment for all users, or may pick a different increment for each global object, or may choose a new random increment for each PerformanceEntry. However, in order to prevent cross-origin leaks, and ensure that this does not enable fingerprinting, user agents must not just pick a unique random integer, and use it as a consistent increment for all PerformanceEntry objects across all global objects.
+</p>
+
+	</section>
+	<section id="security">
+<h3 title="Security Considerations">8. ~securityの考慮点</h3>
+
+<p>
+この仕様は、
+`HR-TIME-3$r に定義された `Performance$I ~interfaceを拡張し，`処理能~時列線$［
+に~entryを~queueする／から~entryを検索取得する
+］ための~methodを供する。
+高-分解能な計時~情報を公開することによる~securityの考慮点については、
+`HR-TIME-3$r を参照rされたし。
+新たな各~仕様も、
+新たな処理能~entryを導入しているならば，自前の~security考慮点を伴うベキである
+◎
+This specification extends the Performance interface defined by [HR-TIME-3] and provides methods to queue and retrieve entries from the performance timeline. Please refer to [HR-TIME-3] for security considerations of exposing high-resoluting timing information. Each new specification introducing new performance entries should have its own security considerations as well.
+</p>
+
+	</section>
+	<section id="dependencies">
+<h2 title="Dependencies">9. 依存関係</h2>
+
+<p class="trans-note">【
+他の仕様に定義される用語（の一部）。
+この節の和訳は、
+省略する。
+】
+◎
+The [INFRA] specification defines the following: key, getting the value of an entry.
+</p>
+
+	</section>
+	<section class="appendix">
+<h2 title="Acknowledgments">謝辞</h2>
+
+<p>
+この仕様に貢献された次の方々に：
+</p>
+
+<div lang="en">
+Thanks to Arvind Jain, Boris Zbarsky, Jatinder Mann, Nat Duca, Philippe Le Hegaret, Ryosuke Niwa, Shubhie Panicker, Todd Reifsteck, Yoav Weiss, and Zhiheng Wang, for their contributions to this work.
+</div>
+
+	</section>
+</main>
+</div>
+</body>
+</html>

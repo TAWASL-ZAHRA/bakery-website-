@@ -1,0 +1,1488 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SPARQL 1.1プロトコル</title>
+<style type="text/css">@import url("www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/local.css");
+
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+
+em.rfc2119 { text-transform: lowercase;
+             font-variant: small-caps;
+             font-style: normal; }</style>
+<link rel="stylesheet" type="text/css" href="www.w3.org/StyleSheets/TR/W3C-REC.css">
+</head>
+
+<body>
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">SPARQL 1.1 Protocol W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2013年8月13日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a></p>
+
+<h1>
+<a name="title" id="title"></a>SPARQL 1.1プロトコル</h1>
+
+<h2>
+<a name="w3c-doctype" id="w3c-doctype"></a>W3C勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321/">http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321/</a></dd>
+  <dt>最新バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-protocol/">http://www.w3.org/TR/sparql11-protocol/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/PR-sparql11-protocol-20130129/">http://www.w3.org/TR/2013/PR-sparql11-protocol-20130129/</a></dd>
+  <dt>編集者:</dt>
+  <dd>Lee Feigenbaum, Cambridge Semantics <a href="mailto:lee@thefigtrees.net">&lt;lee@thefigtrees.net&gt;</a>
+</dd>
+  <dd>Gregory Todd Williams, Rensselaer Polytechnic Institute <a href="mailto:greg@evilfunhouse.com">&lt;greg@evilfunhouse.com&gt;</a>
+</dd>
+  <dd>Kendall Grant Clark, 1st Edition, Clark &amp; Parsia LLC <a href="mailto:kendall@clarkparsia.com">&lt;kendall@clarkparsia.com&gt;</a>
+</dd>
+  <dd>Elias Torres, 1st Edition, IBM Corporation <a href="mailto:eliast@us.ibm.com">&lt;eliast@us.ibm.com&gt;</a>
+</dd>
+</dl>
+
+<p>このドキュメントに対する<a href="www.w3.org/2013/sparql-errata#sparql11-protocol"><strong>正誤表</strong></a>を参照してください。いくつかの規範的な修正が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-protocol"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+</div>
+
+<hr>
+
+<div>
+
+<h2>
+<a name="abstract" id="abstract"></a>要約</h2>
+
+<p>SPARQLプロトコルとRDFクエリ言語（<acronym title="SPARQL Protocol And RDF Query Language">SPARQL</acronym>）は、<a href="www.w3.org/RDF/">RDF</a>用のクエリ言語とプロトコルです。このドキュメントでは、SPARQLプロトコルの仕様を定めています。それは、SPARQLのクエリと更新をSPARQL処理サービスに伝え、要求を行ったエンティティーにHTTPで結果を返すための手段を記述しています。このプロトコルは、<a href="www.w3.org/2001/sw/Activity">アクティビティ声明</a>で記述されているように、<a href="www.w3.org/2001/sw/">セマンティック・ウェブ・アクティビティ</a>の一部である<a href="www.w3.org/2009/sparql/wiki/Main_Page">W3CのSPARQLワーキンググループ</a>によって開発されました。</p>
+
+</div>
+<div>
+
+<h2>
+<a name="status" id="status"></a>このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL1.1サービス記述</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1統合クエリ</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a></li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a>（このドキュメント）</li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2013/PR-sparql11-protocol-20130129/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+</div>
+<div class="toc">
+
+<h2>
+<a name="contents" id="contents"></a>目次</h2>
+
+<p class="toc">1 <a href="#intro">はじめに</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 <a href="#conventions">ドキュメントの規定</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.2 <a href="#terminology">用語</a><br>
+2 <a href="#protocol">SPARQLプロトコル・オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.1 <a href="#query-operation">queryオペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.1 <a href="#query-via-get">GETによるquery</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.2 <a href="#query-via-post-urlencoded">URLエンコードされたパラメータを用いたPOSTによるquery</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.3 <a href="#query-via-post-direct">POSTによる直接的なquery</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.4 <a href="#dataset">RDFデータセットの指定</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.5 <a href="#conneg">認められるレスポンス形式</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.6 <a href="#query-success">成功のレスポンス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.1.7 <a href="#query-failure">失敗のレスポンス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.2 <a href="#update-operation">updateオペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.1 <a href="#update-via-post-urlencoded">URLエンコードされたパラメータを用いたPOSTによるupdate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.2 <a href="#update-via-post-direct">POSTによる直接的なupdate</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.3 <a href="#update-dataset">RDFデータセットの指定</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.4 <a href="#update-success">成功のレスポンス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.5 <a href="#update-failure">失敗のレスポンス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.3 <a href="#base-iri">基底IRIの決定</a><br>
+3 <a href="#examples">SPARQLプロトコル・リクエストの例（参考情報）</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 <a href="#query-bindings-http-examples">SPARQLクエリの例</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.1 <a href="#select-svcsupplied">SELECTとサービスから提供されたRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.2 <a href="#select-simple">SELECTとシンプルなRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3 <a href="#construct-simple">CONSTRUCTとシンプルなRDFデータセットおよびHTTP内容交渉</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.4 <a href="#ask-simple">ASKとシンプルなRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.5 <a href="#describe-simple">DESCRIBEとシンプルなRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.6 <a href="#select-complex">SELECTと複合的なRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.7 <a href="#select-queryonly">SELECTとクエリのみのRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.8 <a href="#select-ambiguous">SELECTと曖昧なRDFデータセット</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.9 <a href="#select-malformed">SELECTと不正なクエリのフォルト</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.10 <a href="#select-refused">SELECTとクエリ・リクエスト拒否のフォルト</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.11 <a href="#select-longpost">POSTとURLエンコーディングを用いた長いSELECTクエリ</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.12 <a href="#select-longpost-direct">POSTを直接用いた長いSELECTクエリ</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.13 <a href="#select-kanji">SELECTと国際化</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 <a href="#update-bindings-http-examples">SPARQL更新の例</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 <a href="#update-urlencoded-simple">URLエンコードされたパラメータを用いたUPDATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.2 <a href="#update-direct-simple">POSTを直接用いたUPDATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.3 <a href="#update-direct-simple-dataset">データセットを指定し、POSTを直接用いたUPDATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.4 <a href="#update-urlencoded-multi">URLエンコードされたパラメータを用いた多重オペレーションUPDATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.5 <a href="#update-urlencoded-multi-dataset">データセットを指定し、URLエンコードされたパラメータを用いた多重オペレーションUPDATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.6 <a href="#update-direct-multi-dataset">データセットを指定し、POSTを直接用いた多重オペレーションUPDATE</a><br>
+4 <a href="#policy">方針に関する留意点</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.1 <a href="#policy-security">セキュリティ</a><br>
+5 <a href="#conformance">適合性</a><br>
+6 <a href="#changes">前勧告以後の変更（参考情報）</a><br>
+</p>
+
+<h3>
+<a name="appendices" id="appendices"></a>付録</h3>
+
+<p class="toc">A <a href="#sec-bibliography">参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.1 <a href="#sec-existing-stds">規範的な参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.2 <a href="#sec-other-references">その他の参考文献</a><br>
+</p>
+
+</div>
+
+<hr>
+
+<div class="body">
+<div class="div1">
+
+<h2>
+<a name="intro" id="intro"></a>1 はじめに</h2>
+
+<p>このドキュメントでは、SPARQLのクエリと更新をクライアントからSPARQLプロセッサに伝える手段であるSPARQL 1.1プロトコルについて記述しています。SPARQLプロトコルは、<a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>[<a href="#sparql">SPARQL</a>]および<a href="www.w3.org/TR/sparql11-update/">RDF用のSPARQL 1.1更新言語</a>と互換性があるように設計してあります。このドキュメントは、SPARQLのクエリと更新のサービスとクライアントの実装に興味を持っているソフトウェア開発者を主として対象としています。</p>
+
+<p>SPARQLプロトコルは、SPARQLクエリ言語のクエリを行なうためのクエリ・オペレーションと、SPARQL更新言語のリクエストを行なうための更新オペレーションの2つのHTTPオペレーションで構成されます。SPARQLプロトコルのクライアントは、リクエストを処理して元のクライアントにHTTPレスポンスを送り返すSPARQLプロトコル・サービスにHTTPリクエストを送ります。</p>
+
+<p>別のドキュメントでは、RESTアーキテクチャ・スタイルのグラフのコレクションを管理する目的でHTTPオペレーションの用法を記述した<a href="www.w3.org/TR/sparql11-http-rdf-update/">SPARQL 1.1グラフ・ストアHTTPプロトコル</a>を記述しています。</p>
+
+<div class="div2">
+
+<h3>
+<a name="conventions" id="conventions"></a>1.1 ドキュメントの規定</h3>
+
+<p>ドキュメントが、<strong>しなければならない</strong>（MUST）、<strong>してはならない</strong>（MUST NOT）、<strong>すべきである／する必要がある</strong>（SHOULD）、<strong>すべきでない／する必要がない</strong>（SHOULD NOT）、<strong>することができる／してもよい</strong>（MAY）、<strong>推奨される</strong>（RECOMMENDED）という単語を使用し、強調されたテキストとして出現するとき、<a href="www.faqs.org/rfcs/rfc2119.html">RFC 2119</a>[<a href="#rfc2119">RFC2119</a>]で記述されているとおりに解釈されなければなりません。</p>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="terminology" id="terminology"></a>1.2 用語</h3>
+
+<dl>
+  <dt>SPARQLプロトコル・クライアント</dt>
+  <dd>SPARQLプロトコル・オペレーションにHTTPリクエストを送るHTTPクライアント（<a href="www.w3.org/Protocols/rfc2616/rfc2616-sec1.html#sec1.3">RFC 2616</a>[<a href="#rfc2616">RFC2616</a>]で定義されているとおりに）。（別名: <em>クライアント</em>）</dd>
+
+
+  <dt>SPARQLプロトコル・サービス</dt>
+  <dd>SPARQLプロトコル・オペレーションに対し、HTTPリクエストのサービスを行い、HTTPレスポンスを送り返すHTTPサーバ。SPARQLプロトコル・サービスがリクエストを受けるURIは、一般にSPARQLエンドポイントとして知られています。（別名: <em>サービス</em>）</dd>
+  <dt>SPARQLエンドポイント</dt>
+  <dd>SPARQLプロトコル・サービスがSPARQLプロトコル・クライアントからのリクエストを受けるURI。</dd>
+  <dt>SPARQLプロトコル・オペレーション</dt>
+  <dd>このドキュメントに定義されているプロトコルに準拠したHTTPリクエストとレスポンス。</dd>
+  <dt>RDFデータセット</dt>
+  <dd>
+<a href="www.w3.org/TR/sparql11-query/#rdfDataset">SPARQL 1.1クエリ言語</a>で定義されているとおり、デフォルト・グラフおよび0以上の名前付きグラフのコレクション</dd>
+</dl>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="protocol" id="protocol"></a>2 SPARQLプロトコル・オペレーション</h2>
+
+<p>SPARQLプロトコルは、クエリと更新の、2つのオペレーションで構成されます。プロトコル・オペレーションは、次の組み合わせを定義します。</p>
+
+<ul>
+  <li>リクエストが送られるHTTPメソッド。</li>
+  <li>HTTPリクエストURIに含まれているHTTPクエリ文字列パラメータ。</li>
+  <li>HTTPリクエスト本文に含まれているメッセージの内容。</li>
+  <li>HTTPレスポンス本文に含まれているメッセージの内容。</li>
+</ul>
+
+<p>SPARQL 1.1プロトコルは、HTTP上に構築されます。リクエストとレスポンスに対するすべてのHTTPの要件に従わ<strong>なければなりません</strong>（MUST）。</p>
+
+<div class="div2">
+
+<h3>
+<a name="query-operation" id="query-operation"></a>2.1 <code>query</code>オペレーション</h3>
+
+<p><code>query</code>オペレーションは、サービスにSPARQLクエリを送り、そのクエリの結果を受け取るために用いられます。クエリ・オペレーションは、HTTP GETメソッドかHTTP POSTメソッドのいずれかで呼び出さ<strong>なければなりません</strong>（MUST）。このオペレーションに対するクライアントのリクエストは、きっかり1つのSPARQLクエリ文字列（パラメータ名: <code>query</code>）を含ま<strong>なければならず</strong>（must）、0以上のデフォルト・グラフURI（パラメータ名: <code>default-graph-uri</code>）と名前付きグラフURI（パラメータ名: <code>named-graph-uri</code>）を含むことが<strong>できます</strong>（may）。クエリ・リクエストに対するレスポンスは、<a href="www.w3.org/TR/sparql11-query/#QueryForms">クエリ形式</a>[<a href="#sparql">SPARQL</a>]や<a href="www.w3.org/Protocols/rfc2616/rfc2616-sec12.html">内容交渉</a>[<a href="#rfc2616">RFC2616</a>]に応じて、<a href="www.w3.org/TR/rdf-sparql-XMLres/">SPARQL XML結果フォーマット</a>、<a href="www.w3.org/TR/sparql11-results-json/">SPARQL JSON結果フォーマット</a>、<a href="www.w3.org/TR/sparql11-results-csv-tsv/">SPARQL CSV/TSV結果フォーマット</a>、RDFシリアル化のいずれかです。</p>
+
+<a name="query-summary" id="query-summary"></a>
+
+<table style="margin-left: auto; margin-right:auto; border-color: rgb(0, 0, 0); border-collapse: collapse;" border="1" cellpadding="5">
+  <tr>
+    <th>&nbsp;</th>
+    <th>HTTPメソッド</th>
+    <th>クエリ文字列パラメータ</th>
+    <th>リクエストのコンテンツ・タイプ</th>
+    <th>リクエストのメッセージ本文</th>
+  </tr>
+  <tr>
+    <th>GETによるクエリ</th>
+    <td>GET</td>
+    <td>
+<code>query</code> (exactly 1)<br>
+<code>default-graph-uri</code> (0 or more)<br>
+<code>named-graph-uri</code> (0 or more)</td>
+    <td>なし</td>
+    <td>なし</td>
+  </tr>
+  <tr>
+    <th>URLエンコードされたPOSTによるクエリ</th>
+    <td>POST</td>
+    <td>なし</td>
+    <td><code>application/x-www-form-urlencoded</code></td>
+    <td>URL-encoded, ampersand-separated query parameters.<br>
+<code>query</code> (exactly 1)<br>
+<code>default-graph-uri</code> (0 or more)<br>
+<code>named-graph-uri</code> (0 or more)</td>
+  </tr>
+  <tr>
+    <th>POSTによる直接的なクエリ</th>
+    <td>POST</td>
+    <td>
+<code>default-graph-uri</code> (0 or more)<br>
+<code>named-graph-uri</code> (0 or more)</td>
+    <td><code>application/sparql-query</code></td>
+    <td>Unencoded SPARQL query string</td>
+  </tr>
+</table>
+
+<p><code>query</code>リクエストのパラメータは、これらの3つのオプションのうちの1つで送ら<strong>なければなりません</strong>（must）。</p>
+
+<div class="div3">
+<h4>
+<a name="query-via-get" id="query-via-get"></a>2.1.1 GETによる<code>query</code>
+</h4>
+
+<p>プロトコルのクライアントは、HTTP GETメソッドでプロトコル・リクエストを送ることが<strong>できます</strong>（may）。GETメソッドを用いる場合、クライアントは、すべてのパラメータをURL<a href="www.ietf.org/rfc/rfc3986.txt">パーセント・エンコーディング</a>[<a href="#rfc3986">RFC3986</a>]し、それらを上記の名前を持つクエリ・パラメータ文字列として含ま<strong>なければなりません</strong>（must）。</p>
+
+<p>HTTPクエリ文字列のパラメータは、アンパサンド（<code>&amp;</code>）の文字で区切られてい<strong>なければなりません</strong>（must）。クライアントには、クエリ文字列パラメータを任意の順序で含むことができます。</p>
+
+<p>HTTPリクエストには、メッセージ本文が含まれていては<strong>なりません</strong>（<strong>MUST NOT</strong>）。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="query-via-post-urlencoded" id="query-via-post-urlencoded"></a>2.1.2 URLエンコードされたパラメータを用いたPOSTによる<code>query</code>
+</h4>
+
+<p>プロトコル・クライアントは、URLエンコードされたパラメータにより、HTTP POSTメソッドでプロトコル・リクエストを送ることが<strong>できます</strong>（may）。このメソッドを用いる場合、クライアントは、すべてのパラメータをURL<a href="www.ietf.org/rfc/rfc3986.txt">パーセント・エンコーディング</a>[<a href="#rfc3986">RFC3986</a>]し、上記の名前を持つ<code>application/x-www-form-urlencoded</code>メディア・タイプにより、それらをパラメータとしてリクエスト本文内に含ま<strong>なければなりません</strong>（must）。パラメータは、アンパサンド（<code>&amp;</code>）で区切られてい<strong>なければなりません</strong>（must）。クライアントには、パラメータを任意の順序で含むことができます。HTTPリクエストのコンテンツ・タイプ・ヘッダは、<code>application/x-www-form-urlencoded</code>に設定し<strong>なければなりません</strong>（must）。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="query-via-post-direct" id="query-via-post-direct"></a>2.1.3 POSTによる直接的な<code>query</code>
+</h4>
+
+<p>プロトコル・クライアントは、クエリを直接含め、HTTPリクエストのメッセージ本文としてコード化せずに、HTTP POSTメソッドでプロトコル・リクエストを送ることが<strong>できます</strong>（may）。このアプローチを用いる場合、クライアントは、SPARQLクエリ文字列を、コード化せず、リクエストのメッセージ本文には他に何もない状態で含ま<strong>なければなりません</strong>（must）。クライアントは、HTTPリクエストのコンテンツ・タイプ・ヘッダを<code>application/sparql-query</code>に設定し<strong>なければなりません</strong>（must）。クライアントは、リクエストURIに、オプションの<code>default-graph-uri</code>と<code>named-graph-uri</code>のパラメータをHTTPクエリ文字列パラメータとして含めることが<strong>できます</strong>（may）。ここで、UTF-8のみが有効なcharset（文字集合）であることに注意してください。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="dataset" id="dataset"></a>2.1.4 RDFデータセットの指定</h4>
+
+<p>SPARQLクエリは、<a href="www.w3.org/TR/sparql11-query/#rdfDataset">RDFデータセット</a>に対して実行されます。クエリに対するRDFデータセットは、SPARQLプロトコルの<code>default-graph-uri</code>パラメータと<code>named-graph-uri</code>パラメータによるか、または、SPARQLクエリ文字列に<code>FROM</code>キーワードおよび<code>FROM NAMED</code>キーワードを用いるかのいずれかで指定できます。異なるRDFデータセットが、プロトコル・リクエストとSPARQLクエリ文字列の両方で指定されていれば、SPARQLサービスは、プロトコル・リクエストで与えられているRDFデータセットを用いてクエリを実行し<strong>なければなりません</strong>（must）。</p>
+
+<p>プロトコル・クライアントによるRDFデータセットの指定がサービスで認められていない場合、サービスはHTTPレスポンス・コードが400のクエリを拒否<strong>できる</strong>（may）ことに注意してください。</p>
+
+<p>RDFデータセットが、プロトコル・リクエストでもSPARQLクエリ文字列でも指定されていなければ、実装は、実装が定義したデフォルトRDFデータセットにクエリを実行<strong>できます</strong>（may）。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="conneg" id="conneg"></a>2.1.5 認められるレスポンス形式</h4>
+
+<p>プロトコル・クライアントは、クライアントが利用できるレスポンス形式をリクエストするためにHTTP<a href="www.w3.org/Protocols/rfc2616/rfc2616-sec12.html">内容交渉</a>[<a href="#rfc2616">RFC2616</a>]を使用<strong>すべきです</strong>（should）。可能なレスポンス形式の詳細に関しては、下記を参照してください。</p>
+
+</div>
+<div class="div3">
+<h4>
+<a name="query-success" id="query-success"></a>2.1.6 成功のレスポンス</h4>
+
+<p>SPARQLプロトコルは、オペレーションが成功か失敗かを示すために、HTTPで定義されているレスポンス・ステータス・コードを用います。各ステータス・コードの詳細な定義に関しては、<a href="www.w3.org/Protocols/rfc2616/rfc2616.html">HTTP仕様</a>[<a href="#rfc2616">RFC2616</a>]を参照してください。プロトコル・サービスは、成功したクエリに2XX HTTPレスポンス・コードを用いる<strong>べきです</strong>（should）が、その代わりに、HTTPのように3XXレスポンス・コードを用いることも選択<strong>できます</strong>（may）。</p>
+
+<p>2XXのレスポンスを持つ成功したクエリ・オペレーションのレスポンス本文は、次のいずれかです。</p>
+
+<ul>
+  <li>
+<a href="www.w3.org/TR/rdf-sparql-XMLres/">XML</a>、<a href="www.w3.org/TR/sparql11-results-json/">JSON</a>、または<a href="www.w3.org/TR/sparql11-results-csv-tsv/">CSV/TSV</a>形式（SPARQLクエリ形式<a href="www.w3.org/2001/sw/DataAccess/rq23/#select">SELECT</a>と<a href="www.w3.org/2001/sw/DataAccess/rq23/#ask">ASK</a>に対する）のSPARQL結果ドキュメント。または、</li>
+  <li>例えば、<a href="www.w3.org/TR/rdf-syntax-grammar/">RDF/XML構文</a>でシリアル化されたRDFグラフ[<a href="#rdf-concepts">RDF-CONCEPTS</a>]、または同等のRDFグラフ・シリアル化（SPARQLクエリ形式<a href="www.w3.org/2001/sw/DataAccess/rq23/#describe">DESCRIBE</a>と<a href="www.w3.org/2001/sw/DataAccess/rq23/#construct">CONSTRUCT</a>に対する）</li>
+</ul>
+
+<p>成功したクエリ・オペレーションに対するレスポンスのコンテンツ・タイプは、レスポンス本文の形式に対して定義されているメディア・タイプでなければなりません。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="query-failure" id="query-failure"></a>2.1.7 失敗のレスポンス</h4>
+
+<p>成功しなかったクエリ・オペレーションに適用できるHTTPレスポンス・コードには、次のものが含まれます。</p>
+
+<ul>
+  <li>リクエストで提供されているSPARQLクエリが、SPARQL文法で定義されている言語の正当な文字列でなければ400。または、</li>
+  <li>サービスがクエリの実行に失敗すれば500。SPARQLプロトコル・サービスがクエリの実行を拒否した場合に、500のレスポンス・コードを返すこともできます。このレスポンスは、サーバが、その後の同じリクエスト（複数のリクエストも可）を処理できるか否かを示しません。</li>
+</ul>
+
+<p>失敗したクエリ・リクエストのレスポンス本文は、実装依存です。実装は、人間または機械（または両方）が読むことのできる、失敗したクエリ・リクエストに関する情報を提供するためにHTTP内容交渉を使用<strong>できます</strong>（may）。</p>
+
+<p>プロトコル・サービスは、HTTPのように、その他の失敗の状況に4XXや5XXのHTTPレスポンス・コードを用いることも<strong>できます</strong>（may）。</p>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="update-operation" id="update-operation"></a>2.2 <code>update</code>オペレーション</h3>
+
+<p>更新オペレーションは、サービスにSPARQL更新リクエストを送るために用いられます。更新オペレーションは、HTTP POSTメソッドを用いて呼び出され<strong>なければなりません</strong>（must）。このオペレーションのクライアントのリクエストには、きっかり1つのSPARQL更新リクエスト文字列（パラメータ名: <code>update</code>）が含まれてい<strong>なければならず</strong>（must）、0以上のデフォルト・グラフURI（パラメータ名: <code>using-graph-uri</code>）と名前付きグラフURI（パラメータ名: <code>using-named-graph-uri</code>）を含むことが<strong>できます</strong>（may）。更新リクエストに対するレスポンスは、HTTP反応ステータス・コードにより、リクエストの成功または失敗を示します。</p>
+
+<a name="update-summary" id="update-summary"></a>
+
+<table style="margin-left: auto; margin-right:auto; border-color: rgb(0, 0, 0); border-collapse: collapse;" border="1" cellpadding="5">
+  <tr>
+    <th>&nbsp;</th>
+    <th>HTTPメソッド</th>
+    <th>クエリ文字列パラメータ</th>
+    <th>リクエストのコンテンツ・タイプ</th>
+    <th>リクエストのメッセージ本文</th>
+  </tr>
+  <tr>
+    <th>URLエンコードされたPOSTによる更新</th>
+    <td>POST</td>
+    <td>なし</td>
+    <td><code>application/x-www-form-urlencoded</code></td>
+    <td>URL-encoded, ampersand-separated query parameters.<br>
+<code>update</code> (exactly 1)<br>
+<code>using-graph-uri</code> (0 or more)<br>
+<code>using-named-graph-uri</code> (0 or more)</td>
+  </tr>
+  <tr>
+    <th>POSTによる直接的な更新</th>
+    <td>POST</td>
+    <td>
+<code>using-graph-uri</code> (0 or more)<br>
+<code>using-named-graph-uri</code> (0 or more)</td>
+    <td><code>application/sparql-update</code></td>
+    <td>Unencoded SPARQL update request string</td>
+  </tr>
+</table>
+
+<p><code>update</code>リクエストのパラメータは、これらの2つのオプションのうちの1つで送ら<strong>なければなりません</strong>（must）。</p>
+
+<div class="div3">
+
+<h4>
+<a name="update-via-post-urlencoded" id="update-via-post-urlencoded"></a>2.2.1 URLエンコードされたパラメータを用いたPOSTによる<code>update</code>
+</h4>
+
+<p>プロトコル・クライアントは、パラメータのURLエンコーディングによってHTTP POSTメソッドで更新プロトコル・リクエストを送ることが<strong>できます</strong>（may）。このアプローチを用いる場合、クライアントは、すべてのパラメータをURL<a href="www.ietf.org/rfc/rfc3986.txt">パーセント・エンコーディング</a>[<a href="#rfc3986">RFC3986</a>]し、上記の名前を持つ<code>application/x-www-form-urlencoded</code>メディア・タイプにより、それらをパラメータとしてリクエスト本文内に含ま<strong>なければなりません</strong>（must）。パラメータは、アンパサンド（<code>&amp;</code>）で区切られてい<strong>なければなりません</strong>（must）。クライアントには、パラメータを任意の順序で含むことができます。HTTPリクエストのコンテンツ・タイプ・ヘッダは、<code>application/x-www-form-urlencoded</code>に設定し<strong>なければなりません</strong>（must）。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-via-post-direct" id="update-via-post-direct"></a>2.2.2 POSTによる直接的な<code>update</code>
+</h4>
+
+<p>プロトコル・クライアントは、更新リクエストを直接含め、HTTPリクエストのメッセージ本文としてコード化せずに、HTTP POSTメソッドで更新プロトコル・リクエストを送ることが<strong>できます</strong>（may）。このアプローチを用いる場合、クライアントは、SPARQL更新リクエスト文字列を、コード化せず、リクエストのメッセージ本文には他に何もない状態で含ま<strong>なければなりません</strong>（must）。クライアントは、HTTPリクエストのコンテンツ・タイプ・ヘッダを<code>application/sparql-update</code>に設定し<strong>なければなりません</strong>（must）。クライアントは、リクエストURIに、オプションの<code>using-graph-uri</code>と<code>using-named-graph-uri</code>のパラメータをHTTPクエリ文字列パラメータとして含めることが<strong>できます</strong>（may）。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-dataset" id="update-dataset"></a>2.2.3 RDFデータセットの指定</h4>
+
+<p>SPARQL更新リクエストは、グラフ・ストア（SPARQLサービスが管理するRDFグラフの可変コンテナ）に対して実行されます。SPARQL更新<a href="www.w3.org/TR/sparql11-update/#deleteInsert">DELETE/INSERTオペレーション</a>[<a href="#update">UPDATE</a>]のWHERE句は、<a href="www.w3.org/TR/sparql11-query/#rdfDataset">RDFデータセット</a>のデータにマッチし、それはグラフ・ストアのサブセットです。更新オペレーションに対するRDFデータセットは、<code>USING</code>、<code>USING NAMED</code>、および/または<code>WITH</code>キーワードを用いて、オペレーション文字列自身で指定するか、<code>using-graph-uri</code>と<code>using-named-graph-uri</code>のパラメータによって指定するかのいずれかが可能です。</p>
+
+<p><code>USING</code>、<code>USING NAMED</code>、または<code>WITH</code>句を用いたオペレーションが含まれているSPARQL 1.1更新リクエストを伝えるためにこのプロトコルを用いる場合、<code>using-graph-uri</code>または<code>using-named-graph-uri</code>のパラメータを提供することはエラーです。</p>
+
+<p>SPARQL更新プロセッサは、<code>USING &lt;g&gt;</code>句がSPARQL 1.1更新リクエストのすべてのオペレーションに含まれているかのように、更新プロトコル・オペレーションの個々の<code>using-graph-uri=g</code>パラメータの発生に対応すべきです。同様に、SPARQL更新プロセッサは、<code>USING NAMED &lt;g&gt;</code>句がSPARQL 1.1更新リクエストのすべてのオペレーションに含まれているかのように、更新プロトコル・オペレーションの個々の<code>using-named-graph-uri=g</code>パラメータの発生に対応すべきです。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-success" id="update-success"></a>2.2.4 成功のレスポンス</h4>
+
+<p>SPARQLプロトコルは、オペレーションが成功か失敗かを示すために、HTTPで定義されているレスポンス・ステータス・コードを用います。各ステータス・コードの詳細な定義に関しては、<a href="www.w3.org/Protocols/rfc2616/rfc2616.html">HTTP仕様</a>[<a href="#rfc2616">RFC2616</a>]を参照してください。プロトコル・サービスは、処理が成功した更新リクエストに2XX HTTPレスポンス・コードを用いる<strong>べきです</strong>（should）が、その代わりに、HTTPのように3XXレスポンス・コードを用いることも選択<strong>できます</strong>（may）。</p>
+
+<p>成功した更新リクエストのレスポンス本文は、実装依存です。実装は、人間と機械の両方が読むことのできる、完了した更新リクエストに関する情報を提供するためにHTTP内容交渉を使用<strong>できます</strong>（may）</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-failure" id="update-failure"></a>2.2.5 失敗のレスポンス</h4>
+
+<p>成功しなかった更新リクエストに対するHTTPレスポンス・コードは、次のとおりであるべきです。</p>
+
+<ul>
+  <li>SPARQL更新リクエスト文字列が、SPARQL更新文法で定義されている言語の正当な文字列でなければ400。または、</li>
+  <li>サービスが更新リクエストの実行に失敗すれば500。SPARQLプロトコル・サービスが更新リクエストの実行を拒否した場合に、500のレスポンス・コードを返すこともできます。このレスポンスは、サーバが、その後の同じリクエスト（複数のリクエストも可）を処理できるか否かを示しません。</li>
+</ul>
+
+<p>失敗した更新リクエストのレスポンス本文は、実装依存です。実装は、人間または機械（または両方）が読むことのできる、失敗した更新リクエストに関する情報を提供するためにHTTP内容交渉を使用<strong>できます</strong>（may）。</p>
+
+<p>プロトコル・サービスは、HTTPのように、その他の失敗の状況に4XXや5XXのHTTPレスポンス・コードを用いることも<strong>できます</strong>（may）。</p>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="base-iri" id="base-iri"></a>2.3 基底IRIの決定</h3>
+
+<p>SPARQLクエリの<code>BASE</code>キーワードまたはSPARQL更新リクエスト文字列は、<a href="www.ietf.org/rfc/rfc3986.txt">URI（Uniform Resource Identifier）:一般的構文</a>[<a href="#rfc3986">RFC3986</a>]の5.1.1項「コンテンツ内に組み込まれた基底URI」にあるとおり、相対IRIを解決するために用いられる基底IRIを定めます。SPARQLプロトコルは、クエリのURIを逆参照しないため、5.1.3項は当てはまりません。最後に、5.1.4項のとおり、SPARQLプロトコル・サービスは、自身の基底URIを定義し<strong>なければならず</strong>（must）、それはサービス・エンドポイントになり<strong>えます</strong>（may）。</p>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="examples" id="examples"></a>3 SPARQLプロトコル・リクエストの例（参考情報）</h2>
+
+<p>以下のHTTPトレースの例では、いくつかの異なるシナリオにおける<code>query</code>と<code>update</code>のオペレーションの呼び出しを示します。次の方法で、完全なHTTPトレースから、いくつかのトレースの例を抽出しました。</p>
+
+<ol>
+  <li>一部の例では、「<i>EncodedQuery</i>」という文字列は、例示されているSPARQLクエリ文字列と同等のURLエンコードされた文字列を表します。「<i>UnencodedQuery</i>」という文字列は、コード化せずに例示しているSPARQLクエリ文字列そのものを表します。</li>
+  <li>
+<code>query</code>ペレーションの例の場合、クエリの結果を含む、部分的なレスポンス本文のみを表示しています。</li>
+</ol>
+
+<div class="div2">
+
+<h3>
+<a name="query-bindings-http-examples" id="query-bindings-http-examples"></a>3.1 SPARQLクエリの例</h3>
+
+<div class="div3">
+
+<h4>
+<a name="select-svcsupplied" id="select-svcsupplied"></a>3.1.1 SELECTとサービスから提供されたRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-select-svcsupplied">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt; 
+SELECT ?book ?who 
+WHERE { ?book dc:creator ?who }</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、HTTP GETでSPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=PREFIX%20dc%3A%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderspurl.org%2Fdc%2Felements%2F1.1%2F%3E%20%0ASELECT%20%3Fbook%20%3Fwho%20%0AWHERE%20%7B%20%3Fbook%20dc%3Acreator%20%3Fwho%20%7D%0A HTTP/1.1
+Host: www.example
+User-agent: my-sparql-client/0.1</pre>
+
+<p>サービスから提供されたRDFデータセットに対するそのクエリ（そのSPARQLクエリのサービスによって実行された）は、次のクエリ結果を返します。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+
+ &lt;head&gt;
+   &lt;variable name="book"/&gt;
+   &lt;variable name="who"/&gt;
+ &lt;/head&gt;
+ &lt;results&gt;
+   &lt;result&gt;
+     &lt;binding name="book"&gt;&lt;uri&gt;http://www.example/book/book5&lt;/uri&gt;&lt;/binding&gt;
+     &lt;binding name="who"&gt;&lt;bnode&gt;r29392923r2922&lt;/bnode&gt;&lt;/binding&gt;
+   &lt;/result&gt;
+...
+&lt;/sparql&gt; </pre>
+</div>
+</div>
+<div class="div3">
+<h4>
+<a name="select-simple" id="select-simple"></a>3.1.2 SELECTとシンプルなRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-select-simple">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt; 
+SELECT ?book ?who 
+WHERE { ?book dc:creator ?who }</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.other.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=PREFIX%20dc%3A%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderspurl.org%2Fdc%2Felements%2F1.1%2F%3E%20%0ASELECT%20%3Fbook%20%3Fwho%20%0AWHERE%20%7B%20%3Fbook%20dc%3Acreator%20%3Fwho%20%7D%0A&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.other.example%2Fbooks HTTP/1.1
+Host: www.other.example
+User-agent: my-sparql-client/0.1
+</pre>
+
+<p>そのSPARQLクエリのサービスによって実行された、そのクエリ ― <code>default-graph-uri</code>パラメータ（<tt>http://www.other.example/books</tt>）の値で識別されるRDFデータセットに対する ― は、次のクエリ結果を返します。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+ &lt;head&gt;
+   &lt;variable name="book"/&gt;
+   &lt;variable name="who"/&gt;
+ &lt;/head&gt;
+...
+&lt;/sparql&gt; </pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="construct-simple" id="construct-simple"></a>3.1.3 CONSTRUCTとシンプルなRDFデータセットおよびHTTP内容交渉</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-construct-simple">
+<pre class="query">PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX myfoaf: &lt;http://www.example/jose/foaf.rdf#&gt;
+
+CONSTRUCT { myfoaf:jose foaf:depiction &lt;http://www.example/jose/jose.jpg&gt;.
+            myfoaf:jose foaf:schoolHomepage &lt;http://www.edu.example/&gt;.
+            ?s ?p ?o.}
+WHERE { ?s ?p ?o. myfoaf:jose foaf:nick "Jo".
+       FILTER ( ! (?s = myfoaf:kendall &amp;&amp; ?p = foaf:knows &amp;&amp; ?o = myfoaf:edd ) 
+              &amp;&amp; ! ( ?s = myfoaf:julia &amp;&amp; ?p = foaf:mbox &amp;&amp; ?o = &lt;mailto:julia@mail.example&gt; )
+	      &amp;&amp; ! ( ?s = myfoaf:julia &amp;&amp; ?p = rdf:type &amp;&amp; ?o = foaf:Person))
+}</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fjose-foaf.rdf HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+Accept: text/turtle, application/rdf+xml</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:11 GMT
+Server: Apache/1.3.29 (Unix)
+Connection: close
+Content-Type: text/turtle
+
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;.
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt;.
+@prefix myfoaf: &lt;http://www.example/jose/foaf.rdf#&gt;.
+
+myfoaf:jose foaf:name "Jose Jimenez";
+	    foaf:depiction &lt;http://www.example/jose/jose.jpg&gt;;
+            foaf:nick "Jo";
+...</pre>
+
+<p><em>注意:</em> このメディア・タイプ<tt>text/turtle</tt>の登録に着手しましたが、この仕様の公表時点では完了していません。Turtle言語の最終的に登録されたメディア・タイプに関しては、<a href="www.w3.org/TR/turtle">http://www.w3.org/TR/turtle</a>を参照してください。</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="ask-simple" id="ask-simple"></a>3.1.4 ASKとシンプルなRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-ask-simple">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt; 
+ASK WHERE { ?book dc:creator "J.K. Rowling"}</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fbooks HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+ &lt;head&gt;&lt;/head&gt;
+ &lt;boolean&gt;true&lt;/boolean&gt;
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="describe-simple" id="describe-simple"></a>3.1.5 DESCRIBEとシンプルなRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-describe-simple">
+<pre class="query">PREFIX books: &lt;http://www.example/book/&gt;
+DESCRIBE books:book6</pre>
+
+<p>は、次で示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fbooks HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type:  application/rdf+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;rdf:RDF 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:books="http://www.example/book/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/" &gt;
+  &lt;rdf:Description rdf:about="http://www.example/book/book6"&gt;
+    &lt;dc:title&gt;Example Book #6 &lt;/dc:title&gt;
+  &lt;/rdf:Description&gt;
+&lt;/rdf:RDF&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-complex" id="select-complex"></a>3.1.6 SELECTと複合的なRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-select-complex">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+SELECT ?who ?g ?mbox
+WHERE {  ?g dc:publisher ?who .
+   GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+<p>は、次で示しているとおり（読みやすいように改行付きで）、SPARQLクエリのサービス（http://www.example/sparql/）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fpublishers
+&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fmorepublishers&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersyour.example%2Ffoaf-alice
+&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Ffoaf-bob&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Ffoaf-susan
+&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersthis.example%2Fjohn%2Ffoaf
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type:  application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+  &lt;head&gt;
+    &lt;variable name="who"/&gt;
+    &lt;variable name="g"/&gt;
+    &lt;variable name="mbox"/&gt;
+  &lt;/head&gt;
+...
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-queryonly" id="select-queryonly"></a>3.1.7 SELECTとクエリのみのRDFデータセット</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-select-queryonly">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+SELECT ?who ?g ?mbox
+FROM &lt;http://www.example/publishers&gt;
+FROM NAMED &lt;http://www.example/alice&gt;
+FROM NAMED &lt;http://www.example/bob&gt;
+WHERE { ?g dc:publisher ?who .
+        GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i> HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+...
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-ambiguous" id="select-ambiguous"></a>3.1.8 SELECTと曖昧なRDFデータセット</h4>
+
+<div id="div-select-ambiguous">
+
+<p>次のSPARQLクエリ</p>
+
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+SELECT ?who ?g ?mbox
+FROM &lt;http://www.example/publishers&gt;
+FROM NAMED &lt;http://www.example/john&gt;
+FROM NAMED &lt;http://www.example/susan&gt;
+WHERE { ?g dc:publisher ?who .
+        GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fmorepublishers
+&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fbob&amp;<b>named-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Falice HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>このプロトコル・オペレーションには曖昧なRDFデータセットが含まれています。クエリで指定されているデータセットは、プロトコルで指定されたもの（<code>default-graph-uri</code>と<code>named-graph-uri</code>のパラメータにより）とは異なります。適合SPARQLプロトコル・サービスは、プロトコルで指定されているRDFデータセットにクエリを実行することで、この曖昧さを解決しなければなりません。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+  &lt;head&gt;
+    &lt;variable name="who"/&gt;
+    &lt;variable name="g"/&gt;
+    &lt;variable name="mbox"/&gt;
+  &lt;/head&gt;
+  &lt;results&gt;
+    &lt;result&gt;
+      &lt;binding name="who"&gt;
+      	&lt;literal&gt;Bob Hacker&lt;/literal&gt;
+      &lt;/binding&gt;
+      &lt;binding name="g"&gt;
+	&lt;uri&gt;http://www.example/bob&lt;/uri&gt;
+      &lt;/binding&gt;
+      &lt;binding name="mbox"&gt;
+        &lt;uri&gt;mailto:bob@oldcorp.example&lt;/uri&gt;
+      &lt;/binding&gt;
+    &lt;/result&gt;
+    &lt;result&gt;
+      &lt;binding name="who"&gt;
+	&lt;literal&gt;Alice Hacker&lt;/literal&gt;
+      &lt;/binding&gt;
+      &lt;binding name="g"&gt;
+	&lt;uri&gt;http://www.example/alice&lt;/uri&gt;
+      &lt;/binding&gt;
+      &lt;binding name="mbox"&gt;
+	&lt;uri&gt;mailto:alice@work.example&lt;/uri&gt;
+      &lt;/binding&gt;
+    &lt;/result&gt;
+  &lt;/results&gt;
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-malformed" id="select-malformed"></a>3.1.9 SELECTと不正なクエリのフォルト</h4>
+
+<p>次の構文的に不正なSPARQLクエリ</p>
+
+<div id="div-select-malformed">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?name
+WHERE { ?x foaf:name ?name
+ORDER BY ?name }</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.example%2Fmorepublishers HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>すると、次のエラーのレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 400 Bad Request
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: text/plain; charset=UTF-8
+
+4:syntax error, unexpected ORDER, expecting '}'</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-refused" id="select-refused"></a>3.1.10 SELECTとクエリ・リクエスト拒否のフォルト</h4>
+
+<p>次のSPARQLクエリ</p>
+
+<div id="div-select-refused">
+<pre class="query">PREFIX bio: &lt;http://bio.example/schema/#&gt;
+SELECT ?valence
+FROM &lt;http://another.example/protein-db.rdf&gt;
+WHERE { ?x bio:protein ?valence }
+ORDER BY ?valence</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersanother.example%2Fprotein-db.rdf HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+<p>すると、次のエラーのレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 500 Internal Server Error
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: text/plain
+
+SPARQL Processing Service: Query Request Refused
+
+Your request could not be processed because http://another.example/protein-db.rdf
+could not be retrieved within the time alloted.
+</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-longpost" id="select-longpost"></a>3.1.11 POSTとURLエンコーディングを用いた長いSELECTクエリ</h4>
+
+<p>一部のSPARQLクエリ（恐らく、システムにより生成された）は、<a href="#query-via-get">2.1.1 GETによるquery</a>で記述しているHTTP GETバインディングで確実に伝えることができる長さを超えているかもしれません。その場合は、<a href="#query-via-post-urlencoded">2.1.2 URLエンコードされたパラメータを用いたPOSTによるquery</a>で記述しているPOSTバインディングを使用できます。次のSPARQLクエリ</p>
+
+<div id="div-select-longpost">
+<pre class="query">PREFIX : &lt;http://www.w3.org/2002/12/cal/icaltzd#&gt;
+PREFIX Chi: &lt;http://www.w3.org/2002/12/cal/test/Chiefs.ics#&gt;
+PREFIX New: &lt;http://www.w3.org/2002/12/cal/tzd/America/New_York#&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+SELECT ?summary
+WHERE {
+    {
+	Chi:D603E2AC-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-08T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:09:27Z"^^xsd:dateTime;
+         :dtstart "2002-09-08T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603E2AC-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603E90B-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-15T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:10:19Z"^^xsd:dateTime;
+         :dtstart "2002-09-15T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603E90B-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603ED6E-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-22T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:11:05Z"^^xsd:dateTime;
+         :dtstart "2002-09-22T13:00:00"^^New:tz;
+         :summary ?summary;         :uid "D603ED6E-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F18C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-29T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:15:46Z"^^xsd:dateTime;
+         :dtstart "2002-09-29T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603F18C-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F5B7-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-04"^^xsd:date;
+         :dtstamp "2002-09-06T03:12:53Z"^^xsd:dateTime;
+         :dtstart "2002-11-03"^^xsd:date;
+         :summary ?summary;
+         :uid "D603F5B7-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F9D7-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-10T20:15:00"^^New:tz;
+         :dtstamp "2002-09-06T03:14:12Z"^^xsd:dateTime;
+         :dtstart "2002-11-10T17:15:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603F9D7-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D604022C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-17T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:14:51Z"^^xsd:dateTime;
+         :dtstart "2002-11-17T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D604022C-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D604065C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-06T19:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:16:54Z"^^xsd:dateTime;
+         :dtstart "2002-10-06T16:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D604065C-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6040A7E-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-13T19:15:00"^^New:tz;
+         :dtstamp "2002-09-06T03:17:51Z"^^xsd:dateTime;
+         :dtstart "2002-10-13T16:15:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6040A7E-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6040E96-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-20T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:18:32Z"^^xsd:dateTime;
+         :dtstart "2002-10-20T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6040E96-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041270-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-27T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:19:15Z"^^xsd:dateTime;
+         :dtstart "2002-10-27T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041270-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041673-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-24T20:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:22:09Z"^^xsd:dateTime;
+         :dtstart "2002-11-24T17:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041673-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041A73-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-01T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:22:52Z"^^xsd:dateTime;
+         :dtstart "2002-12-01T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041A73-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D60421EF-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-08T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:24:04Z"^^xsd:dateTime;
+         :dtstart "2002-12-08T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D60421EF-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6042660-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-15T20:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:25:03Z"^^xsd:dateTime;
+         :dtstart "2002-12-15T17:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042660-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6042A93-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-22T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:25:47Z"^^xsd:dateTime;
+         :dtstart "2002-12-22T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042A93-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION    {
+	Chi:D6042EDF-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-28T21:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:26:51Z"^^xsd:dateTime;
+         :dtstart "2002-12-28T18:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042EDF-C1C9-11D6-9446-003065F198AC" .
+    }
+}</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">POST /sparql/ HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 9461
+
+<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersanother.example%2Fcalendar.rdf</pre>
+
+<p>すると、次のレスポンスが得られます。</p>
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+    &lt;head&gt;
+        &lt;variable name="summary"/&gt;
+    &lt;/head&gt;
+    &lt;results&gt;
+        &lt;result&gt;
+            &lt;binding name="summary"&gt;
+                &lt;literal&gt;Chiefs vs. Cleveland @ Cleveland Stadium&lt;/literal&gt;
+            &lt;/binding&gt;
+        &lt;/result&gt;
+        &lt;result&gt;
+            &lt;binding name="summary"&gt;
+                &lt;literal&gt;Chiefs vs. Jacksonville @ Arrowhead Stadium&lt;/literal&gt;
+            &lt;/binding&gt;
+        &lt;/result&gt;
+        &lt;result&gt;
+            &lt;binding name="summary"&gt;
+                &lt;literal&gt;Chiefs vs. New England @ Gillette Stadium&lt;/literal&gt;
+            &lt;/binding&gt;
+        &lt;/result&gt;
+        ...
+        &lt;result&gt;
+            &lt;binding name="summary"&gt;
+                &lt;literal&gt;Chiefs vs. Oakland @ Network Associates Coliseum&lt;/literal&gt;
+            &lt;/binding&gt;
+        &lt;/result&gt;
+    &lt;/results&gt;
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-longpost-direct" id="select-longpost-direct"></a>3.1.12 POSTを直接用いた長いSELECTクエリ</h4>
+
+<p>SPARQLクエリは、<a href="#query-via-post-direct">2.1.3 POSTによる直接的なquery</a>で記述しているように、URLエンコーディングなしに直接POSTすることもできます。<a href="#select-longpost">前の例</a>で用いた同じクエリは、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">POST /sparql/?default-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersanother.example%2Fcalendar.rdf HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+Content-Type: application/sparql-query
+
+<i>UnencodedQuery</i></pre>
+
+<p>すると、前の例と同じレスポンスが得られます。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="select-kanji" id="select-kanji"></a>3.1.13 SELECTと国際化</h4>
+
+<p>SPARQLクエリは、国際化した文字や文字集合を含むことができます。次のSPARQLクエリ</p>
+
+<div id="div-select-kanji">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX 食: &lt;http://www.w3.org/2001/sw/DataAccess/tests/data/i18n/kanji.ttl#&gt;
+SELECT ?name ?food 
+WHERE { [ foaf:name ?name ; 食:食べる ?food ] . }</pre>
+
+<p>は、次のHTTPトレースで示しているとおり、SPARQLクエリのサービス（<tt>http://www.example/sparql/</tt>）に伝えられます。</p>
+
+<pre class="req">GET /sparql/?<b>query=PREFIX%20foaf%3A%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersxmlns.com%2Ffoaf%2F0.1%2F%3E%0APREFIX%20%E9%A3%9F%3A%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderswww.w3.org%2F2001%2Fsw%2FDataAccess%2Ftests%2Fdata%2Fi18n%2Fkanji.ttl%23%3E%0ASELECT%20%3Fname%20%3Ffood%20%0AWHERE%20%7B%20%5B%20foaf%3Aname%20%3Fname%20%3B%20%E9%A3%9F%3A%E9%A3%9F%E3%81%B9%E3%82%8B%20%3Ffood%20%5D%20.%20%7D</b>
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix)
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?&gt;
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#"&gt;
+...
+&lt;/sparql&gt;</pre>
+
+</div>
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="update-bindings-http-examples" id="update-bindings-http-examples"></a>3.2 SPARQL更新の例</h3>
+
+<div class="div3">
+
+<h4>
+<a name="update-urlencoded-simple" id="update-urlencoded-simple"></a>3.2.1 URLエンコードされたパラメータを用いたUPDATE</h4>
+
+<p>次のリクエストの例は、<code>INSERT DATA { &lt;a&gt; &lt;p&gt; &lt;b&gt; }</code>というクエリに対して<code>http://localhost:8888/test</code>に送られたリクエストのシリアル化で、URLエンコードされたパラメータ形式を用いると、下に示しているようになります。</p>
+
+<pre class="req">POST /test HTTP/1.1
+Host: localhost:8888
+Accept: text/plain
+Content-Length: 62
+Content-Type: application/x-www-form-urlencoded
+
+update=INSERT%20DATA%20%7B%20%3Ca%3E%20%3Cp%3E%20%3Cb%3E%20%7D
+</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-direct-simple" id="update-direct-simple"></a>3.2.2 POSTを直接用いたUPDATE</h4>
+
+<p>更新リクエストは、<code>application/sparql-update</code>というコンテンツ・タイプを持つPOSTリクエストとして送ることができます。</p>
+
+<pre class="req">POST /test HTTP/1.1
+Host: localhost:8888
+Accept: */*
+Content-Type: application/sparql-update
+Content-Length: 27
+
+INSERT DATA { &lt;a&gt; &lt;p&gt; &lt;b&gt; }</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-direct-simple-dataset" id="update-direct-simple-dataset"></a>3.2.3 データセットを指定し、POSTを直接用いたUPDATE</h4>
+
+<p>更新リクエストに対するデータセットは、<code>using-graph-uri</code>と<code>using-named-graph-uri</code>のパラメータを用いて指定できます。以下に、<code>http://localhost:8888/test</code>に送られたリクエストの例のシリアル化と、デフォルト・グラフ<code>http://localhost:8888/people</code>を持つデータセットの指定を示します。</p>
+
+<pre class="req">POST /test?using-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Fpeople HTTP/1.1
+Host: localhost:8888
+Accept: */*
+Content-Type: application/sparql-update
+Content-Length: 136
+
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+DELETE { ?person ?property ?value }
+WHERE { ?person ?property ?value ; foaf:givenName 'Fred' }</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-urlencoded-multi" id="update-urlencoded-multi"></a>3.2.4 URLエンコードされたパラメータを用いた多重オペレーションUPDATE</h4>
+
+<p>多重オペレーションのシーケンスは、「;」（セミコロン）で区切って、1つのリクエストに含むことができます。クエリに対して<code>http://localhost:8888/test</code>に送られたリクエストの例のシリアル化である</p>
+
+<pre class="query">DELETE DATA { &lt;a&gt; &lt;p&gt; &lt;old&gt; } ;
+INSERT DATA { &lt;a&gt; &lt;p&gt; &lt;new&gt; }</pre>
+
+<p>は、URLエンコードされたパラメータ形式を用いると、下に示しているようになります。</p>
+
+<pre class="req">POST /test HTTP/1.1
+Host: localhost:8888
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 130
+
+update=DELETE%20DATA%20%7B%20%3Ca%3E%20%3Cp%3E%20%3Cold%3E%20%7D%20%3B%0AINSERT%20DATA%20%7B%20%3Ca%3E%20%3Cp%3E%20%3Cnew%3E%20%7D</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-urlencoded-multi-dataset" id="update-urlencoded-multi-dataset"></a>3.2.5 データセットを指定し、URLエンコードされたパラメータを用いた多重オペレーションUPDATE</h4>
+
+<p>URLエンコードされたパラメータを持つ更新リクエストをPOSTする場合、<code>using-graph-uri</code>と<code>using-named-graph-uri</code>のデータセット・パラメータは、シリアル化されたリクエストを持つPOSTの本文で指定されます。以下に、クエリに対して<code>http://localhost:8888/test</code>に送られた、リクエストの例のシリアル化である</p>
+
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+INSERT { GRAPH &lt;http://localhost:8888/people&gt; { ?person ?property ?value } }
+WHERE { GRAPH ?g { ?person ?property ?value ; foaf:givenName 'Fred' } }</pre>
+
+<p>と、http://localhost:8888/alice/foaf.rdfとhttp://localhost:8888/eve/foaf.rdfの名前付きグラフを持つデータセットの指定を示します。</p>
+
+<pre class="req">POST /test HTTP/1.1
+Host: localhost:8888
+Accept: */*
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 130
+
+using-named-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Falice%2Ffoaf.rdf&amp;using-named-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Feve%2Ffoaf.rdf&amp;update=PREFIX%20foaf%3A%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywondersxmlns.com%2Ffoaf%2F0.1%2F%3E%0AINSERT%20%7B%20GRAPH%20%3Chttps%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Fpeople%3E%20%7B%20%3Fperson%20%3Fproperty%20%3Fvalue%20%7D%20%7D%0AWHERE%20%7B%20GRAPH%20%3Fg%20%7B%20%3Fperson%20%3Fproperty%20%3Fvalue%20%3B%20foaf%3AgivenName%20%27Fred%27%20%7D%20%7D
+</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="update-direct-multi-dataset" id="update-direct-multi-dataset"></a>3.2.6 データセットを指定し、POSTを直接用いた多重オペレーションUPDATE</h4>
+
+<p>以下に、<code>http://localhost:8888/test</code>に送られた、リクエストの例のシリアル化と、<code>http://localhost:8888/alice/foaf.rdf</code>と<code>http://localhost:8888/eve/foaf.rdf</code>の名前付きグラフを持つデータセットの指定を示します。</p>
+
+<pre class="req">POST /test?using-named-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Falice%2Ffoaf.rdf&amp;using-named-graph-uri=https%3A%2F%2Fhttps%3A%2F%2Ftawasl-zahra.github.io%2Fwhimsywonderslocalhost%3A8888%2Feve%2Ffoaf.rdf HTTP/1.1
+Host: localhost:8888
+Accept: */*
+Content-Type: application/sparql-update
+Content-Length: 190
+
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/&gt;
+INSERT { GRAPH &lt;http://localhost:8888/people&gt; { ?person ?property ?value } }
+WHERE { GRAPH ?g { ?person ?property ?value ; foaf:givenName 'Fred' } }</pre>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="policy" id="policy"></a>4 方針に関する留意点</h2>
+
+<div class="div2">
+
+<h3>
+<a name="policy-security" id="policy-security"></a>4.1 セキュリティ</h3>
+
+<p>SPARQLプロトコル・サービスに対するDoS攻撃（denial-of-service attack）の原因となる可能性が少なくとも2つありえます。まず最初に、制約が不足しているクエリは、非常に多くの結果をもたらす可能性があり、これらを、処理したり、まとめたり、返したりするために大きなコンピュータ資源の消費を必要とするかもしれません。別のありえる原因は、非常に複雑な――情報源の大きさ、検索すべき資源の数、または、サイズと数の組み合わせのいずれかのせいで――RDFデータセット記述を含むクエリで、サービスは、帯域幅、CPU、または補助記憶装置を含む資源の大きな消費なしには、その記述をまとめられないかもしれません。そのような消費が、事実上、DoS攻撃を引き起こす場合もありえます。SPARQLプロトコル・サービスは、検索する資源、または、外部資源を検索する割合に制限を課すことが<strong>できます</strong>（may）。SPARQLクエリ処理サービスには、他にもDoS攻撃の原因があるかもしれません。</p>
+
+<p>SPARQLプロトコル・サービスは、クライアントの代わりに他の元サーバにHTTPリクエストを行えるため、他のサイトやサービスに対する攻撃の進路として使用されるかもしれません。したがって、SPARQLプロトコル・サービスが、事実上、サード・パーティー・クライアントのプロキシとして動作することがありえます。このようなサービスは、検索する資源、または、外部資源を検索できる割合に制限を課すことが<strong>できます</strong>（may）。SPARQLプロトコル・サービスは、サード・パーティーの元サーバやサービスに関するクライアントのリクエストのトレースを容易にするような方法で、そのログを取ることが<strong>できます</strong>（may）。</p>
+
+<p>SPARQLプロトコル・サービスは、これらや他の費用のかかる（そうでなければ危険な）クエリを検出するか、時間またはメモリの限度をクエリに課すか、DoS攻撃に対する当該サービスの（また、他のサービスの）脆弱性を減少させるために他の制限を課すかを選択<strong>できます</strong>（may）。これらは、<a href="#query-failure">このようなクエリ・リクエストの処理を拒否</a>することも<strong>できます</strong>（may）。</p>
+
+<p>SPARQLプロトコル・サービスは、更新オペレーションにより、基礎となるデータを削除、挿入、変更できます。悪意があったり破壊的であるような更新を防ぐために、実装は、更新オペレーションを実行しないことも選択できます。あるいは、実装は、更新オペレーションが承認されずに呼び出されること防ぐために、HTTP認証メカニズムやその他の実装で定義されているメカニズムの使用を選択することができます。</p>
+
+<p>異なるIRIが同じ外観を持っているかもしれません。異なるスクリプトの文字が、同じに見えるかもしれません（キリル文字の「о」はラテン文字の「o」と同じに見えるかもしれません）。結合文字が後続する文字は、別の文字と同じ視覚表現を持っているかもしれません（結合アキュート・アクセントが後続するラテン小文字Eは、アキュート付きラテン小文字Eと同じ視覚的表現を持っています）。SPARQLのユーザは、注意してデータ中のIRIにマッチするIRIを持つクエリを構築しなければなりません。類似している文字のマッチングに関する詳細は、<a href="www.unicode.org/reports/tr36/">Unicodeセキュリティに関する留意点</a> [<a href="#unisec">UNISEC</a>]および<a href="www.ietf.org/rfc/rfc3987.txt">IRI（Internationalized Resource Identifiers）</a> [<a href="#rfc3987">RFC3987</a>]の8項にあります。</p>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="conformance" id="conformance"></a>5 適合性</h2>
+
+<p>SPARQL 1.1プロトコル（このドキュメント）の各部のステータスは次のとおりです。</p>
+
+<ul>
+  <li>1項 はじめに: <strong>規範的</strong>
+</li>
+  <li>2項 SPARQLプロトコル・オペレーション: <strong>規範的</strong>
+</li>
+  <li>3項 SPARQLプロトコル・リクエストの例: <strong>参考情報</strong>
+</li>
+  <li>4項 方針に関する留意点: <strong>規範的</strong>
+</li>
+  <li>5項 適合性: <strong>規範的</strong>
+</li>
+  <li>6項 前勧告以後の変更: <strong>参考情報</strong>
+</li>
+  <li>A.1項 規範的な参考文献: <strong>規範的</strong>
+</li>
+  <li>A.2項 その他の参考文献: <strong>参考情報</strong>
+</li>
+</ul>
+
+<p><a name="conformant-sparql-protocol-service" id="conformant-sparql-protocol-service">適合SPARQLプロトコル・サービス</a>は、</p>
+
+<ol>
+  <li>このドキュメント（SPARQL 1.1プロトコル）で述べた方法で、<code>query</code>オペレーションまたは<code>update</code>オペレーションのいずれかを実装し<strong>なければなりません</strong>（must）。</li>
+  <li>
+<code>query</code>と<code>update</code>の両方のオペレーションを実装できます。</li>
+  <li>
+<a href="#policy">4 方針に関する留意点</a>で述べている規範的な制約（[<a href="#rfc2119">RFC2119</a>]キーワードで示されている）と整合性が<strong>なければなりません</strong>（must）。</li>
+</ol>
+
+</div>
+<div class="div1">
+<h2>
+<a name="changes" id="changes"></a>6 前勧告以後の変更（参考情報）</h2>
+
+<p>この仕様は、<a href="www.w3.org/TR/2008/REC-rdf-sparql-protocol-20080115/">2008年1月のRDF用SPARQLプロトコル</a>を拡張、更新したものです。重要な変更点は次のとおりです。</p>
+
+<ul>
+  <li>HTTPに基づくプロトコルを選択し、WSDLのプロトコルの定義を削除しました。</li>
+  <li>SPARQL更新リクエストを発行するための更新オペレーションを定義しました。</li>
+  <li>更新オペレーションに対応するために適合基準を更新しました。</li>
+  <li>HTTPのセマンティクスと一致している限り、他のコードも認めるように、特定のHTTPレスポンス・コードに関する要件を緩和しました。</li>
+  <li>POSTリクエスト本文にクエリ文字列を直接POSTするクエリ・オペレーションのバリエーションを追加しました。</li>
+</ul>
+
+</div>
+</div>
+<div class="back">
+<div class="div1">
+
+<h2>
+<a name="sec-bibliography" id="sec-bibliography"></a>A 参考文献</h2>
+
+<div class="div2">
+
+<h3>
+<a name="sec-existing-stds" id="sec-existing-stds"></a>A.1 規範的な参考文献</h3>
+
+<dl class="bib">
+  <dt><a name="sparql" id="sparql">[SPARQL]</a></dt>
+  <dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1 Query Language</a></cite>, S. Harris, A. Seaborne, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-query-20130321. <a href="www.w3.org/TR/sparql11-query/" title="Latest version of SPARQL 1.1 Query Language">Latest version</a> available at http://www.w3.org/TR/sparql11-query.</dd>
+  <dt><a name="update" id="update">[UPDATE]</a></dt>
+  <dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1 Update</a></cite>, P. Gearon, A. Passant, A. Polleres, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-update-20130321. <a href="www.w3.org/TR/sparql11-update/" title="Latest version of SPARQL 1.1 Update">Latest version</a> available at http://www.w3.org/TR/sparql11-update.</dd>
+  <dt><a name="rdf-concepts" id="rdf-concepts">[RDF-CONCEPTS]</a></dt>
+  <dd>
+<a href="www.w3.org/TR/rdf-concepts/">Resource Description Framework (RDF): Concepts and Abstract Syntax</a>, Graham Klyne, Jeremy J. Carroll, Editors, W3C (World Wide Web Consortium), 2004, http://www.w3.org/TR/rdf-concepts/ .</dd>
+  <dt><a name="rdf-xml" id="rdf-xml">[RDF-XML]</a></dt>
+  <dd>
+<a href="www.w3.org/TR/rdf-syntax-grammar/">RDF/XML Syntax Specification (Revised)</a>, Dave Beckett, Editor, W3C (World Wide Web Consortium), 2004, http://www.w3.org/TR/rdf-syntax-grammar/ .</dd>
+  <dt><a name="rfc2119" id="rfc2119">[RFC2119]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc2119.txt">RFC 2119: Key words for use in RFCs to Indicate Requirement Levels</a>, Scott Bradner, Editor, IETF (Internet Engineering Task Force), 1997, http://www.ietf.org/rfc/rfc2119.txt .</dd>
+  <dt><a name="rfc2616" id="rfc2616">[RFC2616]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc2616.txt">RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1</a>, R. Fielding, et al., Editors, IETF (Internet Engineering Task Force), 1999, http://www.ietf.org/rfc/rfc2616.txt .</dd>
+  <dt><a name="rfc3986" id="rfc3986">[RFC3986]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc3986.txt">RFC 3986: Uniform Resource Identifier (URI): Generic Syntax</a>, T. Berners-Lee, R. Fielding, L. Masinter, Editors, IETF (Internet Engineering Task Force), 2005, http://www.ietf.org/rfc/rfc3986.txt .</dd>
+</dl>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="sec-other-references" id="sec-other-references"></a>A.2 その他の参考文献</h3>
+
+<dl>
+  <dt><a name="rfc3987" id="rfc3987">[RFC3987]</a></dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc3987.txt">RFC 3987: Internationalized Resource Identifiers (IRIs)</a>, M. Duerst, M. Suignard, Editors, IETF (Internet Engineering Task Force), 2005, http://www.ietf.org/rfc/rfc3987.txt .</dd>
+  <dt><a name="unisec" id="unisec">[UNISEC]</a></dt>
+  <dd>
+<a href="www.unicode.org/reports/tr36/">Unicode Security Considerations</a>, Mark Davis, Michel Suignard, Editors, 2010, http://www.unicode.org/reports/tr36/</dd>
+</dl>
+
+</div>
+</div>
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>なし</li>
+</ul>
+
+<h3 id="changes-since-cr">勧告候補以後の変更履歴</h3>
+
+<ul>
+  <li>application/x-www-form-urlencodedというメディア・タイプを参照する場合の誤字を修正した。</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>text/htmlではなくtext/plainを用いたエラーの例を変更した。</li>
+</ul>
+
+</div>
+</div>
+
+</body>
+
+</html>

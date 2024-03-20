@@ -1,0 +1,857 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh" lang="zh" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="KEYWORDS" content="资源描述框架（RDF）：概念与抽象语法 推荐标准">
+<meta name="robots" content="index,follow">
+<link rel="shortcut icon" href="zh.transwiki.org/favicon.ico">
+<link title="Creative Commons" type="application/rdf+xml" href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=creativecommons" rel="meta">
+<link rel="copyright" href="www.gnu.org/copyleft/fdl.html">
+
+    <title>资源描述框架（RDF）：概念与抽象语法 推荐标准 - TransWiki</title>
+    <style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "/transmain.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="zh.transwiki.org/wiki/stylesheets/commonPrint.css">
+    <!--[if IE]><style type="text/css" media="all">@import "/wiki/stylesheets/monobook/IEFixes.css";</style>
+    <script type="text/javascript" src="/wiki/stylesheets/IEFixes.js"></script>
+    <meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+    <script src="zh.transwiki.org/wiki/index.php?title=-&amp;action=raw&amp;gen=js&amp;smaxage=0" type="text/javascript"></script>
+    <script type="text/javascript" src="zh.transwiki.org/wiki/stylesheets/wikibits.js"></script>
+    <style type="text/css">/*<![CDATA[*/ @import "/wiki/index.php?title=-&action=raw&gen=css";
+@import "/wiki/index.php?title=-&action=raw&smaxage=0&gen=css";
+@import "/wiki/index.php?title=User:Collin/monobook.css&action=raw&ctype=text/css";
+ /*]]>*/</style>
+    <script src="zh.transwiki.org/wiki/index.php?title=User%3ACollin%2Fmonobook.js&amp;action=raw&amp;ctype=text%2Fjavascript&amp;dontcountme=s" type="text/javascript"></script>
+  </head>
+  <body class="ns-0">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	  <h1 class="firstHeading">资源描述框架（RDF）：概念与抽象语法 推荐标准</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">TransWiki - W3CHINA.ORG开放翻译计划（OTP）</h3>
+	    <div id="contentSub"></div>
+	    
+	    
+	    
+	    <!-- start content -->
+	    <p><br>
+</p>
+<table border="0" width="70%" align="center">
+<tr valign="top">
+<td width="100"><strong>译文</strong></td>
+<td>资源描述框架（RDF）：概念与抽象语法 推荐标准<a href="www.transwiki.org/cn/rdfconcepts.htm" class="external" title="http://www.transwiki.org/cn/rdfconcepts.htm"></a><a href="www.transwiki.org/cn/rdfconcepts.htm" class="external" title="http://www.transwiki.org/cn/rdfconcepts.htm">http://www.transwiki.org/cn/rdfconcepts.htm</a><span class="urlexpansion"> (<i>http://www.transwiki.org/cn/rdfconcepts.htm</i>)</span>
+</td>
+</tr>
+
+<tr valign="top">
+<td width="100"><strong>原文</strong></td>
+<td>Resource Description Framework (RDF): Concepts and Abstract Syntax（<a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/"></a><a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</i>)</span>）</td>
+</tr>
+
+<tr valign="top">
+<td width="100"><strong>说明</strong></td>
+<td>
+<ul>
+<li>本文档是根据2004年2月10日发布的<a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">Resource Description Framework (RDF): Concepts and Abstract Syntax Recommendation</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</i>)</span>进行翻译的。
+</li>
+<li>本文档的<a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">英文版</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</i>)</span>是唯一的正式版本。
+</li>
+<li>虽然译者已为翻译之精确付出努力，不足之处仍难免存在。欢迎<a href="zh.transwiki.org/cn/rdfconcepts-edit.htm" class="external" title="http://zh.transwiki.org/cn/rdfconcepts-edit.htm">指正</a><span class="urlexpansion"> (<i>http://zh.transwiki.org/cn/rdfconcepts-edit.htm</i>)</span>。
+</li>
+<li>译注的内容是非正式的，仅代表译者个人观点。
+</li>
+<li>著作权声明位于：
+</li>
+</ul>
+<p><a href="www.w3.org/Consortium/Legal/copyright-documents.html" class="external" title="http://www.w3.org/Consortium/Legal/copyright-documents.html">http://www.w3.org/Consortium/Legal/copyright-documents.html</a><br>
+Copyright &nbsp;&copy;&nbsp;1998&nbsp;W3C&reg; (MIT, INRIA, Keio ), All Rights 
+</p>
+<p>Reserved. W3C liability, trademark, document use and software licensing rules apply. 
+</p>
+<ul><li>中文版的版权声明：转载本文，请注明译者、原链接及出处为“W3CHINA开放翻译计划（OTP）”。
+</li></ul>
+</td>
+</tr>
+
+<tr valign="top">
+<td width="100"><strong>译者</strong></td>
+<td>
+<ul>
+<li>
+<a href="bbs.w3china.org/dispuser.asp?name=orangebench" class="external" title="http://bbs.w3china.org/dispuser.asp?name=orangebench">刘升平</a><span class="urlexpansion"> (<i>http://bbs.w3china.org/dispuser.asp?name=orangebench</i>)</span>（Shengping Liu）<a href="zh.transwiki.org/wiki/index.php/ActivityProcess#.E7.BF.BB.E8.AF.91.E6.B4.BB.E5.8A.A8.E4.B8.BB.E5.B8.AD" class="external" title="http://zh.transwiki.org/wiki/index.php/ActivityProcess#.E7.BF.BB.E8.AF.91.E6.B4.BB.E5.8A.A8.E4.B8.BB.E5.B8.AD">翻译活动主席</a><span class="urlexpansion"> (<i>http://zh.transwiki.org/wiki/index.php/ActivityProcess#.E7.BF.BB.E8.AF.91.E6.B4.BB.E5.8A.A8.E4.B8.BB.E5.B8.AD</i>)</span> lsp&lt;at&gt;w3china.org：翻译目录和第5-6节，并负责工作组的组织与翻译工作的统筹。
+</li>
+<li>
+<a href="bbs.w3china.org/dispuser.asp?name=whale" class="external" title="http://bbs.w3china.org/dispuser.asp?name=whale">武浩</a><span class="urlexpansion"> (<i>http://bbs.w3china.org/dispuser.asp?name=whale</i>)</span>（Hao Wu），merezz&lt;at&gt;sohu.com：翻译3节。
+</li>
+<li>
+<a href="bbs.w3china.org/dispuser.asp?name=forwar" class="external" title="http://bbs.w3china.org/dispuser.asp?name=forwar">詹子鹏</a><span class="urlexpansion"> (<i>http://bbs.w3china.org/dispuser.asp?name=forwar</i>)</span>（Zipeng Zhan），uft&lt;at&gt;eyou.com ：翻译第1-2节。
+</li>
+<li>
+<a href="www.w3china.org/members.htm#collin" class="external" title="http://bbs.w3china.org/dispuser.asp?name=admin">徐涵</a><span class="urlexpansion"> (<i>http://bbs.w3china.org/dispuser.asp?name=admin</i>)</span>（Collin Hsu），collin&lt;at&gt;w3china.org：翻译第4节和第7-8节。
+</li>
+</ul>
+</td>
+</tr>
+<tr valign="top">
+<td colspan="2" align="center">
+<p><strong>致谢</strong>
+</p>
+<p>感谢所有关注本次翻译活动和给与帮助的朋友，并感谢由<a href="www.w3china.org/" class="external" title="http://www.w3china.org/">W3CHINA.ORG</a><span class="urlexpansion"> (<i>http://www.w3china.org/</i>)</span>主办的<a href="zh.transwiki.org/" class="external" title="http://zh.transwiki.org/">开放翻译计划（OTP）</a><span class="urlexpansion"> (<i>http://zh.transwiki.org/</i>)</span>为本次翻译计划提供翻译与讨论平台。
+</p>
+</td>
+</tr>
+</table>
+<p><a href="www.w3.org/" class="external" title="http://www.w3.org/"><img src="zh.transwiki.org/cn/src/w3c_home.png" alt="w3c_home.png"></a><span class="urlexpansion"> (<i>http://www.w3.org/</i>)</span> <br>
+</p>
+<a name=".E8.B5.84.E6.BA.90.E6.8F.8F.E8.BF.B0.E6.A1.86.E6.9E.B6.EF.BC.88RDF.EF.BC.89.EF.BC.9A.E6.A6.82.E5.BF.B5.E4.B8.8E.E6.8A.BD.E8.B1.A1.E8.AF.AD.E6.B3.95"></a><h1>资源描述框架（RDF）：概念与抽象语法</h1>
+<a name="W3C.E6.8E.A8.E8.8D.90.E6.A0.87.E5.87.86_2004.E5.B9.B42.E6.9C.8810.E6.97.A5"></a><h2>W3C推荐标准 2004年2月10日</h2>
+<p>当前版本：<br>
+<a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/"></a><a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</i>)</span> <br>
+最新版本： <br>
+<a href="www.w3.org/TR/rdf-concepts/" class="external" title="http://www.w3.org/TR/rdf-concepts/"></a><a href="www.w3.org/TR/rdf-concepts/" class="external" title="http://www.w3.org/TR/rdf-concepts/">http://www.w3.org/TR/rdf-concepts/</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/</i>)</span> <br>
+上一版本： <br>
+<a href="www.w3.org/TR/2003/PR-rdf-concepts-20031215/" class="external" title="http://www.w3.org/TR/2003/PR-rdf-concepts-20031215/"></a><a href="www.w3.org/TR/2003/PR-rdf-concepts-20031215/" class="external" title="http://www.w3.org/TR/2003/PR-rdf-concepts-20031215/">http://www.w3.org/TR/2003/PR-rdf-concepts-20031215/</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/PR-rdf-concepts-20031215/</i>)</span> <br>
+编者：<br>
+<a href="www.ninebynine.org/" class="external" title="http://www.ninebynine.org/">Graham Klyne</a><span class="urlexpansion"> (<i>http://www.ninebynine.org/</i>)</span> (Nine by Nine), &lt;<a href="mailto:GK@NineByNine.org" class="external" title="mailto:GK@NineByNine.org">gk@ninebynine.org</a><span class="urlexpansion"> (<i>mailto:GK@NineByNine.org</i>)</span>&gt; <br>
+<a href="www-uk.hpl.hp.com/people/jjc/" class="external" title="http://www-uk.hpl.hp.com/people/jjc/">Jeremy J. Carroll</a><span class="urlexpansion"> (<i>http://www-uk.hpl.hp.com/people/jjc/</i>)</span> (Hewlett Packard Labs), &lt;<a href="mailto:jjc@hpl.hp.com" class="external" title="mailto:jjc@hpl.hp.com">jjc@hpl.hp.com</a><span class="urlexpansion"> (<i>mailto:jjc@hpl.hp.com</i>)</span>&gt; <br>
+系列文档编者： <br>
+<a href="www-uk.hpl.hp.com/people/bwm/" class="external" title="http://www-uk.hpl.hp.com/people/bwm/">Brian McBride</a><span class="urlexpansion"> (<i>http://www-uk.hpl.hp.com/people/bwm/</i>)</span> (Hewlett Packard Labs) &lt;<a href="mailto:bwm@hplb.hpl.hp.com" class="external" title="mailto:bwm@hplb.hpl.hp.com">bwm@hplb.hpl.hp.com</a><span class="urlexpansion"> (<i>mailto:bwm@hplb.hpl.hp.com</i>)</span>&gt; <br>
+阅读时请参照本文档的勘误表，其中可能会包含一些规范性的修正。<br>
+同时参见 <a href="www.w3.org/2001/sw/RDFCore/translation/rdf-concepts" class="external" title="http://www.w3.org/2001/sw/RDFCore/translation/rdf-concepts">译文</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/sw/RDFCore/translation/rdf-concepts</i>)</span>。<br>
+<a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright" class="external" title="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a><span class="urlexpansion"> (<i>http://www.w3.org/Consortium/Legal/ipr-notice#Copyright</i>)</span>&nbsp;? 2004 W3C? (MIT, ERCIM, <a href="www.keio.ac.jp/" class="external" title="http://www.keio.ac.jp/">Keio</a><span class="urlexpansion"> (<i>http://www.keio.ac.jp/</i>)</span>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer" class="external" title="http://www.w3.org/Consortium/Legal/ipr-notice#Legal Disclaimer">liability</a><span class="urlexpansion"> (<i>http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer</i>)</span>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks" class="external" title="http://www.w3.org/Consortium/Legal/ipr-notice#W3C Trademarks">trademark</a><span class="urlexpansion"> (<i>http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks</i>)</span>, <a href="www.w3.org/Consortium/Legal/copyright-documents" class="external" title="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a><span class="urlexpansion"> (<i>http://www.w3.org/Consortium/Legal/copyright-documents</i>)</span> and <a href="www.w3.org/Consortium/Legal/copyright-software" class="external" title="http://www.w3.org/Consortium/Legal/copyright-software">software licensing</a><span class="urlexpansion"> (<i>http://www.w3.org/Consortium/Legal/copyright-software</i>)</span> rules apply.<br>
+</p>
+<hr> <br>
+<a name=".E6.91.98.E8.A6.81"></a><h2>摘要</h2>
+<p>资源描述框架(Resource Description Framework，RDF)是一个用于表示Web上信息的框架。<br> 文档"RDF概念和抽象语法"定义了RDF所基于的抽象语法，以及它作为具体语法和形式语义的桥梁作用。本文档还包含了关于设计目标，关键概念，数据类型，字符范式化和对URI引用的处理等内容。<br><br>
+</p>
+<a name=".E6.9C.AC.E6.96.87.E6.A1.A3.E7.9A.84.E7.8A.B6.E6.80.81"></a><h2>本文档的状态 </h2>
+<p>本文档已被W3C成员及其他相关方面审阅，并已被W3C理事（W3C Director）批准为 <a href="www.w3.org/2003/06/Process-20030618/tr.html#RecsW3C" class="external" title="http://www.w3.org/2003/06/Process-20030618/tr.html#RecsW3C">W3C推荐标准</a><span class="urlexpansion"> (<i>http://www.w3.org/2003/06/Process-20030618/tr.html#RecsW3C</i>)</span>。 W3C制定推荐标准的任务是使之受到关注，并促使其被广泛应用。这将增强Web的功能性与互操作性。<br><br>
+</p>
+<p>本文是 <a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/#section-Introduction" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/#section-Introduction">RDF系列</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/#section-Introduction</i>)</span> (共六份，分别是：<a href="www.w3.org/TR/2004/REC-rdf-primer-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-primer-20040210/">入门</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-primer-20040210/</i>)</span>， <a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/">概念</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-concepts-20040210/</i>)</span>， <a href="www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/">语法</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/</i>)</span>， <a href="www.w3.org/TR/2004/REC-rdf-mt-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-mt-20040210/">语义</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-mt-20040210/</i>)</span>， <a href="www.w3.org/TR/2004/REC-rdf-schema-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-schema-20040210/">词汇集</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-schema-20040210/</i>)</span>， 和<a href="www.w3.org/TR/2004/REC-rdf-testcases-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/">测试用例</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/</i>)</span>)之中的一份。该系列将替换原有的资源描述框架说明书， <a href="www.w3.org/TR/1999/REC-rdf-syntax-19990222/" class="external" title="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/">RDF模型和语法(1999年推荐标准)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/</i>)</span> 和 <a href="www.w3.org/TR/2000/CR-rdf-schema-20000327/" class="external" title="http://www.w3.org/TR/2000/CR-rdf-schema-20000327/">RDF Schema (2000年候选推荐标准)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2000/CR-rdf-schema-20000327/</i>)</span>。它由<a href="www.w3.org/2001/sw/RDFCore/" class="external" title="http://www.w3.org/2001/sw/RDFCore/">RDF核心工作小组</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/sw/RDFCore/</i>)</span>作为 <a href="www.w3.org/2001/sw/" class="external" title="http://www.w3.org/2001/sw/">W3C语义Web活动</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/sw/</i>)</span> (<a href="www.w3.org/2001/sw/Activity" class="external" title="http://www.w3.org/2001/sw/Activity">活动声明</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/sw/Activity</i>)</span>，<a href="www.w3.org/2002/11/swv2/charters/RDFCoreWGCharter" class="external" title="http://www.w3.org/2002/11/swv2/charters/RDFCoreWGCharter">小组章程</a><span class="urlexpansion"> (<i>http://www.w3.org/2002/11/swv2/charters/RDFCoreWGCharter</i>)</span>)的一部分而编写，并于2004年2月10号正式颁布。自提议的推荐工作草案公布之日起，该文献的所有变动在更改日志之中都有详细记录。 <br><br>
+</p>
+<p>欢迎大家将意见(<a href="lists.w3.org/Archives/Public/www-rdf-comments/" class="external" title="http://lists.w3.org/Archives/Public/www-rdf-comments/">存档文件</a><span class="urlexpansion"> (<i>http://lists.w3.org/Archives/Public/www-rdf-comments/</i>)</span>)发送到 <a href="mailto:www-rdf-comments@w3.org" class="external" title="mailto:www-rdf-comments@w3.org">www-rdf-comments@w3.org</a><span class="urlexpansion"> (<i>mailto:www-rdf-comments@w3.org</i>)</span> 并且积极参与www-rdf-interest@w3.org上对于相关技术的全面讨论(<a href="lists.w3.org/Archives/Public/www-rdf-comments/" class="external" title="http://lists.w3.org/Archives/Public/www-rdf-comments/">存档文件</a><span class="urlexpansion"> (<i>http://lists.w3.org/Archives/Public/www-rdf-comments/</i>)</span>)。<br>
+可以访问到有关<a href="www.w3.org/2001/sw/RDFCore/impls" class="external" title="http://www.w3.org/2001/sw/RDFCore/impls">实现</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/sw/RDFCore/impls</i>)</span>的一个列表。<br><br>
+</p>
+<p>W3C维护着一个与这些工作相关的专利声明的目录。<br> <br>
+</p>
+<p><em>这节描述了本文档在发布时的状态。其他文档可能替代这文档。一份当前W3C的最新出版物的目录和这个技术报告的最新版本可以在 <a href="www.w3.org/TR/" class="external" title="http://www.w3.org/TR/">W3C技术报告索引</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/</i>)</span><a href="www.w3.org/TR/" class="external" title="http://www.w3.org/TR/">http://www.w3.org/TR/</a> 上找到。</em><br><br>
+</p>
+<hr> <br>
+<a name=".E7.9B.AE.E5.BD.95"></a><h2>目录</h2>
+<ul>
+<li>1. 引言 <br>
+</li>
+<li>文档结构 <br>
+</li>
+<li>2. 动机和目标<br>
+</li>
+<li>2.1 动机 <br>
+</li>
+<li>2.2 设计目标 <br>
+</li>
+<li>2.2.1 一个简单数据模型 <br>
+</li>
+<li>2.2.2 形式语义和推理 <br>
+</li>
+<li>2.2.3 可扩展的基于URI的词汇 <br>
+</li>
+<li>2.2.4 基于XML的语法 <br>
+</li>
+<li>2.2.5 采用XML Schema数据类型 <br>
+</li>
+<li>2.2.6 任何人可对任意资源作出陈述 <br>
+</li>
+<li>3. RDF概念 <br>
+</li>
+<li>3.1 基于图的数据模型 <br>
+</li>
+<li>3.2 基于URI的词汇和节点标识 <br>
+</li>
+<li>3.3 数据类型 <br>
+</li>
+<li>3.4 文字 <br>
+</li>
+<li>3.5 简单事实的RDF表示法 <br>
+</li>
+<li>3.6 蕴涵 <br>
+</li>
+<li>4. RDF词汇集URI和名字空间(标准)<br>
+</li>
+<li>5. 数据类型 (标准)<br>
+</li>
+<li>5.1 RDF图中的XML内容<br>
+</li>
+<li>6. 抽象语法 (标准)<br>
+</li>
+<li>6.1 RDF三元组 <br>
+</li>
+<li>6.2 RDF图 <br>
+</li>
+<li>6.3 图的等价性 <br>
+</li>
+<li>6.4 RDF URI 引用 <br>
+</li>
+<li>6.5 RDF 文字 <br>
+</li>
+<li>6.5.1 文字的等价性<br>
+</li>
+<li>6.5.2 类型文字对应的值<br>
+</li>
+<li>6.6 空节点<br>
+</li>
+<li>7. 片断标识符<br>
+</li>
+<li>8. 致谢<br>
+</li>
+<li>9. 参考文献<br>
+</li>
+<li>9.1 规范性参考文献 <br>
+</li>
+<li>9.2 参考性资料<br>
+</li>
+<li>附录A: 2003年10月10日发布的草案最后征求意见稿以来的修改记录<br>
+</li>
+</ul>
+<hr> <br>
+<a name="1._.E5.BC.95.E8.A8.80"></a><h2>1. 引言</h2>
+<p>资源描述框架 (RDF)是一种用于表示Web上信息的框架。<br><br>
+</p>
+<p>本文档定义了RDF所基于的抽象语法，以及它作为具体语法和形式语义的桥梁作用。该抽象语法大不同于XML的基于树的信息集[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-infoset" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-infoset">XML-INFOSET</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-infoset</i>)</span>]。本文档也包括了设计目标的讨论，关键概念，数据类型，字符范式化和URI引用的处理。RDF的标准化文档有以下部分：<br><br>
+</p>
+<ul>
+<li>XML 序列化语法[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-syntax" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax">RDF-SYNTAX</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax</i>)</span>]，<br>
+</li>
+<li>形式语义[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]，和 <br>
+</li>
+<li>本文档（4，5和6节）。<br><br>
+</li>
+</ul>
+<p>在本文档中，标准化部分像这样显式标注，一些显式的注释是参考性的。<br><br>
+</p>
+<p>这个框架旨在便于词汇的分层。RDF和RDF词汇定义(RDF Schema)语言[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-vocabulary" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-vocabulary">RDF-VOCABULARY</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-vocabulary</i>)</span>]首先位于其中。其他的部分(cf. OWL [<a href="www.w3.org/TR/rdf-concepts/#ref-owl" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-owl">OWL</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-owl</i>)</span>] 和在RDF入门文档中[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-primer" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-primer">RDF-PRIMER</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-primer</i>)</span>])提到的应用正在开发中。<br><br>
+</p>
+<a name="1.1_.E6.96.87.E6.A1.A3.E7.BB.93.E6.9E.84"></a><h3>1.1 文档结构</h3>
+<p>在<a href="www.w3.org/TR/rdf-concepts/#section-Overview" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Overview">第2节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Overview</i>)</span>中，介绍了基本原理和设计目标。关键概念则在<a href="www.w3.org/TR/rdf-concepts/#section-Concepts" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Concepts">第3节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Concepts</i>)</span>中。<a href="www.w3.org/TR/rdf-concepts/#section-URIspaces" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-URIspaces">第4节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-URIspaces</i>)</span>讨论RDF预留使用的URIrefs。<a href="www.w3.org/TR/rdf-concepts/#section-Datatypes" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Datatypes">第5节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Datatypes</i>)</span>讨论数据类型，作为XML内容的文字在<a href="www.w3.org/TR/rdf-concepts/#section-XMLLiteral" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral">5.1节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral</i>)</span>讨论。抽象语法定义在本文档的<a href="www.w3.org/TR/rdf-concepts/#section-Graph-syntax" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Graph-syntax">第6节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Graph-syntax</i>)</span>，<a href="www.w3.org/TR/rdf-concepts/#section-fragID" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-fragID">第7节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-fragID</i>)</span> 讨论标识片断在RDF使用的URI引用中的作用。<br><br>
+</p>
+<a name="2._.E5.8A.A8.E6.9C.BA.E5.92.8C.E7.9B.AE.E6.A0.87"></a><h2>2. 动机和目标</h2>
+<p>RDF有一个抽象语法体现了一个简单的基于图的数据模型，还有一个具有一个严格定义的蕴涵概念的形式语义，为RDF数据中的演绎推理提供了一个基础。<br><br>
+</p>
+<a name="2.1_.E5.8A.A8.E6.9C.BA"></a><h3>2.1 动机</h3>
+<p>RDF的发展被如下的一些应用所驱动，包括：<br><br>
+</p>
+<ul>
+<li>Web元数据：提供了关于Web资源和使用Web资源的系统的信息(例如：内容分级，性能描述，个人偏好，等等)。<br>
+</li>
+<li>需要开放而非封闭的信息模型的应用(例如：活动安排，描述组织流程，Web资源的标注，等等)。<br>
+</li>
+<li>正如万维网为超文本做的那样，为机器可处理的信息(应用程序数据)做同样的事：允许数据在创建它的特定环境以外被处理，且以一种能扩展到互联网的方式被处理。<br>
+</li>
+<li>应用之间的互操作：合并来自单个应用的数据构成新的信息。<br>
+</li>
+<li>软件Agent对Web信息的自动化处理：Web由仅有易于人类阅读的信息转变为一个世界范围的协同程序的网络。RDF为这些程序提供了一种世界范围的标准语言。<br><br>
+</li>
+</ul>
+<p>RDF的设计目的是能以最低限度度的约束，灵活地描述信息。它可以用于独立的应用，其中单独设计的数据格式可能更为直接和易于理解，但RDF的通用性使得数据的共享能提供更大的价值。.当信息被整个Internet中越来越多的应用程序接接受时，信息也在不断的增值。<br><br>
+</p>
+<a name="2.2_.E8.AE.BE.E8.AE.A1.E7.9B.AE.E6.A0.87"></a><h3>2.2 设计目标</h3>
+<p>RDF的设计试图达到如下几个目标：<br><br>
+</p>
+<ul>
+<li>有一个简单的数据模型<br>
+</li>
+<li>有形式化的语义和可证明的推论<br>
+</li>
+<li>使用一个基于URI的可扩展词汇集<br>
+</li>
+<li>使用一种基于XML的语法<br>
+</li>
+<li>支持XML Schema数据类型的使用<br>
+</li>
+<li>允许任何人发表关于任何资源的陈述。<br><br>
+</li>
+</ul>
+<a name="2.2.1_.E4.B8.80.E4.B8.AA.E7.AE.80.E5.8D.95.E7.9A.84.E6.95.B0.E6.8D.AE.E6.A8.A1.E5.9E.8B"></a><h4>2.2.1 一个简单的数据模型</h4>
+<p>RDF有一种便于应用程序处理和操作的简单数据模型。这个数据模型独立任何特定的序列化语法。<br><br>
+</p>
+<p><strong>备注</strong>：在"数据模型"中使用的术语"模型"和在术语"模型论"中使用的"模型"含义完全不同。关于用在数学和逻辑学文献中的"模型论"的更多信息，参考[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]。<br><br>
+</p>
+<a name="2.2.2_.E5.BD.A2.E5.BC.8F.E8.AF.AD.E4.B9.89.E5.92.8C.E6.8E.A8.E8.AE.BA"></a><h4>2.2.2 形式语义和推论</h4>
+<p>RDF有一个形式化的语义，它为对关于RDF表达式的含义的推理提供了一个可靠的基础。特别地，它提供了一个严格定义的蕴涵概念，从而为在RDF数据中定义可靠的推理规则奠定了基础。<br><br>
+</p>
+<a name="2.2.3_.E5.9F.BA.E4.BA.8EURI.E7.9A.84.E5.8F.AF.E6.89.A9.E5.B1.95.E8.AF.8D.E6.B1.87.E9.9B.86"></a><h4>2.2.3 基于URI的可扩展词汇集</h4>
+<p>基于具有可选的片段标识符(<em>URI 引用</em>，或<em>URIrefs</em>)的URIs，词汇集是完全可扩展的。URI引用在RDF中被用来命名所有类别的事物。<br><br>
+</p>
+<p>在RDF数据中出现的另一种值是文字。<br><br>
+</p>
+<a name="2.2.4_.E5.9F.BA.E4.BA.8EXML.E7.9A.84.E8.AF.AD.E6.B3.95"></a><h4>2.2.4 基于XML的语法</h4>
+<p>RDF有一个XML序列化格式的推荐标准[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-syntax" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax">RDF-SYNTAX</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax</i>)</span>]，它可用来编码应用中信息交换所用的数据模型。<br><br>
+</p>
+<a name="2.2.5_.E4.BD.BF.E7.94.A8XML_Schema.E6.95.B0.E6.8D.AE.E7.B1.BB.E5.9E.8B"></a><h4>2.2.5 使用XML Schema数据类型</h4>
+<p>RDF可以使用根据XML Schema数据类型[XML-SCHEMA2 (<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2)" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2)">http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2)</a>]表示的数值，因此有助于在RDF和其他XML应用程序中信息的交换。<br><br>
+</p>
+<a name="2.2.6_.E4.BB.BB.E4.BD.95.E4.BA.BA.E9.83.BD.E8.83.BD.E5.8F.91.E8.A1.A8.E5.85.B3.E4.BA.8E.E4.BB.BB.E4.BD.95.E8.B5.84.E6.BA.90.E7.9A.84.E9.99.88.E8.BF.B0"></a><h4> 2.2.6 任何人都能发表关于任何资源的陈述</h4>
+<p>为了推动在互联网层次上的操作，RDF是一种允许任何人发表关于任何资源陈述的开放的框架。<br><br>
+</p>
+<p>一般说来，不假设关于任何资源的所有信息都是可用到的。RDF并不阻止任何人发表那些毫无意义或者有悖于其他陈述，或有悖于人们看到的世界的声明。那些使用了RDF的应用程序的设计者应该了解这一点，并使设计的应用程序能够容忍不完全或是不协调的信息。<br><br>
+</p>
+<a name="3._RDF_.E6.A6.82.E5.BF.B5"></a><h2>3. RDF 概念</h2>
+<p>RDF使用如下的关键概念：<br><br>
+</p>
+<ul>
+<li>基于图的数据模型 <br>
+</li>
+<li>基于URI的词汇识 <br>
+</li>
+<li>数据类型 <br>
+</li>
+<li>文字 <br>
+</li>
+<li>XML序列化语法 <br>
+</li>
+<li>简单事实的RDF表达法 <br>
+</li>
+<li>蕴涵 <br><br>
+</li>
+</ul>
+<a name="3.1_.E5.9F.BA.E4.BA.8E.E5.9B.BE.E7.9A.84.E6.95.B0.E6.8D.AE.E6.A8.A1.E5.9E.8B"></a><h3>3.1 基于图的数据模型</h3>
+<p>在RDF中任何表达式的基本结构是一个三元组的集合，每个三元组由一个主体、一个谓词和一个客体组成。一系列这样的三元组被称为RDF图（更正式的定义在<a href="www.w3.org/TR/rdf-concepts/#section-Graph-syntax" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Graph-syntax">第6节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Graph-syntax</i>)</span>），这可以用具有一个节点和有向边的图来表示，在图中每个三元组用一个节点-边-节点的连接表示（故称之“图“）。每个三元组表示由节点连接表示的事务之间的关系一个陈述。每个三元组有三部分：<br><br>
+</p>
+<ul>
+<li>一个<a href="www.w3.org/TR/rdf-concepts/#dfn-subject" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-subject">主体</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-subject</i>)</span>，<br>
+</li>
+<li>一个<a href="www.w3.org/TR/rdf-concepts/#dfn-object" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-object">客体</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-object</i>)</span>，和<br>
+</li>
+<li> 一个<a href="www.w3.org/TR/rdf-concepts/#dfn-predicate" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-predicate">谓词</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-predicate</i>)</span>（也称为<a href="www.w3.org/TR/rdf-concepts/#dfn-property" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-property">属性</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-property</i>)</span>），它表示一个关系。边的方向很重要：它总是指向客体。<br><br>
+</li>
+</ul>
+<p>RDF图的<a href="www.w3.org/TR/rdf-concepts/#section-Graph-Node" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Graph-Node">节点</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Graph-Node</i>)</span>是它的主体和客体。<br><br>
+</p>
+<p>RDF三元组的断言说明一些关系，这是由谓词表示的，在三元组的主体和客体表示的事物之间的关系。RDF三元组的断言的总和就是断言图中所有的三元组，因此RDF图的含义就是对应所有图中三元组包含的陈述的关联（逻辑合取）。RDF图的形式语义由[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]给出。<br><br>
+</p>
+<a name="3.2_.E5.9F.BA.E4.BA.8EURI.E7.9A.84.E8.AF.8D.E6.B1.87.E5.92.8C.E8.8A.82.E7.82.B9.E6.A0.87.E8.AF.86"></a><h3>3.2 基于URI的词汇和节点标识</h3>
+<p>一个节点可以是一个URI跟随一个可选片断标识（<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">URI reference</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span>，或 "URIref")，文字，或是空节点（无单独的标识形式）。属性是“URI引用"。（查看[<a href="www.w3.org/TR/rdf-concepts/#ref-uris" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-uris">URI</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-uris</i>)</span>]，第4节中对URIref形式的描述，注意：相对URIs不在RDF图中使用。也可以参看<a href="www.w3.org/TR/rdf-concepts/#section-GrapURIref" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-GrapURIref">6.4节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-GrapURIref</i>)</span>)。<br><br>
+</p>
+<p>作为节点的一个URI应用或文字标识了这个节点表示的事物。作为谓词的一个URIref标识了由它连接的节点表示的事物之间的关系。一个谓词URIref在图中也可能作为一个节点。一个<a href="www.w3.org/TR/rdf-concepts/#dfn-blank-node" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-blank-node">空节点</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-blank-node</i>)</span>既不是一个URI引用也不是文字。在RDF抽象语法中，一个空节点只是一个独特的节点，可以用在一个或多个RDF陈述中，但是没有内在的名字。<br><br>
+</p>
+<p>有一个惯例用于RDF图的一些线性表达方式中：即通过空节点标识符，允许多个陈述引用同一个未标识的资源，它是一个和所有URIs和文字不同的本地标识符。当合并图的时候，为了保留空节点的含义，那么不同图中的空节点必须保持不同，这可能会导致重新分配空节点标识符。注意，这些空节点标识符并不是RDF抽象语法的一部分，而且包含空节点的三元组的表示完全依赖于特定的所用具体语法。<br><br>
+</p>
+<a name="3.3_.E6.95.B0.E6.8D.AE.E7.B1.BB.E5.9E.8B"></a><h3>3.3 数据类型</h3>
+<p>数据类型被RDF用来表示数值，如整数、浮点数数字和日期。<br><br>
+</p>
+<p>一个数据类型由一个词法空间，一个值空间和一个词法-到-值的映射组成，查看<a href="www.w3.org/TR/rdf-concepts/#section-Datatypes" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Datatypes">第5节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Datatypes</i>)</span>。<br><br>
+</p>
+<p>例如，对XML  Schema的数据类型xsd:boolean的词法-到-值映射，其中值空间的每个成员（这里由'T'和'F'和表示）具有两个词法表达，如下所示：<br><br>
+</p>
+<table>
+<tr>
+<th>值空间</th>
+<td>{T, F}</td>
+</tr>
+<tr>
+<th>词法空间</th>
+<td>{"0", "1", "true", "false"}</td>
+</tr>
+<tr>
+<th>词法-到-值映射</th>
+<td>{&lt;"true", T&gt;, &lt;"1", T&gt;, &lt;"0", F&gt;, &lt;"false", F&gt;}</td>
+</tr>
+</table>
+<p>RDF仅预定义一个数据类型<a href="www.w3.org/TR/rdf-concepts/#dfn-rdf-XMLLiteral" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-rdf-XMLLiteral">rdf:XMLLiteral</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-rdf-XMLLiteral</i>)</span>，用来把XML嵌入到RDF中（参考<a href="www.w3.org/TR/rdf-concepts/#section-XMLLiteral" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral">5.1节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral</i>)</span>）。<br><br>
+</p>
+<p>在RDF中没有内建的数字概念，或是日期，或者其他普通数值，相反，RDF允许独立的定义数据类型，且应用URI来标识。预定义的XML Schema数据类型[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2">XML-SCHEMA2</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2</i>)</span>] 就是为了这个目的，且希望能广泛的应用。<br><br>
+</p>
+<p>RDF没有提供定义新数据类型的机制，XML Schema数据类型 [<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2">XML-SCHEMA2</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2</i>)</span>] 提供了可扩展的框架，适合定义用在RDF中的新数据类型。<br><br>
+</p>
+<a name="3.4_.E6.96.87.E5.AD.97"></a><h3>3.4 文字</h3>
+<p>文字用以通过一种词法表示的形式表示一些值，例如数字和日期。任何可以用文字表示的事物都可以用URI来表示，但使用文字往往更方便和直观。<br>
+一个文字可能是一个RDF陈述的客体，但不是主体或者谓词。<br><br>
+</p>
+<p>文字可以是平凡的也可以是类型的:<br><br>
+</p>
+<ul>
+<li> 一个<a href="www.w3.org/TR/rdf-concepts/#dfn-plain-literal" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-plain-literal">平凡文字</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-plain-literal</i>)</span>是结合一个可选的语言标签的字符串。这可能用在自然语言中的纯文本。正如RDF形式化语义[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]中推荐的，这些平凡文字是自我表达的。<br>
+</li>
+<li> 一个<a href="www.w3.org/TR/rdf-concepts/#dfn-typed-literal" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-typed-literal">类型文字</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-typed-literal</i>)</span>是由一个字符串和一个数据类型URI组合起来的。它表示了确定的数据类型的值空间的一部分，其中这个值空间是通过对文字字符串应用词法到值的映射得来的。<br><br>
+</li>
+</ul>
+<p>继续<a href="www.w3.org/TR/rdf-concepts/#section-Datatypes-intro" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Datatypes-intro">3.3节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Datatypes-intro</i>)</span>的例子，可以通过使用XML Schema数据类型xsd:boolean定义的类型文字是：<br><br>
+</p>
+<table>
+<tr>
+	<th>类型文字</th>
+<th>词汇&lt;--&gt;值映射</th>
+<th>值</th>
+</tr>
+<tr>
+<td>&lt;xsd:boolean, "true"&gt;</td>
+<td>&lt;"true", T&gt;</td>
+<td>T</td>
+</tr>
+<tr>
+<td>&lt;xsd:boolean, "1"&gt;</td>
+<td>&lt;"1", T&gt;</td>
+<td>T</td>
+</tr>
+<tr>
+<td>&lt;xsd:boolean, "false"&gt;</td>
+<td>&lt;"false", F&gt;</td>
+<td>F</td>
+</tr>
+<tr>
+<td>&lt;xsd:boolean, "0"&gt;</td>
+<td>&lt;"0", F&gt;</td>
+<td>F</td>
+</tr>
+</table>
+<p>对于可能包含标记的文本，用类型文字带类型<a href="www.w3.org/TR/rdf-concepts/#section-XMLLiteral" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral">rdf:XMLLiteral</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral</i>)</span>。如果需要语言注解，必须显式的作为标记，一般通过 xml:lang属性。<a href="www.w3.org/TR/rdf-concepts/#ref-xhtml" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xhtml">[XHTML</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xhtml</i>)</span>]也可能通过这种方式包含在RDF中。在后面这种情况（XHTML），需要额外的span或者div元素有xml:lang或者lang属性。<br><br>
+</p>
+<p>平凡文字和类型文字的字符串推荐为Unicode Normal Form C<a href="www.w3.org/TR/rdf-concepts/#ref-nfc" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-nfc">[NFC</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-nfc</i>)</span>]。这是根据<a href="www.w3.org/TR/rdf-concepts/#ref-charmod" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-charmod">[CHARMOD</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-charmod</i>)</span>]，准确的是<a href="www.w3.org/TR/2003/WD-charmod-20030822/#sec-Normalization" class="external" title="http://www.w3.org/TR/2003/WD-charmod-20030822/#sec-Normalization">第4节 Early Uniform Normalization</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/WD-charmod-20030822/#sec-Normalization</i>)</span>。<br><br>
+</p>
+<a name="3.5_.E7.AE.80.E5.8D.95.E4.BA.8B.E5.AE.9E.E7.9A.84RDF.E8.A1.A8.E8.BE.BE.E6.B3.95"></a><h3>3.5 简单事实的RDF表达法</h3>
+<p>一些简单事实表达了两个事物之间的关系。这样的事实可以用一个RDF三元组表示，其中用谓词命名事物的关系，主体和客体指代两个事物。类似的事实表达可能在关系数据库中用表中的一行表示。该表具有两列，相对应着RDF三元组中的主体和客体。表名对应于RDF三元组中的谓词。更多的类似表示可能是一阶逻辑中的一个二元谓词。<br><br>
+</p>
+<p>关系数据库允许一个表有任意多个列，表中表示信息的一行对应于一阶逻辑中的有任意元的谓词。这样的行，或者谓词，为了便于表达必须分解为RDF三元组。一个简单分解的形式引入一个新的对应于行的空节点，而且为行中的每个单元引入一个新三元组。每个三元组的主体是一个新的空节点，谓词相当于列名，客体对应于单元中的值。新的空节点也可以有一个rdf:type类型的属性，它的值对应于表名。<br><br>
+</p>
+<p>考虑图6，来自于[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-primer" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-primer">RDF-PRIMER</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-primer</i>)</span>]: <br><br>
+</p>
+<p><img src="zh.transwiki.org/cn/src/fig6may19.png" alt="fig6may19.png"> 
+</p>
+<p><br>
+</p>
+<div class="center">RDF Primer 图6：使用空节点</div>
+<p>该信息可能对应于表“STAFFADDRESSES”中的一行，STAFFID是表的主键，STREET， STATE， CITY和POSTALCODE是其他的列。因而，用RDF表示更复杂的事实，需要用简单的二元关系中的“合取”（逻辑AND)。RDF不支持“取非”（NOT)或“析取”（OR)的表示。RDF通过使用可扩展的基于URI的词汇集，它提供了表达任意主体的事实的能力：如对特定的具名事物的具名属性的断言。一个URI可以为任意可以命名的事物而构造，所以RDF事实可以是关于任何事物的。<br><br>
+</p>
+<a name="3.6_.E8.95.B4.E6.B6.B5"></a><h3>3.6 蕴涵</h3>
+<p>像在RDF语义文档中[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]讨论的，RDF中关于含义和推理的概念的基础是形式化的"蕴涵”概念。简单的说，一个RDF表达式A蕴涵另一个RDF表达式B，如果在世界上任何一个可能的使A为真的事物安排也使B为真。在这个基础上，如果假定或者证明A为真，则可以推断出B为真。<br><br>
+</p>
+<a name="4._RDF.E8.AF.8D.E6.B1.87.E9.9B.86URI.E5.92.8C.E5.90.8D.E5.AD.97.E7.A9.BA.E9.97.B4.28.E6.A0.87.E5.87.86.29"></a><h2>4. RDF词汇集URI和名字空间(标准)</h2>
+<p>RDF用URI引用来表示资源和属性。有几个URI引用在RDF中有特定的含义。明确说来，由以下字符串起始的URIref是由RDF规范定义的：<br><br>
+</p>
+<ul><li>
+<a href="www.w3.org/1999/02/22-rdf-syntax-ns#" class="external" title="http://www.w3.org/1999/02/22-rdf-syntax-ns#">http://www.w3.org/1999/02/22-rdf-syntax-ns#</a> (通常关联的名字空间前缀是rdf:) <br><br>
+</li></ul>
+<p>用于RDF/XML 序列化时，这个URI前缀对应着关联到RDF词汇集术语的XML名字空间的名字[<a href="www.w3.org/TR/rdf-concepts/#ref-namespaces" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-namespaces">XML-NS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-namespaces</i>)</span>]。<br><br>
+</p>
+<p><strong>备注：</strong> 这个命名空间的名字和用于以前的RDF推荐标准 [<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-ms" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-ms">RDF-MS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-ms</i>)</span>]的名字一样。<br><br>
+</p>
+<p>rdf: 命名空间下的术语在RDF语法规范[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-syntax" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax">RDF-SYNTAX</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-syntax</i>)</span>]. 的<a href="www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/#section-Namespace" class="external" title="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/#section-Namespace">5.1节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/#section-Namespace</i>)</span>中列出。y一些RDF规范定义的术语是用以表示一些特定概念，其他用于语法上（如RDF/XML中的rdf:ID)。<br><br>
+</p>
+<a name="5._.E6.95.B0.E6.8D.AE.E7.B1.BB.E5.9E.8B_.28.E6.A0.87.E5.87.86.29"></a><h2>5. 数据类型 (标准)</h2>
+<p>RDF中所用的数据类型抽象定义同XML Schema 第二部分：“数据类型”[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2">XML-SCHEMA2</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2</i>)</span>]所用的抽象定义相同。<br><br>
+</p>
+<p>数据类型由一个词法空间，一个值空间和一个“词法-到-值”的映射组成。<br><br>
+</p>
+<p>数据类型的“词法空间”是一个Unicode[<a href="www.w3.org/TR/rdf-concepts/#ref-unicode" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-unicode">UNICODE</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-unicode</i>)</span>]的字符串集合。<br><br>
+</p>
+<p>数据类型的“词法-到-值”的映射是一个序偶对集合，序偶对的首元素属于“词法空间”，序偶对的第二个元素属于“值空间”：<br><br>
+</p>
+<ul>
+<li>词法空间的每个成员都确切地配对（映射）到一个值空间的成员。<br>
+</li>
+<li>值空间的每个成员都可以配对到词法空间(那个值的词法表示）的任意数量的成员（包括0个成员)。<br><br>
+</li>
+</ul>
+<p>一个数据类型由一个或者多个URI引用标识。<br><br>
+</p>
+<p>即使没有用XML Schema的术语定义，RDF可以使用任何数据类型的定义，只要这个定义遵从这个抽象定义。<br><br>
+</p>
+<p>某些XML Schema中的内置数据类型不适合在RDF中采用。例如，<a href="www.w3.org/TR/2001/REC-xmlschema-2-20010502/#QName" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#QName">QName</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#QName</i>)</span>数据类型在映射过程中，需要一个领域内命名空间的声明，因此不推荐在RDF中使用。[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]文档中有关于XML Schema内置数据类型的<a href="www.w3.org/TR/2004/REC-rdf-mt-20040210/#dtype_interp" class="external" title="http://www.w3.org/TR/2004/REC-rdf-mt-20040210/#dtype interp">更详细讨论 </a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-mt-20040210/#dtype_interp</i>)</span>。<br><br>
+</p>
+<p><strong>备注</strong>：当一个数据类型用XML Schema定义：<br><br>
+</p>
+<ul>
+<li>所有值都对应一些词法形式，要么是使用数据类型的词法-到-值映射，要么它便是一种使用关联到一种数据类型元素的联合数据类型。<br>
+</li>
+<li>XML Schema保留了数据类型的刻面(facet)，被XML Schema机制用来控制词空间和值空间；但是，RDF没有定义一个标准的机制来访问这些刻面（facet）。<br>
+</li>
+<li>在[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema1" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema1">XML-SCHEMA1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema1</i>)</span>]中，<a href="www.w3.org/TR/2001/REC-xmlschema-1-20010502/#section-White-Space-Normalization-during-Validation" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#section-White-Space-Normalization-during-Validation">空白范式化(white space normalization)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#section-White-Space-Normalization-during-Validation</i>)</span>发生在根据<a href="www.w3.org/TR/2001/REC-xmlschema-2-20010502/#rf-whiteSpace" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#rf-whiteSpace">空白刻面(whiteSpace facet)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#rf-whiteSpace</i>)</span>值地<a href="www.w3.org/TR/2001/REC-xmlschema-1-20010502/#key-vn" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#key-vn">验证</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/#key-vn</i>)</span>过程中。“词法-到-值”的映射在这之后RDF数据类型化中采用，故RDF数据类型化不受空白刻面的影响。<br><br>
+</li>
+</ul>
+<a name="5.1_RDF.E5.9B.BE.E4.B8.AD.E7.9A.84XML.E5.86.85.E5.AE.B9"></a><h3>5.1 RDF图中的XML内容</h3>
+<p>RDF为XML内容提供了一种可用的文字值。这在RDF/XML语法[RDF-SYNTAX]中就是使用rdf:parseType="Literal"。<br><br>
+</p>
+<p>在一个RDF图中表示这样的内容要用到一种类型文字，其数据类型是一个特定的内置数据类型rdf:XMLLiteral，定义如下：<br><br>
+</p>
+<p>用于标识这个数据类型的一个URIref是<a href="www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral。" class="external" title="http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral。">http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral。</a><br><br>
+</p>
+<p>其词法空间是如下的字符串集合：<br><br>
+</p>
+<ul>
+<li>良好定义的自包含的 <a href="www.w3.org/TR/2000/REC-xml-20001006#NT-content" class="external" title="http://www.w3.org/TR/2000/REC-xml-20001006#NT-content">XML内容</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2000/REC-xml-20001006#NT-content</i>)</span> [<a href="www.w3.org/TR/rdf-concepts/#ref-xml" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml">XML</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml</i>)</span>]；<br>
+</li>
+<li>用 UTF-8 [<a href="www.w3.org/TR/rdf-concepts/#ref-rfc-2279" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rfc-2279"></a><a href="www.faqs.org/rfcs/rfc2279.html" class="external" title="http://www.faqs.org/rfcs/rfc2279.html">RFC 2279</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rfc-2279</i>)</span>] 编码产生的<a href="www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-exclusive-canonical-XML" class="external" title="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-exclusive-canonical-XML">排他性的规范XML（exclusive Canonical XML） </a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-exclusive-canonical-XML</i>)</span>(具有注释和空<a href="www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-InclusiveNamespaces-PrefixList" class="external" title="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-InclusiveNamespaces-PrefixList">InclusiveNamespaces PrefixList </a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/#def-InclusiveNamespaces-PrefixList</i>)</span>) <a href="www.w3.org/TR/rdf-concepts/#ref-xml-xc14n" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-xc14n">[XML-XC14N</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-xc14n</i>)</span>]；<br>
+</li>
+<li>包含在任意一个XML起始标签和结束标签之间的字符串，且产生一个符合 <a href="www.w3.org/TR/1999/REC-xml-names-19990114/" class="external" title="http://www.w3.org/TR/1999/REC-xml-names-19990114/">XML 名字空间</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/1999/REC-xml-names-19990114/</i>)</span><a href="www.w3.org/TR/rdf-concepts/#ref-namespaces" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-namespaces">[XML-NS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-namespaces</i>)</span>] 的文档。<br><br>
+</li>
+</ul>
+<p>其值空间是一个实体的集合，称为XML值（XML values），它是：<br><br>
+</p>
+<ul>
+<li>和词法空间不相交； <br>
+</li>
+<li>和任意XML schema数据类型[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2">XML-SCHEMA2</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2</i>)</span>]的值空间不相交； <br>
+</li>
+<li>和Unicode编码字符串[<a href="www.w3.org/TR/rdf-concepts/#ref-unicode" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-unicode">UNICODE</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-unicode</i>)</span>] 集合不相交； <br>
+</li>
+<li>1:1映射到词法空间。 <br><br>
+</li>
+</ul>
+<p>其词法-到-值映射是一个从词法空间到值空间的1-1映射，也就是说，既是单射，又是满射。<br><br>
+</p>
+<p><strong>备注：</strong> 不是所有的值都符合XML 1.1 [<a href="www.w3.org/TR/rdf-concepts/#ref-xml-1-1" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-1-1">XML 1.1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-1-1</i>)</span>]。如果需要符合XML 1.1，则只有那些按XML 1.1标准 <a href="www.w3.org/TR/2002/CR-xml11-20021015/#sec2.13" class="external" title="http://www.w3.org/TR/2002/CR-xml11-20021015/#sec2.13">完全规范化</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/CR-xml11-20021015/#sec2.13</i>)</span> 的值才能够使用。<br><br>
+</p>
+<p><strong>备注：</strong> XML值可以看成是对应与词法形式的 [<a href="www.w3.org/TR/rdf-concepts/#ref-xml-infoset" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-infoset">XML-INFOSET</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-infoset</i>)</span>] 或者[<a href="www.w3.org/TR/rdf-concepts/#ref-xpath" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xpath">XPATH</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xpath</i>)</span>] 节点集，其中需要一个合适的等价函数。<br><br>
+</p>
+<p><strong>备注：</strong> RDF应用程序可能使用其他的等价关系，例如，把一个xsd:string 关联到一个具有相同字符串的文本节点对应的rdf:XMLLiteral。<br><br>
+</p>
+<a name="6._.E6.8A.BD.E8.B1.A1.E8.AF.AD.E6.B3.95_.28.E6.A0.87.E5.87.86.29"></a><h2>6. 抽象语法 (标准) </h2>
+<p>这节定义了RDF的抽象语法。RDF的抽象语法是一个三元组的集合，称为RDF图。<br><br>
+</p>
+<p>这节还定义了RDF图之间的等价性。等价性的定义在RDF测试用例[<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-tests" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-tests">RDF-TESTS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-tests</i>)</span>]规范中是必需的。<br><br>
+</p>
+<p><strong>实现注意：</strong> 这个抽象语法是定义形式语义的语法基础。实现者可以随意选择任意表示RDF图的其他等价形式。作为一个例子：在RDF图中，数据类型为rdf:XMLLiteral的类型文字可以用非规范的格式表示，也可以用在比较这两个文字过程中规范化后的格式。在这个例子中，这个比较可以在语法结构中进行，也可以在他们在论域中的指派中进行。因此不需要这种比较的实现可以被优化。<br><br>
+</p>
+<a name="6.1_RDF.E4.B8.89.E5.85.83.E7.BB.84"></a><h3>6.1 RDF三元组 </h3>
+<p>一个<strong>RDF三元组(triple)</strong>包含了三个部分：<br><br>
+</p>
+<ul>
+<li>
+<strong>主体</strong>，它是一个<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI 引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span> 或一个<a href="www.w3.org/TR/rdf-concepts/#dfn-blank-node" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-blank-node">空节点</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-blank-node</i>)</span> <br>
+</li>
+<li>
+<strong>谓词</strong>，它是一个<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span> <br>
+</li>
+<li>
+<strong>客体</strong>，它是一个<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span>，一个<a href="www.w3.org/TR/rdf-concepts/#dfn-literal" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-literal">文字</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-literal</i>)</span>或一个<a href="www.w3.org/TR/rdf-concepts/#dfn-blank-node" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-blank-node">空节点</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-blank-node</i>)</span> <br><br>
+</li>
+</ul>
+<p>一个RDF三元组通常以主体，谓词，客体的顺序书写。<br><br>
+</p>
+<p>谓词也被称为三元组中的<strong>属性</strong>。<br><br>
+</p>
+<a name="6.2_RDF.E5.9B.BE"></a><h3>6.2 RDF图 </h3>
+<p>一个<strong>RDF图(graph)</strong>是一个RDF三元组的集合。<br><br>
+</p>
+<p>一个RDF图的'<em>节点'</em><strong> </strong>集合是图中的三元组的主体和客体的集合。<br><br>
+</p>
+<a name="6.3_.E5.9B.BE.E7.9A.84.E7.AD.89.E4.BB.B7.E6.80.A7"></a><h3>6.3 图的等价性</h3>
+<p>两个RDF图G和G'是等价的，如果在两个图的节点集合之间存在一个一一对应(bijection)M，使得：<br><br>
+</p>
+<ul>
+<li>M把空节点映射为 空节点。 <br>
+</li>
+<li>对任意G中节点的<a href="www.w3.org/TR/rdf-concepts/#dfn-literal" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-literal">RDF文字</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-literal</i>)</span>lit，M(lit)=lit 。 <br>
+</li>
+<li>对任意G中节点的<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span> uri， M(uri)=uri 。 <br>
+</li>
+<li>三元组( s, p, o ) 在G中，当且仅当三元组( M(s), p, M(o) ) 在G'中。 <br><br>
+</li>
+</ul>
+<p>在这个定义下，映射M显示了G中的每个空节点是怎样可以被G'的新空节点替换的。<br><br>
+</p>
+<a name="6.4_RDF_URI.E5.BC.95.E7.94.A8"></a><h3>6.4 RDF URI引用</h3>
+<p>一个RDF图中的<strong>URI引用</strong>（一个RDF URI引用）是一个满足下列条件的Unicode字符串[<a href="www.w3.org/TR/rdf-concepts/#ref-unicode" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-unicode">UNICODE</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-unicode</i>)</span>]，满足： <br><br>
+</p>
+<ul>
+<li>不包含任何控制字符 ( #x00 - #x1F, #x7F-#x9F) <br>
+</li>
+<li>将生成一个有效的URI字符序列（根据RFC2396 [<a href="www.w3.org/TR/rdf-concepts/#ref-uris" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-uris">URI</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-uris</i>)</span>]的2.1节）。在采用下列编码方法时，它是一个具有可选片段标识符的绝对URI。<br><br>
+</li>
+</ul>
+<p>该编码方法为： <br><br>
+</p>
+<ul>
+<li>将Unicode字符串编码为UTF-8 [<a href="www.w3.org/TR/rdf-concepts/#ref-rfc-2279" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rfc-2279">RFC-2279</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rfc-2279</i>)</span>]，给出一个由八位字节构成的序列。 <br>
+</li>
+<li>对于无对应US-ASCII字符的八位字节，用%对它们进行转义处理。<br><br>
+</li>
+</ul>
+<p>必须用%转义的非法八位字节包含所有那些无对应US-ASCII字符的字符、以及在[<a href="www.w3.org/TR/rdf-concepts/#ref-uris" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-uris">URI</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-uris</i>)</span>]的2.4节中列出的禁用字符，但数字符（#）、百分符（%）和方括号字符不在此列（虽然它们出现在禁用字符列表中，但在[<a href="www.w3.org/TR/rdf-concepts/#ref-rfc-2732" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rfc-2732">RFC-2732</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rfc-2732</i>)</span>]中被重新允许出现）。<br><br>
+</p>
+<p>对于非法的八位字节，必须对它们进行转义处理（也就是转换为%HH形式，其中HH为八位字节所对应的2位十六进制数字）。<br><br>
+</p>
+<p>两个RDF URI引用是等价的，当且仅当它们的Unicode字符串中的字符个个相等。<br><br>
+</p>
+<p><strong>注意：</strong> RDF URI引用与XML Schema 数据类型[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-schema2" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2">XML-SCHEMA2</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-schema2</i>)</span>]中定义的<em>anyURI</em>是相容的，因为RDF URI引用被限定为绝对URI引用而不是相对URI引用。<br><br>
+</p>
+<p><strong>注意：</strong> RDF URI引用与[<a href="www.w3.org/TR/rdf-concepts/#ref-xml-names11" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-names11">XML Namespaces 1.1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-names11</i>)</span>]中定义的<a href="www.w3.org/TR/2003/PR-xml-names11-20031105/#IRIs" class="external" title="http://www.w3.org/TR/2003/PR-xml-names11-20031105/#IRIs">国际资源标识符（International Resource Identifiers）</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/PR-xml-names11-20031105/#IRIs</i>)</span>是相容的。<br><br>
+</p>
+<p><strong>注意：</strong> 本节预期将有一个关于国际资源标识符（International Resource Identifiers）的RFC。在实现中可以发布有关RDF URI引用的使用与[<a href="www.w3.org/TR/rdf-concepts/#ref-iri" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-iri">IRI draft</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-iri</i>)</span>]或它的后继版本不相容的警告。<br><br>
+</p>
+<p><strong>注意：</strong> RDF URI引用必须是绝对URI引用是在抽象语法中限定的。当存在一个良定的（well-defined）基准URI时，具体语法（比如RDF/XML）可以允许将相对URI作为绝对URI的简写。<br><br>
+</p>
+<p><strong>注意：</strong> 由于某些不等价的RDF URI在解引用（deferenced）之后会变为等价，造成混淆的危险，因此在RDF URI引用中使用被%转义的字符是强烈不推荐的。参见Technical Architecture Group [<a href="www.w3.org/TR/rdf-concepts/#ref-TAG" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-TAG">TAG</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-TAG</i>)</span>]的<a href="www.w3.org/2001/tag/issues.html#URIEquivalence-15" class="external" title="http://www.w3.org/2001/tag/issues.html#URIEquivalence-15">URI等价问题</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/tag/issues.html#URIEquivalence-15</i>)</span>。<br><br>
+</p>
+<a name="6.5_RDF.E6.96.87.E5.AD.97"></a><h3>6.5 RDF文字</h3>
+<p>一个RDF图中的一个<strong>文字</strong>包含了一或两个命名的部分：<br><br>
+</p>
+<p>所有文字有一个<strong>词法形式（lexical form）</strong> ，即一个Unicode [<a href="www.w3.org/TR/rdf-concepts/#ref-unicode" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-unicode">UNICODE</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-unicode</i>)</span>]字符串，它必须符合C范式（Normal Form C） [<a href="www.w3.org/TR/rdf-concepts/#ref-nfc" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-nfc">NFC</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-nfc</i>)</span>]。<br><br>
+</p>
+<p><strong>平凡文字</strong>有一个<a href="www.w3.org/TR/rdf-concepts/#dfn-lexical-form" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-lexical-form">词法形式</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-lexical-form</i>)</span>和一个由[<a href="www.w3.org/TR/rdf-concepts/#ref-rfc-3066" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rfc-3066">RFC-3066</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rfc-3066</i>)</span>]定义的，规范为小写的，可选的<strong>语言标签</strong>。<br><br>
+</p>
+<p><strong>类型文字</strong>有一个<a href="www.w3.org/TR/rdf-concepts/#dfn-lexical-form" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-lexical-form">词法形式</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-lexical-form</i>)</span>和一个是<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span>的<strong>数据类型URI</strong>。<br><br>
+</p>
+<p><strong>注意：</strong> 词法形式以复合字符 (定义在 [<a href="www.w3.org/TR/rdf-concepts/#ref-charmod" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-charmod">CHARMOD</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-charmod</i>)</span>])开始的文字是允许的，但他们可能导致互操作性问题，特别是和 XML 1.1版本 [<a href="www.w3.org/TR/rdf-concepts/#ref-xml-1-1" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-xml-1-1">XML 1.1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-xml-1-1</i>)</span>]。<br><br>
+</p>
+<p><strong>注意：</strong> 如果使用语言标签，注意不要和本地语言（locale）混淆。语言标签关联的是自然语言文本。终端用户程序要处理一些显示问题。<br><br>
+</p>
+<p><strong>注意：</strong> 语言标签的大小写规范化是抽象语法的描述的一部分，从而也是RDF应用的抽象行为。它并不限制RDF实现是否真的规范化了大小写。紧要的是，两个语言标签的比较应该不对原始输入的大小写敏感。<br><br>
+</p>
+<a name="6.5.1_.E6.96.87.E5.AD.97.E7.9A.84.E7.AD.89.E5.90.8C.E6.80.A7"></a><h4>6.5.1 文字的等同性</h4>
+<p>两个文字是相等的，当且仅当下列条件成立：<br><br>
+</p>
+<ul>
+<li>两个词法形式中的字符串是相同的，每个字符都相同。 <br>
+</li>
+<li>要么都有，或者都没有语言标签。<br>
+</li>
+<li>如果有语言标签，则他们是相等的。 <br>
+</li>
+<li>要么都有，或者都没有数据类型URIs。<br>
+</li>
+<li>如果有数据类型URIs，他们两个是相同的，每个字符都相同。<br><br>
+</li>
+</ul>
+<p><strong>注意：</strong> RDF文字相对于RDF URI引用是独特的和可区分的；例如作为一个RDF文字的 <a href="example.org/" class="external" title="http://example.org">http://example.org</a> (没有类型，没有语言标签)不等于作为一个RDF URI引用的 <a href="example.org/" class="external" title="http://example.org">http://example.org</a> 。<br><br>
+</p>
+<a name="6.5.2_.E7.B1.BB.E5.9E.8B.E6.96.87.E5.AD.97.E5.AF.B9.E5.BA.94.E7.9A.84.E5.80.BC"></a><h4>6.5.2 类型文字对应的值 </h4>
+<p>数据类型URI 指代了 <a href="www.w3.org/TR/rdf-concepts/#section-Datatypes" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Datatypes">数据类型</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Datatypes</i>)</span>。对XML Schema <a href="www.w3.org/TR/2001/REC-xmlschema-2-20010502/#built-in-datatypes" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#built-in-datatypes">内置的</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#built-in-datatypes</i>)</span>数据类型，使用的是像 <a href="www.w3.org/2001/XMLSchema#int" class="external" title="http://www.w3.org/2001/XMLSchema#int">http://www.w3.org/2001/XMLSchema#int</a> 这样的URIs。数据类型<a href="www.w3.org/TR/rdf-concepts/#section-XMLLiteral" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral">rdf:XMLLiteral</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-XMLLiteral</i>)</span> 的URI也可以能被使用。还有其他一些实现相关的URIs指代数据类型的机制。<br><br>
+</p>
+<p>关联给类型文字的值可以通过这个数据类型的词－值映射作用于其词法形式得到。<br><br>
+</p>
+<p>如果其词法形式不属数据类型URI代表的数据类型的词法空间，则这个类型文字没有关联到任何文字值。这种情况下是一个错误，但并不是语法格式错误(<em>syntactically</em> ill-formed)。<br><br>
+</p>
+<p><strong>注意：</strong> 在一些应用场景下，比较类型文字的值(参考 <a href="www.w3.org/TR/rdf-concepts/#section-Literal-Value" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Literal-Value">6.5.2节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Literal-Value</i>)</span>) 常常会比比较他们的词法形式(参考 <a href="www.w3.org/TR/rdf-concepts/#section-Literal-Equality" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Literal-Equality">6.5.1节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Literal-Equality</i>)</span>)更有用。 类似地，对RDF图的比较，语义上的蕴涵 (参考 [<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-semantics" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics">RDF-SEMANTICS</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-semantics</i>)</span>]) 常常会比语法上的等价性(参考 <a href="www.w3.org/TR/rdf-concepts/#section-graph-equality" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-graph-equality">6.3节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-graph-equality</i>)</span>)更有用。<br><br>
+</p>
+<a name="6.6_.E7.A9.BA.E8.8A.82.E7.82.B9"></a><h3>6.6 空节点</h3>
+<p>一个RDF图中的<strong>空节点</strong> 是来自一个无限的集合。空节点的集合，所有<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span>的集合和所有 <a href="www.w3.org/TR/rdf-concepts/#dfn-literal" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-literal">文字</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-literal</i>)</span>的集合是两两不相交的。 <br><br>
+</p>
+<p>另外，空节点的集合是任意的。<br><br>
+</p>
+<p>RDF没有提及空节点的任何内部结构。给定两个空节点，判断他们是否相同是有可能的。<br><br>
+</p>
+<a name="7._.E7.89.87.E6.96.AD.E6.A0.87.E8.AF.86.E7.AC.A6"></a><h2>7. 片断标识符</h2>
+<p>RDF使用<a href="www.w3.org/TR/rdf-concepts/#dfn-URI-reference" class="external" title="http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference">RDF URI 引用（RDF URI Reference）</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#dfn-URI-reference</i>)</span>（可能包含片断标识符）作资源的上下文无关标识符。 而<a href="www.faqs.org/rfcs/rfc2396.html" class="external" title="http://www.faqs.org/rfcs/rfc2396.html">RFC 2396</a> [<a href="www.w3.org/TR/rdf-concepts/#ref-uris" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-uris">URI</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-uris</i>)</span>]中说片断标识符的含义是与文档的MIME内容类型相关的，也就是说片断标识符是上下文相关的。<br><br>
+</p>
+<p>这些显然矛盾的看法是这样达成一致的，即RDF图中的URI引用（URI Reference）被视为与MIME类型application/rdf+xml [<a href="www.w3.org/TR/rdf-concepts/#ref-rdf-mime-type" class="external" title="http://www.w3.org/TR/rdf-concepts/#ref-rdf-mime-type">RDF-MIME-TYPE</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#ref-rdf-mime-type</i>)</span>]相关。给定一个包含绝对URI和片断标识符的RDF URI引用，其中的片断标识符标识它在由绝对URI标识资源的application/rdf+xml表示。由此：<br><br>
+</p>
+<ul>
+<li>我们假定URI部分（即除去片断标识符的部分）标识一个资源（假定它有一个对应的RDF表示）。这样，当RDF文档中使用eg:someurl#frag时，eg:someurl指定了某个RDF文档（即使无法通过该URI获取这个文档）。<br>
+</li>
+<li>根据MIME内容类型application/rdf+xml的规则，eg:someurl#frag表示这样一个事物，它是位于eg:someurl的文档的一个"片断"或"视图"。如果该文档不存在、不可获取，或仅可获取除application/rdf+xml以外的格式，则由此所确定的事物是不确定的，但这并不影响使用RDF作出与之相关陈述。<br>
+</li>
+<li>RDF对片断标识符的处理允许它标识一个完全外在于文档、或甚至Web这一"共享信息空间"的事物。也就是说，它可以是一个更一般的概念，比如某种具体的汽车或一个神话中的独角兽。<br>
+</li>
+<li>这样，一个application/rdf+xml文档充当着一些可获取文档（至少是它本身，也可以是任何其它可能使用得Web可获取URIs，可能包含schema URIs以及对其他RDF文档的引用）的中介，和某些可用RDF描述的抽象的、非Web实体。<br><br>
+</li>
+</ul>
+<p>这里提供了对URI引用及它们的含义的处理，它是与RDF模型论和用法一致的，并与传统的Web行为一致。注意：并没有规定RDF应用要能够获取由RDF图中的URIs所标识资源的任何表示（representation //译注：关于Web资源的表示，请参见World Wide Web Architecture。//）。<br><br>
+</p>
+<a name="8._.E8.87.B4.E8.B0.A2"></a><h2>8. 致谢</h2>
+<p>本文档包含了Pat Hayes，Sergey Melnik 和Patrick Stickler的重要贡献。他们领导开发了描述在RDF系列规范中描述的表示数据类型值，例如整型和日期型的框架。<br><br>
+</p>
+<p>编写者感谢下列人员的很有价值的贡献： Frank Manola, Pat Hayes， Dan Brickley， Jos de Roo， Dave Beckett， Patrick Stickler， Peter F. Patel-Schneider， Jerome Euzenat， Massimo Marchiori， Tim Berners-Lee， Dave Reynolds 和 Dan Connolly。 <br><br>
+</p>
+<p>Jeremy Carroll要感谢<a href="mailto:oreste@w3.org" class="external" title="mailto:oreste@w3.org">Oreste Signore</a><span class="urlexpansion"> (<i>mailto:oreste@w3.org</i>)</span>，他主持了<a href="www.w3c.it/" class="external" title="http://www.w3c.it/">W3C在意大利的办事处</a><span class="urlexpansion"> (<i>http://www.w3c.it/</i>)</span>和Istituto di Scienza e Tecnologie dell'Informazione "Alessandro Faedo"，Consiglio Nazionale delle Ricerche的一部分，Jeremy 在那里是访问学者。<br><br>
+</p>
+<p>本文档是RDFcore工作组辛勤劳动的成果，工作组的成员有：Art Barstow (W3C)， Dave Beckett (ILRT)， Dan Brickley (ILRT)， Dan Connolly (W3C)， Jeremy Carroll (Hewlett Packard)， Ron Daniel (Interwoven Inc)， Bill dehOra (InterX)， Jos De Roo (AGFA)， Jan Grant (ILRT)， Graham Klyne (Nine by Nine)， Frank Manola (MITRE Corporation)， Brian McBride (Hewlett Packard)， Eric Miller (W3C)， Stephen Petschulat (IBM)， Patrick Stickler (Nokia)， Aaron Swartz (HWG)， Mike Dean (BBN Technologies / Verizon)， R. V. Guha (Alpiri Inc)， Pat Hayes (IHMC)， Sergey Melnik (Stanford University) and Martyn Horner (Profium Ltd). <br><br>
+</p>
+<p>本规范也参考了以前的 RDF模型和语法文档，其作者为Ora Lassilla 和Ralph Swick，以及RDF Schema文档，其作者为Dan Brickley 和 R. V. Guha。RDF 和RDF Schema工作组的成员中对这些早期工作有贡献的有：Nick Arnett (Verity)， Tim Berners-Lee (W3C)， Tim Bray (Textuality)， Dan Brickley (ILRT / University of Bristol)， Walter Chang (Adobe)， Sailesh Chutani (Oracle)， Dan Connolly (W3C)， Ron Daniel (DATAFUSION)， Charles Frankston (Microsoft)， Patrick Gannon (CommerceNet)， R. V. Guha (Epinions， previously of Netscape Communications)， Tom Hill (Apple Computer)， Arthur van Hoff (Marimba)， Renato Iannella (DSTC)， Sandeep Jain (Oracle)， Kevin Jones， (InterMind)， Emiko Kezuka (Digital Vision Laboratories)， Joe Lapp (webMethods Inc.)， Ora Lassila (Nokia Research Center)， Andrew Layman (Microsoft)， Ralph LeVan (OCLC)， John McCarthy (Lawrence Berkeley National Laboratory)， Chris McConnell (Microsoft)， Murray Maloney (Grif)， Michael Mealling (Network Solutions)， Norbert Mikula (DataChannel)， Eric Miller (OCLC)， Jim Miller (W3C， emeritus)， Frank Olken (Lawrence Berkeley National Laboratory)， Jean Paoli (Microsoft)， Sri Raghavan (Digital/Compaq)， Lisa Rein (webMethods Inc.)， Paul Resnick (University of Michigan)， Bill Roberts (KnowledgeCite)， i Tsuyoshi Sakata (Digital Vision Laboratories)， Bob Schloss (IBM)， Leon Shklar (Pencom Web Works)， David Singer (IBM)， Wei (William) Song (SISU)， Neel Sundaresan (IBM)， Ralph Swick (W3C)， Naohiko Uramoto (IBM)， Charles Wicksteed (Reuters Ltd.)， Misha Wolf (Reuters Ltd.) and Lauren Wood (SoftQuad). <br><br>
+</p>
+<a name="9._.E5.8F.82.E8.80.83.E6.96.87.E7.8C.AE"></a><h2>9. 参考文献</h2>
+<a name="9.1_.E8.A7.84.E8.8C.83.E6.80.A7.E6.96.87.E7.8C.AE"></a><h3>9.1 规范性文献</h3>
+<p><strong>[RDF-SEMANTICS]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-rdf-mt-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-mt-20040210/">RDF Semantics</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-mt-20040210/</i>)</span></em>, Patrick Hayes, Editor, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-rdf-mt-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-mt-20040210/">http://www.w3.org/TR/2004/REC-rdf-mt-20040210/</a> . <a href="www.w3.org/TR/rdf-mt/" class="external" title="http://www.w3.org/TR/rdf-mt/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-mt/</i>)</span> available at <a href="www.w3.org/TR/rdf-mt/" class="external" title="http://www.w3.org/TR/rdf-mt/">http://www.w3.org/TR/rdf-mt/</a> . <br><br>
+</p>
+<p><strong>[RDF-SYNTAX]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/">RDF/XML Syntax Specification (Revised)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/</i>)</span></em>, Dave Beckett, Editor, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/">http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/</a> . <a href="www.w3.org/TR/rdf-syntax-grammar/" class="external" title="http://www.w3.org/TR/rdf-syntax-grammar/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-syntax-grammar/</i>)</span> available at <a href="www.w3.org/TR/rdf-syntax-grammar/" class="external" title="http://www.w3.org/TR/rdf-syntax-grammar/">http://www.w3.org/TR/rdf-syntax-grammar/</a> . <br><br>
+</p>
+<p><strong>[RDF-MIME-TYPE]</strong> <br>
+<em><a href="www.iana.org/assignments/media-types/" class="external" title="http://www.iana.org/assignments/media-types/">MIME Media Types</a><span class="urlexpansion"> (<i>http://www.iana.org/assignments/media-types/</i>)</span></em>, The Internet Assigned Numbers Authority (IANA). This document is <a href="www.iana.org/assignments/media-types/" class="external" title="http://www.iana.org/assignments/media-types/">http://www.iana.org/assignments/media-types/</a> . The registration for application/rdf+xml is archived at <a href="www.w3.org/2001/sw/RDFCore/mediatype-registration" class="external" title="http://www.w3.org/2001/sw/RDFCore/mediatype-registration">http://www.w3.org/2001/sw/RDFCore/mediatype-registration</a> . <br><br>
+</p>
+<p><strong>[XML]</strong> <br>
+<em><a href="www.w3.org/TR/2000/REC-xml-20001006" class="external" title="http://www.w3.org/TR/2000/REC-xml-20001006">Extensible Markup Language (XML) 1.0, Second Edition</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2000/REC-xml-20001006</i>)</span></em>, T. Bray, J. Paoli, C.M. Sperberg-McQueen and E. Maler, Editors. World Wide Web Consortium. 6 October 2000. This version is <a href="www.w3.org/TR/2000/REC-xml-20001006" class="external" title="http://www.w3.org/TR/2000/REC-xml-20001006">http://www.w3.org/TR/2000/REC-xml-20001006</a>. The latest version of XML is available at <a href="www.w3.org/TR/REC-xml" class="external" title="http://www.w3.org/TR/REC-xml"></a><a href="www.w3.org/TR/REC-xml" class="external" title="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/REC-xml</i>)</span>. <br><br>
+</p>
+<p><strong>[XML-NS]</strong> <br>
+<em><a href="www.w3.org/TR/1999/REC-xml-names-19990114/" class="external" title="http://www.w3.org/TR/1999/REC-xml-names-19990114/">Namespaces in XML</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/1999/REC-xml-names-19990114/</i>)</span></em>, T. Bray, D. Hollander and A. Layman, Editors. World Wide Web Consortium. 14 January 1999. This version is <a href="www.w3.org/TR/1999/REC-xml-names-19990114/" class="external" title="http://www.w3.org/TR/1999/REC-xml-names-19990114/">http://www.w3.org/TR/1999/REC-xml-names-19990114/</a>. The <a href="www.w3.org/TR/REC-xml-names/" class="external" title="http://www.w3.org/TR/REC-xml-names/">latest version of Namespaces in XML</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/REC-xml-names/</i>)</span> is available at <a href="www.w3.org/TR/REC-xml-names/" class="external" title="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a>. <br><br>
+</p>
+<p><strong>[RFC-2279]</strong> <br>
+<em><a href="www.isi.edu/in-notes/rfc2279.txt" class="external" title="http://www.isi.edu/in-notes/rfc2279.txt"></a><a href="www.faqs.org/rfcs/rfc2279.html" class="external" title="http://www.faqs.org/rfcs/rfc2279.html">RFC 2279</a> - UTF-8, a transformation format of ISO 10646<span class="urlexpansion"> (<i>http://www.isi.edu/in-notes/rfc2279.txt</i>)</span></em>, F. Yergeau, IETF, January 1998. This document is <a href="www.isi.edu/in-notes/rfc2279.txt" class="external" title="http://www.isi.edu/in-notes/rfc2279.txt">http://www.isi.edu/in-notes/rfc2279.txt</a>. <br><br>
+</p>
+<p><strong>[URI]</strong> <br>
+<em><a href="www.isi.edu/in-notes/rfc2396.txt" class="external" title="http://www.isi.edu/in-notes/rfc2396.txt"></a><a href="www.faqs.org/rfcs/rfc2396.html" class="external" title="http://www.faqs.org/rfcs/rfc2396.html">RFC 2396</a> - Uniform Resource Identifiers (URI): Generic Syntax<span class="urlexpansion"> (<i>http://www.isi.edu/in-notes/rfc2396.txt</i>)</span></em>, T. Berners-Lee, R. Fielding and L. Masinter, IETF, August 1998. This document is <a href="www.isi.edu/in-notes/rfc2396.txt" class="external" title="http://www.isi.edu/in-notes/rfc2396.txt">http://www.isi.edu/in-notes/rfc2396.txt</a>. <br><br>
+</p>
+<p><strong>[RFC-2732]</strong> <br>
+<em><a href="www.isi.edu/in-notes/rfc2732.txt" class="external" title="http://www.isi.edu/in-notes/rfc2732.txt"></a><a href="www.faqs.org/rfcs/rfc2732.html" class="external" title="http://www.faqs.org/rfcs/rfc2732.html">RFC 2732</a> - Format for Literal IPv6 Addresses in URL's<span class="urlexpansion"> (<i>http://www.isi.edu/in-notes/rfc2732.txt</i>)</span></em>, R. Hinden, B. Carpenter and L. Masinter, IETF, December 1999. This document is <a href="www.isi.edu/in-notes/rfc2732.txt" class="external" title="http://www.isi.edu/in-notes/rfc2732.txt">http://www.isi.edu/in-notes/rfc2732.txt</a>. <br><br>
+</p>
+<p><strong>[UNICODE]</strong> <br>
+<em>The Unicode Standard, Version 3</em>, The Unicode Consortium, Addison-Wesley, 2000. <a href="zh.transwiki.org/wiki/index.php?title=Special%3ABooksources&amp;isbn=0201616335" class="internal">ISBN 0-201-61633-5</a>, as updated from time to time by the publication of new versions. (See <a href="www.unicode.org/unicode/standard/versions/" class="external" title="http://www.unicode.org/unicode/standard/versions/"></a><a href="www.unicode.org/unicode/standard/versions/" class="external" title="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a><span class="urlexpansion"> (<i>http://www.unicode.org/unicode/standard/versions/</i>)</span> for the latest version and additional information on versions of the standard and of the Unicode Character Database). <br><br>
+</p>
+<p><strong>[NFC]</strong> <br>
+<em>Unicode Normalization Forms,</em> Unicode Standard Annex #15, Mark Davis, Martin Dürst. (See <a href="www.unicode.org/unicode/reports/tr15/" class="external" title="http://www.unicode.org/unicode/reports/tr15/"></a><a href="www.unicode.org/unicode/reports/tr15/" class="external" title="http://www.unicode.org/unicode/reports/tr15/">http://www.unicode.org/unicode/reports/tr15/</a><span class="urlexpansion"> (<i>http://www.unicode.org/unicode/reports/tr15/</i>)</span> for the latest version). <br><br>
+</p>
+<p><strong>[RFC-3066]</strong> <br>
+<em><a href="www.isi.edu/in-notes/rfc3066.txt" class="external" title="http://www.isi.edu/in-notes/rfc3066.txt"></a><a href="www.faqs.org/rfcs/rfc3066.html" class="external" title="http://www.faqs.org/rfcs/rfc3066.html">RFC 3066</a> - Tags for the Identification of Languages<span class="urlexpansion"> (<i>http://www.isi.edu/in-notes/rfc3066.txt</i>)</span></em>, H. Alvestrand, IETF, January 2001. This document is <a href="www.isi.edu/in-notes/rfc3066.txt" class="external" title="http://www.isi.edu/in-notes/rfc3066.txt">http://www.isi.edu/in-notes/rfc3066.txt</a>. <br><br>
+</p>
+<p><strong>[XML-XC14N]</strong> <br>
+<em><a href="www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/" class="external" title="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/">Exclusive XML Canonicalization Version 1.0</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/</i>)</span></em>, J. Boyer, D.E. Eastlake 3rd, J. Reagle, Authors/Editors. W3C Recommendation. World Wide Web Consortium, 18 July 2002. This version of Exclusive XML Canonicalization is <a href="www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/" class="external" title="http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/">http://www.w3.org/TR/2002/REC-xml-exc-c14n-20020718/</a>. The <a href="www.w3.org/TR/xml-exc-c14n/" class="external" title="http://www.w3.org/TR/xml-exc-c14n/">latest version of Canonical XML</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xml-exc-c14n/</i>)</span> is at <a href="www.w3.org/TR/xml-exc-c14n" class="external" title="http://www.w3.org/TR/xml-exc-c14n">http://www.w3.org/TR/xml-exc-c14n</a>. <br><br>
+</p>
+<p><strong>[XML-SCHEMA2]</strong><br>
+<em><a href="www.w3.org/TR/2001/REC-xmlschema-2-20010502/" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/">XML Schema Part 2: Datatypes</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/</i>)</span></em>, W3C Recommendation, World Wide Web Consortium, 2 May 2001.This version is <a href="www.w3.org/TR/2001/REC-xmlschema-2-20010502/" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/">http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/</a>. The <a href="www.w3.org/TR/xmlschema-2/" class="external" title="http://www.w3.org/TR/xmlschema-2/">latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xmlschema-2/</i>)</span> is available at <a href="www.w3.org/TR/xmlschema-2/" class="external" title="http://www.w3.org/TR/xmlschema-2/">http://www.w3.org/TR/xmlschema-2/</a>. <br>
+</p>
+<a name="9.2_.E5.8F.82.E8.80.83.E6.80.A7.E6.96.87.E7.8C.AE"></a><h3>9.2 参考性文献</h3>
+<p><strong>[RDF-TESTS]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-rdf-testcases-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/">RDF Test Cases</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/</i>)</span></em>, Jan Grant and Dave Beckett, Editors, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-rdf-testcases-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/">http://www.w3.org/TR/2004/REC-rdf-testcases-20040210/</a> . <a href="www.w3.org/TR/rdf-testcases/" class="external" title="http://www.w3.org/TR/rdf-testcases/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-testcases/</i>)</span> available at <a href="www.w3.org/TR/rdf-testcases/" class="external" title="http://www.w3.org/TR/rdf-testcases/">http://www.w3.org/TR/rdf-testcases/</a> . <br><br>
+</p>
+<p><strong>[RDF-VOCABULARY]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-rdf-schema-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-schema-20040210/">RDF Vocabulary Description Language 1.0: RDF Schema</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-schema-20040210/</i>)</span></em>, Dan Brickley and R. V. Guha, Editors, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-rdf-schema-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-schema-20040210/">http://www.w3.org/TR/2004/REC-rdf-schema-20040210/</a> . <a href="www.w3.org/TR/rdf-schema/" class="external" title="http://www.w3.org/TR/rdf-schema/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-schema/</i>)</span> available at <a href="www.w3.org/TR/rdf-schema/" class="external" title="http://www.w3.org/TR/rdf-schema/">http://www.w3.org/TR/rdf-schema/</a> . <br><br>
+</p>
+<p><strong>[RDF-PRIMER]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-rdf-primer-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-primer-20040210/">RDF Primer</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-rdf-primer-20040210/</i>)</span></em>, Frank Manola and Eric Miller, Editors, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-rdf-primer-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-rdf-primer-20040210/">http://www.w3.org/TR/2004/REC-rdf-primer-20040210/</a> . <a href="www.w3.org/TR/rdf-primer/" class="external" title="http://www.w3.org/TR/rdf-primer/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-primer/</i>)</span> available at <a href="www.w3.org/TR/rdf-primer/" class="external" title="http://www.w3.org/TR/rdf-primer/">http://www.w3.org/TR/rdf-primer/</a> . <br><br>
+</p>
+<p><strong>[CHARMOD]</strong> <br>
+<em><a href="www.w3.org/TR/2003/WD-charmod-20030822/" class="external" title="http://www.w3.org/TR/2003/WD-charmod-20030822/">Character Model for the World Wide Web 1.0</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/WD-charmod-20030822/</i>)</span></em>, M. Dürst, F. Yergeau, R. Ishida, M. Wolf, T. Texin, Editors, World Wide Web Consortium Working Draft, work in progress, 22 August 2003. This version of the Character Model is <a href="www.w3.org/TR/2003/WD-charmod-20030822/" class="external" title="http://www.w3.org/TR/2003/WD-charmod-20030822/">http://www.w3.org/TR/2003/WD-charmod-20030822/</a>. The <a href="www.w3.org/TR/charmod/" class="external" title="http://www.w3.org/TR/charmod/">latest version of the Character Model</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/charmod/</i>)</span> is at <a href="www.w3.org/TR/charmod/" class="external" title="http://www.w3.org/TR/charmod/">http://www.w3.org/TR/charmod/</a>. <br><br>
+</p>
+<p><strong>[XML-1.1]</strong> <br>
+<em><a href="www.w3.org/TR/2002/CR-xml11-20021015/" class="external" title="http://www.w3.org/TR/2002/CR-xml11-20021015/">Extensible Markup Language (XML) 1.1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/CR-xml11-20021015/</i>)</span></em>, John Cowan, Editor. W3C Candidate Recommendation 15 October 2002. This version is <a href="www.w3.org/TR/2002/CR-xml11-20021015/" class="external" title="http://www.w3.org/TR/2002/CR-xml11-20021015/">http://www.w3.org/TR/2002/CR-xml11-20021015/</a>. The <a href="www.w3.org/TR/xml11/" class="external" title="http://www.w3.org/TR/xml11/">latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xml11/</i>)</span> is available at <a href="www.w3.org/TR/xml11/" class="external" title="http://www.w3.org/TR/xml11/">http://www.w3.org/TR/xml11/</a>. <br><br>
+</p>
+<p><strong>[XML-SCHEMA1]</strong> <br>
+<em><a href="www.w3.org/TR/2001/REC-xmlschema-1-20010502/" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/">XML Schema Part 1: Structures</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/</i>)</span></em> W3C Recommendation, World Wide Web Consortium, 2 May 2001. This version is <a href="www.w3.org/TR/2001/REC-xmlschema-1-20010502/" class="external" title="http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/">http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/</a>. The <a href="www.w3.org/TR/xmlschema-1/" class="external" title="http://www.w3.org/TR/xmlschema-1/">latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xmlschema-1/</i>)</span> is available at <a href="www.w3.org/TR/xmlschema-1/" class="external" title="http://www.w3.org/TR/xmlschema-1/">http://www.w3.org/TR/xmlschema-1/</a>. <br><br>
+</p>
+<p><strong>[XML-NAMESPACES-1.1]</strong> <br>
+<em><a href="www.w3.org/TR/2003/PR-xml-names11-20031105/" class="external" title="http://www.w3.org/TR/2003/PR-xml-names11-20031105/">Namespaces in XML 1.1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/PR-xml-names11-20031105/</i>)</span></em>, Tim Bray, Dave Hollander, Andrew Layman, Richard Tobin, Editors. W3C Proposed Recommendation 05 November 2003. This version is <a href="www.w3.org/TR/2003/PR-xml-names11-20031105/" class="external" title="http://www.w3.org/TR/2003/PR-xml-names11-20031105/">http://www.w3.org/TR/2003/PR-xml-names11-20031105/</a>. The <a href="www.w3.org/TR/xml-names11/" class="external" title="http://www.w3.org/TR/xml-names11/">latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xml-names11/</i>)</span> is available at <a href="www.w3.org/TR/xml-names11/" class="external" title="http://www.w3.org/TR/xml-names11/">http://www.w3.org/TR/xml-names11/</a>. <br><br>
+</p>
+<p><strong>[XML-INFOSET]</strong> <br>
+<em><a href="www.w3.org/TR/2001/REC-xml-infoset-20011024/" class="external" title="http://www.w3.org/TR/2001/REC-xml-infoset-20011024/">XML Information Set</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2001/REC-xml-infoset-20011024/</i>)</span></em>, John Cowan and Richard Tobin, W3C Recommendation, 24 October 2001. This document is <a href="www.w3.org/TR/2001/REC-xml-infoset-20011024/" class="external" title="http://www.w3.org/TR/2001/REC-xml-infoset-20011024/">http://www.w3.org/TR/2001/REC-xml-infoset-20011024/</a>. The <a href="www.w3.org/TR/xml-infoset/" class="external" title="http://www.w3.org/TR/xml-infoset/">latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xml-infoset/</i>)</span> is available at <a href="www.w3.org/TR/xml-infoset/" class="external" title="http://www.w3.org/TR/xml-infoset/">http://www.w3.org/TR/xml-infoset/</a>. <br><br>
+</p>
+<p><strong>[XPATH]</strong> <br>
+<em><a href="www.w3.org/TR/1999/REC-xpath-19991116" class="external" title="http://www.w3.org/TR/1999/REC-xpath-19991116">XML Path Language (XPath) Version 1.0</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/1999/REC-xpath-19991116</i>)</span></em>, J. Clark and S. DeRose, Editors. World Wide Web Consortium, 16 November 1999. This version of XPath is <a href="www.w3.org/TR/1999/REC-xpath-19991116" class="external" title="http://www.w3.org/TR/1999/REC-xpath-19991116">http://www.w3.org/TR/1999/REC-xpath-19991116</a>. The <a href="www.w3.org/TR/xpath" class="external" title="http://www.w3.org/TR/xpath">latest version of XPath</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xpath</i>)</span> is at <a href="www.w3.org/TR/xpath" class="external" title="http://www.w3.org/TR/xpath">http://www.w3.org/TR/xpath</a>. <br><br>
+</p>
+<p><strong>[OWL]</strong> <br>
+<em><a href="www.w3.org/TR/2004/REC-owl-ref-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-owl-ref-20040210/">OWL Web Ontology Language Reference</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2004/REC-owl-ref-20040210/</i>)</span></em>, Mike Dean and Guus Schreiber, Editors, W3C Recommendation, 10 February 2004, <a href="www.w3.org/TR/2004/REC-owl-ref-20040210/" class="external" title="http://www.w3.org/TR/2004/REC-owl-ref-20040210/">http://www.w3.org/TR/2004/REC-owl-ref-20040210/</a> . <a href="www.w3.org/TR/owl-ref/" class="external" title="http://www.w3.org/TR/owl-ref/">Latest version</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/owl-ref/</i>)</span> available at <a href="www.w3.org/TR/owl-ref/" class="external" title="http://www.w3.org/TR/owl-ref/">http://www.w3.org/TR/owl-ref/</a> . <br><br>
+</p>
+<p><strong>[RDF-MS]</strong> <br>
+<em><a href="www.w3.org/TR/1999/REC-rdf-syntax-19990222/" class="external" title="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/">Resource Description Framework (RDF) Model and Syntax Specification</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/</i>)</span></em>, O. Lassila and R. Swick, Editors. World Wide Web Consortium. 22 February 1999. This version is <a href="www.w3.org/TR/1999/REC-rdf-syntax-19990222/" class="external" title="http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/">http://www.w3.org/TR/1999/REC-rdf-syntax-19990222/</a>. The <a href="www.w3.org/TR/REC-rdf-syntax/" class="external" title="http://www.w3.org/TR/REC-rdf-syntax/">latest version of RDF M&amp;S</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/REC-rdf-syntax/</i>)</span> is available at <a href="www.w3.org/TR/REC-rdf-syntax/" class="external" title="http://www.w3.org/TR/REC-rdf-syntax/">http://www.w3.org/TR/REC-rdf-syntax/</a>. <br><br>
+</p>
+<p><strong>[XHTML]</strong> <br>
+<em><a href="www.w3.org/TR/2002/REC-xhtml1-20020801/" class="external" title="http://www.w3.org/TR/2002/REC-xhtml1-20020801/">XHTML 1.0 The Extensible HyperText Markup Language (Second Edition)</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2002/REC-xhtml1-20020801/</i>)</span></em>, World Wide Web Consortium. 26 January 2000, revised 1 August 2002. This version is <a href="www.w3.org/TR/2002/REC-xhtml1-20020801/" class="external" title="http://www.w3.org/TR/2002/REC-xhtml1-20020801/">http://www.w3.org/TR/2002/REC-xhtml1-20020801/</a>. The <a href="www.w3.org/TR/xhtml1/" class="external" title="http://www.w3.org/TR/xhtml1/">latest version of XHTML 1</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/xhtml1/</i>)</span> is available at <a href="www.w3.org/TR/xhtml1/" class="external" title="http://www.w3.org/TR/xhtml1/">http://www.w3.org/TR/xhtml1/</a>. <br><br>
+</p>
+<p><strong>[IRI draft]</strong> <br>
+<em><a href="www.w3.org/International/iri-edit/draft-duerst-iri-04" class="external" title="http://www.w3.org/International/iri-edit/draft-duerst-iri-04">Internationalized Resource Identifiers (IRIs)</a><span class="urlexpansion"> (<i>http://www.w3.org/International/iri-edit/draft-duerst-iri-04</i>)</span></em>, M. Dürst and M. Suignard, Internet-Draft, June 2003, expires December 2003. This document is <a href="www.w3.org/International/iri-edit/draft-duerst-iri-04" class="external" title="http://www.w3.org/International/iri-edit/draft-duerst-iri-04">http://www.w3.org/International/iri-edit/draft-duerst-iri-04</a>. <br><br>
+</p>
+<p><strong>[TAG]</strong><br>
+<em><a href="www.w3.org/2001/tag/issues" class="external" title="http://www.w3.org/2001/tag/issues">TAG Issues List</a><span class="urlexpansion"> (<i>http://www.w3.org/2001/tag/issues</i>)</span></em>, W3C Technical Architecture Group. This document is <a href="www.w3.org/2001/tag/issues" class="external" title="http://www.w3.org/2001/tag/issues">http://www.w3.org/2001/tag/issues</a>. <br><br>
+</p>
+<a name=".E9.99.84.E5.BD.95A.EF.BC.9A.E8.87.AA.E4.BB.8E2003.E5.B9.B410.E6.9C.8810.E6.97.A5_.28http:.2F.2Fwww.w3.org.2FTR.2F2003.2FWD-rdf-concepts-20031010.2F.29.E5.8F.91.E5.B8.83.E7.9A.84.E7.9A.84.E6.9C.80.E5.90.8E.E5.85.AC.E5.91.8A.EF.BC.88Last_Call.EF.BC.89.E5.B7.A5.E4.BD.9C.E8.8D.89.E6.A1.88.E4.BB.A5.E6.9D.A5.E7.9A.84.E4.BF.AE.E6.94.B9"></a><h1>附录A：自从<a href="www.w3.org/TR/2003/WD-rdf-concepts-20031010/" class="external" title="http://www.w3.org/TR/2003/WD-rdf-concepts-20031010/">2003年10月10日</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/2003/WD-rdf-concepts-20031010/</i>)</span>发布的的最后公告（Last Call）工作草案以来的修改</h1>
+<p>没有实质性的修改。<br><br>
+</p>
+<p>下面是一些编辑上的变动：<br><br>
+</p>
+<p><strong>关于图等价方面的措辞</strong><br><br>
+根据ter Horst的<a href="lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118" class="external" title="http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118">建议</a><span class="urlexpansion"> (<i>http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118</i>)</span>，已经改进了<a href="www.w3.org/TR/rdf-concepts/#section-graph-equality" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-graph-equality">6.3节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-graph-equality</i>)</span>的措辞。<br><br>
+</p>
+<p><strong>避免“全局地（globally）”</strong><br><br>
+</p>
+<p>根据ter Horst的<a href="lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118" class="external" title="http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118">意见</a><span class="urlexpansion"> (<i>http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0118</i>)</span>，<a href="www.w3.org/TR/rdf-concepts/#section-URI-Vocabulary" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-URI-Vocabulary">3.2节</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-URI-Vocabulary</i>)</span>的措辞已被修改：更换了一个短语，以避免使用“全局地（globally）”这一未经定义和不清楚的词。<br><br>
+</p>
+<p><strong>RDF URI引用中的%s</strong><br><br>
+</p>
+<p>根据Patel-Schneider的<a href="lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0123" class="external" title="http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0123">意见</a><span class="urlexpansion"> (<i>http://lists.w3.org/Archives/Public/www-rdf-comments/2003OctDec/0123</i>)</span>，在<a href="www.w3.org/TR/rdf-concepts/#section-Graph-URIref" class="external" title="http://www.w3.org/TR/rdf-concepts/#section-Graph-URIref">6.4节 RDF URI引用</a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/#section-Graph-URIref</i>)</span>中增加了一个关于%转义的注解。<br><br>
+</p>
+<p><strong>参考文献</strong><br><br>
+</p>
+<p>旧的RDF和OWL参考文献已被更新。<br><br>
+</p>
+<hr> <br>
+<p><a href="www.w3.org/TR/rdf-concepts/metadata.rdf" class="external" title="http://www.w3.org/TR/rdf-concepts/metadata.rdf"><img src="zh.transwiki.org/cn/src/rdf_metadata_button.40.gif" alt="rdf_metadata_button.40.gif"></a><span class="urlexpansion"> (<i>http://www.w3.org/TR/rdf-concepts/metadata.rdf</i>)</span>
+</p>
+<div class="printfooter">
+取自"<a href="zh.transwiki.org/wiki/index.php/%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">http://zh.transwiki.org/wiki/index.php/%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86</a>"</div>
+
+	    
+	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div id="p-cactions" class="portlet">
+	  <h5>Views</h5>
+	  <ul>
+	    <li id="ca-nstab-main" class="selected"><a href="zh.transwiki.org/wiki/index.php/%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">内容</a></li>
+<li id="ca-talk" class="new"><a href="zh.transwiki.org/wiki/index.php?title=Talk%3A%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=edit">讨论</a></li>
+<li id="ca-edit" class=""><a href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=edit">编辑</a></li>
+<li id="ca-history"><a href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=history">历史</a></li>
+<li id="ca-protect"><a href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=protect">保护</a></li>
+<li id="ca-delete"><a href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=delete">删除</a></li>
+<li id="ca-move"><a href="zh.transwiki.org/wiki/index.php?title=Special%3AMovepage&amp;target=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">移动</a></li>
+<li id="ca-watch"><a href="zh.transwiki.org/wiki/index.php?title=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86&amp;action=watch">监视</a></li>
+	  </ul>
+	</div>
+	<div class="portlet" id="p-personal">
+	  <h5>个人工具</h5>
+	  <div class="pBody">
+	    <ul>
+	      <li id="pt-userpage"><a href="zh.transwiki.org/wiki/index.php/User:Collin">Collin</a></li>
+<li id="pt-mytalk"><a href="zh.transwiki.org/wiki/index.php/User_talk:Collin">我的对话页</a></li>
+<li id="pt-preferences"><a href="zh.transwiki.org/wiki/index.php/Special:Preferences">参数设置</a></li>
+<li id="pt-watchlist"><a href="zh.transwiki.org/wiki/index.php/Special:Watchlist">监视列表</a></li>
+<li id="pt-mycontris"><a href="zh.transwiki.org/wiki/index.php?title=Special%3AContributions&amp;target=Collin">我的贡献</a></li>
+<li id="pt-logout"><a href="zh.transwiki.org/wiki/index.php?title=Special%3AUserlogout&amp;returnto=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">用户退出</a></li>
+	    </ul>
+	  </div>
+	</div>
+	<div class="portlet" id="p-logo">
+	  <a title="首页" style="background-image: url(zh.transwiki.org/wiki/stylesheets/images/wiki.png);" href="zh.transwiki.org/wiki/index.php/%E9%A6%96%E9%A1%B5"></a>
+	</div>
+	<div class="portlet" id="p-nav">
+	  <h5>导航</h5>
+	  <div class="pBody">
+	    <ul>
+	      <li id="n-mainpage"><a href="zh.transwiki.org/wiki/index.php/%E9%A6%96%E9%A1%B5">首页</a></li>
+	      <li id="n-portal"><a href="zh.transwiki.org/wiki/index.php/TransWiki:%E7%A4%BE%E7%BE%A4%E4%B8%BB%E9%A1%B5">社群主页</a></li>
+	      <li id="n-currentevents"><a href="zh.transwiki.org/wiki/index.php/%E6%96%B0%E9%97%BB%E5%8A%A8%E6%80%81">新闻动态</a></li>
+	      <li id="n-recentchanges"><a href="zh.transwiki.org/wiki/index.php/Special:Recentchanges">最近更改</a></li>
+	      <li id="n-randompage"><a href="zh.transwiki.org/wiki/index.php/Special:Randompage">随机页面</a></li>
+	      <li id="n-help"><a href="zh.transwiki.org/wiki/index.php/TransWiki:%E5%B8%AE%E5%8A%A9">帮助</a></li>
+	      
+	    </ul>
+	  </div>
+	</div>
+	<div id="p-search" class="portlet">
+	  <h5>搜索</h5>
+	  <div class="pBody">
+	    <form name="searchform" action="/wiki/index.php/Special:Search" id="searchform">
+	      <input accesskey="f" id="searchInput" name="search" type="text">
+	      <input value="进入" type="submit" name="go" class="searchButton">&nbsp;<input value="搜索" type="submit" name="fulltext" class="searchButton">
+	    </form>
+	  </div>
+	</div>
+	<div class="portlet" id="p-tb">
+	  <h5>工具</h5>
+	  <div class="pBody">
+	    <ul>
+	      <li id="t-whatlinkshere"><a href="zh.transwiki.org/wiki/index.php?title=Special%3AWhatlinkshere&amp;target=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">链入页面</a></li>
+	      <li id="t-recentchangeslinked"><a href="zh.transwiki.org/wiki/index.php?title=Special%3ARecentchangeslinked&amp;target=%E8%B5%84%E6%BA%90%E6%8F%8F%E8%BF%B0%E6%A1%86%E6%9E%B6%EF%BC%88RDF%EF%BC%89%EF%BC%9A%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95_%E6%8E%A8%E8%8D%90%E6%A0%87%E5%87%86">链出更改</a></li>
+	      
+	      
+	      
+	      <li id="t-upload"><a href="zh.transwiki.org/wiki/index.php/Special:Upload">上载文件</a></li>
+	      <li id="t-specialpages"><a href="zh.transwiki.org/wiki/index.php/Special:Specialpages">特殊页面</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+		
+      </div>
+<!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+    
+      <div id="footer"><b>开放翻译计划(OTP)由<a href="www.w3china.org/">中国万维网联盟(W3CHINA)</a>主办。</b></div>
+    </div>
+    <div align="right">
+<script language="JavaScript">var __cc_uid="wiki";</script><script language="JavaScript" src="test.w3china.org/coun/count.js"></script>
+</div>
+  </body>
+</html>

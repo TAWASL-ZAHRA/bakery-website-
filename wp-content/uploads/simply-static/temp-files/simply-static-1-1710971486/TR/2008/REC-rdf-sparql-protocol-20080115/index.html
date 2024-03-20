@@ -1,0 +1,2304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="fa" dir="rtl" xmlns="http://www.w3.org/1999/xhtml" lang="fa">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>RDF برای SPARQL پروتکل</title>
+    <style type="text/css"> /*<![CDATA[*/
+  pre.pbnf {
+           border:1px dotted #cbb7fe;  
+           background-color: #e9feb7;
+           padding:5px;
+           width: 50%;
+           margin-right: auto;
+           color: black;} 
+  table {border: 2px black solid}
+  span.hide {display: none}
+  span.todo {color: red; font-weight: bold}
+  span.warn {color: red;}
+  p.desc {margin-left: 5%}
+  p.capt {font-size: 75%; text-decoration: underline;}
+  div.sig, span.sig {margin-left: 5%;
+        padding: 1px;
+        border: 2px solid #5080a6; background-color: #e9feb7;
+        color: black;} 
+  dt {font-weight: bold;}
+  span.note { font-size: 75%; }
+  span.mci, span.ci, span.mxc {color: #655722; text-decoration: underline; text-transform: uppercase}
+  pre.cvs-id {color: gray}
+  code {text-decoration: underline}
+  .req
+  {	background-color: #fff;
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	overflow: auto;
+	padding: 1em;
+  	border-color: #fc3;
+  }
+  .resp {	background-color: #fff;
+	border-width: 1px 1px 1px 1px;
+	border-style: solid;
+	overflow: auto;
+	padding: 1em;
+  	border-color: #ab5;}
+
+  .query {	background-color: #fff;
+  	border-width: 1px 1px 1px 1px;
+  	border-style: solid;
+  	overflow: auto;
+  	padding: 1em;
+  	border-color: #7cc;}
+  .pair {border:2px solid black;}
+/*]]>*/</style>
+    <link rel="stylesheet" type="text/css" href="www.persianw3c.org/TR/2008/REC-rdf-sparql-protocol-20080115/W3C-REC.css">
+  </head>
+
+  <body>
+    <div class="head">
+      <p>
+        <a href="www.w3.org/">
+          <img src="www.persianw3c.org/TR/2008/REC-rdf-sparql-protocol-20080115/w3c_home.png" alt="W3C" height="48" width="72">
+        </a>
+      </p>
+      <h1 id="main">پروتکل SPARQL برای RDF</h1>
+
+      <h2><a name="w3c-doctype" id="w3c-doctype">توصیه <span lang="en-us">W3C</span> 
+		در 15 ژانویه 2008</a></h2>
+      <dl>
+     <dt>این نسخه:</dt>
+        <dd><a href="www.w3.org/TR/2008/REC-rdf-sparql-protocol-20080115/">http://www.w3.org/TR/2008/REC-rdf-sparql-protocol-20080115</a></dd>
+      <dt>آخرین نسخه منتشر شده:</dt>
+        <dd><a href="www.w3.org/TR/rdf-sparql-protocol/">http://www.w3.org/TR/rdf-sparql-protocol</a></dd>
+
+      <dt>نگارش قبل:</dt>
+        <dd><a href="www.w3.org/TR/2007/PR-rdf-sparql-protocol-20071112/">http://www.w3.org/TR/2007/PR-rdf-sparql-protocol-20071112</a></dd>
+
+      <dt>ویراستارها:</dt>
+	<dd>کندل گرنت کلارک، <span lang="en-us">&lt;</span><a href="clarkparsia.com/">Clark &amp; Parsia LLC</a> 
+	،&lt;<a href="mailto:kendall@monkeyfist.com">kendall@monkeyfist.com</a>&nbsp; 
+
+	</dd>
+	<dd>لی فیجنبان، &lt;<a href="mailto:lee@thefigtrees.net">lee@thefigtrees.net</a>&gt;، کارشناس دعوت شده 
+	</dd>
+	<dd>الیاس توریس، <span lang="en-us">&lt;</span><a href="www.ibm.com/us/">IBM
+    Corporation</a>
+	،&lt;<a href="mailto:eliast@us.ibm.com">eliast@us.ibm.com</a>&nbsp;
+	</dd>
+      </dl>
+
+<p>لطفا برای این سند به <strong>
+<a href="www.w3.org/2001/sw/DataAccess/protocol-errata.html">اشتباهات</a></strong> 
+مراجعه نمایید، که می تواند شامل برخی از اشکالات اساسی باشد.</p>
+
+<p>همچنین <strong>
+<a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql-protocol">
+ترجمه ها</a></strong> را ببینید.</p>
+
+<p>كليه ‌ی <a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#Copyright">
+حقوق چاپ و نشر</a> 2006-2007 <abbr title="World Wide Web Consortium"> <a href="www.w3.org/">W3C</a> كه شامل</abbr>
+<a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#Legal_Disclaimer">تعهدات</a>،
+<a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#W3C_Trademarks">علامت 
+تجاری</a> و
+<a href="www.w3.org/Consortium/Legal/2002/copyright-documents-20021231">استفاده از سند</a> می‌ باشد، برای<abbr title="Massachusetts Institute of Technology"> (<a href="www.csail.mit.edu/index.php">MIT</a><span lang="en-us">,</span> </abbr> <a href="www.ercim.org/"><acronym title="European Research Consortium
+    for Informatics and Mathematics">ERCIM</acronym></a><abbr lang="fr" title="Institut National de Recherche en Informatique et Automatique">, </abbr> <a href="www.keio.ac.jp/">Keio</a>)
+<abbr lang="fr" title="Institut National de Recherche en Informatique et Automatique">
+محفوظ است</abbr>.</p>
+
+<p class="copyright" dir="ltr"><a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#Copyright">Copyright</a> &#169; 2006-2007 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#174;</sup> (<acronym title="Massachusetts Institute of Technology"><a href="www.csail.mit.edu/index.php">MIT</a></acronym>, <a href="www.ercim.org/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/2002/ipr-notice-20021231#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/2002/copyright-documents-20021231">document use</a> rules apply.</p>
+
+    </div>
+    <hr title="Separator for header">
+    <div>
+      <h2 class="notoc">
+        <a name="abstract">چکیده</a>
+      </h2>
+
+  <p>پروتکل SPARQL و زبان پرس و جوی RDF<font color="#F8F8F8">ا</font> (<acronym title="SPARQL Protocol And RDF Query Language">SPARQL</acronym>) یک زبان پرس و جو و پروتکلی برای
+	<a href="www.w3.org/RDF/">RDF</a> است. این سند پروتکل SPARQL را مشخص 
+	می کند؛ که جهت توصیف وسیله ای برای انتقال جستجوهای <acronym title="SPARQL Protocol And RDF Query Language">SPARQL به سرویس پردازش جستجو و برگشت نتایج جستجو به آنچه درخواست شده، از</acronym> <a href="www.w3.org/TR/wsdl20/">WSDL 2.0</a> 
+	استفاده می نماید. این پروتکل توسط&nbsp;
+	<a href="www.w3.org/2001/sw/DataAccess/">کار گروه دسترسی داده های W3C 
+	RDF</a><font color="#F8F8F8">ا</font> (DAWG) توسعه داده شده بود،&nbsp; بخشی 
+	از <a href="www.w3.org/2001/sw/">فعالیت وب معنایی</a> بطوریکه در
+	<a href="www.w3.org/2001/sw/Activity.html">دستور فعالیت</a> تشریح شده است.</p>
+
+    </div>
+<div>
+<h2 id="status">وضعیت این سند</h2>
+
+<p><em style="font-style: normal">این بخش وضعیت این سند را در هنگام انتشارش، 
+توصیف می کند. اسناد دیگر ممکن است جانشین این سند شوند. لیستی از انتشارات موجود W3C 
+و آخرین بازبینی این گزارش تخصصی می تواند در <a href="www.w3.org/TR/">
+فهرست گزارشهای تخصصی</a> واقع در http://www.w3.org/TR یافت شود.</em></p>
+
+<p>این یک <a href="www.w3.org/2005/10/Process-20051014/tr.html#RecsW3C">
+توصیه W3C</a> است.</p>
+
+<p>این سند توسط اعضای W3C، توسط توسعه دهندگان نرم افزار و توسط گروههای دیگر W3C 
+و نیز توسط اشخاص علاقه مند و ذینفع مورد بازبینی قرار گرفته است، و توسط مدیریت 
+بعنوان یک توصیه W3C مورد تایید قرار گرفته است. که سندی پایدار است و می تواند 
+بصورت مرجع مهم یا نقل شده از سند دیگر استفاده شده باشد. نقش W3C در ایجاد توصیه 
+در راستای جلب توجه به مشخصات و جهت ترویج توسعه همه جانبه اش می باشد. این کاربرد 
+گرایی و یکپارچگی عملیات را در وب می افزاید.</p>
+
+<p>نکاتی در مورد این سند می بایستی به <a href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>، 
+لیستی از نامه های فرستاده شده به
+<a href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">آرشیو 
+عمومی</a> ارسال شده باشد. پرسشها و نکاتی راجع به SPARQL که ربطی به این خصوصیات 
+ندارند، شامل الحاقات و خصیصه هایی هستند که می تواند در لیست ایمیلهای ارسالی به
+<a href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>، (<a href="lists.w3.org/Archives/Public/public-sparql-dev/">آرشیو 
+عمومی</a>) مورد بحث قرار گرفته باشند.</p>
+
+<p>این سند توسط <a href="www.w3.org/2001/sw/DataAccess/">کار گروه دسترسی 
+داده های RDF</a> ارایه شد، که بخشی از
+<a href="www.w3.org/2001/sw/Activity.html">فعالیت وب معنایی W3C</a> می باشد. 
+نشر نخست این سند بعنوان پیش نویس کار در 14 ژانویه 2005 به اتمام رسید و کار گروه 
+دارای شماری از
+<a href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">نکات 
+دریافت شده</a>&nbsp; نشانی داده شده و
+<a href="www.w3.org/2001/sw/DataAccess/issues.html">انتشارهای</a> پس از آن 
+است. در آنجا <a href="#chlog">سرمقاله تغییر یافته</a> پس از
+<a href="www.w3.org/TR/2007/PR-rdf-sparql-protocol-20071112/">توصیه 
+پیشنهاد شده نوامبر 2007</a> موجود است.</p>
+
+<p id="implExp">
+<a href="www.w3.org/2001/sw/DataAccess/impl-report-protocol.html">گزارش کاربرد 
+پروتکل SPARQL</a> کار گروه نشان دهنده اهدافی برای کاربردهای قابلیت عمل بینابینی 
+مجموعه در <a href="www.w3.org/TR/2006/CR-rdf-sparql-protocol-20060406/">
+کاندید توصیه آوریل 2006</a> به نتیجه رسیده می باشد.</p>
+
+<p><span class="postponed">کار گروه دسترسی داده ها دارای 12 برآمد به تعویق 
+انداخته شده می باشد که شامل
+<a href="www.w3.org/2001/sw/DataAccess/issues.html#countAggregate">توابع جمع 
+شده</a> و <a href="www.w3.org/2001/sw/DataAccess/issues.html#update">یک زبان 
+بهنگام درآوری</a> است.</span></p>
+
+<p>این سند توسط یک گروه عملیاتی تحت
+<a href="www.w3.org/Consortium/Patent-Policy-20040205/">سیاست آشکار 5 
+فوریه 2004 W3C</a> تهیه شد. W3C یک
+<a rel="disclosure" href="www.w3.org/2004/01/pp-impl/35463/status">لیست 
+عمومی از هرگونه آشکارسازهای مجاز</a> در رابطه با قابلیتهای تحویل از گروه ساخته 
+است؛ که آن صفحه همچنین دربردارنده‌ی دستورالعمل ها برای آشکارسازی مجاز است. فردی 
+که دارای شناخت واقعی از حق امتیازی است که فرد بر این باور است که دارای&nbsp;
+<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">
+اداعا(ها)ی ذاتی</a> می باشد بایستی اطلاعات مطابق با
+<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">
+قسمت 6 از سیاست آشکار W3C</a> را آشکار سازد.</p>
+</div>
+    <hr>
+<div class="toc">
+
+<h2><a name="contents">جدول محتویات</a></h2>
+
+    <ul class="toc">
+      <li class="tocline1"><a class="tocxref" href="#intro">1. مقدمه</a></li>
+
+      <li class="tocline1">
+<a class="tocxref" href="#ap">2. پروتکل SPARQL</a>
+	<ul class="toc">
+          <li class="tocline2">
+<a href="#SparqlQuery" class="tocxref">2.1 </a>
+			<a href="#SparqlQuery">واسط</a>
+			<a href="#SparqlQuery" class="tocxref"> <code>SparqlQuery</code> </a>&nbsp;<ul class="toc">
+                  <li class="tocline3">2.1.1 عملیات<code> query</code> </li>
+                  <li class="tocline3">2.1.2 <code>query</code> در پیغام</li>
+                  <li class="tocline3">2.1.3 <code>query</code> خارج از پیغام</li>
+
+                  <li class="tocline3">2.1.4 پیامهای اشتباه<code> query</code> </li>
+              </ul>
+          </li>
+          <li class="tocline2">
+<a class="tocxref" href="#query-bindings-http">
+			2.2&nbsp; الزامات HTTP</a>
+              <ul class="toc">
+                  <li class="tocline3">2.2.1&nbsp; نمونه های HTTP<ul class="toc">
+
+                          <li class="tocline4">2.2.1.1 <code>SELECT</code> با 
+							سرویس تهیه شده‌ی مجموعه داده یRDF</li>
+                          <li class="tocline4">2.2.1.2 <code>SELECT</code> با 
+							مجموعه داده یRDF</li>
+                          <li class="tocline4">2.2.1.3 <code>CONSTRUCT</code> با 
+							مجموعه داده ی ساده‌ی RDF و انتقال محتوای HTTP</li>
+
+                          <li class="tocline4">2.2.1.4 <code>ASK</code> با 
+							مجموعه داده ی ساده‌ی RDF</li>
+                          <li class="tocline4">2.2.1.5 <code>DESCRIBE</code> با 
+							مجموعه داده ی ساده‌ی RDF</li>
+                          <li class="tocline4">2.2.1.6 <code>SELECT</code> با 
+							مجموعه داده ی پیچیده‌ی RDF</li>
+
+                          <li class="tocline4">2.2.1.7 <code>SELECT</code> با 
+							جستجوی تنهای مجموعه داده ی RDF</li>
+                          <li class="tocline4">2.2.1.8 <code>SELECT</code> با 
+							مجموعه داده ی مبهم RDF</li>
+                          <li class="tocline4">2.2.1.9 <code>SELECT</code> با 
+							جستجوی معیوب ناقص</li>
+
+                          <li class="tocline4">2.2.1.10 <code>SELECT</code> با 
+							درخواست جستجوی رد شده‌ی معیوب</li>
+                          <li class="tocline4">2.2.1.11 جستجوی بسیار بلند <code>SELECT</code> 
+							کاربرد الزام آور POST</li>
+                          <li class="tocline4">2.2.1.12 <code>SELECT</code> با 
+							بین المللی کردن</li>
+
+								  <li class="tocline4">2.2.1.13 <code>SELECT</code> 
+									با queryHttpPost الزام آور ورودی XML</li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li class="tocline2">
+<a class="tocxref" href="#query-bindings-soap">
+			2.3 الزامات SOAP</a>
+
+              <ul class="toc">
+                  <li class="tocline3">2.3.1 نمونه های SOAP </li>
+              </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li class="tocline1">
+<a class="tocxref" href="#policy">3. سیاست ملاحظات</a>
+
+        <ul class="toc">
+          <li class="tocline2"><a class="tocxref" href="#policy-security">3.1 
+			امنیت</a></li>
+        </ul>
+      </li>
+
+		<li class="tocline1"><a class="tocxref" href="#conformance">4. تطبیق</a></li>
+
+      <li class="tocline1">
+<a class="tocxref" href="#ref">5. منابع</a>
+
+        <ul class="toc">
+          <li class="tocline2"><a class="tocxref" href="#references-normative">
+			5.1 اصولی</a></li>
+          <li class="tocline2">
+			<a class="tocxref" href="#references-informative">5.2 آموزنده</a>
+</li>
+        </ul>
+      </li>
+
+      <li class="tocline1">
+        <a class="tocxref" href="#ack">6. سپاسگزاریها</a>      </li>
+
+    </ul>
+</div>
+
+    <h2>
+      <a id="intro" name="intro">1. </a>مقدمه
+    </h2>
+
+    <p>این سند (که بخودش به عنوان &quot; پروتکل SPARQL برای RDF" اشاره می 
+	نماید) پروتکل SPARQL، وسیله ای از انتقال جستجوهای
+    SPARQL بنابر جستجوی کاربران را به پردازشگر جستجوها توصیف می کند. پروتکل SPARQL 
+	جهت سازگاری با <a href="www.w3.org/TR/rdf-sparql-query/">زبان پرس و 
+	جوی SPARQL برای RDF</a>&nbsp; طراحی شده است [SPARQL<span lang="en-us">]</span>. 
+	پروتکل SPARQL به دو صورت تشریح شده است: نخست، بصورت یک واسط مختصر صرف نظر از 
+	هر تحقق محسوس، اجرا یا اتصال به پروتکل دیگری؛ دوم، همچون مقید سازی HTTP 
+	و SOAP از این واسط. این سند، بخوبی به اسناد WSDL و طرح W3C XML مرتبط شده 
+	است، در درجه نخست برای توسعه دهنده های نرم افزار ذینفع در اجرای سرویس های 
+	جستجو و سمت کاربران طراحی شده است.</p>
+
+    <p>هنگامی که در این سند از واژه های <strong>must</strong>,
+    <strong>must not</strong>, <strong>should</strong>, <strong>should
+    not</strong>, <strong>may</strong>
+    و <strong>recommended</strong>، و واژه های ظاهر شده بصورت متن پیچیده استفاده 
+	می‌شود، آنها بایستی همچون آنچه در RFC2119] <a href="www.faqs.org/rfcs/rfc2119.html">RFC 2119</a><span lang="en-us">]</span> 
+	تشریح شده، تفسیر شده باشند.</p>
+    
+    
+    <p>هنگامی که گزیده های محتویات این سند از دیگر اسناد، شامل واسط های WSDL و 
+	طرح XML است، از پیشوندهای فضای نامی و <span lang="en-us">URI</span> های فضای 
+	نامی استفاده می‌نماید:</p>
+      
+    <table border="0" width="50%" dir="ltr">
+        <tr>
+            <th>پیشوند</th>
+            <th>URI فضای نامی </th>
+        </tr>   
+        <tr>
+
+            <td><code>st</code></td>
+            <td><code>http://www.w3.org/2005/09/sparql-protocol-types/#</code></td>
+        </tr>
+        <tr>
+            <td><code>xs</code></td>
+            <td><code>http://www.w3.org/2001/XMLSchema</code></td>
+        </tr>
+
+        <tr>
+            <td><code>vbr</code></td>
+            <td><code>http://www.w3.org/2005/sparql-results#</code></td>
+        </tr>
+        <tr>
+            <td><code>rdf</code></td>
+            <td><code>http://www.w3.org/1999/02/22-rdf-syntax-ns#</code></td>
+
+        </tr>
+        <tr>
+            <td><code>whttp</code></td>
+            <td><code>http://www.w3.org/2006/01/wsdl/http</code></td>
+        </tr>
+        <tr>
+            <td><code>wsoap</code></td>
+
+            <td><code>http://www.w3.org/2006/01/wsdl/soap</code></td>
+        </tr>
+        <tr>
+            <td><code>soap</code></td>
+            <td><code>http://www.w3.org/2003/05/soap-envelope</code></td>
+        </tr>
+        <tr>
+
+            <td><code>wsdlx</code></td>
+            <td><code>http://www.w3.org/2005/08/wsdl-extensions</code></td>
+        </tr>
+        <tr>
+            <td><code>tns</code></td>
+            <td><code>http://www.w3.org/2005/08/sparql-protocol-query/#</code></td>
+        </tr>
+
+    </table>
+
+    <h2> <a id="ap" name="ap">2. پروتکل SPARQL </a>&nbsp;</h2>
+
+     <p>این مجموعه ای از اسنادی است که شامل خصوصیات پروتکل SPARQL می باشند:</p>
+
+     <dl>
+         <dt>&nbsp;پروتکل SPARQL برای RDF</dt>
+
+          <dd>سند رایجی که خصوصیات اصلی پروتکل SPARQL در زبان خواندنی - انسانی 
+			است.</dd>
+
+         <dt><a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">&nbsp;پروتکل 
+			SPARQL توصیف WSDL 2.0</a></dt>
+         <dd>توصیف اصلی پروتکل SPARQL مورد استفاده WSDL 2.0.</dd>
+
+          <dt><a href="www.w3.org/2007/SPARQL/protocol-types.xsd">انواع 
+			پروتکل SPARQL</a></dt>
+          <dd>سند طرح XML که بصورت اساسی انواع استفاده شده در پروتکل SPARQL را 
+			تعریف می کند.</dd>
+
+    </dl>
+
+   <p>محتویات پروتکل <span lang="en-us">S</span>PARQL یک واسط ، <code>SparqlQuery</code>، 
+	که در گردش محتویات یک عملیات&nbsp;
+   <code>query</code> است. پروتکل SPARQL
+	<a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">بطور مطلق تشریح 
+	شده</a> با <a href="www.w3.org/TR/wsdl20/">WSDL 2.0</a>&nbsp; [WSDL2] برحسب وب سرویسی که 
+	واسط کاربردهایش، انواع، نواقص و عملیات، بخوبی با HTTP و SOAP مقید سازی شده 
+	است. یادداشتی که در حین استفاده این سند از&nbsp;&nbsp; WSDL 2.0 به تشریح 
+	پروتکل
+   SPARQL می پردازد، در آن بدون تعهد روی هر بخش از تحقق پذیری جهت هر راهبرد 
+	اجرای ویژه ای، شامل استفاده از هر کتابخانهWSDL یا چارچوب زبان برنامه نویسی 
+	بهره می گیرد.</p>
+   
+    <h3><a id="SparqlQuery" name="SparqlQuery">2.1 واسط SparqlQuery </a></h3>
+
+   
+    <h4 id="query-operation">2.1.1 عملیات <code>query</code> </h4>
+
+    <p><code>SparqlQuery</code> تنها واسط متعلق به پروتکل است. آن شامل عملی 
+	همچون <code>query</code> است که جهت انتقال یک
+	<a href="www.w3.org/2001/sw/DataAccess/rq23/#defn_SPARQLquery">رشته 
+	جستجوی SPARQL</a> استفاده شده و بطور اختیاری، توصیفی از یک
+	<a href="www.w3.org/2001/sw/DataAccess/rq23/#rdfDataset">مجموعه داده 
+	ی 
+	RDF</a> را می رساند.</p>
+
+    <p>عملیات <code>query</code> بصورت یک
+	<a href="www.w3.org/TR/wsdl20-adjuncts/#in-out">نمونه تبادل پیغام 
+	In-Out</a> توصیف شده است [WSDL-Adjuncts]. محدودیتهای نمونه تبادل پیغام In-Out 
+	بصورت ذیل موجود است:</p>
+
+    <blockquote>
+      <p>این نمونه شامل دو پیغام صحیح، بترتیب زیر می باشد:</p>
+      <ol>
+
+	<li>
+	  <p>یک پیغام:</p>
+	  <ul>
+	    <li>
+	      <p>بوسیله یک جزء مرجع پیغام واسط متعلق به {message label} نشان داده 
+			شده است "In" و {direction} است "in"</p>
+	    </li>
+	    <li>
+	      <p>مطابق برخی گره N دریافت شده است</p>
+
+	    </li>
+	  </ul>
+	</li>
+	<li>
+	  <p>یک پیغام:</p>
+	  
+	  <ul>
+	    <li>
+	      <p>بوسیله یک جزء مرجع پیغام واسط متعلق به {message label} نشان داده 
+			شده است "Out" و {direction} است "out"</p>
+
+	    </li>
+	    <li>
+	      <p>فرستاده شده به گره N</p>
+	    </li>
+	  </ul>
+	</li>
+      </ol>
+      <p>این نمونه از دستور استفاده می نماید <b>
+		<a href="www.w3.org/TR/wsdl20-adjuncts/#fault-replacement">2.2.1 
+		پیغام جایگزین های نقص</a></b>.</p>
+
+    </blockquote>
+
+    <p>این واسط و عملکردش در جزء زیرین&nbsp;
+    WSDL 2.0 توصیف شده اند (مطابق <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a> 
+	که شامل اعلانهای فضای نامی مربوطه می باشد):</p>
+
+<div class="excerpt">
+	<div dir="ltr">
+		<pre>&lt;!-- Abstract SparqlQuery Interface -->
+&lt;interface name="<b>SparqlQuery</b>" styleDefault="<b>http://www.w3.org/2006/01/wsdl/style/iri</b>">
+
+   &lt;!-- the Interface Faults -->
+   &lt;fault name="<b>MalformedQuery</b>" element="<b>st:malformed-query</b>"/>
+   &lt;fault name="<b>QueryRequestRefused</b>" element="<b>st:query-request-refused</b>"/>
+
+   &lt;!-- the Interface Operation -->
+   &lt;operation name="<b>query</b>" pattern="<b>http://www.w3.org/2006/01/wsdl/in-out</b>">
+
+      &lt;documentation>The operation is used to convey queries and their results from clients to services and back
+      again.&lt;/documentation>
+
+      &lt;input messageLabel="<b>In</b>" element="<b>st:query-request</b>"/>
+      &lt;output messageLabel="<b>Out</b>" element="<b>st:query-result</b>"/>
+
+      &lt;!-- the interface faults are out faults -->
+      &lt;outfault ref="tns:MalformedQuery" messageLabel="Out"/>
+      &lt;outfault ref="tns:QueryRequestRefused" messageLabel="Out"/>
+   &lt;/operation>
+
+&lt;/interface></pre>
+</div>
+	</div>
+
+<p class="capt"><a name="excerpt-1.0">گلچین تکه 1.0 WSDL 2.0 </a></p>
+
+<h4 id="query-In-Message">2.1.2 <code>query</code> در پیغام</h4>
+
+      <p> کاملا، محتویات موجود در پیغام از عملیات <code>query</code> متعلق به <code>SparqlQuery</code> 
+		واسطی از یک نوع پیچیده طرح XML است، <code>st:query-request</code> 
+		درExcerpt 1.0 ترکیبی بیشتر از دو قسمت فراخوانده شده است: یک
+		<a href="www.w3.org/2001/sw/DataAccess/rq23/#grammar">رشته جستجوی 
+		SPARQL</a>؛ و توصیفهای صفر یا یک
+		<a href="www.w3.org/2001/sw/DataAccess/rq23/#rdfDataset">مجموعه 
+		داده RDF</a>. رشته جستجوی SPARQL، توسط یک نوع <code>query</code>&nbsp; 
+		شناسایی شده، توسط [SPARQL]
+		<a href="www.w3.org/TR/rdf-sparql-query/#grammar">تعریف شده</a> 
+		است بطوریکه "رشته ای از کاراکترها در زبان مشخص شده توسط دستور زبان 
+		[SPARQL] با ایجاد جستجو آغاز شود". توصیف مجموعه داده های RDF ترکیبی از 
+		صفر یا یکی از رسم های ترکیبی پیش فرض RDF با ترکیب RDF
+      از رسم های مشخص شده ی RDF توسط صفر یا انواع بیشتر <code>default-graph-uri</code>&nbsp; &#8212; 
+		است و توسط صفر یا رسم های نام برده ی RDF، بوسیله صفر یا انواع بیشتر <code>named-graph-uri</code> 
+		شناسایی شده ‌اند. اینها بترتیب مطابق با کلیدواژه های
+      <code>FROM</code> و <code>FROM NAMED</code> در [SPARQL] هستند.</p>
+
+
+		<p>انواع اینها در طرح گسسته XML ذیل، مطابق <a href="www.w3.org/2007/SPARQL/protocol-types.xsd">protocol-types.xsd</a>: </p>
+
+<div class="excerpt">
+	<div dir="ltr">
+		<pre>&lt;xs:element name="<b>query-request</b>">
+  &lt;xs:complexType>
+    &lt;xs:sequence>
+      &lt;xs:element minOccurs="1" maxOccurs="1" name="<b>query</b>" type="xs:string">
+       &lt;xs:annotation>
+	      &lt;xs:documentation>query is an xs:string constrained by the language definition,
+         http://www.w3.org/TR/rdf-sparql-query/#grammar, as "a sequence of characters in 
+         the language defined by the [SPARQL] grammar, starting with the Query production".&lt;/xs:documentation>
+       &lt;/xs:annotation>
+      &lt;/xs:element>
+      &lt;xs:element minOccurs="0" maxOccurs="unbounded" name="<b>default-graph-uri</b>" type="xs:anyURI"/>
+      &lt;xs:element minOccurs="0" maxOccurs="unbounded" name="<b>named-graph-uri</b>" type="xs:anyURI"/>
+    &lt;/xs:sequence>
+  &lt;/xs:complexType>
+
+&lt;/xs:element></pre>
+</div>
+	</div>
+
+		<p class="capt"><a name="excerpt-1.1">گلچین طرح گسسته 1.1 XML </a></p>
+
+
+      <h5><a name="specify-dataset">تعیین یک مجموعه داده RDF </a></h5>
+
+    <p>مجموعه داده RDF هر یک می تواند در یک جستجوی تعیین شده [SPARQL] کلید واژه 
+	های <code>FROM</code> و <code>FROM NAMED</code>
+
+    را مورد استفاده قرار دهد؛ یا می تواند در پروتکل تشریح شده در این سند تعیین 
+	شده؛ یا می تواند در هر دو رشته ی جستجو و در پروتکل تعیین شده باشد.</p>
+
+    <h5><a name="resolve-dataset">حل یک مجموعه داده ی مبهم RDF</a></h5>
+
+<p>در مورد جای هر دوی جستجو و پروتکل یک مجموعه داده ی RDF
+      تعیین می‌شود، اما یکسان با مجموعه داده ی RDF نیست، مجموعه داده ی تعیین شده 
+در پروتکل <strong>می بایستی</strong> مجموعه داده ی RDF مورد استفاده ی عملیات <code>query</code> 
+متعلق به <code>SparqlQuery</code> باشد.</p>
+
+
+<h5><a name="reject-dataset">برگشت درخواستهای جستجو به مجموعه داده های RDF</a></h5>
+
+<p>یک <a href="#conformant-sparql-protocol-service">سرویس پروتکل اعطای SPARQL</a>
+<strong>می تواند</strong> یک مجموعه داده ی پیش فرض RDF را در برابر هر یک از 
+درخواستهای جستجوی SPARQL اگر در آنجا اجرا نشده باشند مجموعه داده تعیین شده ی RDF 
+را در پروتکل یا در درخواست جستجو تهیه نماید. یک
+<a href="#conformant-sparql-protocol-service">سرویس پروتکل اعطای SPARQL</a>
+<strong>می تواند</strong> پردازش هر درخواست جستجویی که قادر به تعیین مجموعه داده RDF 
+نباشد را نپذیرد. سرانجام، یک سرویس <a href="#conformant-sparql-protocol-service">
+پروتکل اعطای SPARQL</a> <strong>می تواند</strong> پردازش هر درخواست جستجوی مغایر 
+با هر مجموعه داده تعیین شده ی RDF را نپذیرد. پیغامهای نقص 2.1.4 <code>query</code>، <a href="#query-req-refused-fault"><code>QueryRequestRefused</code></a> را ببینید.</p>
+
+
+<h5><a name="base-iri">تعیین&nbsp; Base IRI</a></h5>
+
+<p>کلید واژه ی <code>BASE</code> در رشته ی جستجو Base
+IRI استفاده شده جهت رفع خویشاوندی IRIs را با
+<a href="www.ietf.org/rfc/rfc3986.txt">شناسه ماخذ یکسان (URI): ترکیب نحوی 
+کلی</a> [<a href="#rfc3986">RFC3986</a>] بخش 5.1.1 تعیین می نماید، "مبنای جاسازس 
+شده ی URI
+در محتوا". بخش 5.1.2, "مبنای URI مطابق هویت مختصر&quot;چگونگی مبنای IRI را که می 
+تواند ناشی از سند مختصر باشد را تعیین می نماید، همچون یک پوشش&nbsp; SOAP با یک 
+رهنمود xml:base. پروتکل URI SPARQLهای غیر مرجع را مورد جستجو قرار نمی دهد 
+بنابراین بخش 5.1.3 را درخواست نمی کند.  سرانجام، مطابق بخش 5.1.4, سرویس های 
+پروتکل SPARQL می بایستی مبنای مالکیت&nbsp; URI خوشان را تعیین کنند، که <strong>
+می تواند</strong> سرویس invocation URI باشد.</p>
+
+	<h4><a name="query-out-message">2.1.3&nbsp; پیغام خروجی<code> query</code></a></h4>
+
+<p>در کل، محتویات پیغام خروجی عملیات <code>query</code> متعلق به <code>SparqlQuery</code> 
+نمونه ای از یک نوع پیچیده ی XML Schema است، <code>query-result</code> فراخوانده 
+شده در گزیده ی 1.2, ترکیب هر دو:</p>
+
+<ol>
+<li>یک <a href="www.w3.org/2001/sw/DataAccess/rf1/#defn-srd">سند نتایج 
+</a>SRD<span lang="en-us">] </span>
+<a href="www.w3.org/2001/sw/DataAccess/rf1/#defn-srd">SPARQL</a>] (جهت جستجوی SPARQL برای اشکال جستجوی RDF
+<a href="www.w3.org/2001/sw/DataAccess/rq23/#select">برگزیدن</a> و
+<a href="www.w3.org/2001/sw/DataAccess/rq23/#ask">پرسیدن</a>); یا،</li>
+
+<li>یک رسم RDF<span lang="en-us">] </span>RDF- مفاهیم] مرتب شده، برای نمونه، در
+<a href="www.w3.org/TR/rdf-syntax-grammar/">ترکیب نحوی </a>&nbsp;RDF-Syntax<span lang="en-us">]
+</span><a href="www.w3.org/TR/rdf-syntax-grammar/">RDF/XML</a>]، 
+یا یک رسم مرتب برابر RDF، جهت جستجوی SPARQL برای اشکال جستجوی
+<a href="www.w3.org/2001/sw/DataAccess/rq23/#describe">توصیف</a>&nbsp; و
+<a href="www.w3.org/2001/sw/DataAccess/rq23/#construct">طرح ریزی</a> RDF).</li>
+</ol>
+
+<p>نوع <code>query-result</code> در این W3C XML
+Schema گسسته، مطابق <a href="www.w3.org/2007/SPARQL/protocol-types.xsd">protocol-types.xsd</a> 
+تعیین شده است:
+</p>
+
+<div class="excerpt">
+	<div dir="ltr">
+		<pre>&lt;xs:element name="<b>query-result</b>">
+      &lt;xs:annotation>
+          &lt;xs:documentation>The type for serializing query results,
+          either as XML or RDF/XML.&lt;/xs:documentation>
+      &lt;/xs:annotation>
+      &lt;xs:complexType>
+          &lt;xs:choice>
+              &lt;xs:element maxOccurs="1" ref="<b>vbr:sparql</b>"/>
+              &lt;xs:element maxOccurs="1" ref="<b>rdf:RDF</b>"/>
+          &lt;/xs:choice>
+      &lt;/xs:complexType>
+
+&lt;/xs:element></pre>
+</div>
+	</div>
+<p class="capt"><a name="excerpt-1.2">گلچین 1.2 XML Schema گسسته</a></p>
+
+	<h4><a name="fault-messages">2.1.4&nbsp; پیغامهای نقص<code> query</code></a></h4>
+
+<p>[WSDL2- اضافات] دستورات انتشار اشکالات مجزا که چگونگی نواقص عملیات و فعل و 
+انفعال پیامها را تعریف می‌نمایند را مشخص می‌کند. عمل <code>query</code> دستور
+<a href="www.w3.org/TR/wsdl20-adjuncts/#fault-replacement">پیغام تغییرات 
+نقص</a> را بکار می برد:</p>
+
+<blockquote>هر پیام بعدی نخست در نمونه <strong>می‌تواند</strong> با یک پیغام نقص 
+	جایگزین شده باشد، که <strong>می‌بایستی</strong> جهت یکسانی داشته باشد. پیغام 
+	نقص <strong>بایستی</strong> به مقصد اتصال مشابهی تحویل داده شده باشد بطوریکه 
+	جایگزین آن پیغام شود، جز در صورتی که به شکل دیگری با یک توسعه یا گسترش معتبر 
+	تعیین شده باشد. اگر در آنجا مسیری به این اتصال موجود نیست، اشکال <strong>
+	بایستی</strong> از میان رفته باشد.</blockquote>
+
+<p>بدین گونه، عملیات <code>query</code> نگهداشته شده در واسط <code>SparqlQuery</code> 
+می‌تواند بازگردد، بجای <a href="#query-out-message">پیغام Out</a>، هر یک از 
+پیغامهای <code>MalformedQuery</code> یا
+
+<code>QueryRequestRefused</code>، که در این شکل گسسته ی XML Schema از <a href="www.w3.org/2007/SPARQL/protocol-types.xsd">protocol-types.xsd</a> 
+تعیین شده اند:</p>
+
+<div class="excerpt">
+	<div dir="ltr">
+		<pre>&lt;xs:element type="xs:string" name="<b>fault-details</b>">
+    &lt;xs:annotation>
+      &lt;xs:documentation> This element contains human-readable information about the fault
+        returned by the SPARQL query processing service.&lt;/xs:documentation>
+    &lt;/xs:annotation>
+  &lt;/xs:element>
+    &lt;xs:element name="<b>malformed-query</b>">
+      &lt;xs:complexType>
+          &lt;xs:all>&lt;xs:element minOccurs="0" maxOccurs="1" ref="<b>st:fault-details</b>"/>&lt;/xs:all>
+      &lt;/xs:complexType>
+  &lt;/xs:element>
+  &lt;xs:element name="<b>query-request-refused</b>">
+      &lt;xs:complexType>
+          &lt;xs:all>&lt;xs:element minOccurs="0" maxOccurs="1" ref="<b>st:fault-details</b>"/>&lt;/xs:all>
+      &lt;/xs:complexType>
+
+&lt;/xs:element></pre>
+	</div>
+<p class="capt"><a name="excerpt-1.3">گلچین&nbsp; XML Schema گسسته 1.3</a></p>
+    </div>
+
+<h5><a name="malformed-query-fault">MalformedQuery</a></h5>
+
+    <p>هنگامی که مقدار نوع <code>query</code> یک رشته از کاراکترهای مجاز در زبان 
+	تعریف شده توسط دستور زبان
+    SPARQL نیست، <code>MalformedQuery</code> یا پیغام نقص <code>QueryRequestRefused</code> 
+	<strong>بایستی</strong> برگشته باشد. مطابق <a href="#fault-messages">دستور 
+	پیغام تغییرات نقص</a>، اگر یک نقص WSDL برگشته باشد، شامل <code>MalformedQuery</code>، 
+	یک <a href="#query-out-message">پیغام Out</a> <strong>نبایستی</strong> 
+	برگشته باشد.</p>
+
+      <p> هنگامی که پیغام نقص <code>MalformedQuery</code> برگشته باشد، سرویس های 
+		پردازش جستجو <strong>بایستی</strong> بیانگر، اشکال زدایی یا دیگر اطلاعات 
+		افزوده برای مصرف انسانی از طریق نوع تعیین شده‌ی
+      <code>fault-details</code> در گلچین 1.3 باشند.</p>
+
+<h5><a name="query-req-refused-fault">QueryRequestRefused</a></h5>
+
+    <p>این پیغام نقص WSDL <strong>می‌بایستی</strong> هنگامی که یک سرویس گیرنده 
+	درخواستی را ارایه می‌نماید که سرویس جهت پردازش نپذیرفته؛ برگشته باشد. پیغام 
+	نقص <code>QueryRequestRefused</code> هیچ یک را نشان نمی دهد خواه سرور بتواند 
+	یا نتواند در آینده درخواست یا درخواستهایی را پردازش کند، آن همچنین تحمیل یک&nbsp;
+	<a href="#conformant-sparql-protocol-service">سرویس اعطای SPARQL</a> مطابق 
+	برگشت دیگر کدهای وضعیت HTTP یا هدرهای HTTP
+    را ملزم نمی سازد بطوریکه مناسب معناشناسی معین [HTTP] باشد.</p>
+
+  <p> هنگامی که پیغام خطای <code>QueryRequestRefused</code> برگشته، سرویس های 
+	پردازش جستجو <strong>بایستی</strong> توضیح، اشکال زدایی یا اطلاعات دیگر مورد 
+	نظر برای استفاده انسان را از طریق نوع مشخص شده ی
+  <code>fault-details</code> در گلچین 1.3شامل شوند.</p>
+
+<h3><a name="query-bindings-http">2.2&nbsp; مقید سازی های HTTP</a></h3>
+
+<p>عملیات واسط <code>SparqlQuery</code> توصیف شده ی <code>query</code> بقدر 
+چکیده ی عملیاتی است؛ که مقید سازی پروتکل درخواستها جهت مناسب بودن یک عملیات invocable 
+می باشد. این دو بخش دیگر این سند مقید سازی های HTTP و SOAP
+را تشریح می کند. یک <a href="#conformant-sparql-protocol-service">سرویس پروتکل 
+conformant SPARQL</a> <strong>بایستی</strong> واسط <code>SparqlQuery</code> را 
+پشتیبانی نماید؛ اگر یک سرویس پروتکل SPARQL مقید سازی های HTTP را پشتیبانی می 
+نماید، که آن <strong>بایستی</strong> مقید سازی ها را بطوریکه که در <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a> 
+توصیف شده، پشتیبانی نماید. یک سرویس پروتکل SPARQL <strong>بایستی</strong> دیگر 
+واسط ها را پشتیبانی کند. جهت کسب اطلاعات بیشتر <a href="#query-bindings-soap">&nbsp;مقید 
+سازی های 2.3 SOAP</a> را ببینید.</p>
+
+<p>[WSDL2 - اضافات] تعاریف یک وسیله از عملیات واسط چکیده مقید سازی به HTTP. مقید 
+سازی های HTTP برای عملیات
+<code>query</code> (مطابق <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a>) 
+بصورت ذیل هستند:</p>
+
+<div class="excerpt">
+	<div dir="ltr">
+		<pre>&lt;!-- the HTTP GET binding for query operation --&gt;
+ &lt;binding name="<b>queryHttpGet</b>" interface="tns:SparqlQuery" 
+	    type="http://www.w3.org/2006/01/wsdl/http"
+	    whttp:version="1.1">
+
+   &lt;fault ref="tns:MalformedQuery" whttp:code="400"/>
+   &lt;fault ref="tns:QueryRequestRefused" whttp:code="500"/>
+
+   &lt;operation ref="tns:query"
+        wsdlx:safe="true"
+		whttp:method="<b>GET</b>"
+		whttp:faultSerialization="<b>*/*</b>"
+		whttp:inputSerialization="<b>application/x-www-form-urlencoded</b>"
+		whttp:outputSerialization="<b>application/sparql-results+xml, application/rdf+xml, */*</b>" />
+ &lt;/binding>
+
+ &lt;!-- the HTTP POST binding for query operation --&gt;
+
+ &lt;binding name="<b>queryHttpPost</b>" interface="tns:SparqlQuery"
+		 type="http://www.w3.org/2006/01/wsdl/http"
+		 whttp:version="1.1">
+		
+	  &lt;fault ref="tns:MalformedQuery" whttp:code="400"/>
+	  &lt;fault ref="tns:QueryRequestRefused" whttp:code="500"/>
+		
+   &lt;operation ref="tns:query" 
+        wsdlx:safe="true"
+ 		whttp:method="<b>POST</b>" 
+		whttp:faultSerialization="<b>*/*</b>"
+		whttp:inputSerialization="<b>application/x-www-form-urlencoded, application/xml</b>"
+		whttp:outputSerialization="<b>application/sparql-results+xml, application/rdf+xml, */*</b>" />	
+ &lt;/binding></pre>
+</div>
+	</div>
+
+<p>در آنجا دو مقید سازی<code>queryHttpGet</code>HTTP و <code>queryHttpPost</code>، 
+هر دو که بصورت مقید سازیهای واسط <code>SparqlQuery</code> توصیف شده اند. در هر 
+یک از این مقید سازی ها، دو نقص در واسط <a href="#SparqlQuery">SparqlQuery </a>توصیف شده، <code>MalformedQuery</code> و <code>QueryRequestRefused</code> 
+بترتیب مقید به <a href="www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">
+کدهای وضعیت HTTP</a> <code>400 Bad Request</code> و
+
+<code>500 Internal Server Error</code> هستند [HTTP].</p>
+
+<p>مقید سازی <code>queryHttpGet</code> <strong>می بایستی</strong> استفاده شده 
+باشد، جز در مواردی که در آنجا جستجوی رمزی شده ی - URL از محدوده ی مورد استفاده 
+تجاوز نماید، که در این مورد مقید سازی <code>queryHttpPost</code> <strong>می 
+بایستی</strong> استفاده شده باشد.</p>
+
+<p><strong>نکته ای آموزنده در مورد ترتیب محدودیتها.</strong> سریال سازی خروجی 
+مقید سازی های
+<code>queryHttpGet</code> و <code>queryHttpPost</code> عمدا بنابر ضرورت به 
+ترتیبی است که انواع سریال سازی رسم های RDF را منعکس می نمایند. سریال سازی اشکال <code>queryHttpGet</code> 
+و
+<code>queryHttpPost</code> همچنین آگاهانه ضروری شده اند. یک
+<a href="#conformant-sparql-protocol-service">سرویس پروتکل conformant SPARQL</a> 
+می تواند واسط های تناوبی WSDL و مقید سازی ها را با محدودیتهای متفاوت تهیه می 
+نماید.</p>
+
+<h5><a name="query-http-get-binding">queryHttpGet</a></h5>
+
+<p>این مقید سازی عملیات <code>query</code> از HTTP] <code>GET</code><span lang="en-us">]</span> 
+با محدودیتهای نوع سریال سازی ذیل استفاده می نماید: مقدار <code>whttp:faultSerialization</code> 
+بصورت <code>*/*</code> است؛ دوم، مقدار
+<code>whttp:inputSerialization</code> بصورت <code>application/x-www-form-urlencoded</code> 
+با رمزگذاری UTF-8 می باشد؛ و سوم <code>whttp:outputSerialization</code> بصورت <code>application/sparql-results+xml</code>  
+با رمزگذاری UTF-8 و
+
+<code>application/rdf+xml</code> با رمزگذاری UTF-8 و <code>*/*</code> است. </p>
+
+<h5><a name="query-http-post-binding">queryHttpPost</a></h5>
+
+<p>این مقید سازی عملیات <code>query</code> از HTTP] <code>POST</code><span lang="en-us">]</span> 
+با محدودیتهای نوع سریال سازی ذیل استفاده می نماید: مقدار <code>whttp:faultSerialization</code> 
+بصورت <code>*/*</code> است؛ دوما مقدار
+
+<code>whttp:inputSerialization</code> بصورت <code>application/x-www-form-urlencoded</code> 
+با رمزگذاری UTF-8 و
+<code>application/xml</code> با رمزگذاری UTF-8 است؛ و سوما <code>whttp:outputSerialization</code> 
+بصورت
+<code>application/sparql-results+xml</code> با رمزگذاری UTF-8 ، <code>application/rdf+xml</code> 
+با رمزگذاری UTF-8 و
+
+<code>*/*</code> است. </p>
+
+<h4><a name="query-bindings-http-examples">2.2.1&nbsp; مثال های HTTP</a></h4>
+
+<p>مثال های پیگیری HTTP چکیده ی ذیل درخواست عملیات&nbsp; <code>query</code> را 
+بصورت سناریوهای متفاوت جداگانه توضیح می دهد. اینها پیگیری مثالهای مجزایی مطابق 
+پیگیریهای HTTP
+به سه شیوه است: (1) در هر مثال رشته
+"<i>EncodedQuery</i>" رشته ی برابر URL- رمزگذاری شده ی افزوده ی جستجوی SPARQL را 
+در اول بلوک هر مثال ارایه می نماید؛ (2) تنها اجزای پاسخ ناتمام، شامل نتایج جستجو 
+نمایش داده شده اند؛
+(3) مقادیر URI از <code>default-graph-uri</code>
+و <code>named-graph-uri</code> همچنین URL- رمزی نشده است.</p>
+
+<h5><a name="select-svcsupplied">2.2.1.1 انتخاب با مجموعه داده ی service-supplied RDF </a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-select-svcsupplied">
+<div dir="ltr">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/> 
+SELECT ?book ?who 
+WHERE { ?book dc:creator ?who }</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL ، بصورت برجسته در 
+این پیگیری HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i> HTTP/1.1
+Host: www.example
+User-agent: my-sparql-client/0.1</pre>
+
+</div>
+
+<p>آن جستجو در برابر مجموعه داده ی service-supplied RDF، توسط آن سرویس جستجوی SPARQL، 
+برگشتهای نتیجه ی جستجوی ذیل اجرا شده است:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+
+ &lt;head>
+   &lt;variable name="book"/>
+   &lt;variable name="who"/>
+ &lt;/head>
+ &lt;results distinct="false" ordered="false">
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book5&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r29392923r2922&lt;/bnode>&lt;/binding>
+   &lt;/result>
+...<span class="hide">
+
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book6&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r8484882r49593&lt;/bnode>&lt;/binding>
+   &lt;/result>
+ &lt;/results></span>
+&lt;/sparql> </pre>
+</div>
+</div>
+
+<h5><a name="select-simple"><span lang="en-us">SELECT </span>2.2.1.2 با مجموعه داده ی simple RDF</a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-select-simple">
+<div dir="ltr">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/> 
+SELECT ?book ?who 
+WHERE { ?book dc:creator ?who }</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.other.example/sparql/</tt>،SPARQL ، بصورت 
+برجسته در این پیگیری HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.other.example/books HTTP/1.1
+Host: www.other.example
+User-agent: my-sparql-client/0.1
+
+</pre>
+
+</div>
+
+<p>آن جستجو &#8212; در برابر شناسایی مجموع داده ی RDF توسط مقدار پارامتر <code>default-graph-uri</code>
+  ، <tt>http://www.other.example/books</tt> &#8212; توسط آن سرویس جستجوی SPARQL، 
+برگشتهای نتیجه ی جستجوی ذیل اجرا شده است:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+ &lt;head>
+   &lt;variable name="book"/>
+   &lt;variable name="who"/>
+ &lt;/head>
+...<span class="hide">
+ &lt;results distinct="false" ordered="false">
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book2&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r1115396427r1133&lt;/bnode>&lt;/binding>
+   &lt;/result>
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book3&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r1115396427r1133&lt;/bnode>&lt;/binding>
+   &lt;/result>
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book1&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;literal>J.K. Rowling&lt;/literal>&lt;/binding>
+   &lt;/result>
+ &lt;/results></span>
+
+&lt;/sparql> </pre>
+</div>
+</div>
+
+<h5><a name="construct-simple"><span lang="en-us">CONSTRUCT </span>2.2.1.3 با 
+مجموعه داده ی simple RDF
+    و مذاکره محتوای HTTP </a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-construct-simple">
+<div dir="ltr">
+<pre class="query">PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX myfoaf: &lt;http://www.example/jose/foaf.rdf#>
+
+CONSTRUCT { myfoaf:jose foaf:depiction &lt;http://www.example/jose/jose.jpg>.
+            myfoaf:jose foaf:schoolHomepage &lt;http://www.edu.example/>.
+            ?s ?p ?o.}
+WHERE { ?s ?p ?o. myfoaf:jose foaf:nick "Jo".
+       FILTER ( ! (?s = myfoaf:kendall &amp;&amp; ?p = foaf:knows &amp;&amp; ?o = myfoaf:edd ) 
+              &amp;&amp; ! ( ?s = myfoaf:julia &amp;&amp; ?p = foaf:mbox &amp;&amp; ?o = &lt;mailto:julia@mail.example> )
+	      &amp;&amp; ! ( ?s = myfoaf:julia &amp;&amp; ?p = rdf:type &amp;&amp; ?o = foaf:Person))
+}</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL<tt>،</tt> بصورت 
+برجسته در این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/jose-foaf.rdf HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+Accept: text/turtle, application/rdf+xml</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:11 GMT
+Server: Apache/1.3.29 (Unix)
+Connection: close
+Content-Type: text/turtle
+
+@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/>.
+@prefix myfoaf: &lt;http://www.example/jose/foaf.rdf#>.
+
+myfoaf:jose foaf:name "Jose Jime&#241;ez";
+	    foaf:depiction &lt;http://www.example/jose/jose.jpg>;
+            foaf:nick "Jo";
+...<span class="hide">
+	    foaf:schoolHomepage &lt;http://www.edu.example/>;
+            foaf:workplaceHomepage &lt;http://www.corp.example/>;
+            foaf:homepage &lt;http://www.example/jose/>;
+            foaf:knows myfoaf:juan;
+	    rdf:type foaf:Person.
+
+myfoaf:juan foaf:mbox &lt;mailto:juan@mail.example>;
+	   rdf:type foaf:Person.</span></pre>
+
+</div>
+
+<p><em>نکته:</em> ثبت برای نوع رسانه ی <tt>text/turtle</tt> شروع شده بود اما در 
+زمان این انتشار کامل نشده است. لطفا <a href="www.w3.org/TeamSubmission/turtle/">http://www.w3.org/TeamSubmission/turtle</a> 
+را برای نوع رسانه ی ثبت شده ی نهایی زبان Turtle ببینید.</p>
+
+</div>
+<h5><a name="ask-simple">2.2.1.4 ASK با مجموعه داده ی ساده ی RDF dataset</a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-ask-simple">
+<div dir="ltr">
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/> 
+ASK WHERE { ?book dc:creator "J.K. Rowling"}</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/books HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+
+</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+ &lt;head>&lt;/head>
+ &lt;boolean>true&lt;/boolean>
+&lt;/sparql></pre>
+</div>
+</div>
+<h5><a name="describe-simple">2.2.1.5 <span lang="en-us">DESCRIBE</span> با 
+مجموعه داده ی ساده ی RDF</a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-describe-simple">
+<div dir="ltr">
+<pre class="query">PREFIX books: &lt;http://www.example/book/>
+DESCRIBE books:book6</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/books HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type:  application/rdf+xml
+
+&lt;?xml version="1.0"?>
+&lt;rdf:RDF ...<span class="hide">
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:books="http://www.example/book/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"</span>
+  &lt;rdf:Description rdf:about="http://www.example/book/book6">
+    &lt;dc:title>Example Book #6 &lt;/dc:title>
+  &lt;/rdf:Description>
+&lt;/rdf:RDF></pre>
+
+</div>
+
+</div>
+<h5><a name="select-complex"><span lang="en-us">SELECT </span>2.2.1.6 با مجموعه 
+داده ی پیچیده ی RDF</a></h5>
+
+<p>این جستجوی SPARQL</p>
+<div id="div-select-complex">
+<div dir="ltr">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/>
+
+SELECT ?who ?g ?mbox
+WHERE {  ?g dc:publisher ?who .
+   GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+</div>
+
+<p>به سرویس جستجوی http://www.example/sparql/ ،SPARQL، بصورت برجسته ی اینجا (با 
+تفکیکهای سطر برای خوانایی) هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/publishers
+
+&amp;<b>default-graph-uri</b>=http://www.example/morepublishers&amp;<b>named-graph-uri</b>=http://your.example/foaf-alice
+&amp;<b>named-graph-uri</b>=http://www.example/foaf-bob&amp;<b>named-graph-uri</b>=http://www.example/foaf-susan
+&amp;<b>named-graph-uri</b>=http://this.example/john/foaf
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type:  application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  &lt;head>
+    &lt;variable name="who"/>
+    &lt;variable name="g"/>
+    &lt;variable name="mbox"/>
+  &lt;/head>
+...<span class="hide">
+  &lt;results ordered="false" distinct="false">
+    &lt;result>
+      &lt;binding name="who">
+        &lt;literal>Alice&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+        &lt;uri>http://your.example/foaf-alice&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:alice@example.org&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+        &lt;literal>Bob&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+        &lt;uri>http://www.example/foaf-bob&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:bob@work.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+        &lt;literal>Susan&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+        &lt;uri>http://www.example/foaf-susan&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:susan@work.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+        &lt;literal>John&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+        &lt;uri>http://this.example/john/foaf&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:john@home.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+  &lt;/results></span>
+
+&lt;/sparql></pre>
+</div>
+	</div>
+
+<h5><a name="select-queryonly"><span lang="en-us">SELECT </span>2.2.1.7  با 
+مجموعه داده ی query-only RDF</a></h5>
+
+<p>این جستجوی SPARQL</p>
+
+<div id="div-select-queryonly">
+<div dir="ltr">
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/>
+
+SELECT ?who ?g ?mbox
+FROM &lt;http://www.example/publishers>
+FROM NAMED &lt;http://www.example/alice>
+FROM NAMED &lt;http://www.example/bob>
+WHERE { ?g dc:publisher ?who .
+        GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i> HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+...<span class="hide">
+  &lt;head>
+    &lt;variable name="who"/>
+    &lt;variable name="g"/>
+    &lt;variable name="mbox"/>
+  &lt;/head>
+  &lt;results ordered="false" distinct="false">
+    &lt;result>
+      &lt;binding name="who">
+      	&lt;literal>Bob Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/bob&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:bob@oldcorp.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+	&lt;literal>Alice Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/alice&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+	&lt;uri>mailto:alice@work.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+  &lt;/results></span>
+
+&lt;/sparql></pre>
+</div>
+</div>
+
+<h5><a name="select-ambiguous"><span lang="en-us">SELECT </span>2.2.1.8 با 
+مجموعه داده ی مبهم RDF</a></h5>
+<div id="div-select-ambiguous">
+
+<p>این جستجوی SPARQL</p>
+
+<div dir="ltr">
+
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/>
+
+SELECT ?who ?g ?mbox
+FROM &lt;http://www.example/publishers>
+FROM NAMED &lt;http://www.example/john>
+FROM NAMED &lt;http://www.example/susan>
+WHERE { ?g dc:publisher ?who .
+        GRAPH ?g { ?x foaf:mbox ?mbox }
+}</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/morepublishers
+&amp;<b>named-graph-uri</b>=http://www.example/bob&amp;<b>named-graph-uri</b>=http://www.example/alice HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>این عملیات پروتکل حاوی یک مجموعه داده ی RDF است: مجموعه داده ی مشخص شده در 
+جستجو نسبت به یک نوع مشخص در پروتکل (از طریق پارامترهای <code>default-graph-uri</code> 
+و <code>named-graph-uri</code>) متفاوت است. یک سرویس پروتکل
+conformant SPARQL باید با اجرای جستجو در برابر مجموعه داده ی مشخص شده ی RDF در 
+پروتکل، این ابهام را رفع نماید:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+  &lt;head>
+    &lt;variable name="who"/>
+    &lt;variable name="g"/>
+    &lt;variable name="mbox"/>
+  &lt;/head>
+  &lt;results ordered="false" distinct="false"><!-- ...<span class="hide">
+    &lt;result>
+      &lt;binding name="who">
+	&lt;literal>John Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/john&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+	&lt;uri>mailto:john@home.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+	&lt;literal>Susan Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/susan&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+	&lt;uri>mailto:susan@work.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+</span> -->
+
+    &lt;result>
+      &lt;binding name="who">
+      	&lt;literal>Bob Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/bob&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+        &lt;uri>mailto:bob@oldcorp.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+    &lt;result>
+      &lt;binding name="who">
+	&lt;literal>Alice Hacker&lt;/literal>
+      &lt;/binding>
+      &lt;binding name="g">
+	&lt;uri>http://www.example/alice&lt;/uri>
+      &lt;/binding>
+      &lt;binding name="mbox">
+	&lt;uri>mailto:alice@work.example&lt;/uri>
+      &lt;/binding>
+    &lt;/result>
+  &lt;/results>
+
+&lt;/sparql></pre>
+</div>
+</div>
+
+<h5><a name="select-malformed">2.2.1.9  SELECT با جستجوی ناقص اشکال</a></h5>
+
+<p>این جستجوی بی اعتبار SPARQL از نظر نحوی </p>
+<div id="div-select-malformed">
+
+<div dir="ltr">
+
+<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+SELECT ?name
+WHERE { ?x foaf:name ?name
+ORDER BY ?name }</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://www.example/morepublishers HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>با پاسخ — <code>MalformedQuery</code> تغییر اشکال پیغام خروجی، مطابق <a href="#SparqlQuery">2.1
+  SparqlQuery</a> &#8212; برجسته شده در اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 400 Bad Request
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: text/plain; charset=UTF-8
+
+4:syntax error, unexpected ORDER, expecting '}'</pre>
+</div>
+</div>
+
+<h5><a name="select-refused"><span lang="en-us">SELECT </span>2.2.1.10 با عدم 
+پذیرش درخواست جستجوی اشکال</a></h5>
+
+<p>این جستجوی SPARQL</p>
+
+<div id="div-select-refused">
+<div dir="ltr">
+<pre class="query">PREFIX bio: &lt;http://bio.example/schema/#>
+SELECT ?valence
+FROM &lt;http://another.example/protein-db.rdf&gt;
+WHERE { ?x bio:protein ?valence }
+ORDER BY ?valence</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://another.example/protein-db.rdf HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+
+</div>
+
+<p>با پاسخ — <code>QueryRequestRefused</code>
+
+  تغییر اشکال پیغام خروجی، مطابق <a href="#SparqlQuery">2.1
+  SparqlQuery</a> &#8212; برجسته شده در اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 500 Internal Server Error
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: text/html; charset=UTF-8
+
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+&lt;html>
+&lt;head>
+&lt;title>SPARQL Processing Service: Query Request Refused&lt;/title>
+&lt;/head>
+&lt;body>
+&lt;p> Query Request Refused: your request could not be processed because 
+ &lt;code>http://another.example/protein-db.rdf&lt;/code> could not be retrieved within 
+ the time alloted.&lt;/p>
+
+&lt;/body>
+&lt;/html></pre>
+</div>
+</div>
+
+<h5><a name="select-longpost">2.2.1.11 SELECT بسیار بلند مقید سازی POST&nbsp; 
+مورد استفاده ی جستجو</a></h5>
+
+<p>برخی جستجوهای SPARQL، که ممکن است ماشین ایجاد نموده باشد، می تواند از انتقال 
+یافته ی قابل اعتماد از طریق اتصالات HTTP GET توصیف شده در
+<a href="#query-bindings-http">2.2 HTTP اتصالات</a> باشد. در آن موارد اتصال 
+توصیف شده ی POST در 2.2 می تواند استفاده شده باشد. این جستجوی SPARQL.</p>
+
+<div id="div-select-longpost">
+
+<div dir="ltr">
+
+<pre class="query">PREFIX : &lt;http://www.w3.org/2002/12/cal/icaltzd#>
+PREFIX Chi: &lt;http://www.w3.org/2002/12/cal/test/Chiefs.ics#>
+PREFIX New: &lt;http://www.w3.org/2002/12/cal/tzd/America/New_York#>
+PREFIX XML: &lt;http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?summary
+WHERE {
+    {
+	Chi:D603E2AC-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-08T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:09:27Z"^^XML:dateTime;
+         :dtstart "2002-09-08T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603E2AC-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603E90B-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-15T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:10:19Z"^^XML:dateTime;
+         :dtstart "2002-09-15T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603E90B-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603ED6E-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-22T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:11:05Z"^^XML:dateTime;
+         :dtstart "2002-09-22T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603ED6E-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F18C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-09-29T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:15:46Z"^^XML:dateTime;
+         :dtstart "2002-09-29T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603F18C-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F5B7-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-04"^^XML:date;
+         :dtstamp "2002-09-06T03:12:53Z"^^XML:dateTime;
+         :dtstart "2002-11-03"^^XML:date;
+         :summary ?summary;
+         :uid "D603F5B7-C1C9-11D6-9446-003065F198AC" .
+   	}
+	UNION
+    {
+	Chi:D603F9D7-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-10T20:15:00"^^New:tz;
+         :dtstamp "2002-09-06T03:14:12Z"^^XML:dateTime;
+         :dtstart "2002-11-10T17:15:00"^^New:tz;
+         :summary ?summary;
+         :uid "D603F9D7-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D604022C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-17T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:14:51Z"^^XML:dateTime;
+         :dtstart "2002-11-17T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D604022C-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D604065C-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-06T19:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:16:54Z"^^XML:dateTime;
+         :dtstart "2002-10-06T16:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D604065C-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6040A7E-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-13T19:15:00"^^New:tz;
+         :dtstamp "2002-09-06T03:17:51Z"^^XML:dateTime;
+         :dtstart "2002-10-13T16:15:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6040A7E-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6040E96-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-20T16:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:18:32Z"^^XML:dateTime;
+         :dtstart "2002-10-20T13:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6040E96-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041270-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-10-27T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:19:15Z"^^XML:dateTime;
+         :dtstart "2002-10-27T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041270-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041673-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-11-24T20:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:22:09Z"^^XML:dateTime;
+         :dtstart "2002-11-24T17:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041673-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6041A73-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-01T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:22:52Z"^^XML:dateTime;
+         :dtstart "2002-12-01T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6041A73-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D60421EF-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-08T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:24:04Z"^^XML:dateTime;
+         :dtstart "2002-12-08T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D60421EF-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6042660-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-15T20:05:00"^^New:tz;
+         :dtstamp "2002-09-06T03:25:03Z"^^XML:dateTime;
+         :dtstart "2002-12-15T17:05:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042660-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6042A93-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-22T17:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:25:47Z"^^XML:dateTime;
+         :dtstart "2002-12-22T14:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042A93-C1C9-11D6-9446-003065F198AC" .
+    }
+	UNION
+    {
+	Chi:D6042EDF-C1C9-11D6-9446-003065F198AC     a :Vevent;
+         :dtend "2002-12-28T21:00:00"^^New:tz;
+         :dtstamp "2002-09-06T03:26:51Z"^^XML:dateTime;
+         :dtstart "2002-12-28T18:00:00"^^New:tz;
+         :summary ?summary;
+         :uid "D6042EDF-C1C9-11D6-9446-003065F198AC" .
+    }
+}</pre>
+
+</div>
+
+<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته در 
+این پیگیری
+HTTP هدایت شده است:</p>
+
+<div dir="ltr">
+
+<pre class="req">POST /sparql/ HTTP/1.1
+Host: www.example
+User-agent: sparql-client/0.1
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 9461
+
+<b>query</b>=<i>EncodedQuery</i>&amp;<b>default-graph-uri</b>=http://another.example/calendar.rdf</pre>
+
+</div>
+
+<p>با پاسخگویی برجسته اینجا:</p>
+
+<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+    &lt;head>
+        &lt;variable name="summary"/>
+    &lt;/head>
+    &lt;results ordered="false" distinct="false">
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Cleveland @ Cleveland Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Jacksonville @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. New England @ Gillette Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        ...<span class="hide">
+
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Miami @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>BYE&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. San Francisco @ 49ers Stadium at Candlestick Point&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Buffalo @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. NY Jets @ Giants Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. San Diego @ Qualcomm Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Denver @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Oakland @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Seattle @ Seahawks Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Arizona @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. St. Louis @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Denver @ INVESCO Field at Mile High&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. San Diego @ Arrowhead Stadium&lt;/literal>
+            &lt;/binding>
+        &lt;/result></span>
+
+        &lt;result>
+            &lt;binding name="summary">
+                &lt;literal>Chiefs vs. Oakland @ Network Associates Coliseum&lt;/literal>
+            &lt;/binding>
+        &lt;/result>
+    &lt;/results>
+&lt;/sparql></pre>
+</div>
+</div>
+
+<h5><a name="select-kanji">2.2.1.12 SELECT با بین المللی کردن</a></h5>
+
+<p>جستجوهای SPARQL می تواند شامل مجموعه کاراکترهای بین المللی شده باشد. این 
+جستجوی SPARQL </p>
+
+<div id="div-select-kanji">
+	<div dir="ltr">
+	<pre class="query">PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX ?: &lt;http://www.w3.org/2001/sw/DataAccess/tests/data/i18n/kanji.ttl#>
+SELECT ?name ?food 
+WHERE { [ foaf:name ?name ; ?:??? ?food ] . }</pre>
+	
+	</div>
+	
+	<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته 
+	در این پیگیری
+HTTP هدایت شده است:</p>
+	
+	<div dir="ltr">
+	
+	<pre class="req">GET /sparql/?<b>query</b>=<i>EncodedQuery</i>
+
+Host: www.example
+User-agent: sparql-client/0.1</pre>
+	
+	</div>
+	<div dir="ltr">
+	
+	<pre class="resp">HTTP/1.1 200 OK
+Date: Wed, 03 Aug 2005 12:48:25 GMT
+Server: Apache/1.3.29 (Unix)
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+<span class="todo">...</span>
+&lt;/sparql></pre>
+	</div>
+</div>
+
+<h5><a name="select-post-xml">2.2.1.13 SELECT با اتصال queryHttpPost و ورودی XML</a></h5>
+
+<p>در برخی نسخه ی آینده ی
+<a href="www.w3.org/2001/sw/DataAccess/sparqlx.rnc">جستجوهای SPARQL می 
+تواند بصورت XML مرتب شده</a> و از طریق HTTP <code>POST</code> به یک سرویس جستجوی 
+SPARQL هدایت شده باشد. این جستجوی SPARQL</p>
+
+<div id="div-select-post-xml">
+	<div dir="ltr">
+	<pre class="query">&lt;?xml version="1.0"?>
+&lt;rdf-query xmlns="http://example.org/SparqlX/">
+ &lt;select>&lt;variable name="book"/>&lt;variable name="who"/>&lt;/select>
+ &lt;query-pattern>
+	&lt;triple-pattern>
+		&lt;subject>&lt;variable name="book"/>&lt;/subject>
+		&lt;predicate>&lt;uri>http://purl.org/dc/elements/1.1/creator&lt;/uri>&lt;/predicate>
+		&lt;object>&lt;variable name="who"/>&lt;/object>
+	&lt;/triple-pattern>
+ &lt;/query-pattern>
+
+&lt;/rdf-query></pre>
+	
+	</div>
+	
+	<p>به سرویس جستجوی <tt>http://www.example/sparql/،</tt>SPARQL، بصورت برجسته 
+	در این پیگیری
+HTTP هدایت شده است:</p>
+
+	<div dir="ltr">
+
+	<pre class="req">POST /sparql/ HTTP/1.1
+Host: www.example
+User-agent: my-sparql-client/0.1
+Content-type: <b>application/xml</b>
+
+&lt;?xml version="1.0"?>
+&lt;rdf-query xmlns="http://example.org/SparqlX/">
+&lt;select>&lt;variable name="book"/>&lt;variable name="who"/>&lt;/select>
+
+&lt;query-pattern>
+&lt;triple-pattern>
+	&lt;subject>&lt;variable name="book"/>&lt;/subject>
+	&lt;predicate>&lt;uri>http://purl.org/dc/elements/1.1/creator&lt;/uri>&lt;/predicate>
+	&lt;object>&lt;variable name="who"/>&lt;/object>
+&lt;/triple-pattern>
+&lt;/query-pattern>
+&lt;/rdf-query></pre>
+
+	</div>
+
+	<p>آن جستجو در برابر مجموعه داده ی سرویس - تامین کرده RDF، توسط آن سرویس 
+	جستجوی SPARQL اجرا شده، نتیجه ی جستجوی ذیل بر می گردد:</p>
+
+	<div dir="ltr">
+
+	<pre class="resp">HTTP/1.1 200 OK
+Date: Fri, 06 May 2005 20:55:12 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4 DAV/1.0.3
+Connection: close
+Content-Type: application/sparql-results+xml
+
+&lt;?xml version="1.0"?>
+&lt;sparql xmlns="http://www.w3.org/2005/sparql-results#">
+
+ &lt;head>
+   &lt;variable name="book"/>
+   &lt;variable name="who"/>
+ &lt;/head>
+ &lt;results distinct="false" ordered="false">
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book5&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r29392923r2922&lt;/bnode>&lt;/binding>
+   &lt;/result>
+...<span class="hide">
+
+   &lt;result>
+     &lt;binding name="book">&lt;uri>http://www.example/book/book6&lt;/uri>&lt;/binding>
+     &lt;binding name="who">&lt;bnode>r8484882r49593&lt;/bnode>&lt;/binding>
+   &lt;/result>
+ &lt;/results></span>
+&lt;/sparql> </pre>
+	
+	</div>
+	
+</div>
+
+<h3><a name="query-bindings-soap">2.3&nbsp; الزامات SOAP</a></h3>
+
+<p>[WSDL2-Adjuncts] معانی یک میانگین عملیات واسطه ی مختصر یک اتصال به SOAP. 
+اتصالات SOAP برای عملیات <code>query</code>
+  (مطابق <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a>)
+  بصورت ذیل می باشند:</p>
+
+<div class="excerpt">
+<div dir="ltr">
+<pre>   &lt;binding name="querySoap" interface="SparqlQuery"
+	    type="http://www.w3.org/2006/01/wsdl/soap"
+            wsoap:version="1.2"
+	    wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP">
+
+    &lt;fault ref="tns:MalformedQuery" wsoap:code="soap:Sender" />
+    &lt;fault ref="tns:QueryRequestRefused" wsoap:code="soap:Sender" />
+
+    &lt;operation ref="tns:query" wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response" />
+
+  &lt;/binding></pre>
+</div>
+	</div>
+
+<p>نام اتصال SOAP از عملیات <code>query</code> متعلق به <code>SparqlQuery</code> 
+بصورت <code>querySoap</code> است؛ آن یک اتصال SOAP بواسطه ی مقدار ویژگی <code>type</code> 
+است، که URI با توان
+  SOAP را&nbsp; شروع می نماید. نگارش SOAP هست <code>1.2</code>. پروتکل استفاده 
+شده در این اتصال&nbsp; SOAP تحت HTTP هست، بطوری که تصمیم گرفته شده توسط مقدار 
+ویژگی <code>wsoap:protocol</code> از URI تعیین گردد.  اگر یک سرویس پروتکل SPARQL
+  اتصالات SOAP را با مقدار ویژگی <code>{http://www.w3.org/2006/01/wsdl/soap, protocol}</code>
+
+  مورد پشتیبانی قرار دهد با توان <code>http://www.w3.org/2003/05/soap/bindings/HTTP</code> 
+را شروع می نماید، که <strong>بایستی</strong> از اتصالات بصورتی که در <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a> 
+تشریح شده، پشتیبانی نماید. اتصالات SOAP با مقادیر <code>wsoap:protocol</code> با 
+توان ارسال شده ی دیگر پروتکلها از HTTP در این سند تشریح نشده است.</p>
+
+  <p>دو عنصر <code>fault</code> به پیغامهای اشکال تعیین شده در واسط <code>SparqlQuery</code> 
+	اشاره می نمایند.</p>
+
+  <p>سرانجام، مراجع عنصر <code>operation</code> عملیات <code>query</code> از 
+	واسط <code>SparqlQuery</code>
+  که قبلا همچون در <a href="#excerpt-1.0">گلچین 1.0</a> فوق الذکر توصیف شده است. 
+	پس از این اتصال SOAP
+  توصیفات عملیات بصورت استفاده ی HTTP تحت پروتکل نقل و انتقال، مقدار ویژگی <code>wsoap:mep</code>
+
+  تصمیم می گیرد که روش HTTP مورد استفاده قرار گیرد. این عملیات بصورتی که توسط یک 
+	نمونه ی مبادله ی پیغام SOAP بکار برده شده، توصیف شده است <code>http://www.w3.org/2003/05/soap/mep/request-response</code>، 
+	که مطابق با ویژگی های پشتیبانی شده ی SOAP12] 7.4<span lang="en-us">]</span> 
+	به یک روش
+  HTTP <code>POST</code> محدود شده است.</p>
+
+<h4><a name="query-bindings-soap-examples">2.3.1&nbsp; نمونه ها ی SOAP</a></h4>
+
+	<div dir="ltr">
+
+<pre class="req">POST /services/sparql-query HTTP/1.1
+Content-Type: application/soap+xml
+Accept: application/soap+xml, multipart/related, text/*
+User-Agent: Axis/1.2.1
+Host: www.example
+SOAPAction: ""
+Content-Length: 438
+
+&lt;?xml version="1.0" encoding="UTF-8"?>
+   &lt;soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope/"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      &lt;soapenv:Body>
+         &lt;query-request xmlns="http://www.w3.org/2005/09/sparql-protocol-types/#">
+            &lt;query>SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}&lt;/query>
+         &lt;/query-request>
+      &lt;/soapenv:Body>
+   &lt;/soapenv:Envelope></pre>
+
+	</div>
+	<div dir="ltr">
+
+<pre class="resp">HTTP/1.1 200 OK
+Content-Type: application/soap+xml
+
+&lt;?xml version="1.0" encoding="utf-8"?>
+   &lt;soapenv:Envelope xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope/"
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      &lt;soapenv:Body> 
+         &lt;query-result xmlns="http://www.w3.org/2005/09/sparql-protocol-types/#">
+            &lt;ns1:sparql xmlns:ns1="http://www.w3.org/2005/sparql-results#">
+               &lt;ns1:head>
+                  &lt;ns1:variable name="z"/>
+               &lt;/ns1:head>
+               &lt;ns1:results distinct="false" ordered="false">
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Chamber of Secrets&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result>
+                  ...<span class="hide">
+
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Half-Blood Prince&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result>
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Goblet of Fire&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result>
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Philosopher's Stone&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result>
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Order of the Phoenix&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result>
+                  &lt;ns1:result>
+                     &lt;ns1:binding name="z">
+                        &lt;ns1:literal>Harry Potter and the Prisoner Of Azkaban&lt;/ns1:literal>
+                     &lt;/ns1:binding>
+                  &lt;/ns1:result></span>
+
+               &lt;/ns1:results>
+            &lt;/ns1:sparql>
+         &lt;/query-result>
+      &lt;/soapenv:Body>
+   &lt;/soapenv:Envelope></pre>
+
+	</div>
+
+<h2><a id="policy" name="policy">3. سیاست ملاحظات</a></h2>
+
+<h3><a name="policy-security">3.1 امنیت</a></h3>
+
+<p>آنجا حداقل دو منبع ممکن از حملات denial-of-service در برابر سرویس های پروتکل SPARQL 
+وجود دارد. نخست، نتیجه ی جستجوهای تحت اجبار می تواند در ارقام بسیار بزرگ نتایج 
+باشد، که ممکن است نیازمند هزینه های هنگفت منابع محاسبه جهت پردازش، گردآوری یا 
+عودت باشد. منبع ممکن دیگر جستجوها شامل پیچیدگی بسیار &#8212; هر یک بواسطه ی سایز 
+منبع، شماره ی منابع بازیابی شده یا ترکیبی از سایز و رقم توصیفات مجموعه داده ی &#8212; RDF 
+باشد، که سرویس می تواند از گردآوری خارج از مصرف مهم منابع، شامل پهنای باند،<span lang="en-us"> 
+CPU</span> یا حافظه ی ثانویه ناتوان باشد. در برخی موارد چنین هزینه هایی می تواند 
+بطور موثر یک تعدی denial-of-service را ایجاد نماید. یک سرویس پروتکل SPARQL
+<strong>می تواند</strong> محدودیتهای جایگزین روی منابع که بازیابی های آن یا روی 
+نرخ که در منابع خارجی بازیابی شده، باشد. آنجا ممکن است منابع دیگری از تعدی های denial-of-service 
+در برابر سرویس های پردازش جستجوی SPARQL موجود باشد.
+
+</p>
+
+<p>از آنجایی که یک سرویس پروتکل SPARQL می تواند درخواستهای دیگر سرورهای مبدأ 
+HTTP را به نیابت از مشتری هایش بسازد، آن می تواند بصورت برداری از حملات در برابر 
+دیگر سایتها یا سرویس ها استفاده شده باشد. بدین گونه، سرویس های پروتکل SPARQL می 
+توانند بطور موثر بصورت پروکسی ها برای مشتری های شخص ثالث عمل نمایند. سرویس های 
+این چنینی <strong>می توانند</strong> محدودیتهای جایگزین روی منابعی که بازیافتن 
+آنها یا روی هزینه که درمنابع خارجی ممکن است بازیابی شده، باشد. سرویس های پروتکل 
+SPARQL <strong>می توانند</strong> درخواستهای مشتری ثبت وقایع در چنین مسیری را 
+جهت سهولت ردیابی ایشان نسبت به سرورهای مبدأ شخص ثالث یا سرویس ها اعمال نمایند.</p>
+
+<p>سرویس های پروتکل <span lang="en-us">S</span>PARQL <strong>می توانند</strong> 
+انتخاب کنند که اینها و گرانی دیگر نمایان شود یا در غیر اینصورت نادرست، جستجوها، 
+زمان ضروری یا محدودیتهای حافظه روی جستجوها یا دیگر محدودیتهای تحمیلی تبدیل آنچه 
+متعلق به آسیب پذیری سرویس (یا دیگر محدودیتهای سرویس) جهت حملات denial-of-service 
+است را اعمال نمایند. آنها همچنین <strong>می توانند</strong>
+<a href="#fault-messages">پردازش چنین درخواستهای جستجو را نپذیرند</a>. </p>
+
+<p>&nbsp;IRI های متفاوت می توانند ظاهر یکسانی داشته باشند. کاراکترها در 
+اسکریپتهای متفاوت می توانند دیدار کوتاهی نمایند (یک Cyrillic "?" می تواند مشابه 
+یک "o" لاتین، ظاهر شود). یک کاراکتر دنبال شده با کاراکترهای ترکیبی می تواند 
+نمایش دیداری یکسانی بصورت کاراکتر دیگری داشته باشد (LATIN SMALL LETTER E ادامه 
+یافته توسط COMBINING ACUTE ACCENT دارای نمایش دیداری یکسانی بصورت LATIN SMALL LETTER
+E WITH ACUTE می باشد). کاربرهای SPARQL بایستی مراقب باشند که جستجوها با IRI هایی 
+که مطابق IRI هایی در داده ها هستند، شکل داده شوند. جهت کسب اطلاعات بیشتر در مورد 
+تطبیق کاراکترهای مشابه ممکن است در
+<a href="www.unicode.org/reports/tr36/">تضمین های امنیت یونی کد</a> 
+[UNISEC] و <a href="www.ietf.org/rfc/rfc3987.txt">شناسه های منبع بین 
+المللی شده (IRI ها)</a>ی [RFC3987] بخش 8 یافت شود.</p>
+
+<h2><a id="conformance" name="conformance">4. تطبیق</a></h2>
+
+<p>وضعیت بخش های پروتکل SPARQL برای RDF (این سند) بصورت ذیل است:</p>
+
+<ul>
+
+	<li>
+<strong>اصولی: </strong>بخش 1 معرفی</li>
+	<li>بخش 2 پروتکل SPARQL: <strong>اصولی</strong>، جز برای پاراگراف (در 
+	اتصالات 2.2 HTTP) برچسب دار "<strong>یک نکته ی آموزنده در مورد محدودیتهای 
+	مرتب سازی</strong>&quot;، که <strong>آموزنده</strong> است.</li>
+	<li>
+<strong>آموزنده: </strong>زیر بخش نمونه های 2.2.1 HTTP </li>
+
+	<li>
+<strong>آموزنده: </strong>زیر بخش نمونه های 2.3.1 SOAP </li>
+	<li>
+<strong>اصولی: </strong>بخش 3: سیاست ملاحظات </li>
+	<li>
+<strong>اصولی: </strong>بخش 4: تطبیق </li>
+	<li>
+<strong>اصولی: </strong>بخش 5.1: منابع اصولی </li>
+	<li>
+<strong>آموزنده: </strong>بخش 5.2: منابع آموزنده </li>
+
+	<li>
+<strong>آموزنده: </strong>بخش 6: سپاسگزاریها</li>
+</ul>
+
+<p>در کل، هر دوی <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a> 
+و <a href="www.w3.org/2007/SPARQL/protocol-types.xsd">protocol-types.xsd</a>&nbsp;
+<strong>اصولی</strong> هستند.</p>
+
+<p>یک <a name="conformant-sparql-protocol-service">&nbsp;سرویس پروتکل conformant SPARQL</a>:</p>
+
+<ol>
+	<li>
+<strong>بایستی</strong> واسط <code>SparqlQuery</code> بکار برده شود؛</li>
+	<li>
+<strong>امکان دارد</strong> HTTP، SOAP یا هر دوی اتصالات HTTP و SOAP از 
+	عملیات <code>query</code> واسط <code>SparqlQuery</code> بکار رود؛</li>
+
+	<li>
+<strong>بایستی</strong> اتصالات HTTP یا SOAP از <code>query</code> در 
+	مسیر تشریح شده در این سند ("پروتکل SPARQL برای RDF&quot;)، در <a href="www.w3.org/2007/SPARQL/protocol-query.wsdl">protocol-query.wsdl</a> 
+	و <a href="www.w3.org/2007/SPARQL/protocol-types.xsd">protocol-types.xsd</a> 
+	پیاده سازی شود؛</li>
+	<li>
+<strong>ممکن است</strong> واسط های دیگر، اتصالات عملیات آن واسط ها یا 
+	اتصالات عملیات <code>query</code> را متفاوت از اتصالات توصیف شده ی اصولی HTTP 
+	یا SOAP توسط پروتکل SPARQL برای RDF پیاده نمایند؛ و</li>
+
+	<li>
+<strong>بایستی</strong> با محدودیت های اصولی (نشان داده شده توسط کلید 
+	واژه های [RFC 2119]) تشریح شده در <a href="#policy">3. سیاست ملاحظات</a> 
+	پایدار باشد.</li>
+</ol>
+
+    <h2>
+      <a id="ref" name="ref">5. منابع</a>
+    </h2>
+
+<h3><a name="references-normative">1. اصولی</a></h3>
+
+<dl dir="ltr">
+
+  <dt><a name="RFC2119" id="RFC2119">[RFC2119]</a></dt>
+
+  <dd>
+<cite><a href="www.ietf.org/rfc/rfc2119">Key words for
+  use in RFCs to Indicate Requirement Levels</a></cite>, RFC 2119,
+  S. Bradner, March 1997</dd>
+
+  <dt><a name="rfc3987" id="rfc3987">[RFC3987]</a></dt>
+
+  <dd>
+<a href="www.ietf.org/rfc/rfc3987.txt">Internationalized Resource Identifiers (IRIs)</a>,
+  RFC 3987, M. Dürst, M. Suignard</dd>
+
+
+  <dt><a name="rfc3986" id="rfc3986">[RFC3986]</a></dt>
+  <dd>
+<cite><a href="www.ietf.org/rfc/rfc3986.txt">Uniform Resource Identifier (URI): Generic Syntax</a></cite>, 
+  RFC 3986, T. Berners-Lee, R. Fielding, L. Masinter, January 2005</dd>
+
+  <dt><a name="HTTP" id="HTTP">[HTTP]</a></dt>
+
+  <dd>
+<cite><a href="www.ietf.org/rfc/rfc2616">Hypertext
+  Transfer Protocol -- HTTP/1.1</a></cite>, RFC 2616, R. Fielding, J. Gettys,
+  J. Mogul, H. Frystyk, L. Masinter, P. Leach, T. Berners-Lee,
+  June 1999</dd>
+
+<dt>
+<a id="ref-rdf-concepts" name="ref-rdf-concepts"></a>[RDF-Concepts]</dt>
+
+   
+          <dd>
+<cite><a href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/">Resource
+          Description Framework (RDF): Concepts and Abstract
+          Syntax</a></cite>, G. Klyne, J. Carroll, Editors, W3C Recommendation, 10 February 2004, http://www.w3.org/TR/2004/REC-rdf-primer-20040210/ . <a href="www.w3.org/TR/rdf-concepts/">Latest version</a>
+          http://www.w3.org/TR/rdf-concepts/ .</dd>
+
+<dt>
+<a name="RDF-Syntax" id="RDF-Syntax">[RDF-Syntax]</a>
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/">RDF/XML Syntax Specification (Revised)</a></cite>, D. Beckett,  Editor, W3C Recommendation, 10 February 2004, http://www.w3.org/TR/2004/REC-rdf-syntax-grammar-20040210/ . <a href="www.w3.org/TR/rdf-syntax-grammar/" title="Latest version of RDF/XML Syntax Specification (Revised)">Latest version</a> available at http://www.w3.org/TR/rdf-syntax-grammar .</dd>
+
+<dt>
+<a name="SOAP12" id="SOAP12">[SOAP12]</a>
+</dt>
+
+<dd>
+<cite>
+<a href="www.w3.org/TR/2007/REC-soap12-part2-20070427/">SOAP Version 1.2 Part 2: Adjuncts</a></cite>, M. Gudgin, M. Hadley, N. Mendelsohn, J.-J. Moreau,
+H.F. Nielsen, Editors, W3C Recommendation, 27 April 2007,
+http://www.w3.org/TR/2007/REC-soap12-part2-20070427/ . <a href="www.w3.org/TR/soap12-part2/" title="Latest version of
+SOAP Version 1.2 Part 2: Adjuncts">Latest version</a>
+http://www.w3.org/TR/soap12-part2/ .</dd>
+
+<dt>
+<a name="SPARQL" id="SPARQL">[SPARQL]</a>
+
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2008/REC-rdf-sparql-query-20080115/">SPARQL Query Language for RDF</a></cite>, A. Seaborne, E. Prud'hommeaux,  Editors, W3C Recommendation, 15 January 2008, http://www.w3.org/TR/2008/REC-rdf-sparql-query-20080115/ . <a href="www.w3.org/TR/rdf-sparql-query/" title="Latest version of SPARQL Query Language for RDF">Latest version</a> available at http://www.w3.org/TR/rdf-sparql-query/ .</dd>
+
+
+<dt>
+<a name="SRD" id="SRD">[SRD]</a>
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2008/REC-rdf-sparql-XMLres-20080115/">SPARQL Query Results XML Format</a></cite>, D. Beckett, J. Broekstra,  Editors, W3C Recommendation, 15 January 2008,
+http://www.w3.org/TR/2008/REC-rdf-sparql-XMLres-20080115/
+<a href="www.w3.org/TR/rdf-sparql-XMLres/">Latest version</a> http://www.w3.org/TR/rdf-sparql-XMLres/ .</dd>
+
+<dt>
+<a name="WSDL2" id="WSDL2">WSDL2</a>
+
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2007/REC-wsdl20-20070626/">Web Services Description Language (WSDL) Version 2.0 Part 1: Core Language</a></cite>, R. Chinnici, J. Moreau, A. Ryman, S. Weerawarana,  Editors, W3C Recommendation, 26 June 2007, http://www.w3.org/TR/2007/REC-wsdl20-20070626/ . <a href="www.w3.org/TR/wsdl20/" title="Latest version of Web Services Description Language (WSDL) Version 2.0 Part 1: Core Language">Latest version</a> available at http://www.w3.org/TR/wsdl20 .</dd>
+<dt>
+<a name="WSDL2-Adjuncts" id="WSDL2-Adjuncts">WSDL2-Adjuncts</a>
+
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2007/REC-wsdl20-adjuncts-20070626/">Web Services Description Language (WSDL) Version 2.0 Part 2: Adjuncts</a></cite>, R. Chinnici, H. Haas, A. A. Lewis, J. Moreau, D. Orchard, S. Weerawarana,  Editors, W3C Recommendation, 26 June 2007, http://www.w3.org/TR/2007/REC-wsdl20-adjuncts-20070626/ . <a href="www.w3.org/TR/wsdl20-adjuncts/" title="Latest version of Web Services Description Language (WSDL) Version 2.0 Part 2: Adjuncts">Latest version</a> available at http://www.w3.org/TR/wsdl20-adjuncts .</dd>
+
+
+</dl>
+
+<h3><a name="references-informative">2. آموزنده</a></h3>
+
+<dl dir="ltr">
+
+<dt>
+<a name="UCR" id="UCR">[UC&amp;R]</a>
+</dt>
+<dd>
+<cite>
+
+<a href="www.w3.org/TR/2005/WD-rdf-dawg-uc-20050325/">RDF Data Access Use Cases and Requirements</a></cite>, K. Clark,  Editor, W3C Working Draft, 25 March 2005, http://www.w3.org/TR/2005/WD-rdf-dawg-uc-20050325/ . <a href="www.w3.org/TR/rdf-dawg-uc/" title="Latest version of RDF Data Access Use Cases and Requirements">Latest version</a> available at http://www.w3.org/TR/rdf-dawg-uc/ .</dd>
+<dt>
+<a name="WSDL2-Primer" id="WSDL2-Primer">[WSDL2-Primer]</a>
+</dt>
+<dd>
+<cite>
+<a href="www.w3.org/TR/2007/REC-wsdl20-primer-20070626/">Web Services Description Language (WSDL) Version 2.0 Part 0: Primer</a></cite>, K. Liu, D. Booth,  Editors, W3C Recommendation, 26 June 2007, http://www.w3.org/TR/2007/REC-wsdl20-primer-20070626/ . <a href="www.w3.org/TR/wsdl20-primer/" title="Latest version of Web Services Description Language (WSDL) Version 2.0 Part 0: Primer">Latest version</a> available at http://www.w3.org/TR/wsdl20-primer/ .</dd>
+
+<dt><a name="UNISEC" id="UNISEC">[UNISEC]</a></dt>
+<dd>
+  <cite><a href="www.unicode.org/reports/tr36/">Unicode Security Considerations</a></cite>, Mark Davis, Michel Suignard
+</dd>
+
+</dl>
+
+    <h2> <a id="ack" name="ack">6. سپاسگزاریها</a> </h2>
+
+<p>از اعضای DAWG، بویژه بیجن پارژا، براین تامسن، اندی سیبورن، ستیو هریس، 
+اریک پرودهاموکس، یاشیو فیوکیشایج، هاورد کتز، درک - ویلم، ون گیولیک، دن کانلی&nbsp; 
+و لی فیجنبام سپاسگزارم. تشکرات خاص به الایس توریس داشته برای کمک سخاوتمندانه و پشتیبانی اش. 
+به همان اندازه هم از همکارهای UMD ام جیم هندلر، ران الفورد، امی الفورد، یاردین 
+کتز، کریس تستا و اعضای هم کار اجتماعی وب معنایی میندلاب سپاسگزارم. همچنین تشکرات 
+مخصوصی به همکارم
+NASA و دوستم اندی سکین دارم. من همچنین سپاسگزار جاسک کاپکی، مورن فردریکسن، مارک 
+بیکر، جانری الجرمیسن،&nbsp; دانی اریس، برند سایمن، گراهام کلاین، آرجن کمپمن، تیم 
+برنرز لی، دان بریکلی، پاتریک ستیکلر، کارل دوباست، جاناتان مارش، لی دادس، دیوید 
+وود، رتو کرمنچر، تامس روسلر، دانی ویتزنر، پاول داونی، هیگو هاس، ریچارد نیومن 
+هستم.
+</p>
+
+    <hr>
+    <h2 id="chlog">ثبت وقایع تغییر</h2>
+      <p>آنجا تغییری پس از
+		<a href="www.w3.org/TR/2007/PR-rdf-sparql-protocol-20071112/">
+		توصیه ی پیشنهادی نوامبر 2007</a> بوده، نمونه ی
+		<a href="#div-construct-simple">CONSTRUCT با نمونه ی RDF</a> جهت استفاده 
+		ی نوع رسانه ی <code>text/turtle</code> بروز شده بود، توجه داشته باشید 
+		ثبت نوع رسانه در جریان است.</p>
+<div class="navbar" id="center">
+<hr title="Navigation area separator">
+<br>
+The manager of the translating group: Roauf(Raoof) Khalil Aqayi
+	
+	<br>مدير گروه ترجمه انگليسی به فارسی: رئوف خليل آقایی
+
+<br><br>Translator: <span lang="en-us">Seyyed Abdul Qader Samadi </span>&nbsp;<br>
+ترجمه از انگليسی به فارسی: سيد عبدالقادر صمدی
+
+<br><br>Translated this page into Persian/Farsi <span lang="en-us">
+on</span> 10<span lang="en-us">th</span> April 2008
+		<br>اين صفحه در 10 آوریل 2008 به فارسی ترجمه شده است.
+
+
+<br><br>
+<p style="margin-top: 0; margin-bottom: 0">&nbsp;Please report 
+errors in this <span lang="en-us">Translation</span> to the http://lists.w3.org/Archives/Public/w3c-translator<span lang="en-us">s 
+or </span>to <span lang="en-us"> yoursite2web@gmail.com</span></p>
+<p style="margin-top: 0; margin-bottom: 0">لطفا خطاهای موجود در 
+این ترجمه را به 
+http://lists.w3.org/Archives/Public/w3c-translators و یا به
+<span lang="en-us">yoursite2web@gmail.com</span> گزارش دهید.</p>
+</div>
+
+  </body>
+</html>

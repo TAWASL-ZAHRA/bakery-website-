@@ -1,0 +1,951 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SPARQL 1.1統合クエリ</title>
+<style type="text/css">@import url("www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/local.css");
+
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+
+em.rfc2119 { text-transform: lowercase;
+             font-variant: small-caps;
+             font-style: normal; }</style>
+<link rel="stylesheet" type="text/css" href="www.w3.org/StyleSheets/TR/W3C-REC.css">
+</head>
+<body>
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/">SPARQL 1.1 Federated Query W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2013年8月8日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a></p>
+
+<h1>
+<a name="title" id="title"></a>SPARQL 1.1統合クエリ</h1>
+
+<h2>
+<a name="w3c-doctype" id="w3c-doctype"></a>W3C勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/">http://www.w3.org/TR/2013/REC-sparql11-federated-query-20130321/</a></dd>
+  <dt>最新バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-federated-query/">http://www.w3.org/TR/sparql11-federated-query/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2012/PR-sparql11-federated-query-20121108/">http://www.w3.org/TR/2012/PR-sparql11-federated-query-20121108/</a></dd>
+  <dt>編集者:</dt>
+  <dd>Eric Prud'hommeaux, W3C <a href="mailto:eric@w3.org">&lt;eric@w3.org&gt;</a>
+</dd>
+  <dd>Carlos Buil-Aranda, Ontology Engineering Group, UPM, Spain; currently at Universidad Pontificia Catolica de Chile</dd>
+  <dt>貢献者:</dt>
+  <dd>Andy Seaborne, The Apache Software Foundation</dd>
+  <dd>Axel Polleres, Siemens AG <a href="mailto:axel.polleres@siemens.com">&lt;axel.polleres@siemens.com&gt;</a>
+</dd>
+  <dd>Lee Feigenbaum, Cambridge Semantics <a href="mailto:lee@thefigtrees.net">&lt;lee@thefigtrees.net&gt;</a>
+</dd>
+  <dd>Gregory Todd Williams, Rensselaer Polytechnic Institute <a href="mailto:greg@evilfunhouse.com">&lt;greg@evilfunhouse.com&gt;</a>
+</dd>
+</dl>
+
+<p>このドキュメントに対する<a href="www.w3.org/2013/sparql-errata#sparql11-federated-query"><strong>正誤表</strong></a>を参照してください。いくつかの規範的な修正が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-federated-query"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+</div>
+
+<hr>
+
+<div>
+
+<h2>
+<a name="abstract" id="abstract"></a>要約</h2>
+
+<p>RDFは、ウェブ上で情報を表すための、有向性の、ラベル付けされたグラフ・データ形式です。SPARQLは、データがRDFそのものとして保存されているか、ミドルウェアを通してRDFとして見えるのかにかかわらず、さまざまなデータ情報源にまたがるクエリを表すために使用できます。この仕様は、様々なSPARQLエンドポイント上に分散されたクエリを実行するための、SPARQL 1.1統合クエリ拡張の構文とセマンティクスを定義しています。<code>SERVICE</code>キーワードは、SPARQL 1.1を拡張し、ウェブ上に分散するデータを統合するクエリをサポートします。</p>
+</div>
+<div>
+
+<h2>
+<a name="status" id="status"></a>このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL 1.1サービス記述</a></li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">PARQL 1.1統合クエリ</a>（このドキュメント）</li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2012/PR-sparql11-federated-query-20121108/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+</div>
+<div class="toc">
+
+<h2>
+<a name="contents" id="contents"></a>目次</h2>
+
+<p class="toc">1 <a href="#introduction">はじめに</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 <a href="#docConventions">ドキュメントの規定</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.1 <a href="#docNamespaces">名前空間</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.2 <a href="#docResultDesc">結果の記述</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.3 <a href="#docTerminology">用語</a><br>
+2 <a href="#service">SPARQL 1.1統合クエリ拡張</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.1 <a href="#simpleService">遠隔のSPARQLエンドポイントへのシンプルなクエリ</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.2 <a href="#optionalTwoServices">OPTIONALを用いた2つの遠隔のSPARQLエンドポイントに対するSPARQLクエリ</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.3 <a href="#serviceFailure">サービス実行の失敗</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.4 <a href="#values">SERVICEとVALUESの相互作用（参考情報）</a><br>
+3 <a href="#fedSemantics">SPARQL 1.1シンプルな統合拡張: セマンティクス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 <a href="#defn_service">SPARQL代数への置換</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 <a href="#algebra_service">SPARQL 1.1シンプルな統合拡張代数</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 <a href="#algebra_service_examples">SERVICEの例</a><br>
+4 <a href="#variableService">変数（参考情報）</a><br>
+5 <a href="#conformance">適合性</a><br>
+6 <a href="#security">セキュリティに関する留意点（参考情報）</a><br>
+</p>
+
+<h3>
+<a name="appendices" id="appendices"></a>付録</h3>
+
+<p class="toc">A <a href="#sec-bibliography">参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.1 <a href="#sec-normative-refs">規範的な参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;A.2 <a href="#sec-non-normative-refs">その他の参考文献</a><br>
+B <a href="#sec-acknowledgements">謝辞</a><br>
+C <a href="#sec-cvsLog">CVS履歴（最終草案以後）</a><br>
+</p>
+
+</div>
+<hr>
+<div class="body">
+<div class="div1">
+
+<h2>
+<a name="introduction" id="introduction"></a>1 はじめに</h2>
+
+<p>SPARQLクエリ・サービスの増加により、データの利用者が、ウェブ上に分散するデータを統合する機会が提供されています。この仕様は、SPARQL 1.1クエリ言語に対する<code>SERVICE</code>の拡張の構文とセマンティクスを定義しています。この拡張により、クエリの作成者は、クエリの一部を特定のSPARQLエンドポイントに向けて実行することができるようになります。結果は統合クエリ・プロセッサに返され、残りのクエリの結果と結合されます。</p>
+
+<div class="div2">
+
+<h3>
+<a name="docConventions" id="docConventions"></a>1.1 ドキュメントの規定</h3>
+
+<div class="div3">
+
+<h4>
+<a name="docNamespaces" id="docNamespaces"></a>1.1.1 名前空間</h4>
+
+<p>このドキュメントは、<a class="inform" href="www.w3.org/TR/2011/WD-sparql11-query-20110512/#docNamespaces">SPARQL 1.1クエリ・ドキュメント</a>と同じ名前空間を用いています。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="docResultDesc" id="docResultDesc"></a>1.1.2 結果の記述</h4>
+
+<p>結果集合は、<a class="inform" href="www.w3.org/TR/2011/WD-sparql11-query-20110512/#docResultDesc">SPARQL 1.1クエリ・ドキュメント</a>と同じく、表形式で示されます。</p>
+
+<div class="result">
+<a name="table39" id="table39"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>x</th>
+    <th>y</th>
+    <th>z</th>
+  </tr>
+  <tr>
+    <td>"Alice"</td>
+    <td><code>&lt;http://example/a&gt;</code></td>
+    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+  </table>
+
+</div>
+
+<p>「バインディング」は、対（<a href="www.w3.org/TR/sparql11-query/#defn_QueryVariable">変数</a>、<a href="www.w3.org/TR/sparql11-query/#defn_RDFTerm">RDF用語</a>）です。<code>x</code>、<code>y</code>、<code>z</code>（列の見出しとして示される）という3つの変数があります。各ソリューションは、表の本文の1つの行として示されています。ここでは、1つのソリューションがあり、変数<code>x</code>は<code>"Alice"</code>にバインドされており、変数<code>y</code>は<code>http://example/a</code>にバインドされており、変数<code>z</code>はRDF用語にバインドされていません。ソリューションでは、変数は、必ずしもバインドされている必要はありません。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="docTerminology" id="docTerminology"></a>1.1.3 用語</h4>
+
+<p>次の用語は、<a class="norm" href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a> <a href="#SQRY">[SQRY]</a>で定義されており、このドキュメントでも使用しています。</p>
+
+<ul>
+  <li>
+<a class="type IRI" href="www.w3.org/TR/2004/REC-rdf-concepts-20040210/#dfn-URI-reference">IRI</a>（概念および抽象構文の用語RDF URI参照（<code>RDF URI reference</code>）に対応）</li>
+  <li><a class="type SolutionMapping " href="www.w3.org/TR/sparql11-query/#defn_sparqlSolutionMapping">ソリューション・マッピング</a></li>
+  <li><a class="type SolutionSequence" href="www.w3.org/TR/sparql11-query/#defn_sparqlSolutionSequence">ソリューション・シーケンス</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="service" id="service"></a>2 SPARQL 1.1統合クエリ拡張</h2>
+
+<p><code>SERVICE</code>キーワードは、遠隔のSPARQLエンドポイントに対し、一部のSPARQLクエリを呼び出すように統合クエリ・プロセッサに命じます。この項では、<code>SERVICE</code>キーワードを用いる方法の例を示します。以下の項では、この拡張の構文とセマンティクスを定義します。</p>
+
+<div class="div2">
+
+<h3>
+<a name="simpleService" id="simpleService"></a>2.1 遠隔のSPARQLエンドポイントへのシンプルなクエリ</h3>
+
+<div class="exampleGroup" id="fooService1">
+
+<p>この例では、遠隔のSPARQLエンドポイントにクエリを行い、返されたデータをローカルのRDFデータセットのデータと結合する方法を示しています。我々が知っている人々の名前を発見するためのクエリを考えてみます。様々な人々の名前に関するデータは、<code>http://people.example.org/sparql</code>のエンドポイントで入手できます。</p>
+
+<pre class="data">
+  @prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+  @prefix : &lt;http://example.org/&gt; .
+  
+  :people15  foaf:name     "Alice" .
+  :people16  foaf:name     "Bob" .
+  :people17  foaf:name     "Charles" .
+  :people18  foaf:name     "Daisy" .</pre>
+
+そして、1つのトリプルが含まれているローカルのFOAFファイル<code>http://example.org/myfoaf.rdf</code>と結合したいとします。
+
+    <pre class="data">&lt;http://example.org/myfoaf/I&gt; &lt;http://xmlns.com/foaf/0.1/knows&gt;  &lt;http://example.org/people15&gt; . </pre>
+<div class="queryGroup">
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?name
+FROM &lt;http://example.org/myfoaf.rdf&gt;
+WHERE
+{
+  &lt;http://example.org/myfoaf/I&gt; foaf:knows ?person .
+  SERVICE &lt;http://people.example.org/sparql&gt; { 
+    ?person foaf:name ?name . } 
+}</pre>
+
+<p>上記のデータに基づくこのクエリには1つのソリューションがあります。</p>
+
+<p>クエリ結果:</p>
+
+<div class="result">
+<a name="table1" id="table1"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>name</th>
+  </tr>
+  <tr>
+    <td>"Alice"</td>
+  </tr>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="optionalTwoServices" id="optionalTwoServices"></a>2.2 OPTIONALを用いた2つの遠隔のSPARQLエンドポイントに対するSPARQLクエリ</h3>
+
+<p>人々にクエリを行い、オプションとして彼らの興味と彼らが知っている人々の名前を得たいとします。例えば、人々に関するデータが含まれている2つのエンドポイントを想像してください。</p>
+
+<div class="exampleGroup" id="optionalService1">
+
+<p>遠隔のSPARQLエンドポイント<code>http://people.example.org/sparql</code>のデフォルト・グラフのデータ:</p>
+
+<pre class="data"> 
+  @prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+  @prefix : &lt;http://example.org/&gt; .
+  
+  :people15  foaf:name     "Alice" .
+  :people16  foaf:name     "Bob" .
+  :people17  foaf:name     "Charles" .
+  :people17  foaf:interest     &lt;http://www.w3.org/2001/sw/rdb2rdf/&gt; .
+  </pre>
+
+<p>そして、遠隔のSPARQLエンドポイント<code>http://people2.example.org/sparql</code>のデフォルト・グラフのデータ:</p>
+
+<pre class="data"> 
+  @prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+  @prefix : &lt;http://example.org/&gt; .
+  
+  :people15  foaf:knows    :people18 . 
+  :people18  foaf:name     "Mike" .
+  :people17  foaf:knows    :people19 . 
+  :people19  foaf:name     "Daisy" .
+  </pre>
+<div class="queryGroup">
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?person ?interest ?known
+WHERE
+{
+  SERVICE &lt;http://people.example.org/sparql&gt; { 
+    ?person foaf:name ?name .  
+    OPTIONAL { 
+      ?person foaf:interest ?interest .
+      SERVICE &lt;http://people2.example.org/sparql&gt; { 
+        ?person foaf:knows ?known . } }
+  }    
+}</pre>
+
+<p>上記のデータに基づくこのクエリには3つのソリューションがあります。</p>
+
+<p>クエリ結果:</p>
+
+<div class="result">
+<a name="table03" id="table03"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>person</th>
+    <th>interest</th>
+    <th>known</th>
+  </tr>
+  <tr>
+    <td>"Alice"</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>"Bob"</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>"Charles"</td>
+    <td>&lt;http://www.w3.org/2001/sw/rdb2rdf/&gt;</td>
+    <td>&lt;http://example.org/people19&gt;</td>
+  </tr>
+</table>
+
+</div>
+</div>
+</div>
+
+<p>上記のクエリには、<code>OPTIONAL</code>句内に入れ子の<code>SERVICE</code>があることに注意してください。基本的な統合クエリをサポートするために、このクエリには<code>http://people.example.org/sparql</code>のSPARQLクエリ・サービスが必要です。</p>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="serviceFailure" id="serviceFailure"></a>2.3 サービス実行の失敗</h3>
+
+<p><code>SERVICE</code>パターンの実行は、いくつかの理由により失敗する可能性があります。遠隔のサービスがダウンしているかもしれませんし、サービスのIRIが逆参照可能ではないかもしれませんし、エンドポイントがクエリにエラーを返すかもしれません。通常、そのような状況では、<code>SERVICE</code>パターンが含まれている、呼び出されたクエリは全体として失敗となります。<code>SILENT</code>キーワードを用いれば、クエリは、失敗した<code>SERVICE</code>リクエストを明示的に認めることができます。<code>SILENT</code>キーワードは、遠隔のSPARQLエンドポイントにアクセスしている間に遭遇したエラーは、クエリの処理中は無視されるべきであるということを示します。失敗した<code>SERVICE</code>句は、バインディングのない1つのソリューションの結果があるかのように扱われます。</p>
+
+<p>次のクエリには、<code>SILENT</code>キーワードが存在しています。SPARQLエンドポイントが存在していない、ダウンしている、または、アクセス可能ではという理由で遠隔のSPARQLエンドポイントが利用できない場合、クエリは、1つの空のソリューション・マッピングのソリューション・シーケンスを返すでしょう。<code>SILENT</code>キーワードが存在していなければ、クエリは停止し、エラーを返すでしょう。</p>
+
+<div class="exampleGroup" id="fooService2">
+
+<p><code>&lt;http://people.example.org/sparql&gt;</code>エンドポイントのデータ:</p>
+
+<pre class="data">
+  &lt;http://example.org/people15&gt;  &lt;http://xmlns.com/foaf/0.1/name&gt;     "Charles" .</pre>
+<div class="queryGroup">
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?name
+WHERE
+{
+  SERVICE SILENT &lt;http://people.example.org/sparql&gt; { 
+    &lt;http://example.org/people15&gt; foaf:name ?name . }
+}</pre>
+
+<p>遠隔のSPARQLエンドポイントのクエリ中にエラーが発生した場合のクエリ結果:</p>
+
+<div class="result">
+<a name="table2" id="table2"></a><table class="resultTable">
+<tr><th>name</th></tr>
+<tr><td>?</td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="values" id="values"></a>2.4 SERVICEとVALUESの相互作用（参考情報）</h3>
+
+<p>SPARQL 1.1クエリには、<code>VALUES</code>句（<a class="inform" href="www.w3.org/TR/sparql11-query/#inline-data">VALUES</a>）が含まれており、それはクエリ評価の結果と結合される順不同のソリューション・シーケンスを提供するために使用できます。SPARQL 1.1統合クエリの実装者は、クエリの他の部分の評価から得られたソリューションのバインディングに基づき、遠隔のエンドポイントから受け取った結果を制約するために<code>VALUES</code>句を使用できます。</p>
+
+<p>次の例は、どのように<code>SERVICE</code>と<code>VALUES</code>が連携可能かを示しています。デフォルト・グラフ内のfoaf:Personと彼らが知っている人々のすべてのインスタンスを、遠隔のエンドポイント<code>http://example.org/sparql</code>で求めるクエリを想定してください。</p>
+
+<p>デフォルト・グラフ内のデータ:</p>
+
+<div class="exampleGroup" id="bindingsService1">
+<pre class="data">   
+  @prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+  @prefix : &lt;http://example.org/&gt; .
+  
+  :a a foaf:Person  ;
+     foaf:name     "Alan" ;
+     foaf:mbox;     "alan@example.org" .
+  :b a foaf:Person  ;
+     foaf:name     "Bob" ;
+     foaf:mbox     "bob@example.org" .
+  </pre>
+
+<p>そして、遠隔のSPARQLエンドポイント<code>http://example.org/sparql</code>のデフォルト・グラフ内のデータ:</p>
+
+<pre class="data"> 
+  @prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+  @prefix : &lt;http://example.org/&gt; .
+  
+  :a  foaf:knows     :b . 
+  :b  foaf:knows     :c .
+  :c  foaf:knows     :a .
+  :a  foaf:interest  "SPARQL 1.1 Basic Federated Query" . 
+  :b  foaf:interest  "SPARQL 1.1 Query" .
+  :c  foaf:interest  "RDB2RDF Direct mapping" .
+  </pre>
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?s
+{
+  ?s a foaf:Person .
+  SERVICE &lt;http://example.org/sparql&gt; {?s foaf:knows ?o }
+}
+</pre>
+</div>
+
+<p>サービスの呼び出しに制約がなく、元のクエリが単純に実行されれば、エンドポイントは必要以上の結果を返すかもしれません。また、SPARQLエンドポイントがすべての結果を返すとは限らないかもしれません。多くの既存のSPARQLエンドポイントには、それらが返す結果の数に制限があり、ローカルのデフォルト・グラフの主語<code>?s</code>と一致するものを逃す可能性があります。したがって、統合クエリに対するクエリ・プランナの実装は、代わりにクエリを2つのクエリに分解することにするかもしれず、その場合、ローカルのデフォルト・グラフのバインディングが最初に評価されます。</p>
+
+<div class="exampleGroup" id="bindingsService2">
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX : &lt;http://example.org/&gt;
+PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?s
+{
+  ?s a foaf:Person
+} 
+</pre>
+
+<p>上記のデータに基づくこのクエリには2つのソリューションがあります。</p>
+
+<p>クエリ結果:</p>
+
+<div class="result">
+<a name="table04a" id="table04a"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>s</th>
+  </tr>
+  <tr>
+    <td>&lt;http://example.org/a&gt;</td>
+  </tr>
+  <tr>
+    <td>&lt;http://example.org/b&gt;</td>
+  </tr>
+</table>
+
+</div>
+</div>
+
+<p>次に、<code>?s</code>のソリューションを持つ制約されたクエリを、遠隔のエンドポイント&lt;http://example.org/sparql&gt;に送ります。</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX : &lt;http://example.org/&gt;
+SELECT * {?s foaf:knows ?o } VALUES (?s) { (:a) (:b) }</pre>
+
+<p><code>SERVICE</code>が含まれているクエリ・プロセスは、返されるデータを、全体的なクエリに必要なデータの範囲に制限します。</p>
+
+<div class="queryGroup">
+
+<p>クエリ:</p>
+
+<pre class="query">PREFIX foaf:   &lt;http://xmlns.com/foaf/0.1/&gt;
+SELECT ?s ?o
+{
+  ?s a foaf:Person
+  SERVICE &lt;http://example.org/sparql&gt; {?s foaf:knows ?o }
+} </pre>
+
+<p><code>VALUES</code>を用いた上記のデータに基づくこのクエリには、全体的なクエリに対して2つのソリューションが予期されます。</p>
+
+<p>クエリ結果:</p>
+
+<div class="result">
+<a name="table04b" id="table04b"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>s</th>
+    <th>o</th>
+  </tr>
+  <tr>
+    <td>&lt;http://example.org/a&gt;</td>
+    <td>&lt;http://example.org/b&gt;</td>
+  </tr>
+  <tr>
+    <td>&lt;http://example.org/b&gt;</td>
+    <td>&lt;http://example.org/c&gt;</td>
+  </tr>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="fedSemantics" id="fedSemantics"></a>3 SPARQL 1.1シンプルな統合拡張: セマンティクス</h2>
+
+<div class="div2">
+
+<h3>
+<a name="defn_service" id="defn_service"></a>3.1 SPARQL代数への置換</h3>
+
+<p><code>SERVICE</code>拡張は、SPARQLクエリ1.1の<a href="www.w3.org/TR/sparql11-query/#convertGraphPattern">Transform（構文形式）</a>への追加を伴った、GroupGraphPatternの付加的な形と定義されます。</p>
+
+<blockquote>
+    
+
+<p>形式が<code><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></code>である場合</p>
+
+    <blockquote>
+
+<p>[<a class="inform" href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>]の<a href="www.w3.org/TR/sparql11-query/#sparqlTranslateGraphPatterns">グラフ・パターンの置換の項</a>から、GroupGraphPatternの変換を拡張して<code>SERVICE</code>パターンの変換を定義します。</p>
+
+    </blockquote>
+
+</blockquote>
+<pre class="codeBlock">Let FS := the empty set
+Let G := the empty pattern, Z, a basic graph pattern which is the empty set.
+Let SilentOp := boolean, indicating SERVICE error behavior.
+
+For each element E in the GroupGraphPattern
+    If E is of the form FILTER(expr)
+        FS := FS ∪ {expr}
+        End
+
+    If E is of the form OPTIONAL{P} 
+        Let A := Transform(P)
+        If A is of the form Filter(F, A2)
+            G := LeftJoin(G, A2, F)
+        Else 
+            G := LeftJoin(G, A, true)
+            End
+        End
+
+    If E is of the form MINUS{P}
+        G := Minus(G, Transform(P))
+        End
+
+    If E is of the form BIND(expr AS var)
+        G := Extend(G, var, expr)
+        End
+
+    If E is any other form 
+        Let A := Transform(E)
+        G := Join(G, A)
+        End
+
+    <strong>If E is of the form SERVICE [SILENT] IRI {P}
+        Let G := Join(G, Service(IRI, Transform(P), SilentOp))
+        End</strong>
+   
+   End
+   
+If FS is not empty:
+  Let X := Conjunction of expressions in FS
+  G := Filter(X, G)
+
+The result is G.
+            </pre>
+</div>
+<div class="div2">
+
+<h3>
+<a name="algebra_service" id="algebra_service"></a>3.2 SPARQL 1.1シンプルな統合拡張代数</h3>
+
+<p><code>SERVICE</code>の評価は、入れ子のグラフ・パターンのSPARQLプロトコル[<a href="#SPROT">SPROT</a>]の実行により返される<a class="inform" href="www.w3.org/TR/rdf-sparql-XMLres/">SPARQL結果</a>[<a href="#RESULTS">RESULTS</a>]で定義されます。</p>
+
+<div class="defn">
+
+<p><strong>定義: <a id="defn_evalService" name="defn_evalService">サービス・パターンの評価</a></strong></p>
+	
+次のとおりとします。 
+
+<ul>
+  <li>iriをIRIとし、</li>
+  <li>
+<code>Ω<sub>0</sub></code>を1つの空のソリューションを持つソリューションの集合とし、</li>
+  <li>SilentOpを、真の場合にSERVICEの実行がエラーを無視すべきであることを示すブール変数とします。</li>
+</ul>
+
+<p>すると、次のとおりとなります。</p>
+
+<div class="defn">eval(D(G), Service(IRI,P,SilentOp)) = Invocation( iri, P, SilentOp )</div>
+
+このとき、Invocation(IRI, P, SilentOp)は、
+
+<ul>
+  <li>SPARQLプロトコルによるサービスの呼び出しが成功であれば、SPARQL構文においてQがPのシリアル化であるIRI iriのサービス・エンドポイントに対して実行したクエリ<code>SELECT * WHERE Q</code>の結果に対応したソリューション・マッピングの多重集合です。そうでない場合は、</li>
+  <li>SilentOpが真の場合、<code>Ω<sub>0</sub>.</code>です。そうでない場合は、</li>
+  <li>エラーです。</li>
+</ul>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="algebra_service_examples" id="algebra_service_examples"></a>3.2.1 SERVICEの例</h4>
+
+<p>以下の項では、SPARQL代数における<code>SERVICE</code>パターンの評価を示す2つの例を紹介します。</p>
+
+<p>例: 一連のjoinの<code>SERVICE</code>グラフ・パターン:</p>
+
+<div class="algExample">
+<div class="algExample1">
+	  ... WHERE { { ?s :p1 ?v1 } SERVICE &lt;srvc&gt; {?s :p2 ?v2 } { ?s :p3 ?v2 } }
+	</div>
+<div class="algExample2">
+	  Join( Service( &lt;srvc&gt;, <br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BGP( ?s :p2 ?v2 ), false ),<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BGP( ?s :p3 ?v2 ) )
+	</div>
+</div>
+
+<p>例: 一連のjoinの<code>SERVICE SILENT</code>グラフ・パターン:</p>
+
+<div class="algExample">
+<div class="algExample1">
+	  ... WHERE { { ?s :p1 ?v1 } SERVICE SILENT &lt;srvc&gt; {?s :p2 ?v2 } { ?s :p3 ?v2 } }
+	</div>
+<div class="algExample2">
+	  Join( Service( &lt;srvc&gt;, <br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BGP( ?s :p2 ?v2 ), true ),<br>
+	  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; BGP( ?s :p3 ?v2 ) )
+	</div>
+</div>
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="variableService" id="variableService"></a>4 SERVICE変数（参考情報）</h2>
+
+<p>この項では、SPARQLパターン<code>SERVICE VAR</code>に対する公式な評価のセマンティクスを提供しません。SPARQLパターン<code>SERVICE VAR</code>の評価をどのように評価できるかに関する指示を提供するだけです。</p>
+
+<p>サービスIRIの代わりに変数が用いられていれば、それは、ソリューションに対するサービスの呼び出しが、そのソリューションでは、その変数のバインディングに依存していることを表します。例えば、デフォルト・グラフには、プロジェクトのエンドポイントに関するデータがどのサービスに含まれいるかに関するデータが含まれているかもしれません。これらのプロジェクト（<a href="github.com/edumbill/doap/wiki">DOAP語彙</a>を用いた）に関するデータにクエリを行うことができるSPARQLエンドポイントに関する情報が含まれている様々なプロジェクトに関し、次のデータを仮定しています。</p>
+
+<pre class="data">
+@prefix void:    &lt;http://rdfs.org/ns/void#&gt; .
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix doap: &lt;http://usefulinc.com/ns/doap#&gt; .
+
+[] dc:subject "Querying RDF" ;
+   void:sparqlEndpoint &lt;http://projects1.example.org/sparql&gt; .
+[] dc:subject "Querying RDF remotely" ;
+   void:sparqlEndpoint &lt;http://projects2.example.org/sparql&gt; .
+[] dc:subject "Updating RDF remotely"  ;
+   void:sparqlEndpoint &lt;http://projects3.example.org/sparql&gt; .
+
+</pre>
+
+<p>遠隔のSPARQLエンドポイントhttp://projects2.example.org/sparqlのデフォルト・グラフ内のデータ:</p>
+
+<pre class="data">
+_:project1  doap:name    "Query remote RDF Data" .
+_:project1  doap:created "2011-02-12"^^xsd:date .
+_:project2  doap:name    "Querying multiple SPARQL endpoints" .
+_:project2  doap:created "2011-02-13"^^xsd:date .
+</pre>
+
+<p>遠隔のSPARQLエンドポイントhttp://projects3.example.org/sparqlのデフォルト・グラフ内のデータ:</p>
+
+<pre class="data">
+_:project3  doap:name    "Update remote RDF Data" .
+_:project3  doap:created "2011-02-14"^^xsd:date .
+</pre>
+
+<p>次に、「remote」という主語についてプロジェクトのプロジェクト名にクエリを行いたいとします。</p>
+
+<div class="queryGroup">
+<pre class="query">PREFIX  void: &lt;http://rdfs.org/ns/void#&gt;
+PREFIX  dc:   &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX  doap: &lt;http://usefulinc.com/ns/doap#&gt; 
+
+SELECT ?service ?projectName
+WHERE {
+  # 主語「remote」を持つサービスを発見する。
+
+  ?p dc:subject ?projectSubject ;
+     void:sparqlEndpoint ?service .
+     FILTER regex(?projectSubject, "remote")
+
+  # サービスのプロジェクトにクエリを実行する。
+  SERVICE ?service {
+     ?project  doap:name ?projectName . } 
+}
+
+</pre>
+
+<p>次の表は、上記のデータを用いたこのクエリに対する直観的なソリューションを示しています。</p>
+
+<p>クエリ結果:</p>
+
+<div class="result">
+<a name="tableResultsVarEndpoint" id="tableResultsVarEndpoint"></a>
+
+<table class="resultTable">
+  <tr>
+    <th>service</th>
+    <th>title</th>
+  </tr>
+  <tr>
+    <td>&lt;http://projects2.example.org/sparql&gt;</td>
+    <td>"Query remote RDF Data"</td>
+  </tr>
+  <tr>
+    <td>&lt;http://projects2.example.org/sparql&gt;</td>
+    <td>"Querying multiple SPARQL endpoints"</td>
+  </tr>
+  <tr>
+    <td>&lt;http://projects3.example.org/sparql&gt;</td>
+    <td>"Update remote RDF Data"</td>
+  </tr>
+</table>
+
+</div>
+</div>
+
+<p>変数が含まれている<code>SERVICE</code>句は、SPARQLクエリ・サービスを個別に続けて呼び出すことで実行できます。個々の呼び出しの結果は、和集合で組み合わせられます。</p>
+
+<p>クエリ・エンジンは、対象となりえるSPARQLクエリ・サービスを決定しなければなりません。これを行うための正確な仕組みは、このドキュメントでは定義していません。実行の順序も、試みるべきサービスのリストを決定するために使用できます。上記の例は、実行の具体的な順序を提案しています。つまり、基本的なグラフ・パターンと<code>SERVICE</code>ブロックの外のフィルタを最初に評価すると、<code>?service</code>に対するバインディングが生成され、その後、それを、<code>SERVICE</code>ブロックを評価するために利用できるでしょう。</p>
+
+<pre class="query">?p dc:subject ?projectSubject ;
+   void:sparqlEndpoint ?service
+   FILTER regex(?projectSubject, "remote")</pre>
+
+<p><code>?service</code>サービスが一度評価されれば、<code>?service</code>の個々の値に対して<code>SERVICE</code>を実行できます。</p>
+
+<pre class="query">SERVICE ?service {
+?project doap:name ?projectName . }</pre>
+
+<p>空白ノードは、それをシリアル化するドキュメントに固有のものであることに注意してください。さらに、<code>SERVICE</code>の呼び出しは、シリアル化されたRDFドキュメントを転送し、空白ノードをサービスの呼び出しの間で一意にするSPARQLプロトコル[<a href="#SPROT">SPROT</a>]に依存します。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="conformance" id="conformance"></a>5 適合性</h2>
+
+<p>SPARQL 1.1統合クエリ拡張が含まれている<a href="www.w3.org/TR/sparql11-query/#defn_SPARQLQueryString">SPARQLクエリ文字列</a>の適合性に関しては、4項の<a href="www.w3.org/TR/sparql11-query/#grammar">SPARQL 1.1統合クエリ文法</a>を参照してください。<code>SERVICE</code>キーワードに対するクエリ結果の適合性に関しては、3.1項の<a href="#defn_service">SERVICEの定義</a>を参照してください。</p>
+
+<p>この仕様は、 <a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>との併用を意図しています。その適合性基準については、その仕様を参照してください。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="security" id="security"></a>6 セキュリティに関する留意点（参考情報）</h2>
+
+<p><code>SERVICE</code>を用いたSPARQLクエリは、URIが逆参照され、その結果が作業用のデータセットに組み入れられるということを意味します。<a class="norm" href="www.w3.org/TR/sparql11-protocol/#policy-security">SPARQLプロトコル1.1</a>[<a href="#SPROT">SPROT</a>]の3.1項、<a class="norm" href="www.w3.org/TR/sparql11-query/#security">SPARQL 1.1クエリ</a>[<a href="#SQRY">SQRY</a>]の21項、<a class="norm" href="www.ietf.org/rfc/rfc3986.txt">URI（Uniform Resource Identifier）:一般的構文</a> [<a href="#rfc3986">RFC3986</a>]の7項のすべてのセキュリティ上の課題を考慮すべきです。</p>
+
+</div>
+</div>
+<div class="back">
+<div class="div1">
+
+<h2>
+<a name="sec-bibliography" id="sec-bibliography"></a>A 参考文献</h2>
+
+<div class="div2">
+
+<h3>
+<a name="sec-normative-refs" id="sec-normative-refs"></a>A.1 規範的な参考文献</h3>
+
+<dl class="bib">
+		<dt><a id="SQRY" name="SQRY">[SQRY]</a></dt>
+
+		<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1 Query Language</a></cite>, S. Harris, A. Seaborne, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-query-20130321. <a href="www.w3.org/TR/sparql11-query/" title="Latest version of SPARQL 1.1 Query Language">Latest version</a> available at http://www.w3.org/TR/sparql11-query.</dd>
+
+		<dt><a id="SPROT" name="SPROT">[SPROT]</a></dt>
+
+		<dd>
+<cite><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1 Protocol</a></cite>, L. Feigenbaum, G. Williams, K. Clark, E. Torres, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-sparql11-protocol-20130321. <a href="www.w3.org/TR/sparql11-protocol/" title="Latest version of SPARQL 1.1 Protocol">Latest version</a> available at http://www.w3.org/TR/sparql11-protocol.</dd> 
+
+		<dt><a name="CHARMOD" id="CHARMOD">[CHARMOD]</a></dt>
+		<dd>
+		Character
+      Model for the World Wide Web 1.0: Fundamentals,
+      R. Ishida, F. Yergeau, M. J. Dust, M. Wolf, T. Texin,
+      Editors, W3C Recommendation, 15 February 2005,
+      http://www.w3.org/TR/2005/REC-charmod-20050215/ . 
+		<a href="www.w3.org/TR/charmod/" title="Latest version of Character Model for the World Wide Web 1.0: Fundamentals">Latest version</a> available at http://www.w3.org/TR/charmod/
+      .</dd>
+
+		<dt><a name="rfc3629" id="rfc3629">[RFC3629]</a></dt>
+		<dd>RFC 3629 
+		UTF-8, a transformation
+      format of ISO 10646, F. Yergeau November 2003</dd>
+
+		<dt><a name="rfc3986" id="rfc3986">[RFC3986]</a></dt>
+		<dd>RFC 3986 
+		Uniform Resource
+      Identifier (URI): Generic Syntax, T. Berners-Lee,
+      R. Fielding, L. Masinter January 2005</dd>
+		<dt><a name="rfc3987" id="rfc3987">[RFC3987]</a></dt>
+		<dd>
+<a href="www.ietf.org/rfc/rfc3987.txt">RFC
+      3987</a>, "Internationalized Resource Identifiers (IRIs)", M.
+      Durst , M. Suignard</dd>
+
+		<dt><a name="UNICODE" id="UNICODE">[UNICODE]</a></dt>
+		<dd>The Unicode Standard, Version 4. ISBN
+      0-321-18578-1, as updated from time to time by the
+      publication of new versions. The latest version of Unicode
+      and additional information on versions of the standard and of
+      the Unicode Character Database is available at 
+		<a href="www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</dd>
+		<dt><a name="XML11" id="XML11">[XML11]</a></dt>
+		<dd>
+		Extensible
+      Markup Language (XML) 1.1, J. Cowan, J. Paoli, E.
+      Maler, C. M. Sperberg-McQueen, F. Yergeau, T. Bray, Editors,
+      W3C Recommendation, 4 February 2004,
+      http://www.w3.org/TR/2004/REC-xml11-20040204/ . 
+		<a href="www.w3.org/TR/xml11/" title="Latest version of Extensible Markup Language (XML) 1.1">Latest
+      version</a> available at http://www.w3.org/TR/xml11/ .</dd>
+
+	<dt><a name="BCP47" id="BCP47">[BCP47]</a></dt>
+	<dd>Best Common Practice 47, P. V. Biron, A. Malhotra, Editors, W3C Recommendation, 28 October 2004, http://www.rfc-editor.org/rfc/bcp/bcp47.txt .</dd>
+</dl>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="sec-non-normative-refs" id="sec-non-normative-refs"></a>A.2 その他の参考文献</h3>
+
+<dl class="bib">
+		<dt><a name="RESULTS" id="RESULTS">[RESULTS]</a></dt>
+		<dd>
+<cite><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQL Query Results XML Format (Second Edition)</a></cite>, D. Beckett, J. Broekstra, Editors, W3C Recommendation, 21 March 2013, http://www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321. <a href="www.w3.org/TR/rdf-sparql-XMLres/" title="Latest version of SPARQL Query Results XML Format (Second Edition)">Latest version</a> available at http://www.w3.org/TR/rdf-sparql-XMLres.</dd> 
+
+		<dt><a name="TURTLE" id="TURTLE">[TURTLE]</a></dt>
+		<dd>
+<cite><a href="www.w3.org/TR/2013/CR-turtle-20130219/">Turtle:
+Terse RDF Triple Language</a></cite>, E Prud'hommeaux, G Carothers, Editors, W3C Candidate Recommendation, 19 February 2013, http://www.w3.org/TR/2013/CR-turtle-20130219/. <a href="www.w3.org/TR/turtle/" title="Latest version of Turtle">Latest version</a> available at http://www.w3.org/TR/turtle/.</dd>
+
+</dl>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="sec-acknowledgements" id="sec-acknowledgements"></a>B 謝辞</h2>
+
+<p>SPARQL 1.1統合クエリ・ドキュメントは、<a href="www.w3.org/2009/sparql/wiki/Main_Page">W3C SPARQLワーキンググループ</a>全体の成果であり、議論、コメントおよびレビューに対して、すべての現在および過去のメンバーに感謝します。</p>
+
+<p>さらに、我々は、ワーキンググループのコメント・リストを通じて、多くの人々とコメントや議論のやり取りを行いました。すべてのコメントがより良いドキュメントの作成に繋がりました。さらに、Carlosは、統合クエリ拡張の構文とセマンティックスに関する議論に関し、特にJorge Perez、Oscar Corcho、およびMarcelo Arenasに感謝しています。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="sec-cvsLog" id="sec-cvsLog"></a>C CVS履歴（最終草案以後）</h2>
+
+</div>
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>なし</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>参考文献を更新し、DOAP URLを修正した。</li>
+  <li>クエリの仕様の変更と一致させるために「BINDINGS」という単語を「VALUES」に変更した。</li>
+</ul>
+
+</div>
+</div>
+
+</body>
+</html>

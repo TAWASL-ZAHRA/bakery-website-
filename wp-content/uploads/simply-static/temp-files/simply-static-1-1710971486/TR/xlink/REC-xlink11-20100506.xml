@@ -1,0 +1,2320 @@
+<?xml version='1.0' encoding='utf-8'?>
+<?xml-stylesheet type="text/xsl" href="xmlspec-extended.xsl"?>
+<!DOCTYPE spec PUBLIC "-//W3C//DTD Specification V2.8//EN"
+               "www.w3.org/2002/xmlspec/dtd/2.8/xmlspec.dtd" [
+<!ENTITY doctype "xlink11">
+<!ENTITY pub-year "2010">
+<!ENTITY pub-month "May">
+<!ENTITY pub-MM "05">
+<!ENTITY pub-day "06">
+<!ENTITY pub-DD "06">
+<!ENTITY iso6.doc.date "&pub-year;&pub-MM;&pub-DD;">
+<!ENTITY publoc "www.w3.org/TR/&pub-year;/REC-&doctype;-&iso6.doc.date;/">
+<!ENTITY errataloc "www.w3.org/XML/2010/xlink-11-errata.html">
+<!ENTITY linkbaselistprop "www.w3.org/1999/xlink/properties/linkbase">
+<!ENTITY showactuateattribs "xlink:show      (new
+                  |replace
+                  |embed
+                  |other
+                  |none)          #IMPLIED
+  xlink:actuate   (onLoad
+                  |onRequest
+                  |other
+                  |none)          #IMPLIED">
+<!ENTITY fromtoatts "xlink:from      NMTOKEN         #IMPLIED
+  xlink:to        NMTOKEN         #IMPLIED">
+<!ENTITY hrefatt "xlink:href      CDATA           ">
+<!ENTITY arcroleatt "xlink:arcrole   CDATA           #IMPLIED">
+<!ENTITY labelatt "xlink:label     NMTOKEN         #IMPLIED">
+<!ENTITY roleatt "xlink:role      CDATA           #IMPLIED">
+<!ENTITY nsatt 'xmlns:xlink     CDATA           #FIXED "&xlinknsuri;"'>
+<!ENTITY titleatt "xlink:title     CDATA           #IMPLIED">
+<!ENTITY xmproleuri "www.example.com/linkprops/">
+<!ENTITY xlinknsuri "www.w3.org/1999/xlink">
+]>
+<spec w3c-doctype="rec">
+<header>
+<title>XML Linking Language (XLink)</title>
+<version>Version 1.1</version>
+<w3c-designation>REC-xlink11-&iso6.doc.date;</w3c-designation>
+<w3c-doctype>W3C Recommendation</w3c-doctype>
+<pubdate><day>&pub-day;</day><month>&pub-month;</month><year>&pub-year;</year>
+</pubdate>
+<publoc>
+  <loc href="&publoc;"/>
+</publoc>
+  <altlocs>
+    <loc href="REC-xlink11-&iso6.doc.date;.xml">XML</loc>
+<!--
+    <loc href="Overview-diff.html">Recent revisions</loc>
+    <loc href="Overview-diffCR.html">Revisions from previous CR draft</loc>
+    <loc href="Overview-diff10.html">Revisions from 1.0</loc>
+-->
+  </altlocs>
+<latestloc>
+  <loc href="www.w3.org/TR/xlink11/"/>
+</latestloc>
+<prevlocs>
+  <loc href="www.w3.org/TR/2010/PR-xlink11-20100225/"/>
+  <loc href="www.w3.org/TR/2008/WD-xlink11-20080331/"/>
+<!--
+  <loc href="www.w3.org/TR/2006/CR-xlink11-20060328/"/>
+-->
+</prevlocs>
+<authlist>
+<author><name>Steve DeRose</name><affiliation>Brown University Scholarly Technology Group</affiliation></author>
+<author><name>Eve Maler</name><affiliation>Sun Microsystems</affiliation></author>
+<author><name>David Orchard</name><affiliation>Jamcracker</affiliation></author>
+<author role="11"><name>Norman Walsh</name><affiliation>Mark Logic Corporation</affiliation></author>
+</authlist>
+<errataloc href="&errataloc;"/>
+<translationloc href="www.w3.org/2003/03/Translations/byTechnology?technology=xlink11"/>
+<abstract>
+<p>This specification defines the XML Linking Language (XLink) Version 1.1,
+which allows elements to be inserted into XML documents in order to
+create and describe links between resources. It uses XML syntax to
+create structures that can describe links similar to the simple
+unidirectional hyperlinks of today's HTML, as well as more sophisticated
+links.
+</p>
+</abstract>
+<status>
+
+<p><emph>This section describes the status of this document at the time
+of its publication. Other documents may supersede this document. A
+list of current W3C publications and the latest revision of this
+technical report can be found in the <loc
+href="www.w3.org/TR/">W3C technical reports index</loc> at
+www.w3.org/TR/.</emph></p>
+
+<p>This document is a
+<loc href="www.w3.org/2005/10/Process-20051014/tr.html#q74">W3C
+Recommendation</loc>.
+It implements all of the XLink 1.1 requirements
+documented in <bibref ref="xlink10-ext"/>. This document
+is a product of the
+<loc href="www.w3.org/XML/Core/">XML Core Working Group</loc>
+as part of the W3C
+<loc href="www.w3.org/XML/Activity">XML Activity</loc>.
+</p>
+
+<p>This edition supersedes the previous
+<loc href="www.w3.org/TR/2001/REC-xlink-20010627/">W3C Recommendation
+of 27 June 2001</loc>.</p>
+
+<p>Please report errors in this document to the public
+<loc href="mailto:www-xml-linking-comments@w3.org">www-xml-linking-comments@w3.org</loc> mailing list; public
+<loc href="lists.w3.org/Archives/Public/www-xml-linking-comments/">archives</loc>
+are available.
+</p>
+
+<p>There is an
+<loc href="www.w3.org/XML/2006/01/xlink11-implementation">Implementation
+Report for XLink 1.1</loc>. A
+<loc href="www.w3.org/XML/2006/03/xlink11-tests">Test Suite</loc>
+is maintained to help assessing the conformance to this specification.</p>
+
+<p>This document has been reviewed by W3C Members, by software
+developers, and by other W3C groups and interested parties, and is
+endorsed by the Director as a W3C Recommendation. It is a stable
+document and may be used as reference material or cited from another
+document. W3C's role in making the Recommendation is to draw attention
+to the specification and to promote its widespread deployment. This
+enhances the functionality and interoperability of the Web.</p>
+
+<p> This document was produced by a group operating under the <loc
+href="www.w3.org/Consortium/Patent-Policy-20040205/">5 February
+2004 W3C Patent Policy</loc>. W3C maintains a <loc role="disclosure"
+href="www.w3.org/2004/01/pp-impl/18796/status#disclosures">public
+list of any patent disclosures</loc> made in connection with the
+deliverables of the group; that page also includes instructions for
+disclosing a patent. An individual who has actual knowledge of a
+patent which the individual believes contains <loc
+href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">Essential
+Claim(s)</loc> must disclose the information in accordance with <loc
+href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">section
+6 of the W3C Patent Policy</loc>.</p>
+
+</status>
+<pubstmt>
+<p>World-Wide Web Consortium, XML Working Group
+and XML Linking Working Group, 1997-2001. XML Core Working Group, 2005.</p>
+</pubstmt>
+<sourcedesc>
+<p>Created in electronic form.</p>
+</sourcedesc>
+<langusage>
+<language id="en">English</language>
+</langusage>
+<revisiondesc>
+<slist>
+<sitem>No attempt to maintain this. Use the CVS log instead.</sitem>
+</slist>
+</revisiondesc>
+</header>
+<body>
+<div1 id="intro">
+<head>Introduction</head>
+<p>This specification defines the XML Linking Language (XLink), which allows
+elements to be inserted into XML documents in order to create and describe <termref def="dt-link">links</termref> between resources.</p>
+<p>XLink provides a framework for creating both basic unidirectional links
+and more complex linking structures. It allows XML documents to:</p>
+<ulist>
+<item><p>Assert linking relationships among more than two resources</p></item>
+<item><p>Associate metadata with a link</p></item>
+<item><p>Express links that reside in a location separate from the linked
+resources</p></item>
+</ulist>
+<p>An important application of XLink is in hypermedia systems that have <termref def="dt-hyperlink">hyperlinks</termref>. A simple case of a hyperlink is an
+HTML <el>A</el> element, which has these characteristics:</p>
+<ulist>
+<item><p>The hyperlink uses IRIs as its locator technology.</p></item>
+<item><p>The hyperlink is expressed at one of its two ends.</p></item>
+<item><p>The hyperlink identifies the other end (although a server may have
+great freedom in finding or dynamically creating that destination).</p></item>
+<item><p>Users can initiate traversal only from the end where the hyperlink
+is expressed to the other end.</p></item>
+<item><p>The hyperlink's effect on windows, frames, go-back lists, style sheets
+in use, and so on is determined by user agents, not by the hyperlink itself.
+For example, traversal of <code>A</code> links normally replaces the current
+view, perhaps with a user option to open a new window.</p></item>
+</ulist>
+<p>This set of characteristics is powerful, but the model that underlies them
+limits the range of possible hyperlink functionality. The model defined in
+this specification shares with HTML the use of IRI technology, but goes beyond
+HTML in offering features, previously available only in dedicated hypermedia
+systems, that make hyperlinking more scalable and flexible. Along with providing
+linking data structures, XLink provides a minimal link behavior model; higher-level
+applications layered on XLink will often specify alternate or more sophisticated
+rendering and processing treatments.</p>
+<p>Integrated treatment of specialized links used in other technical domains,
+such as foreign keys in relational databases and reference values in programming
+languages, is outside the scope of this specification.</p>
+
+<p>For languages, such as <bibref ref="css"/>, that wish to identify
+hypertext links in a document, we suggest that any local element from
+which XLink specifies that traversal is possible, and which the
+application treats as if it specified
+<code>actuate="onRequest"</code>, be treated as a
+<loc href="www.w3.org/TR/REC-CSS2/selector.html#link-pseudo-classes">hyperlink source anchor</loc>.</p>
+
+<div2 id="origin-goals">
+<head>Origin and Goals</head>
+<p>The design of XLink has been informed by knowledge of established hypermedia
+systems and standards. The following standards have been especially influential:</p>
+<ulist>
+<item><p><emph>HTML</emph> <bibref ref="html"/>: Defines several element types
+that represent links.</p></item>
+<item><p><emph>HyTime</emph> <bibref ref="iso10744"/>: Defines inline and
+inbound and third-party link structures and some semantic features, including
+traversal control and presentation of objects.</p></item>
+<item><p><emph>Text Encoding Initiative Guidelines</emph> <bibref ref="tei"/>:
+Provides structures for creating links, aggregate objects, and link collections.</p>
+</item>
+</ulist>
+<p>Many other linking systems have also informed the design of XLink, especially <bibref ref="dexter"/>, <bibref ref="fress"/>, <bibref ref="ohs"/>, <bibref ref="microcosm"/>,
+and <bibref ref="intermedia"/>.</p>
+<p>See the XLink Requirements Document <bibref ref="xlreq"/> for a thorough
+explanation of requirements for the design of XLink.</p>
+</div2>
+</div1>
+<div1 id="concepts">
+<head>XLink Concepts</head>
+<p>This section describes the terms and concepts that are essential to understanding
+XLink, without discussing the syntax used to create XLink constructs. A few
+additional terms are introduced in later parts of this specification.</p>
+<div2 id="linksandresources">
+<head>Links and Resources</head>
+<p><termdef id="dt-link" term="Link">An XLink <term>link</term> is an explicit
+relationship between resources or portions of resources.</termdef> <termdef id="dt-linkel" term="Linking element">It is made explicit by an XLink <term>linking
+element</term>, which is an XLink-conforming XML element that asserts the
+existence of a link.</termdef> There are six XLink elements; only two of them
+are considered linking elements. The others provide various pieces of information
+that describe the characteristics of a link. (The term <quote>link</quote>
+as used in this specification refers only to an XLink link, though nothing
+prevents non-XLink constructs from serving as links.)</p>
+<p>The notion of resources is universal to the World Wide Web. <termdef id="dt-resource" term="Resource">As discussed in <bibref ref="rfc3986"/>, a <term>resource</term>
+is any addressable unit of information or service.</termdef> Examples include
+files, images, documents, programs, and query results. The means used for
+addressing a resource is a IRI (Internationalized Resource Identifier)
+reference (described
+more in <specref ref="link-locators"/>). It is possible to address a portion
+of a resource. For example, if the whole resource is an XML document, a useful
+portion of that resource might be a particular element inside the document.
+Following a link to it might result, for example, in highlighting that element
+or scrolling to that point in the document.</p>
+<p><termdef id="dt-particip-resource" term="Participating resource">When a
+link associates a set of resources, those resources are said to <term>participate</term>
+in the link.</termdef> Even though XLink links must appear in XML documents,
+they are able to associate all kinds of resources, not just XML-encoded ones.</p>
+<p>One of the common uses of XLink is to create hyperlinks. <termdef id="dt-hyperlink" term="Hyperlink">A <term>hyperlink</term> is a link that is intended primarily
+for presentation to a human user.</termdef> Nothing in XLink's design, however,
+prevents it from being used with links that are intended solely for consumption
+by computers.</p>
+</div2>
+<div2 id="arcsbehavior">
+<head>Arcs, Traversal, and Behavior</head>
+<p><termdef id="dt-traversal" term="Traversal">Using or following a link for
+any purpose is called <term>traversal</term>.</termdef> Even though some kinds
+of link can associate arbitrary numbers of resources, traversal always involves
+a pair of resources (or portions of them); <termdef id="dt-starting-resource" term="Starting resource">the source from which traversal is begun is the <term>starting
+resource</term></termdef> and <termdef id="dt-ending-resource" term="Ending resource">the
+destination is the <term>ending resource</term></termdef>. Note that the term <quote>resource</quote>
+used in this fashion may at times apply to a resource portion, not a whole
+resource.</p>
+<p><termdef id="dt-arc" term="Arc">Information about how to traverse a pair
+of resources, including the direction of traversal and possibly application
+behavior information as well, is called an <term>arc</term></termdef>. If
+two arcs in a link specify the same pair of resources, but they switch places
+as starting and ending resources, then the link is multidirectional, which
+is not the same as merely <quote>going back</quote> after traversing a link.</p>
+</div2>
+<div2 id="reltophysloc">
+<head>Resources in Relation to the Physical Location of a Linking Element</head>
+<p><termdef id="dt-local-resource" term="Local resource">A <term>local resource</term>
+is an XML element that participates in a link by virtue of having as its parent,
+or being itself, a linking element</termdef>. <termdef id="dt-remote-resource" term="Remote resource">Any resource or resource portion that participates
+in a link by virtue of being addressed with an IRI reference is considered
+a <term>remote resource</term>, even if it is in the same XML document as
+the link, or even inside the same linking element.</termdef> Put another way,
+a local resource is specified <quote>by value,</quote> and a remote resource
+is specified <quote>by reference.</quote></p>
+<p><termdef id="dt-outbound" term="Outbound">An arc that has a local starting
+resource and a remote ending resource goes <term>outbound</term>, that is,
+away from the linking element.</termdef> (Examples of links with such an arc
+are the HTML <el>A</el> element, HyTime <quote>clinks,</quote> and Text Encoding
+Initiative <el>XREF</el> elements.) <termdef id="dt-inbound" term="Inbound">If
+an arc's ending resource is local but its starting resource is remote, then
+the arc goes <term>inbound</term>.</termdef> <termdef id="dt-third-party" term="Third-party">If neither the starting resource nor the ending resource
+is local, then the arc is a <term>third-party</term> arc.</termdef> Though
+it is not required, any one link typically specifies only one kind of arc
+throughout, and thus might be referred to as an inbound, outbound, or third-party
+link.</p>
+<p>To create a link that emanates from a resource to which you do not have
+(or choose not to exercise) write access, or from a resource that offers no
+way to embed linking constructs, it is necessary to use an inbound or third-party
+arc. When such arcs are used, the requirements for discovery of the link are
+greater than for outbound arcs. <termdef id="dt-linkbase" term="Linkbase">Documents
+containing collections of inbound and third-party links are called link databases,
+or <term>linkbases</term>.</termdef></p>
+</div2>
+</div1>
+<div1 id="conformance">
+<head>XLink Processing and Conformance</head>
+<p>This section details processing and conformance requirements on XLink applications
+and markup.</p>
+<p><termdef id="dt-must" term="Must, May, etc.">The key words <term>must</term>, <term>must
+not</term>, <term>required</term>, <term>shall</term>, <term>shall not</term>, <term>should</term>, <term>should
+not</term>, <term>recommended</term>, <term>may</term>, and <term>optional</term>
+in this specification are to be interpreted as described in <bibref ref="rfc2119"/>.</termdef></p>
+
+<div2 id="procdep">
+<head>Processing Dependencies</head>
+
+<p>XLink processing depends on <bibref ref="XML"/>,
+<bibref ref="xname"/>, <bibref ref="xbase"/>, <bibref ref="rfc3987"/>,
+and <bibref ref="CharMod"/>.
+</p>
+
+</div2>
+<div2 id="markup-reqs">
+<head>Markup Conformance</head>
+
+<p>An XML element conforms to XLink if:</p>
+
+<olist>
+<item><p>It has a <att>type</att> attribute from the XLink namespace
+whose value is one of <attval>simple</attval>,
+<attval>extended</attval>, <attval>locator</attval>,
+<attval>arc</attval>, <attval>resource</attval>,
+<attval>title</attval>, or <attval>none</attval>, and it adheres to
+the conformance constraints imposed by the chosen XLink element type,
+as prescribed in this specification, <emph>or</emph></p>
+</item>
+<item><p>it does not have a <att>type</att> attribute from the XLink
+namespace and it adheres to the conformance constraints imposed by the
+XLink simple element type, as prescribed in this specification.
+</p>
+</item>
+<item><p>It does not have any attributes in the XLink namespace other than
+<att>type</att>, <att>href</att>, <att>role</att>, <att>arcrole</att>,
+<att>title</att>, <att>show</att>, <att>actuate</att>, <att>label</att>,
+<att>from</att>, and <att>to</att>.</p>
+</item>
+<item><p>Content conforming to XLink <termref def="dt-must">must</termref>
+conform to <bibref ref="CharMod"/>.
+</p></item>
+</olist>
+<p>This specification imposes no particular constraints on schemas; conformance
+applies only to elements and attributes.</p>
+</div2>
+
+<div2 id="app-reqs">
+<head>Application Conformance</head>
+
+<p>An XLink application is any software module that interprets
+well-formed XML documents containing XLink elements and attributes, or
+XML information sets <bibref ref="infoset"/> containing information
+items and properties corresponding to XLink elements and attributes.
+(This document refers to elements and attributes, but all
+specifications herein apply to their information set equivalents as
+well.)</p>
+
+<p>XLink defines two conformance levels for an XLink application,
+simple and full.</p>
+
+<div3 id="app-reqs-full">
+<head>Full Conformance</head>
+
+<p>An application satisfies the constraints of full conformance if:</p>
+
+<olist>
+<item><p>It observes the mandatory conditions (<quote>must</quote>)
+for applications set forth in this specification, and</p></item>
+
+<item><p>for any recommended or optional conditions
+(<quote>should</quote> and <quote>may</quote>) it chooses to observe,
+it observes them in the way prescribed, and</p></item>
+
+<item><p>it performs markup conformance testing according to all the
+conformance constraints appearing in this specification.</p></item>
+
+<item><p>It applies XLink semantics only to those elements which satisfy
+the markup conformance criteria outlined in <specref ref="markup-reqs"/>.</p>
+</item>
+<item><p>Applications implementing XLink
+<termref def="dt-must">must</termref> conform to <bibref ref="CharMod"/>.
+</p></item>
+</olist>
+</div3>
+
+<div3 id="app-reqs-simple">
+<head>Simple Conformance</head>
+
+<!--
+<p>An application satisfies the constraints of simple conformance if it
+is fully conformant with respect to <loc href="#simple-links">simple
+links</loc>. In other words,
+elements that have an <att>xlink:href</att> attribute must be processed
+in a conformant way provided that they do not explicitly specify an
+<att>xlink:type</att> other than “<code>simple</code>”.</p>
+-->
+
+<p>An application satisfies the constraints of simple conformance if
+it is fully conformant with respect to
+<loc href="#simple-links">simple links</loc>.
+In other words:</p>
+
+<ulist>
+<item><p>The processor may ignore any link which specifies an
+<att>xlink:type</att> other than “simple”.</p>
+</item>
+<item><p>If the <att>xlink:href</att> attribute is specified and the
+<att>xlink:type</att> attribute is not specified, the element
+<termref def="dt-must">must</termref> be processed as if
+<att>xlink:type</att> specified “simple”. </p></item>
+</ulist>
+
+<p>An application which claims simple conformance
+<termref def="dt-must">may</termref> ignore
+all other XLink elements.</p>
+
+</div3>
+</div2>
+</div1>
+<div1 id="att-method">
+<head>XLink Markup Design</head>
+<p>This section describes the design of XLink's markup vocabulary.</p>
+<p>Link markup needs to be recognized reliably by XLink applications in order
+to be traversed and handled properly. XLink uses the mechanism described in
+the Namespaces in XML Recommendation <bibref ref="xname"/> to accomplish recognition
+of the constructs in the XLink vocabulary.</p>
+<p>The XLink namespace defined by this specification has the following URI:</p>
+<eg>&xlinknsuri;</eg>
+<p>As dictated by <bibref ref="xname"/>, the use of XLink elements and attributes
+requires declaration of the XLink namespace. For example, the following declaration
+would make the prefix <att>xlink</att> available within the <el>myElement</el>
+element to represent the XLink namespace:</p>
+<eg>&lt;myElement
+  xmlns:xlink="&xlinknsuri;">
+  ...
+&lt;/myElement></eg>
+<note>
+<p>Most code examples in this specification do not show an XLink namespace
+declaration. The <att>xlink</att> prefix is used throughout to stand for the
+declaration of the XLink namespace on elements in whose scope the so-marked
+attribute appears (on the same element that bears the attribute or on some
+ancestor element), whether or not an XLink namespace declaration is present
+in the example.</p>
+</note>
+<p>XLink's namespace provides <term>global attributes</term> for use on elements
+that are in any arbitrary namespace. The global attributes are <att>type</att>, <att>href</att>, <att>role</att>, <att>arcrole</att>, <att>title</att>, <att>show</att>, <att>actuate</att>, <att>label</att>, <att>from</att>,
+and <att>to</att>. All other attributes, and all elements, in the XLink namespace
+are reserved.
+Document creators use the XLink global attributes to make
+the elements in their own namespace, or even in a namespace they do not control,
+recognizable as XLink elements. The <att>type</att> attribute indicates the
+XLink element type (simple, extended, locator, arc, resource, or title); the
+element type dictates the XLink-imposed constraints that such an element
+<termref def="dt-must">must</termref> follow and the behavior of XLink
+applications on encountering the element.</p>
+
+<p>Following is an example of a <el>crossReference</el> element from a non-XLink
+namespace that has XLink global attributes:</p>
+<eg>&lt;my:crossReference
+  xmlns:my="example.com/"
+  xmlns:xlink="&xlinknsuri;"
+  xlink:type="simple"
+  xlink:href="students.xml"
+  xlink:role="&xmproleuri;studentlist"
+  xlink:title="Student List"
+  xlink:show="new"
+  xlink:actuate="onRequest">
+Current List of Students
+&lt;/my:crossReference></eg>
+
+<p>Using global attributes always requires the use of namespace
+prefixes on the individual attributes.</p>
+
+<p>In <bibref ref="xlink10"/>, XLink elements are identified by the
+presence of an <att>xlink:type</att> attribute. In XLink 1.1, XLink elements
+are identified by the presence of either an <att>xlink:type</att> attribute
+or an <att>xlink:href</att> attribute:</p>
+
+<ulist>
+<item>
+<p>If an element has an <att>xlink:type</att> attribute, then that
+attribute must have one of the following values: “simple”, “extended”,
+“locator”, “arc”, “resource”, or “title” and the element must adhere
+to the conformance constraints imposed by that XLink element
+type.</p>
+</item>
+<item>
+<p>If an element has an <att>xlink:href</att> attribute but
+<emph>does not</emph> have an <att>xlink:type</att> attribute, then it
+is treated exactly as if it had an <att>xlink:type</att> attribute with
+the value “simple”.</p>
+</item>
+</ulist>
+<div2 id="xlinkattusagepat">
+<head>XLink Attribute Usage Patterns</head>
+<p>While the XLink attributes are considered global by virtue of their use
+of the namespace mechanism, their allowed combinations on any one XLink element
+type depend greatly on the value of the special <att>type</att> attribute
+(see <specref ref="link-types"/> for more information) for the element on
+which they appear. The conformance constraint notes in this specification
+detail their allowed usage patterns. Following is a summary of the element
+types (columns) on which the global attributes (rows) are allowed, with an
+indication of whether a value is required (R) or optional (O):</p>
+<table border="1" frame="border" summary="Link Usage Patterns"><thead>
+<tr><th>&#160;</th><th><el>simple</el></th>
+<th><el>extended</el></th><th><el>locator</el></th><th><el>arc</el></th><th><el>resource</el></th>
+<th><el>title</el></th></tr></thead><tbody>
+<tr><td><att>type</att></td><td>O<sup>*</sup></td>
+<td>R</td><td>R</td><td>R</td><td>R</td><td>R</td></tr>
+<tr><td><att>href</att></td>
+<td>O<sup>*</sup></td><td>&#160;</td><td>R</td><td>&#160;</td><td>&#160;</td><td>&#160;</td></tr>
+<tr><td><att>role</att></td>
+<td>O</td><td>O</td><td>O</td><td>&#160;</td><td>O</td><td>&#160;</td></tr>
+<tr><td><att>arcrole</att></td>
+<td>O</td><td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>&#160;</td></tr>
+<tr><td><att>title</att></td>
+<td>O</td><td>O</td><td>O</td><td>O</td><td>O</td><td>&#160;</td></tr>
+<tr><td><att>show</att></td>
+<td>O</td><td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>&#160;</td></tr>
+<tr><td><att>actuate</att></td>
+<td>O</td><td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>&#160;</td></tr>
+<tr><td><att>label</att></td>
+<td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>O</td><td>&#160;</td></tr>
+<tr><td><att>from</att></td>
+<td>&#160;</td><td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>&#160;</td></tr>
+<tr><td><att>to</att></td>
+<td>&#160;</td><td>&#160;</td><td>&#160;</td><td>O</td><td>&#160;</td><td>&#160;</td></tr>
+<tr>
+<td colspan="7"><sup>*</sup> At least one of <att>type</att> or
+<att>href</att> must be specified.</td></tr>
+</tbody></table>
+
+<p>(See also <specref ref="sample-dtd-appx"/>,
+<specref ref="sample-xsd-appx"/>, and <specref ref="sample-rng-appx"/>
+for examples of non-normative schemas that
+illustrate the allowed patterns of attributes.)</p>
+<p>This specification uses the convention <quote><var>xxx</var>-type element</quote>
+to refer to elements that <termref def="dt-must">must</termref> adhere to
+a named set of constraints associated with an XLink element type, no matter
+what name the element actually has. For example, <quote><el>locator</el>-type
+element</quote> would refer to all of the following elements:</p>
+<eg>&lt;locator xlink:type="locator" ... />
+&lt;loc xlink:type="locator" ... />
+&lt;my:pointer xlink:type="locator" ... /></eg>
+</div2>
+<div2 id="elementtyperel">
+<head>XLink Element Type Relationships</head>
+
+<p>Various XLink element types have special meanings dictated by this
+specification when they appear as direct children of other XLink
+element types. Following is a summary of the child element types that
+play a significant role in particular parent element types. (Other
+combinations are not conformant.)</p>
+
+<table border="1" summary="Element Type Relationships"><thead>
+<tr><th>Parent type</th><th>Significant child types</th>
+</tr></thead><tbody>
+<tr><td><el>simple</el></td><td>none</td></tr>
+<tr><td><el>extended</el></td>
+<td><el>locator</el>, <el>arc</el>, <el>resource</el>, <el>title</el></td>
+</tr>
+<tr><td><el>locator</el></td><td><el>title</el></td></tr>
+<tr><td><el>arc</el></td>
+<td><el>title</el></td></tr>
+<tr><td><el>resource</el></td><td>none</td></tr>
+<tr><td><el>title</el></td><td>none</td></tr></tbody></table></div2>
+
+<div2 id="defaulting">
+<head>Attribute Value Defaulting</head>
+
+<p>Using XLink potentially involves using a large number of attributes
+for supplying important link information. In cases where the values of
+the desired XLink attributes are unchanging across individual
+instances in all the documents of a certain type, attribute value
+defaults (fixed or not) <termref def="dt-must">may</termref> be added
+to a DTD or schema so that the attributes do not have to appear
+physically on element start-tags. For example, if attribute defaults
+were provided for the <att>xmlns:xlink</att>, <att>xmlns:my</att>,
+<att>type</att>, <att>show</att>, and <att>actuate</att> attributes in
+the example in the introduction to <specref ref="att-method"/>, the
+example would look as follows:</p>
+
+<eg>&lt;my:crossReference
+  xlink:href="students.xml"
+  xlink:role="&xmproleuri;studentlist"
+  xlink:title="Student List">
+Current List of Students
+&lt;/my:crossReference></eg>
+
+<p>Information sets that have been created under the control of a DTD have
+all attribute values filled in. Note, however, that parsers are not
+required to process the
+<loc href="www.w3.org/TR/REC-xml/#dt-doctype">external
+subset</loc>. Applications, such as web browsers, that do not process
+the external subset will not be aware of any default values identified
+therein.</p>
+
+<p>Note also that using the attribute value default technique to specify
+the XLink namespace declaration has no equivalent in
+<bibref ref="relax-ng"/>, <bibref ref="xmlschema-1"/>,
+or other modern schema languages. While it can be used when
+DTD-informed parsing is performed, it poses an interoperability risk
+and should be used with care.</p>
+
+</div2>
+<div2 id="integrating">
+<head>Integrating XLink Usage with Other Markup</head>
+
+<p>This specification defines only attributes and attribute values in
+the XLink namespace. There is no restriction on using non-XLink
+attributes alongside XLink attributes. In addition, most XLink
+attributes are optional and the choice of simple or extended link is
+up to the markup designer or document creator, so a DTD or other
+schema that uses XLink features need not use or declare the entire set
+of XLink's attributes. Finally, while this specification identifies
+the minimum constraints on XLink markup, schemas that use XLink are free
+to tighten these constraints. The use of XLink does not absolve a
+valid document from conforming to the constraints expressed in its
+governing schema.</p>
+
+<p>Following is an example of a <el>crossReference</el> element with both
+XLink and non-XLink attributes:</p>
+<eg>&lt;my:crossReference
+  xmlns:my="example.com/"
+  my:lastEdited="2000-06-10"
+  xmlns:xlink="&xlinknsuri;"
+  xlink:type="simple"
+  xlink:href="students.xml">
+Current List of Students
+&lt;/my:crossReference></eg>
+</div2>
+
+<div2 id="legacy">
+<head>Using XLink with Legacy Markup</head>
+
+<p>Because XLink's global attributes require the use of namespace
+prefixes, non-XLink-based links in legacy documents generally do not
+serve as conforming XLink constructs as they stand, even if attribute
+value defaulting is used. For example, XHTML 1.0 has an <el>a</el>
+element with an <att>href</att> attribute, but because the attribute
+is a local one attached to the <el>a</el> element in the XHTML
+namespace, it is not the same as an <att>xlink:href</att> global
+attribute in the XLink namespace.</p>
+
+<p>This specification defines XLink markup, that is, what combinations
+XLink attributes and what arrangements of elements with XLink
+attributes are conformant. It also defines the XLink semantics of such
+conformant markup. When XLink is used on elements that have other
+attributes or related elements with linking semantics, XLink can not
+and does not attempt to define the semantics of such combinations.
+</p>
+
+<p>If an element allows such possibly conflicting markup to occur, it
+<termref def="dt-must">should</termref> specify the semantics of the
+result.</p>
+
+</div2>
+</div1>
+<div1 id="linking-elements">
+<head>XLink Elements and Attributes</head>
+<p>XLink offers two kinds of links:</p>
+<glist>
+<gitem><label>Extended links</label>
+<def>
+<p>Extended links offer full XLink functionality, such as inbound and third-party
+arcs, as well as links that have arbitrary numbers of participating resources.
+As a result, their structure can be fairly complex, including elements for
+pointing to remote resources, elements for containing local resources, elements
+for specifying arc traversal rules, and elements for specifying human-readable
+resource and arc titles.</p>
+<p>XLink defines a way to give an extended link special semantics for finding
+linkbases; used in this fashion, an extended link helps an XLink application
+process other links.</p>
+</def></gitem>
+<gitem><label>Simple links</label>
+<def>
+<p>Simple links offer shorthand syntax for a common kind of link, an outbound
+link with exactly two participating resources (into which category HTML-style <el>A</el>
+and <el>IMG</el> links fall). Because simple links offer less functionality
+than extended links, they have no special internal structure.</p>
+<p>While simple links are conceptually a subset of extended links, they are
+syntactically different. For example, to convert a simple link into an extended
+link, several structural changes would be needed.</p>
+</def></gitem>
+</glist>
+<p>The following sections define the XLink elements and attributes.</p>
+<div2 id="extended-link">
+<head>Extended Links (<el>extended</el>-Type Element)</head>
+<p><termdef id="dt-extendedlink" term="Extended link">An <term>extended link</term>
+is a link that associates an arbitrary number of resources. The participating
+resources <termref def="dt-must">may</termref> be any combination of remote
+and local.</termdef></p>
+<p>The only kind of link that is able to have inbound and third-party arcs
+is an extended link. Typically, extended linking elements are stored separately
+from the resources they associate (for example, in entirely different documents).
+Thus, extended links are important for situations where the participating
+resources are read-only, or where it is expensive to modify and update them
+but inexpensive to modify and update a separate linking element, or where
+the resources are in formats with no native support for embedded links (such
+as many multimedia formats).</p>
+<p>The following diagram shows an extended link that associates five remote
+resources. This could represent, for example, information about a student's
+course load: one resource being a description of the student, another being
+a description of the student's academic advisor, two resources representing
+courses that the student is attending, and the last resource representing
+a course that the student is auditing.</p>
+<graphic source="extended-ool.gif" alt="Stylized Diagram of Out-of-Line Extended Link"/>
+<p>Without the extended link, the resources might be entirely unrelated; for
+example, they might be in five separate documents. The lines emanating from
+the extended link represent the association it creates among the resources.
+However, notice that the lines do not have directionality. Directionality
+is expressed with traversal rules; without such rules being provided, the
+resources are associated in no particular order, with no implication as to
+whether and how individual resources are accessed.</p>
+<p>The following diagram shows an extended link that associates five remote
+resources and one local resource (a special element inside the extended link
+element). This could represent the same sort of course-load example as described
+above, with the addition of the student's grade point average stored locally.
+Again, the lines represent mere association of the six resources, without
+traversal directions or behaviors implied.</p>
+
+<graphic source="extended-inl.gif" alt="Stylized Diagram of Inline Extended Link"/>
+
+<p>The XLink element type for extended links is any element with an
+attribute in the XLink namespace called <att>type</att> with a value
+of <attval>extended</attval>.</p>
+
+<p>The <el>extended</el>-type element <termref def="dt-must">may</termref>
+contain a mixture of the following elements in any order, possibly along with
+other content and markup:</p>
+<ulist>
+<item><p><el>locator</el>-type elements that address the remote resources
+participating in the link</p></item>
+<item><p><el>arc</el>-type elements that provide traversal rules among the
+link's participating resources</p></item>
+<item><p><el>title</el>-type elements that provide human-readable labels for
+the link</p></item>
+<item><p><el>resource</el>-type elements that supply local resources that
+participate in the link</p></item>
+</ulist>
+<p>It is not an error for an <el>extended</el>-type element to associate fewer
+than two resources. If the link has only one participating resource, or none
+at all, it is simply untraversable. Such a link may still be useful, for example,
+to associate properties with a single resource by means of XLink attributes,
+or to provide a placeholder for link information that will be populated eventually.</p>
+
+<p>Subelements of the <el>simple</el> or <el>extended</el> type
+anywhere inside a parent <el>extended</el>-type element are not
+conformant. Subelements of the <el>locator</el>, <el>arc</el>, or
+<el>resource</el> type that are not direct children of an
+<el>extended</el>-type element are not conformant.</p>
+
+<p>The <el>extended</el>-type element <termref def="dt-must">may</termref>
+have the semantic attributes <att>role</att> and <att>title</att> (see <specref ref="link-semantics"/>). They supply semantic information about the link as
+a whole; the <att>role</att> attribute indicates a property that the entire
+link has, and the <att>title</att> attribute indicates a human-readable description
+of the entire link. It is not conformant for other XLink attributes to be
+present on the element. If both a <att>title</att>
+attribute and one or more <el>title</el>-type elements are present, they have
+no XLink-specified relationship; a higher-level application built on XLink
+will likely want to specify appropriate treatment (for example, precedence)
+in this case.</p>
+<example>
+<head>Sample <el>extended</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of DTD declarations for an
+<el>extended</el>-type element and its subelements. Parts of this
+example are reused throughout this specification. Note that the
+<att>type</att> attribute and some other attributes are defaulted in
+the DTD in order to highlight the attributes that are changing on a
+per-instance basis.</p>
+
+<eg>&lt;!ELEMENT courseload ((tooltip|person|course|gpa|go)*)>
+&lt;!ATTLIST courseload
+  &nsatt;
+  xlink:type      (extended)      #FIXED "extended"
+  &roleatt;
+  &titleatt;>
+
+&lt;!ELEMENT tooltip ANY>
+&lt;!ATTLIST tooltip
+  xlink:type      (title)         #FIXED "title"
+  xml:lang        CDATA           #IMPLIED>
+
+&lt;!ELEMENT person EMPTY>
+&lt;!ATTLIST person
+  xlink:type      (locator)       #FIXED "locator"
+  &hrefatt;#REQUIRED
+  &roleatt;
+  &titleatt;
+  &labelatt;>
+
+&lt;!ELEMENT course EMPTY>
+&lt;!ATTLIST course
+  xlink:type      (locator)       #FIXED "locator"
+  &hrefatt;#REQUIRED
+  xlink:role      CDATA           #FIXED "&xmproleuri;course"
+  &titleatt;
+  &labelatt;>
+
+&lt;!-- GPA = "grade point average" -->
+&lt;!ELEMENT gpa ANY>
+&lt;!ATTLIST gpa
+  xlink:type      (resource)      #FIXED "resource"
+  xlink:role      CDATA           #FIXED "&xmproleuri;gpa"
+  &titleatt;
+  &labelatt;>
+
+&lt;!ELEMENT go EMPTY>
+&lt;!ATTLIST go
+  xlink:type      (arc)           #FIXED "arc"
+  &arcroleatt;
+  &titleatt;
+  &showactuateattribs;
+  &fromtoatts;></eg>
+<p>Following is how XML elements using these declarations might look.</p>
+<eg>&lt;courseload>
+
+  &lt;tooltip>Course Load for Pat Jones&lt;/tooltip>
+
+  &lt;person
+    xlink:href="students/patjones62.xml"
+    xlink:label="student62"
+    xlink:role="&xmproleuri;student"
+    xlink:title="Pat Jones" />
+
+  &lt;person
+    xlink:href="profs/jaysmith7.xml"
+    xlink:label="prof7"
+    xlink:role="&xmproleuri;professor"
+    xlink:title="Dr. Jay Smith" />
+  &lt;!-- more remote resources for professors, teaching assistants, etc. -->
+
+  &lt;course
+    xlink:href="courses/cs101.xml"
+    xlink:label="CS-101"
+    xlink:title="Computer Science 101" />
+  &lt;!-- more remote resources for courses, seminars, etc. -->
+
+  &lt;gpa xlink:label="PatJonesGPA">3.5&lt;/gpa>
+
+  &lt;go
+    xlink:from="student62"
+    xlink:to="PatJonesGPA"
+    xlink:show="new"
+    xlink:actuate="onRequest"
+    xlink:title="Pat Jones's GPA" />
+  &lt;go
+    xlink:from="CS-101"
+    xlink:arcrole="&xmproleuri;auditor"
+    xlink:to="student62"
+    xlink:show="replace"
+    xlink:actuate="onRequest"
+    xlink:title="Pat Jones, auditing the course" />
+  &lt;go
+    xlink:from="student62"
+    xlink:arcrole="&xmproleuri;advisor"
+    xlink:to="prof7"
+    xlink:show="replace"
+    xlink:actuate="onRequest"
+    xlink:title="Dr. Jay Smith, advisor" />
+
+&lt;/courseload></eg>
+</example>
+<div3 id="local-resource">
+<head>Local Resources for an Extended Link  (<el>resource</el>-Type Element)</head>
+<p>An extended link indicates its participating local resources by means of
+special subelements that appear inside the extended link. An entire subelement,
+together with all of its contents, makes up a local resource.</p>
+<p>The XLink element for local resources is any element with an attribute
+in the XLink namespace called <att>type</att> with a value of <attval>resource</attval>.</p>
+
+<p>The <el>resource</el>-type element
+<termref def="dt-must">may</termref> have any content; whatever
+content is present has no XLink-specified relationship to the link. It
+is possible for a <el>resource</el>-type element to have no content;
+in cases where it serves as a starting resource expected to be
+traversed on request, interactive XLink applications will typically
+generate some content in order to give the user a way to initiate the
+traversal. If a <el>resource</el>-type element has anything other than
+an <el>extended</el>-type element for a parent, the
+<el>resource</el>-type element is not conformant.</p>
+
+<p>The <el>resource</el>-type element <termref def="dt-must">may</termref>
+have the semantic attributes <att>role</att> and <att>title</att> (see <specref ref="link-semantics"/>) and the traversal attribute <att>label</att> (see <specref ref="traversal-atts"/>). The semantic attributes supply information about
+the resource in generic terms, outside of the context of a particular arc
+that leads to it; the <att>role</att> attribute indicates a property of the
+resource, and the <att>title</att> attribute indicates a human-readable description
+of the resource. The <att>label</att> attribute provides a way for an <el>arc</el>-type
+element to refer to it in creating a traversal arc.</p>
+<example>
+<head>Sample <el>resource</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of RELAX NG declarations (in the
+compact syntax) for a
+<el>resource</el>-type element.</p>
+
+<eg><![CDATA[namespace a = "relaxng.org/ns/compatibility/annotations/1.0"
+namespace xlink = "www.w3.org/1999/xlink"
+
+gpa = element gpa { attlist.gpa, any }
+
+attlist.gpa &=
+  [ a:defaultValue = "resource" ] attribute xlink:type { "resource" }?,
+  [ a:defaultValue = "www.example.com/linkprops/gpa" ]
+  attribute xlink:role {
+    string "www.example.com/linkprops/gpa"
+  }?,
+  attribute xlink:title { text }?,
+  attribute xlink:label { xsd:NMTOKEN }?
+
+any =
+  (element * {
+     attribute * { text }*,
+     any
+   }
+   | text)*]]></eg>
+
+<p>Following is how an XML element using these declarations might look.</p>
+<eg><![CDATA[  <gpa xlink:type="resource"
+     xlink:role="www.example.com/linkprops/gpa"
+     xlink:label="PatJonesGPA">3.5</gpa>]]></eg>
+</example>
+</div3>
+
+<div3 id="remote-resource">
+<head>Remote Resources for an Extended Link (<el>locator</el>-Type
+Element)</head>
+
+<p>An extended link indicates remote resources that participate in it
+by means of locator elements.</p>
+
+<p>The XLink element for locators is any element with an attribute in
+the XLink namespace called <att>type</att> with a value of
+<attval>locator</attval>.</p>
+
+<p>The <el>locator</el>-type element
+
+<termref def="dt-must">may</termref> have any content. Other than
+<el>title</el>-type elements that are direct children (see
+<specref ref="title-element"/>), whatever content is present has no
+XLink-specified relationship to the link. If a <el>locator</el>-type
+element contains nested XLink elements, such contained elements have
+no XLink-specified relationship to the parent link. If a
+<el>locator</el>-type element has anything other than an
+<el>extended</el>-type element for a parent, the <el>locator</el>-type
+element is not conformant.</p>
+
+<constraintnote id="cn-locator-atts" type="conformance">
+<head>Attributes on Locator Element</head>
+<p>The <el>locator</el>-type element <termref def="dt-must">must</termref>
+have the locator attribute (see <specref ref="link-locators"/>). The locator
+attribute (<att>href</att>) <termref def="dt-must">must</termref> have a value
+supplied.</p>
+</constraintnote>
+<p>The <el>locator</el>-type element <termref def="dt-must">may</termref>
+have the semantic attributes <att>role</att> and <att>title</att> (see <specref ref="link-semantics"/>) and the traversal attribute <att>label</att> (see <specref ref="traversal-atts"/>). The locator attribute provides an IRI reference that
+identifies a remote resource. The semantic attributes supply information about
+the resource in generic terms, outside of the context of a particular arc
+that leads to it; the <att>role</att> attribute indicates a property that
+the resource has, and the <att>title</att> attribute indicates a human-readable
+description of the resource. The <att>label</att> attribute provides a way
+for an <el>arc</el>-type element to refer to it in creating a traversal arc.</p>
+<note>
+<p>A <el>locator</el>-type element, by itself, does not constitute a link
+just because it has a locator (<att>href</att>) attribute; unlike a <el>simple</el>-type
+element, it does not create an XLink-governed association between itself and
+the referenced resource.</p>
+</note>
+<example>
+<head>Sample <el>locator</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of XML Schema declarations for a
+<el>locator</el>-type element.</p>
+
+<eg><![CDATA[<xs:schema xmlns:xs="www.w3.org/2001/XMLSchema"
+	   xmlns:xlink="www.w3.org/1999/xlink"
+           targetNamespace=""
+           elementFormDefault="qualified">
+
+  <xs:import namespace="www.w3.org/1999/xlink"/>
+
+  <xs:element name="person">
+    <xs:complexType>
+      <xs:complexContent>
+	<xs:restriction base="xs:anyType">
+	  <xs:attribute ref="xlink:type" fixed="locator"/>
+	  <xs:attribute ref="xlink:href" use="required"/>
+	  <xs:attribute ref="xlink:role"/>
+	  <xs:attribute ref="xlink:title"/>
+	  <xs:attribute ref="xlink:label"/>
+	</xs:restriction>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="course">
+    <xs:complexType>
+      <xs:complexContent>
+	<xs:restriction base="xs:anyType">
+	  <xs:attribute ref="xlink:type" fixed="locator"/>
+	  <xs:attribute ref="xlink:href" use="required"/>
+	  <xs:attribute ref="xlink:role"
+			fixed="www.example.com/linkprops/course"/>
+	  <xs:attribute ref="xlink:title"/>
+	  <xs:attribute ref="xlink:label"/>
+	</xs:restriction>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>]]></eg>
+
+<p>Following is how XML elements using these declarations might look.</p>
+
+<eg>&lt;person
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:href="students/patjones62.xml"
+  xlink:label="student62"
+  xlink:role="&xmproleuri;student"
+xlink:title="Pat Jones" />
+
+&lt;person
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:href="profs/jaysmith7.xml"
+  xlink:label="prof7"
+  xlink:role="&xmproleuri;professor"
+  xlink:title="Dr. Jay Smith" />
+
+&lt;course
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:href="courses/cs101.xml"
+  xlink:label="CS-101"
+  xlink:title="Computer Science 101" /></eg>
+</example></div3>
+<div3 id="xlink-arcs">
+<head>Traversal Rules for an Extended Link  (<el>arc</el>-Type Element)</head>
+<p>An extended link <termref def="dt-must">may</termref> indicate rules for
+traversing among its participating resources by means of a series of optional
+arc elements.</p>
+<p>The XLink element for arcs is any element with an attribute in the XLink
+namespace called <att>type</att> with a value of <attval>arc</attval>.</p>
+
+<p>The <el>arc</el>-type element <termref def="dt-must">may</termref>
+have any content. Other than <el>title</el>-type elements that are
+direct children (see <specref ref="title-element"/>), whatever content
+is present has no XLink-specified relationship to the link. If an
+<el>arc</el>-type element has anything other than an
+<el>extended</el>-type element for its parent, the <el>arc</el>-type
+element is not conformant.</p>
+
+<p>The <el>arc</el>-type element <termref def="dt-must">may</termref> have
+the traversal attributes <att>from</att> and <att>to</att> (see <specref ref="traversal-atts"/>),
+the behavior attributes <att>show</att> and <att>actuate</att> (see <specref ref="link-behaviors"/>) and the semantic attributes <att>arcrole</att> and <att>title</att>
+(see <specref ref="link-semantics"/>).</p>
+<p>The traversal attributes define the desired traversal between pairs of
+resources that participate in the same link, where the resources are identified
+by their <att>label</att> attribute values. The <att>from</att> attribute
+defines resources from which traversal <termref def="dt-must">may</termref>
+be initiated, that is, <termref def="dt-starting-resource">starting resources</termref>,
+while the <att>to</att> attribute defines resources that <termref def="dt-must">may</termref>
+be traversed to, that is, <termref def="dt-ending-resource">ending resources</termref>.
+The behavior attributes specify the desired behavior for XLink applications
+to use when traversing to the ending resource.</p>
+<p>The semantic attributes describe the meaning of the arc's ending resource
+relative to its starting resource. The <att>arcrole</att> attribute corresponds
+to the <bibref ref="rdf"/> notion of a property, where the role can be interpreted
+as stating that <quote><var>starting-resource</var> HAS <var>arc-role</var> <var>ending-resource</var>.</quote>
+This contextual role can differ from the meaning of an ending resource when
+taken outside the context of this particular arc. For example, a resource
+might generically represent a <quote>person,</quote> but in the context of
+a particular arc it might have the role of <quote>mother</quote> and in the
+context of a different arc it might have the role of <quote>daughter.</quote></p>
+<p>When the same resource serves as a starting resource in several arcs (whether
+in a single link or across many links), traversal-request behavior is unconstrained
+by this specification, but one possibility for interactive applications is
+a pop-up menu that lists the relevant arc or link titles.</p>
+<p>The following diagram shows an extended link that associates five remote
+resources and provides rules for traversal among them. All of the arcs specified
+are third-party arcs; that is, the arcs go exclusively between remote resources.
+The nondirectional solid lines indicate, as before, that the link is associating
+the five resources; the new dotted arrows indicate the traversal rules that
+the link provides. Notice that some resources share the same <att>label</att>
+value.</p>
+<graphic source="extended-arcs.gif" alt="Stylized Diagram of Out-of-Line Extended Link with Arcs"/>
+<p>This diagram reflects directional traversal arcs created by the following
+settings, where both As and Cs are allowed to initiate traversal to all Bs.
+Because some labels appear on several resources, each arc specification potentially
+creates several traversal arcs at once:</p>
+<eg>&lt;go xlink:type="arc" xlink:from="A" xlink:to="B" />
+&lt;go xlink:type="arc" xlink:from="C" xlink:to="B" /></eg>
+<p>As another example, assume an extended link that contains five locators,
+two with <att>label</att> values of <attval>parent</attval> and three with <att>label</att>
+values of <attval>child</attval>:</p>
+<eg>&lt;extendedlink xlink:type="extended">
+  &lt;loc xlink:type="locator" xlink:href="..." xlink:label="parent" xlink:title="p1" />
+  &lt;loc xlink:type="locator" xlink:href="..." xlink:label="parent" xlink:title="p2" />
+  &lt;loc xlink:type="locator" xlink:href="..." xlink:label="child"  xlink:title="c1" />
+  &lt;loc xlink:type="locator" xlink:href="..." xlink:label="child"  xlink:title="c2" />
+  &lt;loc xlink:type="locator" xlink:href="..." xlink:label="child"  xlink:title="c3" />
+... &lt;!-- arc-type elements would go here -->
+&lt;/extendedlink></eg>
+<p>The following specifies traversal from parent resources to child resources,
+which includes all of p1-c1, p1-c2, p1-c3, p2-c1, p2-c2, and p2-c3:</p>
+<eg>&lt;go xlink:type="arc" xlink:from="parent" xlink:to="child" /></eg>
+<p>If no value is supplied for a <att>from</att> or <att>to</att> attribute,
+the missing value is interpreted as standing for <emph>all</emph> the labels
+supplied on <el>locator</el>-type elements in that <el>extended</el>-type
+element. For example, the following specifies traversal from parents to children
+and also from children to children, which includes all of p1-c1, p1-c2, p1-c3,
+p2-c1, p2-c2, p2-c3, c1-c1, c1-c2, c1-c3, c2-c1, c2-c2, c2-c3, c3-c1, c3-c2,
+and c3-c3:</p>
+<eg>&lt;go xlink:type="arc" xlink:to="child" /></eg>
+<p>In this case, note that the traversal rules include arcs from some resources
+to other resources with the same label (from children to other children),
+as well as from some resources to themselves (from a child to itself); this
+is not an error.</p>
+<p>If no <el>arc</el>-type elements are provided in an extended link, then
+by extension the missing <att>from</att> and <att>to</att> values are interpreted
+as standing for all the labels in that link. This would be equivalent to the
+following traversal specification:</p>
+<eg>&lt;go xlink:type="arc" /></eg>
+<p>When more than one locator has the same label, the set of locators with
+the same label are to be understood as individual locators, rather than as
+referring to an aggregate resource; the traversal behavior of such a link
+might be the same as for a link where all the locators have different roles
+and the appropriate arcs are specified to produce the identical traversal
+pairs.</p>
+<p>If the arc traversal rules for an extended link leave out any possible
+traversal pairs, XLink defines no traversal for these pairs. A higher-level
+application <termref def="dt-must">may </termref>perform non-XLink-directed
+traversals; for example, a link-checking process might traverse all available
+pairs of resources.</p>
+<constraintnote id="cn-arc-duplicates" type="conformance">
+<head>No Arc Duplication</head>
+<p>Each <el>arc</el>-type element <termref def="dt-must">must</termref> have
+a pair of <att>from</att> and <att>to</att> values that does not repeat the <att>from</att>
+and <att>to</att> values (respectively) for any other <el>arc</el>-type element
+in the same extended link; that is, each pair in a link <termref def="dt-must">must</termref>
+be unique.</p>
+</constraintnote>
+
+<example>
+<head>Sample <el>arc</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of RELAX NG declarations for an
+<el>arc</el>-type element.</p>
+
+<eg><![CDATA[<grammar xmlns:a="relaxng.org/ns/compatibility/annotations/1.0"
+	 xmlns:xlink="www.w3.org/1999/xlink"
+	 xmlns="relaxng.org/ns/structure/1.0"
+	 datatypeLibrary="www.w3.org/2001/XMLSchema-datatypes">
+  <define name="go">
+    <element name="go">
+      <ref name="attlist.go"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="attlist.go" combine="interleave">
+    <optional>
+      <attribute name="xlink:type" a:defaultValue="arc">
+        <value>arc</value>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="xlink:arcrole"/>
+    </optional>
+    <optional>
+      <attribute name="xlink:title"/>
+    </optional>
+    <optional>
+      <attribute name="xlink:show">
+        <choice>
+          <value>new</value>
+          <value>replace</value>
+          <value>embed</value>
+          <value>other</value>
+          <value>none</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="xlink:actuate">
+        <choice>
+          <value>onLoad</value>
+          <value>onRequest</value>
+          <value>other</value>
+          <value>none</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="xlink:from">
+        <data type="NCNAME"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="xlink:to">
+        <data type="NCNAME"/>
+      </attribute>
+    </optional>
+  </define>
+</grammar>]]></eg>
+
+<p>Following is how XML elements using these declarations might look.</p>
+
+<eg>&lt;go
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:type="arc"
+  xlink:from="student62"
+  xlink:to="PatJonesGPA"
+  xlink:show="new"
+  xlink:actuate="onRequest"
+  xlink:title="Pat Jones's GPA" />
+&lt;go
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:type="arc"
+  xlink:from="CS-101"
+  xlink:arcrole="&xmproleuri;auditor"
+  xlink:to="student62"
+  xlink:show="replace"
+  xlink:actuate="onRequest"
+  xlink:title="Pat Jones, auditing the course" />
+&lt;go
+  xmlns:xlink="www.w3.org/1999/xlink"
+  xlink:type="arc"
+  xlink:from="student62"
+  xlink:arcrole="&xmproleuri;advisor"
+  xlink:to="prof7"
+  xlink:show="replace"
+  xlink:actuate="onRequest"
+  xlink:title="Dr. Jay Smith, advisor" /></eg>
+</example></div3>
+<div3 id="title-element">
+<head>Titles for Extended Links, Locators, and Arcs (<el>title</el>-Type Element)</head>
+<p>The <el>extended</el>-, <el>locator</el>-, and <el>arc</el>-type elements <termref def="dt-must">may</termref> have the <att>title</att> attribute (more about
+which see <specref ref="link-semantics"/>). However, they <termref def="dt-must">may</termref>
+also have a series of one or more <el>title</el>-type elements. Such elements
+are useful, for example, for cases where human-readable label information
+needs further element markup, or where multiple titles are necessary. One
+common motivation for using the <el>title</el>-type element is to account
+for internationalization and localization. For example, title markup might
+be necessary for bidirectional contexts or in East Asian languages, and multiple
+titles might be necessary for different natural-language versions of a title.
+See <bibref ref="ruby"/> for examples where markup might be necessary
+inside a title.
+</p>
+
+<p>The XLink element for titles is any element with an attribute in
+the XLink namespace called <att>type</att> with a value of
+<attval>title</attval>.</p>
+
+<p>The <el>title</el>-type element
+<termref def="dt-must">may</termref> have any content. If a
+<el>title</el>-type element contains nested XLink elements, such
+contained elements have no XLink-specified relationship to the parent
+link containing the title. If a <el>title</el>-type element has
+anything other than an <el>extended</el>-, <el>locator</el>-, or
+<el>arc</el>-type element for a parent, the <el>title</el>-type
+element is not conformant.</p>
+
+<example>
+<head>Sample <el>title</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of XML Schema declarations for a
+<el>title</el>-type element. The element has been given the
+<att>xml:lang</att> attribute, which <termref
+def="dt-must">may</termref> be used in conjunction with server
+settings or other contextual information in determining which title to
+present.</p>
+
+<eg><![CDATA[<xs:schema xmlns:xs="www.w3.org/2001/XMLSchema"
+	   xmlns:xlink="www.w3.org/1999/xlink"
+           targetNamespace=""
+           elementFormDefault="qualified">
+
+  <xs:import namespace="www.w3.org/1999/xlink"/>
+  <xs:import namespace="www.w3.org/XML/1998/namespace"/>
+
+  <xs:element name="advisorname">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element ref="name"/>
+      </xs:sequence>
+      <xs:attribute ref="xlink:type" fixed="title"/>
+      <xs:attribute ref="xml:lang"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="name">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element ref="honorific" minOccurs="0" maxOccurs="1"/>
+	<xs:element ref="given"/>
+	<xs:element ref="family"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- advisor is a locator type element -->
+  <xs:element name="advisor">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element ref="advisorname"/>
+      </xs:sequence>
+      <xs:attribute ref="xlink:type" fixed="locator"/>
+      <xs:attribute ref="xlink:href" use="required"/>
+      <xs:attribute ref="xlink:role"/>
+      <xs:attribute ref="xlink:title"/>
+      <xs:attribute ref="xlink:label"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Arbitrary declarations for the components of the name -->
+  <xs:element name="honorific" type="xs:string"/>
+  <xs:element name="given" type="xs:string"/>
+  <xs:element name="family" type="xs:string"/>
+</xs:schema>]]></eg>
+
+<p>Following is how XML elements using these declarations might
+look.</p>
+
+<eg>&lt;advisor xlink:href="profs/jaysmith7.xml" ...>
+  &lt;advisorname xml:lang="en">
+    &lt;name>
+      &lt;honorific>Dr.&lt;/honorific>
+      &lt;given>Jay&lt;/given>
+      &lt;family>Smith&lt;/family>
+    &lt;/name>
+  &lt;/advisorname>
+&lt;/advisor></eg>
+</example>
+</div3>
+
+<div3 id="xlg">
+<head>Locating Linkbases (Special Arc Role)</head>
+<p>For an XLink application to traverse from a starting resource to an ending
+resource, it needs to locate both the starting resource and the link. Locating
+the two pieces is not a problem in the case of outbound arcs because the starting
+resource is either the linking element itself or a child of the linking element.
+However, in the case of inbound and third-party arcs, the XLink application
+needs to be able to find both pieces somehow.</p>
+<p>In the course load example, extended links can associate pairs of remote
+resources representing students and courses. In order for the system to load
+and present a <quote>student resource</quote> (such as a description and picture
+of the person) in a way that offers traversal to related information (for
+example, by allowing users to click on the student's name to traverse to information
+about the courses in which she is enrolled), it needs to locate and use the
+extended links that contain the association.</p>
+<p><termref def="dt-linkbase">Linkbases</termref> are often used to make link
+management easier by gathering together a number of related linking elements.
+XLink provides a way to instruct XLink applications to access potentially
+relevant linkbases. The instruction takes the form of an arc specification
+(whether an explicit one in an extended link, or an implicit one in a simple
+link) that has the following value for its arcrole attribute:</p>
+<eg>&linkbaselistprop;</eg>
+<constraintnote id="require-xls-xml" type="conformance">
+<head>Linkbases Must Be XML</head>
+<p>Any linkbase specified as the ending resource of an arc with this special
+value <termref def="dt-must">must</termref> be an XML document.</p>
+</constraintnote>
+<p>(XLink applications <termref def="dt-must">may</termref> also use any other
+means to locate and process additional linkbases.)</p>
+<p>The handling of a linkbase arc is much like the handling of a normal arc,
+except that traversal entails loading the ending resource (the linkbase) to
+extract its links for later use, rather than to present it to a user or to
+perform some other processing. Its handling is also special in that XLink
+applications <termref def="dt-must">must</termref> suspend traversal of linkbase
+arcs at user option.</p>
+<p>Specifically, on loading a linkbase arc, an XLink application <termref def="dt-must">should</termref> keep track of what the starting resource is.
+Whenever a document containing that starting resource is loaded and traversal
+of the linkbase arc is actuated, the application <termref def="dt-must">should</termref>
+access the linkbase and extract any extended links found inside it. In the
+case that the extracted resource is a portion of a complete XML document,
+such as a range or a string range, only those extended links completely contained
+in the extracted portion <termref def="dt-must">should</termref> be made available.</p>
+<p>The timing of linkbase arc traversal depends on the value of the <att>actuate</att>
+attribute on the arc. For example, if the value is <attval>onLoad</attval>,
+the linkbase is loaded and its links extracted as soon as the starting resource
+is loaded. Any <att>show</att> attribute value on a linkbase arc <termref def="dt-must">must</termref> be ignored, because traversal does not entail
+presentation in this case.</p>
+<p>Linkbases <termref def="dt-must">may</termref> be chained by virtue of
+serving as the starting resource of yet another linkbase arc. The application
+interpreting an initial linkbase arc <termref def="dt-must">may</termref>
+choose to limit the number of steps processed in the chain.</p>
+<p>An application <termref def="dt-must">should</termref> maintain a list
+of extended links retrieved as a result of processing a linkbase, and <termref def="dt-must">should not</termref> retrieve duplicate resources or links in
+the case where a cyclic dependency exists. To ease XLink processing, document
+creators <termref def="dt-must">may</termref> wish to define linkbase arcs
+near the beginning of a document.</p>
+<example>
+<head>Annotating a Specification</head>
+<p>Following is a non-normative set of declarations for an extended link that
+specializes in providing linkbase arcs:</p>
+<eg>&lt;!ELEMENT basesloaded ((startrsrc|linkbase|load)*)>
+&lt;!ATTLIST basesloaded
+  xlink:type      (extended)      #FIXED "extended">
+
+&lt;!ELEMENT startrsrc EMPTY>
+&lt;!ATTLIST startrsrc
+  xlink:type      (locator)       #FIXED "locator"
+  &hrefatt;#REQUIRED
+  &labelatt;>
+
+&lt;!ELEMENT linkbase EMPTY>
+&lt;!ATTLIST linkbase
+  xlink:type      (locator)       #FIXED "locator"
+  &hrefatt;#REQUIRED
+  &labelatt;>
+
+&lt;!ELEMENT load EMPTY>
+&lt;!ATTLIST load
+  xlink:type      (arc)           #FIXED "arc"
+  xlink:arcrole   CDATA           #FIXED "&linkbaselistprop;"
+  xlink:actuate   (onLoad
+                  |onRequest
+                  |other
+                  |none)          #IMPLIED
+  &fromtoatts;></eg>
+<p>Following is how an XML element using these declarations might look. This
+would indicate that when a specification document is loaded, a linkbase full
+of annotations to it <termref def="dt-must">should</termref> automatically
+be loaded as well, possibly necessitating re-rendering of the entire specification
+document to reveal any regions within it that serve as starting resources
+in the links found in the linkbase.</p>
+<eg>&lt;basesloaded>
+  &lt;startrsrc xlink:label="spec" xlink:href="spec.xml" />
+  &lt;linkbase xlink:label="linkbase" xlink:href="linkbase.xml" />
+  &lt;load xlink:from="spec" xlink:to="linkbase" actuate="onLoad" />
+&lt;/basesloaded></eg>
+<p>Following is how an XML element using these declarations might look if
+the linkbase loading were on request. This time, the starting resource consists
+of the words <quote>Click here to reveal annotations.</quote> If the starting
+resource were the entire document as in the example above, a reasonable behavior
+for allowing a user to actuate traversal would be a confirmation dialog box.</p>
+<eg>&lt;basesloaded>
+  &lt;startrsrc
+    xlink:label="spec"
+    xlink:href="spec.xml#string-range(//*,'Click here to reveal annotations.')" />
+  &lt;linkbase xlink:label="linkbase" xlink:href="linkbase.xml" />
+  &lt;load xlink:from="spec" xlink:to="linkbase" actuate="onRequest" />
+&lt;/basesloaded></eg>
+</example></div3>
+</div2>
+<div2 id="simple-links">
+<head>Simple Links (<el>simple</el>-Type Element)</head>
+
+<p><termdef id="dt-simplelink" term="Simple link">A <term>simple
+link</term> is a link that associates exactly two <termref
+def="dt-resource">resources</termref>, one <termref
+def="dt-local-resource">local</termref> and one <termref
+def="dt-remote-resource">remote</termref>, with an arc going from the
+former to the latter. Thus, a simple link is always an outbound
+link.</termdef></p>
+
+<p>The purpose of a simple link is to be a convenient shorthand for
+the equivalent extended link. A single simple linking element combines
+the basic functions of an <el>extended</el>-type element, a
+<el>locator</el>-type element, an <el>arc</el>-type element, and a
+<el>resource</el>-type element.</p>
+
+<p>The following diagram shows the characteristics of a simple link;
+it associates one local and one remote resource, and implicitly
+provides a single traversal arc from the local resource to the remote
+one. This could represent, for example, the name of a student
+appearing in text which, when clicked, leads to information about the
+student.</p>
+
+<graphic source="simple.gif" alt="Stylized Diagram of Simple Link"/><example>
+
+<head>Simple Link Functionality Done with an Extended Link</head>
+<p>A simple link could be represented by an extended link in approximately
+the following way:</p>
+<eg>&lt;studentlink xlink:type="extended">
+  &lt;resource
+    xlink:type="resource"
+    xlink:label="local">Pat Jones&lt;/resource>
+  &lt;locator
+    xlink:type="locator"
+    xlink:href="..."
+    xlink:label="remote"
+    xlink:role="..."
+    xlink:title="..." />
+
+  &lt;go
+    xlink:type="arc"
+    xlink:from="local"
+    xlink:to="remote"
+    xlink:arcrole="..."
+    xlink:show="..."
+    xlink:actuate="..." />
+&lt;/studentlink></eg>
+</example>
+
+<p>A simple link combines all the features above (except for the types
+and labels) into a single element. In cases where only this subset of
+features is required, the XLink simple linking element is available as
+an alternative to the extended linking element. The features missing
+from simple links are as follows:</p>
+
+<ulist>
+<item><p>Supplying arbitrary numbers of local and remote resources</p></item>
+<item><p>Specifying an arc from its remote resource to its local resource</p>
+</item>
+<item><p>Associating a title with the single hardwired arc</p></item>
+<item><p>Associating a role or title with the local resource</p></item>
+<item><p>Associating a role or title with the link as a whole</p></item>
+</ulist>
+
+<p>The XLink element for simple links is any element:</p>
+
+<ulist>
+<item><p>with an attribute
+in the XLink namespace called <att>type</att> with a value of
+<attval>simple</attval> or</p>
+</item>
+<item><p>with an attribute in the XLink namespace called <att>href</att>
+and no attribute in the XLink namespace called <att>type</att>. In this
+case, the value <attval>simple</attval> is implied for the
+<att>type</att> attribute.</p>
+</item>
+</ulist>
+
+<p>In other words, the XLink <att>type</att> attribute is optional
+on XLink simple links.</p>
+
+<p>The simple equivalent of the above extended
+link would be as follows:</p>
+
+<eg>&lt;studentlink xlink:href="...">Pat Jones&lt;/studentlink></eg>
+
+<p>The <el>simple</el>-type element <termref
+def="dt-must">may</termref> have any content. The <el>simple</el>-type
+element itself, together with all of its content, is the local
+resource of the link, as if the element were a <el>resource</el>-type
+element. If a <el>simple</el>-type element contains nested XLink
+elements, such contained elements have no XLink-specified relationship
+to the parent link. It is possible for a <el>simple</el>-type element
+to have no content; in cases where the link is expected to be
+traversed on request, interactive XLink applications will typically
+generate some content in order to give the user a way to initiate the
+traversal.</p>
+
+<p>The <el>simple</el>-type element effectively takes the locator
+attribute <att>href</att> and the semantic attributes <att>role</att>
+and <att>title</att> from the <el>locator</el>-type element, and the
+behavior attributes <att>show</att> and <att>actuate</att> and the
+single semantic attribute <att>arcrole</att> from the
+<el>arc</el>-type element.</p>
+
+<p>It is not an error for a <el>simple</el>-type element to have no
+locator (<att>href</att>) attribute value. If a value is not provided,
+the link is simply untraversable. Such a link may still be useful, for
+example, to associate properties with the resource by means of XLink
+attributes.</p>
+
+<example>
+<head>Sample <el>simple</el>-Type Element Declarations and Instance</head>
+
+<p>Following is a non-normative set of RELAX NG declarations (in the
+compact syntax) for a <el>simple</el>-type element.</p>
+
+<eg><![CDATA[namespace a = "relaxng.org/ns/compatibility/annotations/1.0"
+namespace xlink = "www.w3.org/1999/xlink"
+
+studentlink = element studentlink { attlist.studentlink, any }
+
+attlist.studentlink &=
+  attribute xlink:type { "simple" }?,
+  attribute xlink:href { text }?,
+
+  [ a:defaultValue = "www.example.com/linkprops/student" ]
+  attribute xlink:role {
+    string "www.example.com/linkprops/student"
+  }?,
+
+  attribute xlink:arcrole { text }?,
+  attribute xlink:title { text }?,
+  attribute xlink:show {
+    "new" | "replace" | "embed" | "other" | "none"
+  }?,
+  attribute xlink:actuate { "onLoad" | "onRequest" | "other" | "none" }?
+
+any =
+  (element * {
+     attribute * { text }*,
+     any
+   }
+   | text)*]]></eg>
+
+<p>Following is how an XML document might use these declarations.</p>
+
+<eg>..., and &lt;studentlink xlink:href="students/patjones62.xml">Pat
+Jones&lt;/studentlink> is popular around the student union.</eg>
+</example>
+</div2>
+
+<div2 id="link-types">
+<head>XLink Element Type Attribute (<att>type</att>)</head>
+
+<p>The attribute that identifies XLink element types is <att>type</att>.</p>
+
+<constraintnote id="cn-type-value" type="Conformance">
+<head>type Value</head>
+<p>The value of the <att>type</att> attribute
+<termref def="dt-must">must</termref> be supplied unless the 
+element is a <termref def="dt-simplelink">simple link</termref> and
+an <att>href</att> attribute in the XLink namespace is supplied.
+In the latter case, the value <attval>simple</attval> is implied for
+the <att>type</att> attribute.
+If a value is supplied for the <att>type</att> attribute, its value
+<termref def="dt-must">must</termref> be one of
+<attval>simple</attval>, <attval>extended</attval>,
+<attval>locator</attval>, <attval>arc</attval>,
+<attval>resource</attval>, <attval>title</attval>, or
+<attval>none</attval>.</p>
+</constraintnote>
+
+<p>When the value of the <att>type</att> attribute is
+<attval>none</attval>, the element has no XLink-specified meaning, and
+any XLink-related content or attributes have no XLink-specified
+relationship to the element.</p>
+
+<example>
+<head>Sample <att>type</att> Attribute Declarations</head>
+
+<p>Following is a non-normative attribute-list declaration for <att>type</att>
+on an element intended to be <el>simple</el>-type.</p>
+
+<eg>&lt;!ATTLIST simple-link-element
+  xlink:type      (simple)        #FIXED "simple"
+  ...></eg>
+
+<p>An analogous declaration in XML Schema is:</p>
+
+<eg><![CDATA[<xs:element name="simple-link-element">
+  ...
+  <xs:attribute ref="xlink:type" fixed="simple"/>
+  ...
+</xs:element>]]></eg>
+
+<p>In RELAX NG:</p>
+
+<eg><![CDATA[element simple-link-element {
+  ...
+  [ a:defaultValue = "simple" ] attribute xlink:type { "simple" }?,
+  ...
+}]]></eg>
+
+<p>For an element that serves as an XLink element only on some
+occasions, one declaration might be as follows, where the document
+creator sets the value to <attval>simple</attval> in some
+circumstances and <attval>none</attval> in others. The use of
+<attval>none</attval> might be useful in helping XLink applications to
+avoid checking for the presence of an <att>href</att> value.</p>
+
+<eg>&lt;!ATTLIST commandname
+  xlink:type      (simple|none)   #IMPLIED
+  &hrefatt;#IMPLIED></eg>
+
+<p>Analogously RELAX NG:</p>
+
+<eg><![CDATA[element commandname {
+  ...
+  attribute xlink:type { "simple" | "none" }?,
+  ...
+}]]></eg>
+
+<p>The global nature of <att>xlink:type</att> makes redefinition on
+a per-element basis impractical in XML Schema.</p>
+</example></div2>
+
+<div2 id="link-locators">
+<head>Locator Attribute (<att>href</att>)</head>
+
+<p>The attribute that supplies the data that allows an XLink
+application to find a remote resource (or resource fragment) is
+<att>href</att>. It <termref def="dt-must">may</termref> be used on
+<el>simple</el>-type elements, and
+<termref def="dt-must">must</termref> be used on <el>locator</el>-type
+elements.</p>
+
+<p>The value of the href attribute is a <bibref ref="leiri"/> (LEIRI).
+Processing a relative identifier against a base is handled
+straightforwardly; the algorithms of <bibref ref="rfc3986"/> can be
+applied directly, treating the characters additionally allowed in
+LEIRIs in the same way that unreserved characters are in
+URI references.</p>
+
+<note>
+<p>XLink 1.0 explicitly did not require applications to check
+that the value of the <att>xlink:href</att> attribute conformed to the
+syntactic rules of a URI. While <bibref ref="rfc3986"/> has clarified
+the syntactic rules, this specification follows the lead of XLink 1.0
+(and many other specifications) and does not impose any new conformance
+testing requirements on XLink applications in this area.</p>
+<p>Although XLink applications need not enforce URI syntactic
+constraints, XLink applications which use libraries which <emph>do</emph>
+detect violations of the syntactic rules of
+<bibref ref="rfc3986"/> <termref def="dt-must">should not</termref>
+recover silently.</p>
+</note>
+
+<p>If the value of the <att>href</att> attribute is a relative
+reference (as defined in <bibref ref="rfc3986"/>, also known as
+"relative URI" in earlier RFCs), or results in a relative reference
+after escaping, its absolute version
+<termref def="dt-must">must</termref> be computed by the method of
+<bibref ref="xbase"/> before use.</p>
+
+<p>If a locator includes a fragment identifer, the syntax of the
+fragment identifier is defined by the media type of the
+representation returned when the locator is dereferenced. For
+locators into XML resources (that is, resources with the media type
+"application/xml" or media types that defer to the fragment
+identifier syntax of "application/xml" media), the syntax of the
+fragment identifier is expected to be defined by the successor to
+<bibref ref="rfc3023"/>.
+Technically, there is no fragment identifier syntax for
+XML resources at the time of this writing, though the
+<bibref ref="xpointer-framework"/>
+and
+<bibref ref="xpointer-element"/>
+are explicitly supported by several XML vocabularies.</p>
+
+<example>
+<head>Sample <att>href</att> Attribute Declarations</head>
+<p>Following is a non-normative attribute-list declaration for <att>href</att>
+on an element intended to be <el>simple</el>-type.</p>
+<eg>&lt;!ATTLIST simplelink
+  &hrefatt;#REQUIRED
+  ...></eg>
+</example>
+</div2>
+
+<div2 id="link-semantics">
+<head>Semantic Attributes (<att>role</att>, <att>arcrole</att>, and <att>title</att>)</head>
+
+<p>The attributes that describe the meaning of resources within the
+context of a link are <att>role</att>, <att>arcrole</att>, and
+<att>title</att>. The <att>role</att> attribute <termref
+def="dt-must">may</termref> be used on <el>extended</el>-,
+<el>simple</el>-, <el>locator-</el>, and <el>resource</el>-type
+elements. The <att>arcrole</att> attribute <termref
+def="dt-must">may</termref> be used on <el>arc</el>- and
+<el>simple</el>-type elements. The <att>title</att> attribute <termref
+def="dt-must">may</termref> be used on all of these types of
+elements.</p>
+
+<p>The value of the <att>role</att> or <att>arcrole</att> attribute is
+a <bibref ref="leiri"/>.
+The identifier <termref def="dt-must">must not</termref> be relative.
+</p>
+
+<p>The <att>title</att> attribute is used to describe the meaning of a link
+or resource in a human-readable fashion, along the same lines as the <att>role</att>
+or <att>arcrole</att> attribute. (However, see also <specref ref="title-element"/>.)
+A value is optional; if a value is supplied, it <termref def="dt-must">should</termref>
+contain a string that describes the resource. The use of this information
+is highly dependent on the type of processing being done. It <termref def="dt-must">may</termref>
+be used, for example, to make titles available to applications used by visually
+impaired users, or to create a table of links, or to present help text that
+appears when a user lets a mouse pointer hover over a starting resource.</p>
+<example>
+<head>Sample <att>role</att> and <att>title</att> Attribute Declarations</head>
+<p>Following is a non-normative attribute-list declaration for <att>role</att>
+and <att>title</att> on an element intended to be <el>simple</el>-type.</p>
+<eg>&lt;!ATTLIST simplelink
+  ...
+  &roleatt;
+  &titleatt;
+  ...></eg>
+<p>Following is a non-normative attribute-list declaration for <att>arcrole</att>
+and <att>title</att> on an element intended to be <el>arc</el>-type.</p>
+<eg>&lt;!ATTLIST go
+  ...
+  &arcroleatt;
+  &titleatt;
+  ...></eg>
+</example></div2>
+<div2 id="link-behaviors">
+<head>Behavior Attributes (<att>show</att> and <att>actuate</att>) </head>
+<p>The behavior attributes are <att>show</att> and <att>actuate</att>. They <termref def="dt-must">may</termref> be used on the <el>simple</el>- and <el>arc</el>-type
+elements. When used on a <el>simple</el>-type element, they signal behavior
+intentions for traversal to that link's single remote ending resource. When
+they are used on an <el>arc</el>-type element, they signal behavior intentions
+for traversal to whatever ending resources (local or remote) are specified
+by that arc.</p>
+
+<p>The <att>show</att> and <att>actuate</att> attributes are not required.</p>
+
+<example>
+<head>Sample <att>show</att> and <att>actuate</att> Attribute Declarations</head>
+<p>Following is a non-normative attribute-list declaration for <att>show</att>
+and <att>actuate</att> on an element intended to be <el>simple</el>-type.</p>
+<eg>&lt;!ATTLIST simplelink
+  xlink:type      (simple)        #FIXED "simple"
+  ...
+  &showactuateattribs;
+  ...></eg>
+</example>
+<p>Applications encountering <el>arc</el>-type elements in linkbase lists <termref def="dt-must">must</termref> treat the behavior attributes as if they were
+specified as <code>show="none"</code> and <code>actuate="onLoad"</code>, even
+if other values were specified.</p>
+<div3 id="show-att">
+<head><att>show</att> Attribute</head>
+<p>The <att>show</att> attribute is used to communicate the desired presentation
+of the ending resource on traversal from the starting resource.</p>
+<constraintnote id="cn-show-value" type="conformance">
+<head>show Value</head>
+<p>If a value is supplied for a <att>show</att> attribute, it <termref def="dt-must">must</termref>
+be one of the values <attval>new</attval>, <attval>replace</attval>, <attval>embed</attval>, <attval>other</attval>,
+and <attval>none</attval>.</p>
+</constraintnote>
+<p>Conforming XLink applications <termref def="dt-must">should</termref> apply
+the following treatment for <att>show</att> values:</p>
+<glist>
+<gitem><label><attval>new</attval></label>
+<def>
+<p>An application traversing to the ending resource <termref def="dt-must">should</termref>
+load it in a new window, frame, pane, or other relevant presentation context.
+This is similar to the effect achieved by the following HTML fragment:</p>
+<eg>&lt;A HREF="www.example.org/" target="_blank">...&lt;/A></eg>
+</def></gitem>
+<gitem><label><attval>replace</attval></label>
+<def>
+<p>An application traversing to the ending resource <termref def="dt-must">should</termref>
+load the resource in the same window, frame, pane, or other relevant presentation
+context in which the starting resource was loaded. This is similar to the
+effect achieved by the following HTML fragment:</p>
+<eg>&lt;A HREF="www.example.org/" target="_self">...&lt;/A></eg>
+</def></gitem>
+<gitem><label><attval>embed</attval></label>
+<def>
+<p>An application traversing to the ending resource <termref def="dt-must">should</termref>
+load its presentation in place of the presentation of the starting resource.
+This is similar to the effect achieved by the following HTML fragment:</p>
+<eg>&lt;IMG SRC="www.example.org/smiley.gif" ALT=":-)"></eg>
+<p>The presentation of the starting resource typically does not consist of
+an entire document; it would be the entire document only when the root element
+of the document is a simple link. Thus, embedding typically has an effect
+distinct from replacing.</p>
+<p>Just as for the HTML <el>IMG</el> element, embedding affects only the presentation
+of the relevant resources; it does not dictate permanent transformation of
+the starting resource. Put another way, when an embedded XLink is processed,
+the result of styling the ending resource of the link is merged into the result
+of styling the resource into which it is embedded. By contrast, when a construct
+such as an <bibref ref="xinclude"/> element is resolved, the transformation
+takes place in the original source document.</p>
+<p>The behavior of conforming XLink applications when embedding XML-based
+(<bibref ref="rfc3023"/>) ending resources
+is not defined in this version of this specification.</p>
+<p>The presentation of embedded resources is application dependent.</p>
+</def></gitem>
+<gitem><label><attval>other</attval></label>
+<def>
+<p>The behavior of an application traversing to the ending resource is unconstrained
+by this specification. The application <termref def="dt-must">should</termref>
+look for other markup present in the link to determine the appropriate behavior.</p>
+</def></gitem>
+<gitem><label><attval>none</attval></label>
+<def>
+<p>The behavior of an application traversing to the ending resource is unconstrained
+by this specification. No other markup is present to help the application
+determine the appropriate behavior.</p>
+</def></gitem>
+</glist>
+<p>If the starting or ending resource consists of multiple non-contiguous
+locations, such as a series of string ranges in various locations in the resource,
+then application behavior is unconstrained. (See <bibref ref="xptr"/> for
+more information about selecting portions of XML documents.)</p>
+<note>
+<p>Some possibilities for application behavior with non-contiguous ending
+resources might include highlighting of each location, producing a dialog
+box that allows the reader to choose among the locations as if there were
+separate arcs leading to each one, concatenating the content of all the locations
+for presentation, and so on. Application behavior with non-contiguous starting
+resources might include concatenation and rendering as a single unit, or creating
+one arc emanating from each contiguous portion.</p>
+</note>
+</div3>
+<div3 id="actuate-att">
+<head><att>actuate</att> Attribute</head>
+<p>The <att>actuate</att> attribute is used to communicate the desired timing
+of traversal from the starting resource to the ending resource..</p>
+<constraintnote id="cn-actuate-value" type="conformance">
+<head>actuate Value</head>
+<p>If a value is supplied for an <att>actuate</att> attribute, it <termref def="dt-must">must</termref> be be one of the values <attval>onLoad</attval>, <attval>onRequest</attval>, <attval>other</attval>,
+and <attval>none</attval>.</p>
+</constraintnote>
+<p>Conforming XLink applications <termref def="dt-must">should</termref> apply
+the following treatment for <att>actuate</att> values:</p>
+<glist>
+<gitem><label><attval>onLoad</attval></label>
+<def>
+<p>An application <termref def="dt-must">should</termref> traverse to the
+ending resource immediately on loading the starting resource. This is similar
+to the effect typically achieved by the following HTML fragment, when the
+user agent is configured to display images:</p>
+<eg>&lt;IMG SRC="www.example.org/smiley.gif" ALT=":-)"></eg>
+<p>If a single resource contains multiple arcs whose behavior is set to <code>show="replace"
+actuate="onLoad"</code>, application behavior is unconstrained by XLink.</p>
+</def></gitem>
+<gitem><label><attval>onRequest</attval></label>
+<def>
+<p>An application <termref def="dt-must">should</termref> traverse from the
+starting resource to the ending resource only on a post-loading event triggered
+for the purpose of traversal. An example of such an event might be when a
+user clicks on the presentation of the starting resource, or a software module
+finishes a countdown that precedes a redirect.</p>
+</def></gitem>
+<gitem><label><attval>other</attval></label>
+<def>
+<p>The behavior of an application traversing to the ending resource is unconstrained
+by this specification. The application <termref def="dt-must">should</termref>
+look for other markup present in the link to determine the appropriate behavior.</p>
+</def></gitem>
+<gitem><label><attval>none</attval></label>
+<def>
+<p>The behavior of an application traversing to the ending resource is unconstrained
+by this specification. No other markup is present to help the application
+determine the appropriate behavior.</p>
+</def></gitem>
+</glist>
+</div3>
+</div2>
+<div2 id="traversal-atts">
+<head>Traversal Attributes (<att>label</att>, <att>from</att>, and <att>to</att>)</head>
+<p>The traversal attributes are <att>label</att>, <att>from</att>, and <att>to</att>.
+The <att>label</att> attribute <termref def="dt-must">may</termref> be used
+on the <el>resource</el>- and <el>locator</el>-type elements. The <att>from</att>
+and <att>to</att> attributes <termref def="dt-must">may</termref> be used
+on the <el>arc</el>-type element.</p>
+<constraintnote id="cn-fromto-values" type="conformance">
+<head><att>label</att>, <att>from</att>, and <att>to</att> Values</head>
+<p>The value of a <att>label</att>, <att>from</att>, or <att>to</att> attribute
+must be an <xnt href="www.w3.org/TR/REC-xml-names/#NT-NCName">NCName</xnt>.
+If a value is supplied for a <att>from</att> or <att>to</att> attribute, it <termref def="dt-must">must</termref> correspond to the same value for some <att>label</att>
+attribute on a <el>locator</el>- or <el>resource</el>-type element that appears
+as a direct child inside the same <el>extended</el>-type element as does the <el>arc</el>-type
+element. </p>
+</constraintnote>
+</div2>
+</div1>
+</body>
+
+<back>
+
+<div1 id="references">
+<head>References</head>
+
+<div2 id="refnorm">
+<head>Normative References</head>
+<blist>
+<bibl id="rfc3023" key="RFC&#160;3023"
+      href="www.ietf.org/rfc/rfc3023.txt">
+<titleref>RFC 3023: XML Media Types</titleref>.
+Makoto, M., St. Laurent, S. and D. Kohn, editors.
+Internet Engineering Task Force, 2001.</bibl>
+
+<bibl id="rfc3986" key="RFC&#160;3986"
+      href="www.ietf.org/rfc/rfc3986.txt">
+<titleref>RFC 3986: Uniform Resource Identifier (URI): Generic Syntax</titleref>.
+Berners-Lee, T., Fielding, R., and Masinter, L, editors.
+Internet Engineering Task Force, 2005.</bibl>
+
+<bibl key="RFC&#160;3987" id="rfc3987"
+      href="www.ietf.org/rfc/rfc3987.txt">
+<titleref>RFC 3987: Internationalized Resource Identifiers (IRIs)</titleref>.
+Internet Engineering Task Force, 2005.</bibl>
+
+<bibl key="Legacy extended IRIs" id="leiri"
+      href="www.w3.org/TR/leiri">
+<titleref>Legacy extended IRIs for XML resource identification</titleref>.
+Henry S. Thompson, Richard Tobin, and Norman Walsh, editors.
+World Wide Web Consortium, 2008.</bibl>
+
+<!-- unreferenced
+<bibl key="RFC&#160;3629" id="rfc3629"
+      href="www.ietf.org/rfc/rfc3629.txt">
+<titleref>RFC 2629: UTF-8, a transformation format of ISO 10646</titleref>.
+Yergeau, F. editor.
+Internet Engineering Task Force, 2003.</bibl>
+-->
+
+<!-- unreferenced
+<bibl key="RFC&#160;2732" id="rfc2732"
+      href="www.ietf.org/rfc/rfc2732.txt">
+<titleref>RFC 2732: Format for Literal IPv6 Addresses in URL's</titleref>.
+Internet Engineering Task Force, 1999.</bibl>
+-->
+
+<bibl key="XML" id="XML" href="www.w3.org/TR/REC-xml/">
+<titleref>Extensible Markup Language (XML) 1.0 (Fifth Edition).</titleref>
+Tim Bray, Jean Paoli, C.M. Sperberg-McQueen, et. al., editors.
+World Wide Web Consortium, 2008.</bibl>
+
+<bibl key="RFC&#160;2119" id="rfc2119"
+      href="www.ietf.org/rfc/rfc2119.txt">
+<titleref>Key words for use in RFCs to Indicate Requirement Levels</titleref>.
+S. Bradner, editor.
+Internet Engineering Task Force, 1997.</bibl>
+
+<bibl key="XML Base" id="xbase"
+      href="www.w3.org/TR/xmlbase/">
+<titleref>XML Base (Second Edition)</titleref>.
+Jonathan Marsh and Richard Tobin, editors.
+World Wide Web Consortium, 2009.</bibl>
+
+<bibl key="XML Names" id="xname"
+      href="www.w3.org/TR/REC-xml-names/">
+<titleref>Namespaces in XML 1.0 (Third Edition)</titleref>.
+Tim Bray, Dave Hollander, Andrew Layman, et. al. editors.
+World Wide Web Consortium, 2009.</bibl>
+
+<bibl key="XPointer Framework" id="xpointer-framework"
+      href="www.w3.org/TR/xptr-framework/">
+<titleref>XPointer Framework</titleref>
+Grosso, Paul, Eve Maler, Jonathan Marsh, and Norman Walsh, editors.
+World Wide Web Consortium, 2003.</bibl>
+
+<bibl key="XPointer element() Scheme" id="xpointer-element"
+      href="www.w3.org/TR/xptr-element/">
+<titleref>XPointer element() Scheme</titleref>
+Grosso, Paul, Eve Maler, Jonathan Marsh, and Norman Walsh, editors.
+World Wide Web Consortium, 2003.</bibl>
+
+<bibl key="CharMod Fundamentals" id="CharMod" href="www.w3.org/TR/charmod/">
+<titleref>Character Model for the World Wide Web 1.0: Fundamentals</titleref>
+Dürst, Martin J., François Yergeau, Richard Ishida, <emph>et. al.</emph>,
+editors.
+World Wide Web Consortium, 2005.</bibl>
+
+</blist>
+</div2>
+
+<div2 id="refinform">
+<head>Non-Normative References</head>
+<blist>
+
+<bibl id="xlink10-ext" key="Extending XLink 1.0"
+      href="www.w3.org/TR/xlink10-ext">
+<titleref>Extending XLink 1.0</titleref>,
+Norman Walsh, Editor.
+World Wide Web Consortium, 27 Jan 2005.</bibl>
+
+<bibl id="xlink10" key="XML Linking Language (XLink) Version 1.0"
+      href="www.w3.org/TR/xlink/">
+<titleref >XML Linking Language (XLink) Version 1.0</titleref>,
+Steven DeRose, David Orchard, and Eve Maler, Editors.
+World Wide Web Consortium, 27 Jun 2001. </bibl>
+
+<!-- unreferenced
+<bibl id="chum" key="CHUM">
+<quote>The TEI Hypertext Guidelines.</quote> 
+Steven J. DeRose and David G. Durand. 1995.
+In <titleref>Computing and the Humanities</titleref> 29(3).
+Reprinted in
+<titleref>Text Encoding Initiative: Background and Context</titleref>,
+ed. Nancy Ide and Jean Ronis, ISBN 0-7923-3704-2.</bibl>
+-->
+
+<bibl id="dexter" key="Dexter">
+<quote>The Dexter Hypertext Reference Model.</quote>
+Halasz, Frank. 1994.
+ In Communications of the Association for Computing
+Machinery 37 (2), February 1994: 30-39.</bibl>
+
+<bibl id="fress" key="FRESS">Steven J. DeRose and Andries van Dam. 1999.
+<quote>Document structure in the FRESS Hypertext System.</quote>
+Markup Languages 1 (1) Winter. Cambridge: MIT Press: 7-32.</bibl>
+
+<bibl key="HTML" id="html"
+      href="www.w3.org/TR/1999/REC-html401-19991224/">
+<titleref>HTML 4.01 Specification</titleref>.
+World Wide Web Consortium, 1999.</bibl>
+
+<bibl id="intermedia" key="Intermedia">
+<quote>Intermedia: The Concept and the Construction of a Seamless Information Environment.</quote>
+Yankelovich, Nicole, Bernard J. Haan,
+Norman K. Meyrowitz, and Steven M. Drucker. 1988. IEEE Computer
+21 (January, 1988): 81-96.</bibl>
+
+<bibl key="ISO/IEC 10744" id="iso10744"
+      href="www.y12.doe.gov/sgml/wg8/document/1920.htm">
+<titleref>ISO/IEC 10744-1992 (E).
+Information technology-Hypermedia/Time-based Structuring Language
+(HyTime).</titleref> [Geneva]: International Organization for Standardization,
+1992. <titleref>Extended Facilities Annex.</titleref>
+ISO (International Organization for Standardization).
+[Geneva]: International Organization for Standardization, 1996.</bibl>
+
+<bibl id="microcosm" key="MicroCosm">
+<titleref>Rethinking Hypermedia: The Microcosm Approach.</titleref>
+Hall, Wendy, Hugh Davis, and Gerard Hutchings. 1996. 
+Boston: Kluwer Academic Publishers. ISBN 0-7923-9679-0.</bibl>
+
+<bibl id="ohs" key="OHS">
+<quote>The Role of XML in Open Hypermedia Systems.</quote>
+van Ossenbruggen, Jacco, Anton Eliëns and Lloyd Rutledge.
+Position paper for the 4th Workshop on Open Hypermedia Systems,
+ACM Hypertext '98.</bibl>
+
+<bibl key="RDF" id="rdf"
+      href="www.w3.org/TR/rdf-primer/">
+<titleref>RDF Primer</titleref>.
+Manola, Frank and Eric Miller, editors.
+World Wide Web Consortium, 2004.</bibl>
+
+<bibl id="tei" key="TEI">
+<titleref>Guidelines for Electronic Text Encoding and Interchange</titleref>.
+C. M. Sperberg-McQueen and Lou Burnard, editors.
+Association for Computers and the Humanities (ACH),
+Association for Computational Linguistics (ACL),
+and Association for Literary and Linguistic Computing (ALLC).
+Chicago, Oxford: Text Encoding Initiative, 1994.</bibl>
+
+<bibl key="XIS" id="infoset"
+      href="www.w3.org/TR/xml-infoset/">
+<titleref>XML Information Set</titleref>.
+John Cowan and Richard Tobin, editors.
+World Wide Web Consortium, 2004.</bibl>
+
+<!-- unreferenced
+<bibl key="XLinkToRDF" id="xlink2rdf"
+      href="www.w3.org/TR/2000/NOTE-xlink2rdf-20000929/">
+<titleref>Harvesting RDF Statements from XLinks</titleref>.
+Ron Daniel, editor.
+World Wide Web Consortium, 2000.</bibl>
+-->
+
+<!-- unreferenced
+<bibl key="XLinkNaming" id="xlink-naming"
+      href="www.w3.org/TR/2000/NOTE-xlink-naming-20001220/">
+<titleref>XLink Markup Name Control</titleref>.
+Eve Maler, Daniel Veillard and Henry S. Thompson, editors.
+World Wide Web Consortium, 2000.</bibl>
+-->
+
+<bibl key="XInclude" id="xinclude"
+      href="www.w3.org/TR/xinclude/">
+<titleref>XML Inclusions (XInclude) Version 1.0 (Second Edition)</titleref>.
+Jonathan Marsh, David Orchard, and Daniel Veillard, editors.
+World Wide Web Consortium, 2006.</bibl>
+
+<bibl key="XLREQ" id="xlreq"
+      href="www.w3.org/TR/1999/NOTE-xlink-req-19990224/">
+<titleref>XML XLink Requirements Version 1.0</titleref>.
+Steven DeRose, editor.
+World Wide Web Consortium, 1999.</bibl>
+
+<!-- unreferenced
+<bibl key="XLDP" id="xldp"
+      href="www.w3.org/TR/1998/NOTE-xlink-principles-19980303">
+<titleref>XML Linking Language (XLink) Design Principles</titleref>.
+Eve Maler and Steve DeRose, editors.
+World Wide Web Consortium, 1998.</bibl>
+-->
+
+<bibl key="XPTR" id="xptr"
+      href="www.w3.org/TR/xptr/">
+<titleref>XML Pointer Language (XPointer)</titleref>.
+Ron Daniel, Steve DeRose, Eve Maler, <emph>et. al.</emph> editors.
+World Wide Web Consortium, 2002.</bibl>
+
+<bibl id="xmlschema-1" key="XML Schema Part 1: Structures">
+<titleref href="www.w3.org/TR/xmlschema-1/">XML Schema Part 1: Structures</titleref>.
+David Beech, Noah Mendelsohn, Murray Maloney, and Henry S. Thompson, Editors.
+World Wide Web Consortium, 2004.</bibl>
+
+<bibl id="relax-ng" key="RELAX NG">
+<titleref href="www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=52348">ISO/IEC 19757-2:2008 Information technology -- Document
+Schema Definition Language (DSDL) -- Part 2: Regular-grammar-based
+validation -- RELAX NG</titleref>.
+International Organization for Standardization, 2008.</bibl>
+
+<bibl id="css" key="CSS"
+      href="www.w3.org/TR/CSS2">
+<titleref>Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</titleref>.
+Bert Bos, Tantek Çelik, Ian Hickson, et. al., editors.
+World Wide Web Consortium, 2009.</bibl>
+
+<bibl id="ruby" key="Ruby Annotation"
+      href="www.w3.org/TR/ruby/">
+<titleref>Ruby Annotation</titleref>.
+Michel Suignard, Tex Texin, Marcin Sawicki, <emph>et. al.</emph>, Editors.
+World Wide Web Consortium, 2001.</bibl>
+
+</blist>
+</div2>
+</div1>
+
+<inform-div1 id="sample-dtd-appx">
+<head>Sample DTD</head>
+
+<p>The following DTD makes invalid (for purposes of argument) all
+XLink constructs for which this specification does not specify
+behavior. It is provided only as a convenience for application
+developers; it has no normative status.</p>
+<p>The following assumptions hold for this DTD:</p>
+
+<ulist>
+<item><p>Only constructs that have XLink-defined meaning are allowed.</p>
+</item>
+<item><p>No <quote>foreign</quote> vocabularies are mixed in, since DTDs do
+not work well with namespaces.</p></item>
+<item><p>The use of <kw>ANY</kw> means there is typically content provided
+in the element that is used by XLink in some way.</p></item>
+<item><p>The use of the <code>(title*)</code> construct means that any non-title
+content provided has no XLink-defined use.</p></item>
+<item><p>Elements are named after the XLink element types they represent.</p>
+</item>
+</ulist>
+<p>Other assumptions and conditions appear as comments in the DTD.</p>
+
+<eg><xi:include xmlns:xi='www.w3.org/2001/XInclude'
+		parse="text" href="xlink11.dtd"/></eg>
+
+</inform-div1>
+
+<inform-div1 id="sample-xsd-appx">
+<head>Sample XML Schema</head>
+
+<p>The following XML Schema document, per <bibref ref="xmlschema-1"/>,
+provides XLink-1.1-specific declarations and definitions for use in
+defining linking elements which conform to this specification.</p>
+
+<p>A permanent copy of this schema document is available at
+<loc href="www.w3.org/XML/2008/06/xlink.xsd"/>.
+Another copy is available at
+<loc href="www.w3.org/1999/xlink.xsd"/>.
+At the time of publication these two
+copies are identical, but the version at <code>.../1999/xlink.xsd</code>
+may change
+in the future to reflect subsequent editions or versions of XLink or
+of XML Schema.</p>
+
+<eg><xi:include xmlns:xi='www.w3.org/2001/XInclude'
+		parse="text" href="xlink11.xsd"/></eg>
+
+<p>Note: The Working Group acknowledges the work of the
+<loc href="www.xbrl.org/">XBRL Consortium</loc>
+in producing a W3C XML Schema for XLink 1.0, which was useful input
+into the design of the schema document for XLink 1.1.</p>
+
+</inform-div1>
+<inform-div1 id="sample-rng-appx">
+<head>Sample RELAX NG Grammar</head>
+
+<p>The following <bibref ref="relax-ng"/> Grammars (expressed in the
+compact syntax) validate XLink 1.1. They are provided only as a
+convenience for application developers; they have no normative
+status.</p>
+
+<p><code>xlink11-simple.rnc</code>:</p>
+
+<eg><xi:include xmlns:xi='www.w3.org/2001/XInclude'
+		parse="text" href="xlink11-simple.rnc"/></eg>
+
+<p><code>xlink11.rnc</code>:</p>
+
+<eg><xi:include xmlns:xi='www.w3.org/2001/XInclude'
+		parse="text" href="xlink11.rnc"/></eg>
+
+</inform-div1>
+<inform-div1 id="changes">
+<head>Changes from XLink 1.0</head>
+
+<p>This specification implements the changes described in
+<bibref ref="xlink10-ext"/>. These changes make XLink more
+useful in the places where it is already being used and make it
+practical in a variety of similar vocabularies.
+It differs from
+<bibref ref="xlink10"/> in the following ways:</p>
+
+<olist>
+<item><p>The <att>xlink:type</att> attribute is no longer required for
+simple links. In the absence of any <att>xlink:type</att> attribute,
+an XLink is treated as a simple link.</p>
+</item>
+<item>
+<p>Where <bibref ref="xlink10"/> referred to URIs, this specification
+refers to IRIs. This allows a broader range of values for for those
+properties that are identified with a resource identifier.</p>
+</item>
+<item>
+<p>This specification includes non-normative sample XML Schema and RELAX NG
+grammars to complement the existing, non-normative sample DTD.</p>
+</item>
+</olist>
+
+<p>In addition, a few editorial changes have also been made.</p>
+
+<olist>
+<item><p>Some bibliographic references have been updated to point to more
+recent specifications.</p>
+</item>
+<item><p>The conformance language has been rewritten to support a new,
+simple conformance level for applications that only expect to process
+simple links.</p>
+</item>
+<item><p>Several of the examples have been changed to highlight the
+presence of non-normative grammars other than the DTD.</p>
+</item>
+<item><p>The text describing the interpretation of the locator
+attribute (<att>xlink:href</att>) has been moved into a separate
+specification (<bibref ref="leiri"/>) so that it may more easily be
+reused. The locator attribute is now described with
+reference to that specification.</p>
+</item>
+</olist>
+
+</inform-div1>
+</back>
+</spec>

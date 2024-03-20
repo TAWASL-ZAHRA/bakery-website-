@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" dir="ltr" typeof="bibo:Document w3p:REC" about="" property="dcterms:language" content="ja" prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title>RDF 1.1セマンティクス</title>
+
+<style type="text/css">
+.semantictable {background-color: #FFFFAA; padding:0.5em;}
+.ruletable {background-color: #DDDDFF; padding:0.5em;}
+.othertable {background-color: #FDFDFD; padding:0.5em;}
+.tabletitle {font-size: small; font-weight: bolder;}
+
+.technote {
+    font-size:small;
+    margin: 2em 0em 0em;
+    padding:    1em;
+    border: 2px solid #cff6d9;
+    background: #e2fff0;
+}
+
+.technote::before {
+    content:    "技術に関する注";
+    display:    block;
+    width:  150px;	
+    margin: -1.5em 0 0.5em 0;
+    font-weight:    bold;
+    border: 1px solid #cff6d9;
+    background: #eff;
+    padding:    3px 1em;
+}
+
+
+.changenote {
+    font-size:small;
+    margin: 1em 0em 0em;
+    padding:    1em;
+    border: 2px solid #cff6d9;
+    background: #ffddfe;
+}
+
+.changenote::before {
+    content:    "変更に関する注";
+    display:    block;
+    width:  150px;
+    margin: -1.5em 0 0.5em 0;
+    font-weight:    bold;
+    border: 1px solid #cff6d9;
+    background: #ffddef;
+    padding:    3px 1em;
+}
+
+
+.fact  {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+    background-color: #ffeecc;
+    border: 1px solid black
+}
+
+  table { border-collapse:collapse; }
+  table, td, th { border:1px solid black; }
+  caption { font-weight: bold; text-align: left ; }
+
+</style>
+  <style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}
+</style><link rel="stylesheet" href="https://www.w3.org/StyleSheets/TR/W3C-REC">
+<!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+<body class="h-entry" role="document" id="respecDocument"><div class="head" role="contentinfo" id="respecHeader">
+
+<p><a href="../../index.html"><img src="../../images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/">RDF 1.1 Semantics W3C Recommendation 25 February 2014</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="../../mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2014年7月6日</p>
+
+<hr>
+
+<p><a href="http://www.w3.org/"><img width="72" height="48" alt="W3C" src="https://www.w3.org/Icons/w3c_home"></a></p>
+
+<h1 property="dcterms:title" id="title" class="title p-name">RDF 1.1セマンティクス</h1>
+
+<h2 content="2014-02-24T23:00:00.000Z" datatype="xsd:dateTime" property="dcterms:issued" id="w3c-recommendation-25-february-2014"><abbr title="World Wide Web Consortium">W3C</abbr>勧告 <time datetime="2014-02-25" class="dt-published">2014年2月25日</time></h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/" class="u-url">http://www.w3.org/TR/2014/REC-rdf11-mt-20140225/</a></dd>
+  <dt>最新公開バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/rdf11-mt/">http://www.w3.org/TR/rdf11-mt/</a></dd>
+  <dt>テスト・スイート:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/">http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/</a></dd>
+  <dt>実装報告:</dt>
+  <dd><a href="http://www.w3.org/2013/rdf-mt-reports/index.html">http://www.w3.org/2013/rdf-mt-reports/index.html</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="http://www.w3.org/TR/2014/PR-rdf11-mt-20140109/" rel="dcterms:replaces">http://www.w3.org/TR/2014/PR-rdf11-mt-20140109/</a></dd>
+  <dt>旧勧告:</dt>
+  <dd><a href="http://www.w3.org/TR/rdf-mt/" rel="dcterms:replaces">http://www.w3.org/TR/rdf-mt/</a></dd>
+  <dt>編集者:</dt>
+  <dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><a href="http://www.ihmc.us/groups/phayes/" content="Patrick J. Hayes" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">Patrick J. Hayes</a>, <a href="http://www.ihmc.us/index.php" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">Florida IHMC</a></span></dd>
+<dd inlist="" rel="bibo:editor" class="p-author h-card vcard"><span typeof="foaf:Person"><span class="p-name fn" property="foaf:name">Peter F. Patel-Schneider</span>, <a href="http://www.nuance.com/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">Nuance Communications</a></span></dd>
+</dl>
+
+<p>公開以後に報告されたエラーや問題がないか<a href="http://www.w3.org/2014/rdf1.1-errata"><strong>正誤表</strong></a>を確認してください。</p>
+
+<p>この仕様の英語版が唯一の規範のバージョンです。非規範の<a href="http://www.w3.org/Consortium/Translation/">翻訳版</a>も入手可能かもしれません。</p>
+<p class="copyright">
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9;
+        2004-2014
+        
+        <a href="http://www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>&#xae;</sup>
+        (<a href="http://www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>,
+        <a href="http://www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>,
+        <a href="http://www.keio.ac.jp/">Keio</a>, <a href="http://ev.buaa.edu.cn/">Beihang</a>), 
+        
+        All Rights Reserved.
+        
+        <abbr title="World Wide Web Consortium">W3C</abbr> <a href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+        <a href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and
+        
+          <a href="http://www.w3.org/Consortium/Legal/copyright-documents">document use</a>
+        
+        rules apply.
+</p>    
+  
+<hr>
+
+</div>
+
+<section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_abstract">要約</h2>
+
+<p>このドキュメントは、RDF 1.1[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]とRDFスキーマ[<cite><a class="bibref" href="#bib-RDF11-SCHEMA">RDF11-SCHEMA</a></cite>]の厳密なセマンティクスを記述しています。多くの様々な含意レジームと、対応する含意のパターンを定義しています。これは、RDF 1.1のフル仕様を含む一連のドキュメントの一部です。</p>
+
+</section><section class="introductory" id="sotd" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_sotd">このドキュメントのステータス</h2>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行の<abbr title="World Wide Web Consortium">W3C</abbr>の刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="http://www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr>技術報告インデックス</a>にあります。</em></p>
+        
+<p>このドキュメントは、RDF 1.1ドキュメント群の一部です。これは、2004年のRDF[<cite><a class="bibref" href="#bib-RDF-MT">RDF-MT</a></cite>]のセマンティクス仕様の改訂版で、そのドキュメントに取って代わります。その時以後の本質的な（編集上のものではない）変更に関する非形式的な要約については、<a href="http://www.w3.org/2011/rdf-wg/wiki/Entailment_Changes">含意の変更</a>を参照してください。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/2011/rdf-wg/">RDFワーキンググループ</a>によって勧告として公開されました。このドキュメントに関してコメントを行いたい場合には、<a href="mailto:public-rdf-comments@w3.org">public-rdf-comments@w3.org</a>（<a href="mailto:public-rdf-comments-request@w3.org?subject=subscribe">購読</a>、<a href="http://lists.w3.org/Archives/Public/public-rdf-comments/">アーカイブ</a>）にお送りください。どのようなコメントでも歓迎します。</p>
+        
+<p>ワーキンググループの<a href="http://www.w3.org/2013/rdf-mt-reports/index.html">実装報告書</a>を参照してください。</p>
+
+<p>このドキュメントは、<abbr title="World Wide Web Consortium">W3C</abbr>メンバー、ソフトウェア開発者、他の<abbr title="World Wide Web Consortium">W3C</abbr>グループ、および他の利害関係者によりレビューされ、<abbr title="World Wide Web Consortium">W3C</abbr>勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成における<abbr title="World Wide Web Consortium">W3C</abbr>の役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</p>
+
+<p>このドキュメントは、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/" rel="w3p:patentRules" about="" id="sotd_patent">2004年2月5日の<abbr title="World Wide Web Consortium">W3C</abbr>特許方針</a>の下で活動しているグループによって作成されました。<abbr title="World Wide Web Consortium">W3C</abbr>は、このグループの成果物に関連する<a rel="disclosure" href="http://www.w3.org/2004/01/pp-impl/46168/status">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="http://www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許方針の6項</a>に従って情報を開示しなければなりません。</p>
+
+</section><section id="toc">
+
+<h2 class="introductory" aria-level="1" role="heading" id="h2_toc">目次</h2>
+
+<ul class="toc" role="directory" id="respecContents">
+  <li class="tocline"><a href="#introduction-1" class="tocxref"><span class="secno">1. </span>はじめに</a></li>
+  <li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">2. </span>適合性</a></li>
+  <li class="tocline"><a href="#semantic-extensions-and-entailment-regimes" class="tocxref"><span class="secno">3. </span>セマンティックの拡張と含意レジーム</a></li>
+  <li class="tocline"><a href="#notation-and-terminology" class="tocxref"><span class="secno">4. </span>表記法と用語</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#shared-blank-nodes-unions-and-merges" class="tocxref"><span class="secno">4.1 </span>共通の空白ノード、和集合と併合</a></li>
+  </ul></li>
+  <li class="tocline"><a href="#simple-interpretations" class="tocxref"><span class="secno">5. </span>単純解釈</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#blank-nodes" class="tocxref"><span class="secno">5.1 </span>空白ノード</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#shared-blank-nodes-informative" class="tocxref"><span class="secno">5.1.1 </span>共通の空白ノード（参考情報）</a></li>
+    </ul></li>
+  <li class="tocline"><a href="#simpleentailment" class="tocxref"><span class="secno">5.2 </span>単純含意</a></li>
+  <li class="tocline"><a href="#properties-of-simple-entailment-informative" class="tocxref"><span class="secno">5.3 </span>単純含意の特性（参考情報）</a></li></ul></li>
+  <li class="tocline"><a href="#skolemization-informative" class="tocxref"><span class="secno">6. </span>スコーレム化（参考情報）</a></li>
+  <li class="tocline"><a href="#literals-and-datatypes" class="tocxref"><span class="secno">7. </span>リテラルとデータ型</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#D_interpretations" class="tocxref"><span class="secno">7.1 </span>D-解釈</a></li>
+    <li class="tocline"><a href="#datatype-entailment" class="tocxref"><span class="secno">7.2 </span>データ型含意</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#patterns-of-datatype-entailment-informative" class="tocxref"><span class="secno">7.2.1 </span>データ型含意のパターン（参考情報）</a></li>
+    </ul></li>
+  </ul></li>
+  <li class="tocline"><a href="#rdf-interpretations" class="tocxref"><span class="secno">8. </span>RDF解釈</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#rdf-entailment" class="tocxref"><span class="secno">8.1 </span>RDF含意</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#patterns-of-rdf-entailment-informative" class="tocxref"><span class="secno">8.1.1 </span>RDF含意のパターン（参考情報）</a></li>
+    </ul></li>
+  </ul></li>
+  <li class="tocline"><a href="#rdfs-interpretations" class="tocxref"><span class="secno">9. </span>RDF解釈</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#a-note-on-rdfs-literal-informative" class="tocxref"><span class="secno">9.1 </span>rdfs:Literalに関する注（参考情報）</a></li>
+    <li class="tocline"><a href="#rdfs-entailment" class="tocxref"><span class="secno">9.2 </span>RDFS含意</a>
+    <ul class="toc">
+      <li class="tocline"><a href="#patterns-of-rdfs-entailment-informative" class="tocxref"><span class="secno">9.2.1 </span>RDFS含意のパターン（参考情報）</a></li>
+    </ul>
+    </li>
+  </ul></li>
+  <li class="tocline"><a href="#rdf-datasets" class="tocxref"><span class="secno">10. </span>RDFデータセット</a></li>
+  <li class="tocline"><a href="#entailment-rules-informative" class="tocxref"><span class="secno">A. </span>含意規則（参考情報）</a></li>
+  <li class="tocline"><a href="#finite-interpretations-informative" class="tocxref"><span class="secno">B. </span>有限の解釈（参考情報）</a></li>
+  <li class="tocline"><a href="#proofs-of-some-results-informative" class="tocxref"><span class="secno">C. </span>一部の結果の証明（参考情報）</a></li>
+  <li class="tocline"><a href="#whatnot" class="tocxref"><span class="secno">D. </span>RDF具象化、コンテナおよびコレクション（参考情報）</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#reification" class="tocxref"><span class="secno">D.1 </span>具象化</a></li>
+    <li class="tocline"><a href="#rdf-containers" class="tocxref"><span class="secno">D.2 </span>RDFコンテナ</a></li>
+    <li class="tocline"><a href="#rdf-collections" class="tocxref"><span class="secno">D.3 </span>RDFコレクション</a></li>
+  </ul></li>
+  <li class="tocline"><a href="#change-log-informative" class="tocxref"><span class="secno">E. </span>変更履歴（参考情報）</a></li>
+  <li class="tocline"><a href="#acknowledgements-1" class="tocxref"><span class="secno">F. </span>謝辞</a></li>
+  <li class="tocline"><a href="#references" class="tocxref"><span class="secno">G. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">G.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">G.2 </span>参考情報の参考文献</a></li>
+  </ul></li>
+</ul>
+
+</section>
+
+<section class="introductory" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 id="notes" aria-level="1" role="heading">Notes</h2>
+
+<p class="changenote">この形式の注記は、2004年のRDF 1.0セマンティクスからの変更を示します。</p>
+
+<p class="technote">この形式の注記は、不明確または難解な問題に関する技術的なトピックです。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="introduction-1">
+
+<!--OddPage-->
+<h2 id="introduction" aria-level="1" role="heading"><span class="secno">1. </span>はじめに</h2>
+
+<p>このドキュメントは、RDFグラフおよびRDFとRDFSの語彙のモデル理論セマンティクスを定義しており、RDFの変換や他のRDFからRDFコンテンツを導き出すオペレーションによって真偽がいつ保持されるかに関する正確な形式的仕様を提供しています。</p>
+
+</section>
+<section id="conformance" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_conformance"><span class="secno">2. </span>適合性</h2>
+
+<p>非規範的と記している項と同じく、この仕様のすべての作成ガイドライン、図、例、注は、非規範的です。この仕様のその他の部分はすべて規範的です。</p>
+
+<p>この仕様の「しなければならない（<em class="rfc2119" title="MUST">MUST</em>）」、「してはならない（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）」、「必須である／要求される（<em class="rfc2119" title="REQUIRED">REQUIRED</em>）」、「すべきである／する必要がある（<em class="rfc2119" title="SHOULD">SHOULD</em>）」、「すべきでない／する必要がない（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）」、「推奨される（<em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em>）」、「することができる／してもよい（<em class="rfc2119" title="MAY">MAY</em>）」、「選択できる／任意である（<em class="rfc2119" title="OPTIONAL">OPTIONAL</em>）」というキーワードは、[<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>]で記述されているように解釈されるべきです。</p>
+
+<p>この仕様（<em>RDF 1.1セマンティクス</em>）は、RDFセマンティクスおよびRDF推論プロセスの妥当性に関して規範的です。これは、IRIに意味を割り当てて用いる方法や、IRIの指示対象を自然言語テキストなどの他の媒体で表現されたウェブ・コンテンツに関連付ける方法に関する社会的な課題を含む、このセマンティクスでは記述または規定していないRDFの意味の多くの側面に関しては規範的ではありません。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="semantic-extensions-and-entailment-regimes">
+<!--OddPage-->
+
+<h2 id="extensions" aria-level="1" role="heading"><span class="secno">3. </span>セマンティックの拡張と含意レジーム</h2>
+
+<p>RDFは、OWL[<cite><a class="bibref" href="#bib-OWL2-OVERVIEW">OWL2-OVERVIEW</a></cite>]、RIF[<cite><a class="bibref" href="#bib-RIF-OVERVIEW">RIF-OVERVIEW</a></cite>]などの様々な拡張表記に対する基礎的な表記法として用いることを目指しており、特別に定義された意味を有する特別な語彙を用いたRDFグラフとしてその表現をエンコードできます。さらに、他の仕様や規定によって特定のIRIの語彙に意味を与えることができます。そのような追加の意味が仮定される場合、RDFグラフは、基礎的なRDFセマンティクスによって認められているよりも広い範囲の含意をサポートできます。一般的に、RDFグラフでIRIの意味に関して仮定が行われれば行われるほど、それらの仮定からより多くの含意が得られます。</p>
+
+<p>そのような特定のセマンティックの仮定を、<dfn id="dfn-semantic-extension">セマンティックの拡張</dfn>と呼びます。個々の<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、その拡張の下で有効な含意の<dfn id="dfn-entailment-regime">含意レジーム</dfn>（ここでは、SPARQL 1.1含意レジーム勧告[<cite><a class="bibref" href="#bib-SPARQL11-ENTAILMENT">SPARQL11-ENTAILMENT</a></cite>]と同じ意味で用いられている）を定義します。このドキュメントで後ほど述べるRDFSは、このような<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>の1つです。このドキュメントでは、含意レジームを、<em>RDFS含意</em>、<em>D-含意</em>などの名前で呼びます。</p>
+
+<p><a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、あるトリプルが存在することを要求したり、トリプルにおける特定のIRIの結合を禁止するなど、RDFグラフに特別な構文条件や制限を課すことができ（<em class="rfc2119" title="MAY">MAY</em>）、これらの条件に一致しないRDFグラフをエラーとみなすことができます（<em class="rfc2119" title="MAY">MAY</em>）。例えば、<br><br>
+
+ <code>ex:a rdfs:subClassOf &quot;Thing&quot;^^xsd:string .</code><br><br>
+
+という形式のRDFステートメントは、記述論理[<cite><a class="bibref" href="#bib-OWL2-SYNTAX">OWL2-SYNTAX</a></cite>]に基づくOWLの<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>では禁止されています。そのような場合には、トリプルのサブセットをとるなどの基礎的なRDFオペレーションや、RDFグラフの結合により、拡張条件を認識するパーサにおいて構文エラーが生じるかもしれません。このドキュメントでは規範的に定義している<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、そのような構文上の制限をRDFグラフに課しません。</p>
+
+<p>拡張の構文条件が満たされている場合には、AがBを単純<a href="#dfn-entail" class="internalDFN">含意</a>していれば、含意の拡張概念下ではAはBも含意するという意味で、すべての含意レジームは、このドキュメントで記述している単純含意レジームを<dfn id="dfn-monotonic">単調</dfn>に拡張したものでなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。言い換えれば、<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、結果を構文エラーとして扱うことはできますが、より弱い含意レジームによって作られた含意を「取り消す」ことはできません。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="notation-and-terminology">
+<!--OddPage-->
+
+<h2 id="notation" aria-level="1" role="heading"><span class="secno">4. </span>表記法と用語</h2>
+
+<p>このドキュメントは、すべて関連するRDF概念仕様で定義されているとおりに[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]RDFグラフ構文の記述に、<em><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-iri" class="externalDFN"><dfn id="dfn-iri">IRI</dfn></a></em>、<em><a href="http://www.w3.org/TR/rdf11-concepts/#section-triples" class="externalDFN"><dfn id="dfn-rdf-triple">RDFトリプル</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#section-rdf-graph" class="externalDFN"><dfn id="dfn-rdf-graph">RDFグラフ</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#section-triples" class="externalDFN"><dfn id="dfn-subject">主語</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#section-triples" class="externalDFN"><dfn id="dfn-predicate">述語</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#section-triples" class="externalDFN"><dfn id="dfn-object">目的語</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-source" class="externalDFN"><dfn id="dfn-rdf-source">RDF情報源</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-node" class="externalDFN"><dfn id="dfn-node">ノード</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-blank-node" class="externalDFN"><dfn id="dfn-blank-node">空白ノード</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-literal" class="externalDFN"><dfn id="dfn-literal">リテラル</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#graph-isomorphism" class="externalDFN"><dfn id="dfn-isomorphic">同形</dfn></a>、<a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset" class="externalDFN"><dfn id="dfn-rdf-dataset">RDFデータセット</dfn></a>という用語を用います。</em>このドキュメントのすべての定義は、そのまま<a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf" class="externalDFN">一般化RDFトリプル、グラフおよびデータセット</a>に当てはまります。</p>
+
+<p><dfn id="dfn-interpretation">解釈</dfn>は、IRIとリテラルから集合へのマッピングで、集合とマッピングに対するいくつかの制約が伴います。このドキュメントは、解釈の様々な概念を定義しており、そのそれぞれが標準的な方法で含意レジームに対応しています。これらは、<em>単純解釈</em>などの接頭辞で識別され、それらは後の項で定義しています。<em>解釈</em>という修飾のない用語は、一般的に、何らかの互換性を有する類の解釈を意味するために通常用いられますが、コンテキストから明確な場合には、特定の種類の解釈を意味することもあります。</p>
+
+<p><dfn id="dfn-denote">表す</dfn>および<dfn id="dfn-refers-to">参照する</dfn>という言葉は、IRIまたはリテラルと、それがある解釈において参照するもとの関係の同意語として交換できる形で用いられ、それ自身は<dfn id="dfn-denotation">指示</dfn>や<dfn id="dfn-referent">指示対象</dfn>と呼ばれます。IRIの意味は、RDFセマンティクスの外部にある他の制約によっても決定できます。そのような外部で定義された指定の関係を参照したい場合には、<dfn id="dfn-identify">識別する</dfn>という単語とその同語源語を用います。例えば、<code>http://www.w3.org/2001/XMLSchema#decimal</code>というIRIを、XMLスキーマ・ドキュメント[<cite><a class="bibref" href="#bib-XMLSCHEMA11-2">XMLSCHEMA11-2</a></cite>]のデータ型名として広く用いるという事実を、IRIがそのデータ型を<em>識別する</em>と述べることで記述するかもしれません。IRIは、それが何かを識別している場合、セマンティクスの規定方法次第で、ある解釈においてそれを参照していることも参照していないこともありえます。例えば、<a class="external" href="http://www.w3.org/TR/rdf11-concepts/#section-dataset">RDFデータセット</a>内の名前付きグラフを<a href="#dfn-identify" class="internalDFN">識別する</a>グラフ名として用いられているIRIは、それが識別するグラフとは違うものを参照することがありえます。</p>
+
+<p>このドキュメントの全体にわたり、等号（=）は、厳密な同一性を示します。「A = B」というステートメントは、「A」と「B」の両方の表現が参照する1つのエンティティーが存在することを意味します。山括弧（&lt; x, y &gt;）は、x、yの順序の対を示すために用いられます。</p>
+
+<p>このドキュメントの全体にわたり、<a href="#dfn-rdf-graph" class="internalDFN">RDFグラフ</a>とその他のRDF抽象構文のフラグメントは、Turtle構文[<cite><a class="bibref" href="#bib-TURTLE">TURTLE</a></cite>]の表記法の規定を用いて記述しています。[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]の<a href="http://www.w3.org/TR/rdf11-concepts/#vocabularies">1.4項</a>と同様に、<code>rdf:</code>、<code>rdfs:</code>、<code>xsd:</code>という名前空間接頭辞を用いています。正確なIRIが重要でない場合には、<code>ex:</code>という接頭辞を用います。一般的な規則や条件について述べる時には、aaa、xxx、sssなどの3文字の変数を用いて任意のIRI、リテラルまたはRDF構文のその他の構成要素を表します。グラフ構造を直接表したノード―アークの図によって表す場合もあります。</p>
+
+<p><dfn id="dfn-name">名前</dfn>は、IRIまたはリテラルです。型付きリテラルには、自身とその内部の型のIRIの2つの<a href="#dfn-name" class="internalDFN">名前</a>が含まれます。<dfn id="dfn-vocabulary">語彙</dfn>は、<a href="#dfn-name" class="internalDFN">名前</a>の集合です。</p>
+
+<p><dfn id="dfn-empty-graph">空のグラフ</dfn>は、トリプルの空集合です。</p>
+
+<p>RDFグラフの<dfn id="dfn-subgraph">サブグラフ</dfn>は、グラフ内のトリプルのサブセットです。トリプルは、それを含んでいるシングルトンの集合とみなされるため、グラフ内の個々のトリプルはサブグラフであるとみなされます。<dfn id="dfn-proper-subgraph">真部分グラフ</dfn>は、グラフ内のトリプルの真部分集合です。</p>
+
+<p><dfn id="dfn-ground">基底</dfn>RDFグラフは、空白ノードが含まれていないグラフです。</p>
+
+<p>Mが空白ノードの集合から、リテラル、空白ノードおよびIRIのある集合への機能的なマッピングであると仮定してください。グラフG内の空白ノードNの一部またはすべてをM(N)に置き換えることによりグラフGから得られるグラフはGの<dfn id="dfn-instance">インスタンス</dfn>です。あらゆるグラフは自身のインスタンスであり、GのインスタンスのインスタンスはGのインスタンスであり、HがGのインスタンスであれば、H内のすべてのトリプルは、Gの少なくとも1つのトリプルのインスタンスです。</p>
+
+<p>語彙V<dfn id="dfn-instance-with-respect-to">に関するインスタンス</dfn>とは、元の空白ノードの代わりに用いられたインスタンスのすべての<a href="#dfn-name" class="internalDFN">名前</a>がVからの<a href="#dfn-name" class="internalDFN">名前</a>である<a href="#dfn-instance" class="internalDFN">インスタンス</a>です。</p>
+
+<p>グラフの<dfn id="dfn-proper-instance">真のインスタンス</dfn>とは、空白ノードが<a href="#dfn-name" class="internalDFN">名前</a>で置き換えられた、あるいは、グラフの2つの空白ノードがインスタンスの同じノードにマッピングされた<a href="#dfn-instance" class="internalDFN">インスタンス</a>です。</p>
+
+<p>2つのグラフは、それぞれが空白ノードにおいて1:1のマッピングでもう一方にマッピングされていれば、<a href="http://www.w3.org/TR/rdf11-concepts/#graph-isomorphism" class="externalDFN">同型</a>です。同型のグラフは、可逆のインスタンス・マッピングを有する相互に同等なインスタンスです。空白ノードはグラフ内のその位置以外では特定のアイデンティティーを持たないため、しばしば同型のグラフは同一のものとして扱われます。</p>
+
+<p>RDFグラフが、自身の真部分グラフであるインスタンスを持っていなければ、それは<dfn id="dfn-lean">簡潔</dfn>（lean）です。簡潔でないグラフには内部余剰があり、簡潔なサブグラフと同じ内容を表します。例えば、次のグラフ</p>
+
+<p><code>ex:a ex:p _:x .<br>
+  _:y ex:p _:x .</code></p>
+
+<p>は、簡潔ではありませんが、</p>
+
+<p><code>ex:a ex:p _:x .<br>
+  _:x ex:p _:x .</code></p>
+
+<p>は簡潔です。<a href="#dfn-ground" class="internalDFN">基底</a>グラフは簡潔です。</p>
+
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="shared-blank-nodes-unions-and-merges">
+
+<h3 id="unions_merges" aria-level="2" role="heading"><span class="secno">4.1 </span>共通の空白ノード、和集合と併合</h3>
+
+<p>グラフは、異なるRDFグラフ間の空白ノードの共有を明示したドキュメントやその他の構造（RDFデータセットなど）で記述されているグラフからそのグラフが得られる場合にのみ、空白ノードを共有します。ウェブ・ドキュメントをダウンロードするだけでは、その結果得られるRDFグラフの空白ノードが、同じドキュメントを別途ダウンロードしたり、同じ<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-rdf-source" class="externalDFN">RDF情報源</a>から得られた空白ノードと同じであることにはなりません。</p>
+
+<p>空白ノード識別子を用いたRDF具象構文を扱うRDFアプリケーションは、それが識別する空白ノードのアイデンティティーの状況を注意して把握すべきです。空白ノード識別子は、ローカルな範囲を持っていることが多いため、異なる情報源のRDFを組み合わせる時に、別々の空白ノードが誤ってまとめられてしまうことを避けるために識別子を変更しなければならないかもしれません。</p>
+
+<p>例えば、1つの空白ノードを識別するために、2つのドキュメントが両方とも「<code>_:x</code>」という空白ノード識別子を用いることがありますが、これらのドキュメントが、共通の識別子の範囲になかったり、共通の情報源に由来するものでない場合には、1つのドキュメント内の「<code>_:x</code>」の存在は、もう一方のドキュメントで記述されているグラフのものとは異なる空白ノードを識別するでしょう。複数の情報源のRDFを組み合わせてグラフが作られている場合、別のドキュメントにはない他の識別子に置き換えて、空白ノード識別子を別々に<dfn id="dfn-standardize">標準化する</dfn>必要があるかもしれません。例えば、次の文で表される2つのグラフ</p>
+
+<p><code>ex:a ex:p _:x . </code><br><br>
+
+<img alt="Graph 1" src="RDF11SemanticsDiagrams/example1.jpg"></p>
+
+<p><code>ex:b ex:q _:x . </code><br><br>
+
+<img alt="Graph 2" src="RDF11SemanticsDiagrams/example2.jpg"></p>
+
+<p>には、4つのノードが含まれています。したがって、これらの和集合には、さらに4つのノードが含まれます。</p>
+
+<p><img alt="Union Graph" src="RDF11SemanticsDiagrams/example4.jpg"></p>
+
+<p>しかし、これらの文の表面的な表現を単純に連結して作成された次のドキュメント</p>
+
+<p><code>ex:a ex:p _:x .<br>
+ex:b ex:q _:x .</code><br></p>
+
+<p>は、次の3つのノードが含まれるグラフを表します。</p>
+
+<p><img alt="Incorrect Union Graph" src="RDF11SemanticsDiagrams/example3.jpg"></p>
+
+<p>これは、共通する識別子の範囲にある「<code>_:x</code>」という2つの空白ノード識別子が同じ空白ノードを識別するためです。これらの2つのグラフの4つのノードの和集合は、下記のような表層形式でより適切に記述できます。</p>
+
+<p><code>ex:a ex:p _:x1 .<br>
+ex:b ex:q _:x2 .</code></p>
+
+<p>ここでは、別々の空白ノードがまとめられることを避けるために、空白ノード識別子を別々に<a href="#dfn-standardize" class="internalDFN">標準化</a>しています。（使用している特定の空白ノード識別子は重要ではなく、別個なだけです。）</p>
+
+<p>2つ以上のグラフは、例えば、それらが1つのより大きなグラフのサブグラフであったり、共通の情報源に由来していれば、1つの空白ノードを共有できます。そのとき、1組のグラフの和集合は、グラフ間で共有されていた空白ノードのアイデンティティーを保持しています。一般的に、それらが空白ノードを共有していてもいなくても、1組のRDFグラフの和集合は、グラフ自身と同じセマンティックの内容を正確に表します。</p>
+
+<p><dfn id="dfn-merging">併合</dfn>（merging）と呼ばれる関連するオペレーションは、共通の空白ノード（それらは2つ以上のグラフに出現する）が個々のグラフにおいて別のものであることを強制した後に和集合を作成します。その結果作成されるグラフを<dfn id="dfn-merge">併合</dfn>（merge）と呼びます。グラフのサブグラフの併合は、元のグラフより大きくなりえます。例えば、次のような、3つのノードのグラフの2つのシングルトンのサブグラフ</p>
+
+<p><img alt="Three-node Graph" src="RDF11SemanticsDiagrams/example3.jpg"></p>
+
+<p>を併合した結果は、4つのノードのグラフになります。</p>
+
+<p><img alt="Four-node Graph" src="RDF11SemanticsDiagrams/example4.jpg"></p>
+
+<p>和集合は常に併合のインスタンスです。共通する空白ノードがグラフになければ、その併合と和集合は同一です。</p>
+
+</section>
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="simple-interpretations">
+<!--OddPage-->
+
+<h2 id="simple" aria-level="1" role="heading"><span class="secno">5. </span>単純解釈</h2>
+
+<p>この項では、RDFグラフの単純解釈と真偽に関する基礎概念を定義します。RDFでエンコードされる語彙や高レベルの表記法のすべての<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、この最小限の真偽条件に従わなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。他の<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>では、これを拡張したり追加したりできますが、修正したり無効にしてはなりません（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）。例えば、単純解釈はIRIに適用されるマッピングであるため、<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、1つのIRIの異なる存在を異なるものとして解釈することはできません。</p>
+
+<p>すべてのセマンティクスは<a href="#dfn-rdf-source" class="internalDFN">RDF情報源</a>ではなく<a href="#dfn-rdf-graph" class="internalDFN">RDFグラフ</a>に適用されます。<a href="#dfn-rdf-source" class="internalDFN">RDF情報源</a>は、ある時間や状況においてその値であるグラフによってのみセマンティックな意味を持っています。グラフは、時間によってそのセマンティクスを変えることはできません。</p>
+
+<p><dfn id="dfn-simple-interpretation">単純解釈</dfn>Iは、次のもので構成される構造です。</p>
+
+<table>
+<caption>単純解釈の定義</caption>
+  <tbody>
+  <tr>
+    <td class="semantictable">1. Iの定義域（domain）や論議領域（universe）と呼ばれる、資源の空でない集合IR
+<p>2. <span>Iのプロパティーの集合と呼ばれる、集合IP</span></p>
+<p>3. IPからIR x IRのべき集合（つまり、IRにおけるxとyとの対&lt; x, y &gt;の集合の集合）へのマッピングIEXT</p>
+<p>4. IRIから(IR union IP)へのマッピングIS</p>
+<p>5. リテラルからIRへの部分的なマッピングIL</p></td>
+  </tr>
+  </tbody>
+</table>
+
+<p class="changenote">2004年のRDF 1.0セマンティクスでは、語彙に対する単純解釈を定義しました。<br><br>
+2004年のRDF 1.0セマンティクスでは、ILは、部分的ではなく全体的なマッピングでした。<br><br>
+2004年のRDF 1.0仕様では、リテラルを、型やオプションの言語タグのない「プレーンな」リテラルと型付きリテラルとに分けていました。利用してみると、すべてのリテラルに型があることが重要であると判明しました。RDF 1.1では、言語タグのないプレーン・リテラルを、XMLスキーマの<code>string</code>データ型を付与したリテラルに置き換え、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"><code>rdf:langString</code></a>という特別な型を言語タグ付き文字列に導入しました。型付きリテラルに対する完全なセマンティクスについては、次の項で示しています。</p>
+
+<p class="technote">単純解釈では、すべての<a href="#dfn-name" class="internalDFN">名前</a>を解釈する必要があり、したがって、無限です。これにより、表示が単純化されます。しかし、RDFは有限の構造を用いて解釈でき、決定可能なアルゴリズムをサポートします。詳細については付録Bで示します。</p>
+
+<p>IEXT(x)は、xの<dfn id="dfn-extension">外延</dfn>（extension）と呼ばれ、プロパティーが真である引数を識別する1組の対、すなわち2項関係の外延です。</p>
+
+<p>下記のように、データ型のセマンティクスが定義されている時にはIRとILの違いが重要になるでしょう。一部のリテラルは指示対象を持たないことができるため、ILは、部分的であることが認められています。</p>
+
+<p class="technote">関係名を関係の外延に直接マッピングする規定になっています。しかし、これは、語彙が関係名と個体名に分離されていることを前提しており、RDFはそのような仮定をおこないません。さらに、RDFでは、IRIを自身に引数として適用した関係名として用いることが認められています。例えば、そのような自己適用構造は、RDFSで用いられます。目的語としての関係と、その関係の外延とを区別するためにIEXTマッピングを用いると、これらの両方の要件に適合します。さらに、それによって、その集合論の拡張を区別できるRDFS「クラス」の概念も提供されます。同様の技術がISO/IECの共通ロジック標準[<cite><a class="bibref" href="#bib-ISO24707">ISO24707</a></cite>]で用いられています。</p>
+
+<p>そして、単純解釈Iでの基底RDFグラフの指示は、次の規則に基づいて与えられ、そのとき、その解釈は表現（名前、トリプル、グラフ)から論議領域の要素と真偽値への関数としても扱われます。</p>
+
+<table>
+  <caption>基底グラフのセマンティック条件</caption>
+  <tbody>
+  <tr>
+    <td class="semantictable">Eがリテラルであれば、I(E) = IL(E)である</td>
+  </tr>
+  <tr>
+    <td class="semantictable">EがIRIであれば、I(E) = IS(E)である</td>
+  </tr>
+  <tr>
+    <td class="semantictable"><p>Eが基底トリプルs p o<code>.</code>であり、</p>
+<p>I(p)がIPにあり、対&lt;I(s),I(o)&gt;がIEXT(I(p))にあれば、I(E) = 真であり、</p>
+<p>さもなければI(E) = 偽である</p></td>
+  </tr>
+  <tr>
+    <td class="semantictable">Eが基底RDFグラフであり、EのあるトリプルE'に対してI(E') = 偽であれば、I(E) = 偽であり、さもなければI(E) = 真である</td>
+  </tr>
+  </tbody>
+</table>
+
+<p>IL(E)が、あるリテラルEに対して定義されていなければ、Eはセマンティックな値を持っていないため、それを含んでいるトリプルは偽（false）となり、したがって、そのトリプルを含んでいる任意のグラフも偽になります。</p>
+
+<p>最後の条件は、空のグラフ（トリプルの空の集合）が常に真であることを示します。</p>
+
+<p>集合IPとIRは重複可能で、実際にIPはIRのサブセットになりえます。IEXTの定義域の条件のため、真のトリプルの主語と目的語の表示はIRに含まれるでしょう。そのため、グラフに述語としても、主語または目的語としても出現するIRIは、IPとIRの積集合内の何かを示すでしょう。</p>
+
+<p><a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>は、一部のIRIが特定の方法で参照することを要求することにより、解釈マッピングに追加の制約を課するかもしれません。例えば、下記で述べているD-解釈は、一部のIRI（データ型を<a href="#dfn-identify" class="internalDFN">識別</a>し参照すると理解されている）が、固定の指示を持つことを必須としています。</p>
+
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="blank-nodes">
+
+<h3 id="blank_nodes" aria-level="2" role="heading"><span class="secno">5.1 </span>空白ノード</h3>
+
+<p>空白ノードは、特定の事物を<a href="#dfn-identify" class="internalDFN">識別する</a>ためにIRIを用いず、事物の存在をシンプルに示すものとして扱われます。これは、空白ノードが「未知の」IRIを示すと想定することと同じではありません。</p>
+
+<p>Iが単純解釈であり、Aが空白ノードの集合からIの領域IRへのマッピングであると仮定します。マッピング[I+A]を、<a href="#dfn-name" class="internalDFN">名前</a>ではI、その集合の空白ノードではAと定義します。xが<a href="#dfn-name" class="internalDFN">名前</a>である場合には[I+A](x)=I(x)で、xが空白ノードである場合には[I+A](x)=A(x)であり、このマッピングを、基底グラフに対し上記で示した規則を用いて、トリプルとRDFのグラフに拡張してください。そうすると、RDFグラフのセマンティック条件は次のとおりです。</p>
+
+<table>
+<caption>空白ノードのセマンティック条件</caption>
+<tbody>
+  <tr>
+    <td class="semantictable">EがRDFグラフであり、Eの空白ノードの集合からIRへのあるマッピングAに対して[I+A](E) = 真であれば、I(E) = 真であり、さもなければ、I(E)=偽である</td>
+  </tr>
+</tbody>
+</table>
+
+<p>真偽条件は、<em>何らかの</em>そのようなマッピングのみしか参照しないため、空白ノードから指示対象へのマッピングは単純解釈の定義の一部ではありません。空白ノードは、単純解釈による指示を割り当てられないという点で他のノードとは異なっており、それは、それ自身が「グローバルな」意味を持っていないということを直観的に表します。</p>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="shared-blank-nodes-informative">
+
+<h4 id="shared_blank_nodes" aria-level="3" role="heading"><span class="secno">5.1.1 </span>共通の空白ノード（参考情報）</h4>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>空白ノードのセマンティクスは、グラフの真偽に関して述べられます。しかし、2つの（または、それ以上の）グラフが空白ノードを共有している場合、それらを分離して扱うと、それらの意味を完全に捉えることはできません。例えば、次の重なる部分のあるグラフ</p>
+
+<p><img alt="Overlapping Graphs" src="RDF11SemanticsDiagrams/example5.jpg"></p>
+
+<p>と、I(<code>ex:Alice</code>)=Alice, I(<code>ex:Bob</code>)=Bob, IEXT(I(<code>ex:hasChild</code>))={&lt;Alice,Monica&gt;,&lt;Bob,Ruth&gt; }である、<br>
+論議領域{Alice, Bob, Monica, Ruth}の単純解釈I<br>
+について考えてみます。</p>
+
+<p>個々の内部グラフは、この解釈においては真ですが、3つのノードのグラフがAliceとBobには同じ子供がいると述べているため、これらの2つを合わせると真ではありません。空白ノードを共有しているグラフの完全な意味を捉えるためには、空白ノードが含まれているトリプルをすべて含んだ和集合のグラフを検討する必要があります。</p>
+
+<p class="technote">RDFグラフは、一階論理のシンプルな原子文の論理積と見なすことができ、そのとき、空白ノードは特称（existential）であると理解される自由変数です。そのため、2つのグラフの和集合は、この構文における構文上の論理積と類似しています。RDF構文には、明示的な変数バインディング限量子がありません。したがって、RDFグラフの真偽条件は、そのグラフの自由変数を、そのグラフで特称量化されているものとして扱います。空白ノードを共有するグラフの和集合を作成すると、限量子の暗黙的な範囲が変わります。</p>
+
+</section>
+</section>
+
+<!-- commented out, to be removed later
+<section class="informative">
+<h3 id="intuitions" class="informative">Intuitive summary (Informative)</h3>
+
+<p>An RDF graph is true exactly when:</p>
+<p>1. the IRIs and literals in subject or object position in the graph all refer to things,</p><p>2. there is some way to interpret all the blank nodes in the graph as referring to things,</p><p>3. the IRIs in property position refer to binary relationships,</p><p>4. and under these interpretations, each triple S P O in the graph asserts that the thing referred to as S, and the thing referred to as O, do in fact stand in the relationship referred to by P. </p>
+
+</section>
+-->
+
+<section id="simpleentailment" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_simpleentailment"><span class="secno">5.2 </span>単純含意</h3>
+
+<p>標準的な用語に従い、I(E)=真である場合、IはEを（単純に）<dfn id="dfn-satisfies">満足する</dfn>と述べ、それを満足する単純解釈が存在する場合、Eは（単純に）<dfn id="dfn-satisfiable">満足でき</dfn>、そうでなければ（単純に）<dfn id="dfn-unsatisfiable">満足できない</dfn>と述べ、Gを満足するすべての解釈がEをも満足する場合、グラフGはグラフEを単純<dfn id="dfn-entail">含意する</dfn>と述べることができます。2つのグラフEとFが、それぞれにもう一方を含意する場合、それらは論理的に<dfn id="dfn-equivalent">同等</dfn>です。</p>
+
+<p>後の項で、これらの概念を他のクラスの解釈に適用しますが、この項では、全体的に「含意」は単純含意を意味すると解釈すべきです。</p>
+
+<p class="technote">このドキュメントでは、グラフの集合間の含意の概念は定義していません。グラフの集合がグラフを含意するかどうかを判断するためには、そのグラフの和集合または併合をとることにより、最初にその集合のグラフを1つのグラフに結合させなければなりません。併合は空白ノードの共有を事実上無視しますが、和集合は、共有されている空白ノードの共通する意味を保持します。グラフの集合を併合すると、2004年のRDF 1.0仕様で定義されていた集合に基づく含意と同じ定義が生成されます。</p>
+
+<p>他のあるグラフSからグラフEを構築するプロセスは、どのような場合でもSがEを単純含意する場合には（単純に）<dfn id="dfn-valid">有効</dfn>で、そうでない場合には<dfn id="dfn-invalid.x">無効</dfn>です。</p>
+
+<p>推論が有効であるという事実は、RDFアプリケーションが推論を行うことを義務付けられたり要求されることを意味すると理解すべきではありません。同様に、あるRDFの変換や処理の論理的な無効性は、プロセスが不正であることや禁止されていることを意味しません。この仕様では、RDFグラフや情報源に特定のオペレーションを要求したり禁止したりすることはありません。含意と有効性は、真偽の保持を保証するようなオペレーションの条件の確立にもっぱら関係があります。論理的に無効なプロセス（有効な含意に従っていない）は禁止されていませんが、真であるRDFデータに偽りを導入してしまう危険性がありえることを知っているべきです。しかし、論理的に無効なプロセスの特定の使用は正当化され、他の手段によって真偽が保証される状況下のデータ処理に適しているもしれません。</p>
+
+<p>含意は、RDFグラフの真偽のみを示すものであり、その他の目的の適応性を示すものではありません。RDFグラフは、定められた目的に適合していながらも、同じ目的に適していない別のグラフを有効的に含意することができます。ひとつの例は、ユーザの利便性のためにRDFドキュメントとして提供されているRDFテスト・ケース・マニフェスト[<cite><a class="bibref" href="#bib-RDF-TESTCASES">RDF-TESTCASES</a></cite>]です。このドキュメントは、前提と結論を記述することにより、正しい含意の例を掲載しています。マニフェストは、RDFグラフであると見なされ、前提を省略したサブグラフを単純含意するため、テスト・ケース・マニフェストとして用いるのは正しくないでしょう。これはRDFのセマンティックな規則に違反するものではなく、<em>「正しいRDFテスト・ケース・マニフェストである」</em>プロパティーがRDF含意下では保持されず、したがって、RDFの<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>として記述できないことを示します。このような、含意にリスクを伴うRDFの使用は、ウェブでのオープンなデータの公開にRDFを用いるという、より一般的なケースとは異なり、ここで示しているような、含意に対して意図されている特別な制限がどんなものであるかがすべての関係者に明らかであるようなケースに制限されるべきです。</p>
+
+</section>
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="properties-of-simple-entailment-informative">
+
+<h3 id="simple_entailment_properties" aria-level="2" role="heading"><span class="secno">5.3 </span>単純含意の特性（参考情報）</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>ここで記述している特性は、後の項で紹介している含意の拡張概念ではなく、単純含意のみに当てはまります。証明は付録Cで示しています。</p>
+
+<p class="fact">すべてのグラフは、単純満足できる。</p>
+
+<p>これは、必ずしも解釈の拡張概念に当てはまるとは限りません。例えば、<a href="#dfn-ill-typed" class="internalDFN">不正な型の</a>リテラルを含んでいるグラフは<a href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足</a>です。</p>
+
+<p>次の<dfn id="dfn-interpolation">補間</dfn><strong>定理</strong></p>
+
+<p class="fact">Gは、GのサブグラフがEのインスタンスである場合に限り、グラフEを単純含意する。</p>
+
+<p>は、構文的な観点の単純含意の特徴を完全に示しています。1つのRDFグラフが別のグラフを単純含意するかどうかを検知するためには、元のグラフのサブセットである含意されたグラフのインスタンスの存在をチェックしてください。</p>
+
+<p class="technote">これは明らかに決定可能ですが、RDFグラフ間の単純含意を検知している時に、NP困難な（NP-hard）サブグラフ問題をエンコード化できるため（1つの数学的なグラフが別のグラフのサブグラフかどうかを検知する）、決定するのは一般に難しくもあります。この構成（Jeremy Carrollによる）は、ノードがすべて空白ノードであるグラフを用います。単純含意のチェックの複雑さは、結論E内の空白ノードを少なくすることで軽減できます。Eが<a href="#dfn-ground" class="internalDFN">基底</a>グラフである場合には、それは単にトリプルの集合のサブセット関係のチェックの問題にすぎません。</p>
+
+<p>例えば、<a href="#dfn-interpolation" class="internalDFN">補間</a>（Interpolation）には、次のような多くの直接的な結果があります。</p>
+
+<p class="fact"><a href="#dfn-empty-graph" class="internalDFN">空のグラフ</a>は、任意のグラフによって単純含意され、それ自身以外のグラフを単純含意しない。<!-- <a href="#emptygraphlemmaprf" class="termref">[Proof]</a> --></p>
+
+<p class="fact">グラフは、そのサブグラフをすべて単純含意する。<!-- <a href="#subglemprf" class="termref">[Proof]</a> --></p>
+
+<p class="fact">グラフは、そのどの<a href="#dfn-instance" class="internalDFN">インスタンス</a>によっても単純含意される。<!-- <a href="#instlemprf" class="termref"> [Proof]</a> --></p>
+
+<p class="fact">Eが簡潔なグラフであり、E'がEの<a href="#dfn-proper-instance" class="internalDFN">真のインスタンス</a>である場合、EはE'を単純含意しない。</p>
+
+<p class="fact">SがS'のサブグラフで、SがEを単純含意する場合、S'はEを単純含意する。<!-- <a href="#monotonicitylemmaprf" class="termref"> [Proof]</a> --></p>
+
+<p class="fact">Sが有限グラフEを含意する場合、Sのある有限サブセットS'はEを含意する。<!-- <a href="#compactlemmaprf" class="termref"> [Proof]</a> --></p>
+
+<p>真上の特性は、<em>コンパクト性</em>（compactness）と呼ばれ、RDFはコンパクトです。RDFグラフが無限でありえるため、これは重要である場合があります。</p>
+
+<p class="fact">Sのどこにも出現しないIRIがEに含まれている場合、SはEを単純含意しない。</p>
+
+</section>
+</section>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="skolemization-informative">
+<!--OddPage-->
+
+<h2 id="skolemization" aria-level="1" role="heading"><span class="secno">6. </span>スコーレム化（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p><a class="externaldefinition internalDFN" href="#dfn-skolemization"><dfn id="dfn-skolemization">スコーレム化</dfn></a>は、空白ノードを「新しい」IRIに置き換えることにより空白ノードを取り除くRDFグラフ上の変換で、これは、IRIがこの目的のために作成され、したがって、（作成時に）他のRDFグラフに出現しないことが保証されることを意味します。より完全な議論については、[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]の<a href="http://www.w3.org/TR/rdf11-concepts/#section-skolemization">3.5項</a>を参照してください。</p>
+
+<p>Gが空白ノードを含んでいるグラフで、skが、Gの空白ノードから、その代わりに用いられるスコーレムIRIへのスコーレム化マッピングであり、その結果、sk(G)がGのスコーレム化であると仮定します。すると、それらの意味関係は次のように要約できます。</p>
+
+<p class="fact">sk(G)は、Gを単純含意する（sk(G)がGのインスタンスであるため）。</p>
+
+<p class="fact">Gはsk(G)を単純含意しない（sk(G)がGにないIRIを含んでいるため）。</p>
+
+<p class="fact">任意のグラフHに関し、sk(G)がHを単純含意する場合、GがH'とH=sk(H')を含意するようなグラフH'が存在する。</p>
+
+<p class="fact">sk(G)に導入された「新しい」IRIをまったく含んでいないグラフHに関し、GがHを単純含意する場合に限り、sk(G)はHを単純含意する。</p>
+
+<p>2番目の特性は、グラフがそのスコーレム化とは論理的に<a href="#dfn-equivalent" class="internalDFN">同等</a>ではないことを意味します。しかし、その次の2つの特性に見られるように、これらは強い意味でほとんど交換可能です。3番目の特性は、新しい語彙が含まれているスコーレム化されたグラフから結論が得られる場合でさえ、これらは、元の空白ノードを用いた元のグラフから得られた可能性のある結論とまったく同じものとなることを意味します。空白ノードをIRIで置き換えても、以前は匿名だったエンティティーに新しい名前を付与しない限り、そのグラフから有効的に得られる内容は事実上変わりません。3番目の特性の結果である4番目の特性は、含意に関する限り、ある意味でGのスコーレム化がGの「代わりを務める」ことができることを明確に示しています。Gの代わりにsk(G)を用いても、新しいスコーレム語彙が含まれていない含意には影響しないでしょう。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="literals-and-datatypes">
+<!--OddPage-->
+
+<h2 id="datatypes" aria-level="1" role="heading"><span class="secno">7. </span>リテラルとデータ型</h2>
+
+<p class="changenote">2004年のRDF 1.0仕様では、データ型D-含意は、RDFS-含意の<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>と定義されていました。ここではそれを、基礎的なRDFに対する直接的な拡張と定義しています。これは実際の利用とより一致しており、データ型を有するRDFは、RDFS語彙なしに広く用いられています。2004年のRDF 1.0の用語とこれを区別する必要がある場合、「D含意」ではなく、「単純D-含意」や「単純データ型含意」というより長い表現を用いるべきです。</p>
+
+<p>データ型はIRIで<a title="identify" href="#dfn-identify" class="internalDFN">識別されます</a>。解釈は、どのIRIがデータ型を示していると認識されるかによって変わるでしょう。これは単純解釈でパラメータDを用いて記述され、そのとき、Dは<dfn id="dfn-recognize">認識された</dfn>データ型IRIの集合です。</p>
+
+<p class="changenote">この仕様の前バージョンでは、パラメータDを、IRIからデータ型への<a href="#dfn-datatype-map" class="internalDFN">データ型マップ</a>として、つまり、制限のある解釈マッピングの一種として定義していました。現在のセマンティクスは、認識されたIRIは一意のデータ型を識別すると仮定するため、IRIからデータ型へのこのマッピングは、グローバルに一意で、外部で指定されます。したがって、Dを、IRIの集合か固定の<a href="#dfn-datatype-map" class="internalDFN">データ型マップ</a>のどちらかと見なすことができます。形式的には、集合Dに対応する<dfn id="dfn-datatype-map">データ型マップ</dfn>は、集合Dに対する<a href="#dfn-d-interpretation" class="internalDFN">D解釈</a>の制限です。<a href="#dfn-datatype-map" class="internalDFN">データ型マップ</a>の条件に関して述べられているセマンティックの拡張は、このマッピングに当てはまると解釈できます。</p>
+
+<p>IRIがデータ型を<a title="identify" href="#dfn-identify" class="internalDFN">識別する</a>正確なメカニズムは、セマンティクスの外部にあると考えられますが、セマンティクスは、認識されたIRIはそれがどこで出現しようとも一意のデータ型を<a title="identify" href="#dfn-identify" class="internalDFN">識別する</a>と考えます。どのデータ型がIRIで識別されているかを決定できないRDFプロセッサはそのIRIを<a href="#dfn-recognize" class="internalDFN">認識</a>できず、そのIRIをそれらのデータ型IRIとして持つリテラルを未知の名前として扱うべきです。</p>
+
+<p>RDFリテラルとデータ型については、[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]の<a href="http://www.w3.org/TR/rdf11-concepts/#section-Datatypes">5項</a>で完全に記述しています。それを要約すると、1つの例外を除いて、RDFリテラルは文字列とデータ型を<a href="#dfn-identify" class="internalDFN">識別する</a>IRIとを組み合わせます。その例外とは、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string">言語タグ付き文字列</a>で、これには文字列と言語タグという2つの構文要素があり、<code>rdf:langString</code>という型が割り当てられています。データ型は、<dfn id="dfn-lexical-to-value-mapping">字句から値へのマッピング</dfn>と呼ばれる、字句空間（文字列の集合）から値への部分的なマッピングを定義すると理解されます。関数<dfn id="dfn-l2v">L2V</dfn>は、データ型をその字句から値へのマッピングにマッピングします。データ型dを持つリテラルは、このマッピングを文字列sssに適用することにより得られた値を表します: L2V(d)(sss)。リテラルの文字列が字句空間にない場合には、字句から値へのマッピングはリテラルの文字列に値を提供せず、そのリテラルには指示対象がありません。データ型の<dfn id="dfn-value-space">値空間</dfn>は、<a href="#dfn-lexical-to-value-mapping" class="internalDFN">字句から値へのマッピング</a>の範囲です。その型を有するすべてのリテラルは、型の値空間にある値を参照するか、まったく参照できないかのどちらかです。<dfn id="dfn-ill-typed">不正な型の</dfn>リテラルとは、そのデータ型IRIは<a href="#dfn-recognize" class="internalDFN">認識され</a>ているけれども、そのデータ型に対する<a href="#dfn-lexical-to-value-mapping" class="internalDFN">字句から値へのマッピング</a>により、その文字列に値が割り当てられないものです。</p>
+
+<p>RDFプロセッサは、<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"><code>rdf:langString</code></a>と<a href="http://www.w3.org/TR/xmlschema11-2/#string"><code>xsd:string</code></a>以外のデータ型IRIを<a href="#dfn-recognize" class="internalDFN">認識する</a>ことを求められませんが、[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]の<a href="http://www.w3.org/TR/rdf11-concepts/#section-Datatypes">5項</a>に掲載されているIRIが<a href="#dfn-recognize" class="internalDFN">認識された</a>ものであれば、それらは、そこで記述されているとおりに解釈されなければならず（<em class="rfc2119" title="MUST">MUST</em>）、<code>rdf:PlainLiteral</code>というIRIが<a href="#dfn-recognize" class="internalDFN">認識された</a>ものであれば、[<cite><a class="bibref" href="#bib-RDF-PLAIN-LITERAL">RDF-PLAIN-LITERAL</a></cite>]で定義されているデータ型を参照すると解釈されなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。RDFプロセッサは、他のデータ型IRIを認識できます（<em class="rfc2119" title="MAY">MAY</em>）が、他のデータ型IRIが<a href="#dfn-recognize" class="internalDFN">認識された</a>ものであれば、それが参照するデータ型IRIとデータ型の間のマッピングは、明確に指定されなければならず（<em class="rfc2119" title="MUST">MUST</em>）、すべてのRDFの変換や操作の間に固定されなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。実際には、これはデータ型自身のコンポーネントと、IRIがデータ型を識別するという事実の両方を記述したデータ型の外部仕様にIRIをリンクすることにより達成でき、それによって、このIRIの<a href="#dfn-datatype-map" class="internalDFN">データ型マップ</a>の値が固定されます。</p>
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"><code>rdf:langString</code></a>をデータ型として持つリテラルは、特別な対応がとられる例外的なケースです。<code>rdf:langString</code>というIRIは、データ型IRIと分類され、それに対してL2Vマッピングが定義されなくても、データ型を参照すると解釈されます。<code>rdf:langString</code>の値空間は、言語タグを持つすべての対の文字列の集合です。これを型として持つリテラルのセマンティクスを下記で示しています。</p>
+
+<p>RDFリテラルの構文では、データ型の参照として<a href="#dfn-recognize" class="internalDFN">認識されて</a>いない場合でも、型付きリテラルに任意のIRIを用いることが許されています。そのような「未知の」データ型IRIを持つリテラルは、<a href="#dfn-recognize" class="internalDFN">認識された</a>データ型の集合には含まれておらず、RDFアプリケーションは警告を出すことができます（<em class="rfc2119" title="MAY">MAY</em>）が、エラーとして扱うべきではありません（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）。そのようなリテラルは、IRIのように扱い、領域IR内の事物を表すと考えるべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）。データ型IRIを<a href="#dfn-recognize" class="internalDFN">認識</a>しないRDFプロセッサは、それを認識するプロセッサには見える一部の含意を検知できないでしょう。例えば、</p>
+
+<p><code>ex:a ex:p &quot;20.0000&quot;^^xsd:decimal .</code></p>
+
+<p>が</p>
+
+<p><code>ex:a ex:p &quot;20.0&quot;^^xsd:decimal .</code></p>
+
+<p>を含意するという事実は、<code>xsd:decimal</code>というデータ型IRIを認識しないプロセッサには見えないでしょう。</p>
+
+<section id="D_interpretations" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_D_interpretations"><span class="secno">7.1 </span>D-解釈</h3>
+
+<p>Dを、データ型を<a href="#dfn-identify" class="internalDFN">識別する</a>IRIの集合とします。<strong>（単純）</strong><dfn id="dfn-d-interpretation">D-解釈</dfn>は、次の条件を満足する<a href="#dfn-simple-interpretation" class="internalDFN">単純解釈</a>です。</p>
+
+<table>
+<caption>テータ型付きリテラルのセマンティック条件</caption>
+<tbody>
+  <tr>
+    <td class="semantictable"><code>rdf:langString</code>がDにあれば、字句形式sssと言語タグtttを持つすべての言語タグ付き文字列Eに対しIL(E)= &lt; sss&gt;であり、そのとき、ttt'はUS-ASCIIの規則を用いて小文字に変換されたtttである。</td>
+  </tr>
+  <tr>
+    <td class="semantictable">Dの他のすべてのaaaというIRIに対し、I(aaa)は、aaaで識別されるデータ型で、すべての&quot;sss&quot;^^aaaというリテラルに対し、IL(&quot;sss&quot;^^aaa) = L2V(I(aaa))(sss)である。</td>
+  </tr>
+</tbody>
+</table>
+
+<p>リテラルが<a href="#dfn-ill-typed" class="internalDFN">不正な型</a>であれば、L2V(I(aaa))マッピングには値がありません。その結果、リテラルは何も表すことができません。この場合、そのリテラルを含んでいるトリプルは偽でなければなりません。したがって、<a href="#dfn-ill-typed" class="internalDFN">不正な型</a>のリテラルを含んでいるトリプル（したがって、グラフ）は、<a href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足</a>、つまり、すべてのD-解釈において偽でしょう。これは、Dにおいて認識されたデータ型IRIで型付けされたリテラルにのみ当てはまり、認識されていない型のIRIを持つリテラルは<a href="#dfn-ill-typed" class="internalDFN">不正な型</a>ではなく、<a href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足な</a>グラフを生成することはできません。</p>
+
+<p>特別なデータ型<a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"><code>rdf:langString</code></a>には<a href="#dfn-ill-typed" class="internalDFN">不正な型</a>のリテラルはありません。この型を持つ正当な構文のリテラルは、Dに<code>rdf:langString</code>が含まれているすべてのD-解釈の値を表すでしょう。<a href="http://www.w3.org/TR/xmlschema11-2/#string"><code>xsd:string</code></a>という型の唯一不正な型のリテラルは、[<cite><a class="bibref" href="#bib-XML10">XML10</a></cite>]の<a href="http://www.w3.org/TR/xml11/#NT-Char"><em>Char</em>生成規則</a>と一致しないUnicodeコードポイントが含まれているものです。このような文字列は、XML互換の表層構文で書くことができません。</p>
+
+<p class="changenote">2004年のRDF 1.0仕様では、不正な型のリテラルはIRの値を表す必要があり、RDFSセマンティクスの使用によってのみ、<a title="D-unsatisfiable" href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足</a>を認識できます。</p>
+
+</section><section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="datatype-entailment">
+
+<h3 id="D_entailment" aria-level="2" role="heading"><span class="secno">7.2 </span>データ型含意</h3>
+
+<p>グラフがあるD-解釈で真の値を持っている場合、それは（単純に）<dfn id="dfn-d-satisfiable">D-満足</dfn>であるか<dfn id="dfn-satisfiable-recognizing-d">Dを認識して満足でき</dfn>（satisfiable recognizing D）、グラフSは、Sを満足するすべてのD-解釈がGもD-満足する場合に、（単純に）グラフGを<dfn id="dfn-d-entails">D-含意</dfn>するか、<dfn id="dfn-entails-recognizing-d">Dを認識して含意</dfn>（entails recognizing D）します。</p>
+
+<p><a href="#dfn-simple-interpretation" class="internalDFN">単純解釈</a>の場合とは異なり、グラフが満足するD-解釈を持たない、つまり、<dfn id="dfn-d-unsatisfiable">D-不満足</dfn>であることができます。RDFプロセッサは、不満足なグラフを、エラー状態を示すものとして扱うことができます（<em class="rfc2119" title="MAY">MAY</em>）が、これは必須ではありません。</p>
+
+<p><a href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足</a>なグラフは、あらゆるグラフをD-含意します。</p>
+
+<p class="technote">不満足なステートメントがその他のステートメントも含意するという事実は、大昔からずっと知られています。これは、<em>ex falso quodlibet</em>（偽の前提からはいかなる結論も導出できる）の原理と呼ばれます。これは、実際に不満足なグラフから結論を導き出すことが必要であるとか許されさえすることを意味すると解釈すべきではありません。</p>
+
+<p>この言語のすべてにおいて、「D」はデータ型IRIのある集合を表すためのパラメータとして用いられており、異なるD集合は、異なる概念の充足可能性と含意を生成するでしょう。データ型が<a href="#dfn-recognize" class="internalDFN">認識され</a>ていればいるほど含意は強くなり、その結果、D ⊂ Eであり、SがGをE-含意する場合、SはGをD-含意しなければなりません。単純含意は、{ }-含意（つまり、Dが空集合である場合にD-含意）であるため、SがGをD-含意する場合、SはGを単純含意します。</p>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="patterns-of-datatype-entailment-informative">
+
+<h4 id="datatype_entailment_patterns" aria-level="3" role="heading"><span class="secno">7.2.1 </span>データ型含意のパターン（参考情報）</h4><p>
+
+<em>この項は非規範的です。</em></p>
+
+<p><a title="entail" href="#dfn-entail" class="internalDFN">単純含意</a>とは異なり、すべてのD-含意を検知するための構文の基準を1つだけ示すことは可能ではありません。これは、<a href="#dfn-recognize" class="internalDFN">認識</a>されたデータ型の字句から値へのマッピングの特定のプロパティーのため成立します。例えば、Dに<code>xsd:decimal</code>が含まれている場合、</p>
+
+<p><code>ex:a ex:p &quot;25.0&quot;^^xsd:decimal .</code></p>
+
+<p>は、</p>
+
+<p><code>ex:a ex:p &quot;25&quot;^^xsd:decimal .</code></p>
+
+<p>をD-含意します。</p>
+
+<p>一般的に、<a href="#dfn-recognize" class="internalDFN">認識された</a>データ型IRIを持つリテラルが含まれているトリプルは、リテラルの字句文字列がデータ型の字句から値へのマップの下で同じ値にマッピングしている場合には、別のリテラルをD-含意します。Dの2つの異なるデータ型が、字句文字列を共通する値にマッピングしていれば、1つのデータ型で型付けされているリテラルを含んでいるトリプルは、異なるデータ型で型付けされているリテラルを含んでいる別のトリプルをD-含意するかもしれません。例えば、<code>&quot;25&quot;^^xsd:integer</code>と<code>&quot;25.0&quot;^^xsd:decimal</code>は同じ値を持っており、したがって、Dに<code>xsd:integer</code>も含まれている場合には、上記は、</p>
+
+<p><code>ex:a ex:p &quot;25&quot;^^xsd:integer .</code></p>
+
+<p>もD-含意します。</p>
+
+<p>（リテラル値に関する長い<a href="http://www.w3.org/TR/swbp-xsch-datatypes/#sec-values">議論</a>が含まれている<abbr title="World Wide Web Consortium">W3C</abbr>ノート[<cite><a class="bibref" href="#bib-SWBP-XSCH-DATATYPES">SWBP-XSCH-DATATYPES</a></cite>]が存在しています。）</p>
+
+<p><a href="#dfn-ill-typed" class="internalDFN">不正な型</a>のリテラルは、グラフが単純に<a href="#dfn-d-unsatisfiable" class="internalDFN">D-不満足</a>となりえる唯一の方法ですが、後で定義しているとおり、データ型は、RDFS語彙と組み合せれば、他の様々な不満足なグラフを生成できます。</p>
+
+</section>
+</section>
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdf-interpretations">
+<!--OddPage-->
+
+<h2 id="rdf_d_interpretations" aria-level="1" role="heading"><span class="secno">8. </span>RDF解釈</h2>
+
+<p>RDF解釈は、<code>xsd:string</code>と、名前空間接頭辞<code>rdf:</code>を持つIRIの無限集合の一部に追加のセマンティック条件を課します。</p>
+
+<div>
+
+<table>
+<tbody>
+  <tr>
+    <td><dfn id="dfn-rdf-vocabulary">RDF語彙</dfn></td>
+  </tr>
+  <tr>
+    <td><code>rdf:type rdf:subject rdf:predicate rdf:object rdf:first rdf:rest rdf:value rdf:nil rdf:List rdf:langString rdf:Property rdf:_1 rdf:_2 ...</code></td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+
+<p><strong>Dを認識する</strong><dfn id="dfn-rdf-interpretation">RDF解釈</dfn>は、Dに<code>rdf:langString</code>と<code>xsd:string</code>が含まれる場合に、<a href="#dfn-d-interpretation" class="internalDFN">D-解釈</a>Iで、それは次を満足します。</p>
+
+<table>
+<caption>RDFのセマンティック条件</caption>
+<tbody>
+  <tr>
+    <td id="rdfsemcond1" class="semantictable">&lt;x, I(<code>rdf:Property</code>)&gt;がIEXT(I(<code>rdf:type</code>))にある場合に限り、xはIPにある</td>
+  </tr>
+  <tr>
+    <td id="rdfsemcond3" class="semantictable">xがI(aaa)の値空間にある場合にのみ、すべてのDのIRI aaaに対し、&lt; x, I(aaa) &gt;はIEXT(I(<code>rdf:type</code>))にある</td>
+  </tr>
+</tbody>
+</table>
+
+<p>そして、これは、次の無限集合のすべてのトリプルを満足します。</p>
+
+<table>
+<caption>RDF公理</caption>
+<tbody>
+  <tr>
+    <td id="RDF_axiomatic_triples" class="ruletable"><code>rdf:type rdf:type rdf:Property .<br>
+        rdf:subject rdf:type rdf:Property .<br>
+        rdf:predicate rdf:type rdf:Property .<br>
+        rdf:object rdf:type rdf:Property .<br>
+        rdf:first rdf:type rdf:Property .<br>
+        rdf:rest rdf:type rdf:Property .<br>
+        rdf:value rdf:type rdf:Property .<br>
+        rdf:nil rdf:type rdf:List .<br>
+        rdf:_1 rdf:type rdf:Property .<br>
+        rdf:_2 rdf:type rdf:Property .<br>
+        ... <br></code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>RDFは、残りのRDF語彙に特別の規範的な意味を課しません。<a href="#whatnot">付録D</a>では、この語彙の一部の用途について記述しています。</p>
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string"><code>rdf:langString</code></a>および<a href="http://www.w3.org/TR/xmlschema11-2/#string"><code>xsd:string</code></a>というデータ型IRIは、すべてのRDF解釈によって<a href="#dfn-recognize" class="internalDFN">認識され</a>なければなりません（<em class="rfc2119" title="MUST">MUST</em>）。</p>
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#section-XMLLiteral"><code>rdf:XMLLiteral</code></a>および<a href="http://www.w3.org/TR/rdf11-concepts/#section-html"><code>rdf:HTML</code></a>のその他の2つのデータ型は、[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]で定義されています。RDF-D解釈は、これらのデータ型を<a href="#dfn-recognize" class="internalDFN">認識</a>できなくてもかまいません（<em class="rfc2119" title="MAY">MAY</em>）。</p>
+
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdf-entailment">
+
+<h3 id="rdf_entail" aria-level="2" role="heading"><span class="secno">8.1 </span>RDF含意</h3>
+
+<p>Sは、Sを満足するDを認識するすべての<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>がEも満足する場合に<strong>Dを認識して</strong>Eを<dfn id="dfn-rdf-entail">RDF含意</dfn>します。Dが{<code>rdf:langString</code>, <code>xsd:string</code>}であれば、我々はSがEを<strong>RDF含意する</strong>と単純に述べます。（Dを認識して）満足する<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>がなければ、Eは<strong>（Dを認識して）</strong><dfn id="dfn-rdf-unsatisfiable">RDF不満足</dfn>です。</p>
+
+<p>前記の単純含意の特性は、必ずしも<a href="#dfn-rdf-entail" class="internalDFN">RDF含意</a>には当てはまりません。例えば、すべてのRDF公理は、すべての<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>において真であり、したがって、空のグラフによって<a href="#dfn-rdf-entail" class="internalDFN">RDF含意</a>され、RDF含意の<a href="#dfn-interpolation" class="internalDFN">補間</a>と矛盾します。</p>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="patterns-of-rdf-entailment-informative">
+
+<h4 id="rdf_entailment_patterns" aria-level="3" role="heading"><span class="secno">8.1.1 </span>RDF含意のパターン（参考情報）</h4>
+
+<p><em>この項は非規範的です。</em></p>
+<p>上記表の最後のセマンティック条件は、<a href="#dfn-recognize" class="internalDFN">認識された</a>データ型IRIに対し次の含意パターンを提供します。</p>
+
+<table>
+<caption>RDF含意パターン</caption>
+<tbody>
+  <tr>
+    <th> </th>
+    <th><strong>Sに下記が含まれていれば、</strong></th>
+    <th><strong>Sは、Dを認識して下記をRDF含意する。</strong></th>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfd1">rdfD1</dfn></td>
+    <td class="othertable">   xxx aaa <code>&quot;</code>sss<code>&quot;^^</code>ddd <code>.</code> <br>
+          for ddd in D</td>
+    <td class="othertable">xxx aaa _:nnn <code>.</code><br>
+_:nnn <code>rdf:type</code> ddd <code>.</code></td>
+   </tr>
+
+  </tbody>
+</table>
+
+<p>満足できないグラフがトリプルを含意するため、リテラルが<a href="#dfn-ill-typed" class="internalDFN">不正な型</a>であっても、これが有効であることに注意してください。</p>
+
+<p>例えば、</p>
+<p><code>ex:a ex:p &quot;123&quot;^^xsd:integer .</code></p>
+
+<p>は{<code>xsd:integer</code>}を認識して</p>
+
+<p><code>ex:a ex:p _:x . <br>
+ _:x rdf:type xsd:integer . </code></p>
+
+<p>をRDF含意します。</p>
+
+<p>さらに、最初のRDFのセマンティック条件は、次の含意パターンを正当化します。</p>
+
+<table>
+<tbody>
+  <tr>
+    <th> </th>
+    <th><strong>Sに下記が含まれていれば、</strong></th>
+    <th><strong>Sは、Dを認識する下記をRDF含意する。</strong></th>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfd2">rdfD2</dfn></td>
+    <td class="othertable">xxx aaa yyy <code>.</code></td>
+    <td class="othertable">aaa <code>rdf:type rdf:Property .</code> </td>
+  </tr>
+</tbody>
+</table>
+
+<p>その結果、上記の例は、{<code>xsd:integer</code>}を認識して</p>
+
+<p><code>ex:p rdf:type rdf:Property .</code></p>
+
+<p>をRDF含意します。</p>
+
+<p>一部のデータ型は、他のデータ型に適用できない特異な含意パターンをサポートします。例えば、</p>
+
+<p><code> ex:a ex:p &quot;true&quot;^^xsd:boolean . <br>
+ex:a ex:p &quot;false&quot;^^xsd:boolean .<br>
+ex:v rdf:type xsd:boolean .</code></p>
+
+<p>は、合わせて、{<code>xsd:boolean</code>}を認識して</p>
+
+<p><code>ex:a ex:p ex:v .</code></p>
+
+<p>をRDF含意します。</p>
+
+<p>さらに、値空間のセマンティック条件により、他の不満足なグラフが生成されるかもしれません。例えば、Dに<code>xsd:integer</code>と<code>xsd:boolean</code>が含まれている場合、下記はDを認識して<a href="#dfn-rdf-unsatisfiable" class="internalDFN">RDF不満足</a>です。</p>
+
+<p><code>_:x rdf:type xsd:boolean .<br>
+_:x rdf:type xsd:integer . </code></p>
+
+</section>
+</section>
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdfs-interpretations">
+<!--OddPage-->
+
+<h2 id="rdfs_interpretations" aria-level="1" role="heading"><span class="secno">9. </span>RDF解釈</h2>
+
+<p>RDFスキーマ[<cite><a class="bibref" href="#bib-RDF11-SCHEMA">RDF11-SCHEMA</a></cite>]は、RDFをより複雑なセマンティック条件を有するより大きな語彙に拡張します。</p>
+
+<div>
+<table>
+<tbody>
+  <tr>
+    <td><dfn id="dfn-rdfs-vocabulary">RDFS語彙</dfn></td>
+  </tr>
+  <tr>
+    <td><code>rdfs:domain rdfs:range rdfs:Resource rdfs:Literal rdfs:Datatype rdfs:Class rdfs:subClassOf rdfs:subPropertyOf rdfs:member rdfs:Container rdfs:ContainerMembershipProperty rdfs:comment rdfs:seeAlso rdfs:isDefinedBy rdfs:label</code></td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<p>（<code>rdfs:comment</code>、<code> rdfs:seeAlso</code>、<code>rdfs:isDefinedBy</code>および<code>rdfs:label</code>は、これらの使用に適用されるいくつかの制約を<code>rdfs:domain</code>、<code> rdfs:range</code>および<code>rdfs:subPropertyOf</code>を用いて述べることができるため、ここに含まれています。これ以外には、形式意味論はこれらの意味を制限しません。）</p>
+
+<p><dfn id="dfn-class">class</dfn>という新しいセマンティックの構成子（つまり、論議領域内の事物の集合を表す資源で、そのすべてが<code>rdf:type</code>プロパティーの値としてそのクラスを持っている）でRDFSセマンティクスを述べると便利です。<a href="#dfn-class" class="internalDFN">クラス</a>は<code>rdfs:Class</code>という型の事物であると定義されており、解釈のすべてのクラスの集合はICと呼ばれるでしょう。セマンティックな条件は、ICからIRのサブセットの集合への（Iのクラスの外延（<em>C</em>lass <em>Ext</em>ension）に対する）ICEXTというマッピングで述べられます。</p>
+
+<p>クラスは空のクラスの外延を持つことができます。異なる2つのクラスが同じクラスの外延を持つことができます。<code>rdfs:Class</code>のクラスの外延には<code>rdfs:Class</code>というクラスが含まれます。</p>
+
+<p>（<strong>Dを認識した</strong>）<dfn id="dfn-rdfs-interpretation">RDFS解釈</dfn>は、次の表のセマンティック条件と、その次のRDFS公理トリプルの表のすべてのトリプルを満足する（Dを認識した）<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>Iです。</p>
+
+<table>
+<caption>RDFSのセマンティック条件</caption>
+<tbody>
+  <tr>
+    <td id="rdfssemcond1" class="semantictable"><p>ICEXT(y)は{x : &lt; x,y &gt;はIEXT(I(<code>rdf:type</code>))にある}と定義されている。</p>
+<p>ICはICEXT(I(<code>rdfs:Class</code>))と定義されている。</p>
+<p>LVはICEXT(I(<code>rdfs:Literal</code>))と定義されている。</p>
+<p>ICEXT(I(<code>rdfs:Resource</code>)) = IR</p>
+<p>ICEXT(I(<code>rdf:langString</code>))は集合{I(E) : E 言語タグ付き文字列}である。</p>
+<p>Dの他のすべてのaaaというIRIに対し、ICEXT(I(aaa))はI(aaa)の値空間である。</p>
+<p>DのすべてのaaaというIRIに対し、I(aaa)はICEXT(I(<code>rdfs:Datatype</code>)) にある。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond2" class="semantictable"><p>&lt; x,y &gt;がIEXT(I(<code>rdfs:domain</code>))にあり、&lt; u,v &gt;がIEXT(x)にある場合、uはICEXT(y)にある。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond3" class="semantictable"><p>&lt; x,y &gt;がIEXT(I(<code>rdfs:range</code>))にあり、&lt; u,v &gt;がIEXT(x)にある場合、vはICEXT(y)にある。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond4" class="semantictable"><p>IEXT(I(<code>rdfs:subPropertyOf</code>))はIPにおいて推移的で反射的である。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond5" class="semantictable"><p>&lt;x,y&gt;がIEXT(I(<code>rdfs:subPropertyOf</code>))にある場合、xとyはIPにあり、IEXT(x)はIEXT(y)のサブセットである。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond6" class="semantictable"><p>xがICにある場合、&lt; x, I(<code>rdfs:Resource</code>) &gt;はIEXT(I(<code>rdfs:subClassOf</code>))にある。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond8" class="semantictable"><p>IEXT(I(<code>rdfs:subClassOf</code>))はICにおいて推移的で反射的である。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond7" class="semantictable"><p>&lt; x,y &gt;がIEXT(I(<code>rdfs:subClassOf</code>))にある場合、xとyはICにあり、ICEXT(x)はICEXT(y)のサブセットである。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond9" class="semantictable"><p>xがICEXT(I(<code>rdfs:ContainerMembershipProperty</code>))にある場合、<br>
+&lt; x, I(<code>rdfs:member</code>) &gt;はIEXT(I(<code>rdfs:subPropertyOf</code>))にある。</p></td>
+  </tr>
+  <tr>
+    <td id="rdfssemcond10" class="semantictable"><p>xがICEXT(I(<code>rdfs:Datatype</code>))にある場合、<span>&lt; x, I(<code>rdfs:Literal</code>) &gt;はIEXT(I(<code>rdfs:subClassOf</code>))</span>にある。</p></td>
+  </tr>
+</tbody>
+</table>
+
+<table id="RDFS_axiomatic_triples">
+<caption>RDFS公理トリプル</caption>
+<tbody>
+  <tr>    <td class="ruletable"> <code>rdf:type rdfs:domain rdfs:Resource .<br>
+rdfs:domain rdfs:domain rdf:Property .<br>
+rdfs:range rdfs:domain rdf:Property .<br>
+rdfs:subPropertyOf rdfs:domain rdf:Property .<br>
+rdfs:subClassOf rdfs:domain rdfs:Class .<br>
+rdf:subject rdfs:domain rdf:Statement .<br>
+rdf:predicate rdfs:domain rdf:Statement .<br>
+rdf:object rdfs:domain rdf:Statement .<br>
+rdfs:member rdfs:domain rdfs:Resource . <br>
+rdf:first rdfs:domain rdf:List .<br>
+rdf:rest rdfs:domain rdf:List .<br>
+rdfs:seeAlso rdfs:domain rdfs:Resource .<br>
+rdfs:isDefinedBy rdfs:domain rdfs:Resource .<br>
+rdfs:comment rdfs:domain rdfs:Resource .<br>
+rdfs:label rdfs:domain rdfs:Resource .<br>
+rdf:value rdfs:domain rdfs:Resource .<br>
+<br>
+rdf:type rdfs:range rdfs:Class .<br>
+rdfs:domain rdfs:range rdfs:Class .<br>
+rdfs:range rdfs:range rdfs:Class .<br>
+rdfs:subPropertyOf rdfs:range rdf:Property .<br>
+rdfs:subClassOf rdfs:range rdfs:Class .<br>
+rdf:subject rdfs:range rdfs:Resource .<br>rdf:predicate rdfs:range rdfs:Resource .<br>
+rdf:object rdfs:range rdfs:Resource .<br>
+rdfs:member rdfs:range rdfs:Resource .<br>
+rdf:first rdfs:range rdfs:Resource .<br>
+rdf:rest rdfs:range rdf:List .<br>
+rdfs:seeAlso rdfs:range rdfs:Resource .<br>
+rdfs:isDefinedBy rdfs:range rdfs:Resource .<br>
+rdfs:comment rdfs:range rdfs:Literal .<br>
+rdfs:label rdfs:range rdfs:Literal .<br>
+rdf:value rdfs:range rdfs:Resource .<br>
+<br>
+rdf:Alt rdfs:subClassOf rdfs:Container .<br>
+rdf:Bag rdfs:subClassOf rdfs:Container .<br>
+rdf:Seq rdfs:subClassOf rdfs:Container .<br>
+rdfs:ContainerMembershipProperty rdfs:subClassOf rdf:Property .<br>
+<br>
+rdfs:isDefinedBy rdfs:subPropertyOf rdfs:seeAlso .<br>
+<br>
+rdfs:Datatype rdfs:subClassOf rdfs:Class .<br>
+<br>
+rdf:_1 rdf:type rdfs:ContainerMembershipProperty .<br>
+<span>rdf:_1 rdfs:domain rdfs:Resource .<br>
+rdf:_1 rdfs:range rdfs:Resource .</span> <br>
+rdf:_2 rdf:type rdfs:ContainerMembershipProperty .<br>
+rdf:_2 rdfs:domain rdfs:Resource .<br>
+rdf:_2 rdfs:range rdfs:Resource . <br>
+</code>... <br> </td>
+  </tr>
+</tbody>
+</table>
+
+<p class="changenote">2004年のRDF 1.0セマンティクスでは、LVは単純解釈構造の一部として定義されており、ここで示されている定義は制約でした。</p>
+
+<p>Iは<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>であるため、最初の条件はIP = ICEXT(I(<code>rdf:Property</code>))を意味します。</p>
+
+<p><a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>のセマンティクス条件は、ICEXTのRDFS条件と合わせて、すべての<a href="#dfn-recognize" class="internalDFN">認識された</a>データ型を、その拡張がデータ型の値空間であるクラスとして扱うことができ、そのデータ型を持つすべてのリテラルは参照しないか、そのクラスの値を参照することを意味します。</p>
+
+<p>RDFSセマンティクスを用いる場合、すべての<a href="#dfn-recognize" class="internalDFN">認識された</a>データ型IRIの指示対象は、<code>rdfs:Datatype</code>という<a href="#dfn-class" class="internalDFN">クラス</a>にあると考えられます。</p>
+
+<p>上記の公理と条件には、いくぶん重複があります。例えば、RDF公理トリプルの1つを除くすべては、RDFS公理トリプルとICEXTのセマンティック条件、<code> rdfs:domain</code>と<code>rdfs:range</code>から得ることができます。</p>
+
+<p>すべてのRDFS解釈において真でなければならないその他のトリプルには次のものが含まれています。これは完全な集合ではありません。</p>
+
+<table>
+<caption>一部のrdfs-有効のトリプル</caption>
+<tbody>
+  <tr>
+    <td class="ruletable"><code>rdfs:Resource rdf:type rdfs:Class .<br>
+rdfs:Class rdf:type rdfs:Class .<br>
+rdfs:Literal rdf:type rdfs:Class .<br>
+rdf:XMLLiteral rdf:type rdfs:Class .<br>
+rdf:HTML rdf:type rdfs:Class .<br>
+rdfs:Datatype rdf:type rdfs:Class .<br>
+rdf:Seq rdf:type rdfs:Class .<br>
+rdf:Bag rdf:type rdfs:Class .<br>
+rdf:Alt rdf:type rdfs:Class .<br>
+rdfs:Container rdf:type rdfs:Class .<br>
+rdf:List rdf:type rdfs:Class .<br>
+rdfs:ContainerMembershipProperty rdf:type rdfs:Class .<br>
+rdf:Property rdf:type rdfs:Class .<br>
+rdf:Statement rdf:type rdfs:Class .<br>
+<br>
+rdfs:domain rdf:type rdf:Property .<br>
+rdfs:range rdf:type rdf:Property .<br>
+rdfs:subPropertyOf rdf:type rdf:Property .<br>
+rdfs:subClassOf rdf:type rdf:Property .<br>
+rdfs:member rdf:type rdf:Property .<br>
+rdfs:seeAlso rdf:type rdf:Property .<br>
+rdfs:isDefinedBy rdf:type rdf:Property .<br>
+rdfs:comment rdf:type rdf:Property .<br>
+rdfs:label rdf:type rdf:Property .<br>
+</code><code></code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>RDFSは論議領域をクラス、プロパティーおよび個体の素のカテゴリーに分割しません。論議領域のあらゆる事物は、そのステータスを、クラスにあったりプロパティーを持ちえる個体として保持しつつ、クラス、プロパティーまたはこれらの両方として使用できます。したがって、RDFSでは、他のクラス、プロパティーのクラス、クラスのプロパティーなどを含んだクラスが許されています。上記の公理トリプルが示すとおり、自身を含むクラスと、自身に適用されるプロパティーも許されています。クラスのプロパティーは必ずしもそのメンバーのプロパティーではなく、その逆も同様です。</p>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="a-note-on-rdfs-literal-informative">
+
+<h3 id="rdfs_literal_note" aria-level="2" role="heading"><span class="secno">9.1 </span>rdfs:Literalに関する注（参考情報）</h3>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p><code>rdfs:Literal</code>というクラスは、リテラルのクラスではなく、リテラル値のクラスで、これもIRIで参照できます。例えば、LVには<code>&quot;foodle&quot;^^xsd:string</code>は含まれませんが、「foodle」という文字列は含まれます。</p>
+
+<p>次の形式のトリプル</p>
+
+<p><code>ex:a rdf:type rdfs:Literal .</code></p>
+
+<p>は、その主語がリテラルではなくIRIであったとしても整合性があります。これは「<code>ex:a</code>」というIRIはリテラル値を表すと述べており、リテラル値が論議領域内の事物であるため、まったく可能です。同じ理由で、空白ノードはリテラル値の範囲をカバーすることができます。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdfs-entailment">
+
+<h3 id="rdfs_entailment" aria-level="2" role="heading"><span class="secno">9.2 </span>RDFS含意</h3>
+
+<p>Sは、Sを満足するすべてのDを認識する<a href="#dfn-rdfs-interpretation" class="internalDFN">RDFS解釈</a>がEも満足する場合に、<strong>Dを認識して</strong>Eを<dfn id="dfn-rdfs-entails">RDFS含意</dfn>します。</p>
+
+<p>すべての<a href="#dfn-rdfs-interpretation" class="internalDFN">RDFS解釈</a>は<a href="#dfn-rdf-interpretation" class="internalDFN">RDF解釈</a>であるため、SがEを<a href="#dfn-rdfs-entails" class="internalDFN">RDFS含意</a>する場合、SはEも<a href="#dfn-rdf-entail" class="internalDFN">RDF含意</a>します。しかし、RDFS含意はRDF含意より強力です。空のグラフでさえ、RDF含意でない多くのRDFS含意を持っています。例えば、次の形式のすべてのトリプル</p>
+
+<p> aaa <code>rdf:type rdfs:Resource .</code></p>
+
+<p>は、aaaがIRIである場合、すべてのRDFS解釈において真です。</p>
+
+<section class="informative" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="patterns-of-rdfs-entailment-informative">
+
+<h4 id="rdfs_patterns" aria-level="3" role="heading"><span class="secno">9.2.1 </span>RDFS含意のパターン（参考情報）</h4>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>RDFS含意は、次のすべてのパターンで成立し、これはRDFSのセマンティック条件と緊密に対応しています。</p>
+
+<table>
+<caption>RDFS含意パターン</caption>
+<tbody>
+  <tr>
+    <th></th>
+    <th>Sに下記が含まれていれば、</th>
+    <th>Sは、Dを認識して下記をRDF含意する。</th>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs1">rdfs1</dfn></td>
+    <td class="othertable">any IRI aaa in D</td>
+    <td class="othertable">aaa <code>rdf:type rdfs:Datatype . </code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs2">rdfs2</dfn></td>
+    <td class="othertable"> aaa <code>rdfs:domain</code> xxx <code>.</code><br>
+yyy aaa zzz <code>.</code></td>
+    <td class="othertable">yyy <code>rdf:type</code> xxx <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs3">rdfs3</dfn></td>
+    <td class="othertable">aaa <code>rdfs:range</code> xxx <code>.</code><br>
+yyy aaa zzz <code>.</code></td>
+    <td class="othertable">zzz <code>rdf:type</code> xxx <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs4a">rdfs4a</dfn></td>
+    <td class="othertable">xxx aaa yyy <code>.</code></td>
+    <td class="othertable">xxx <code>rdf:type rdfs:Resource .</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs4b">rdfs4b</dfn></td>
+    <td class="othertable">xxx aaa yyy<code>.</code></td>
+    <td class="othertable">yyy <code>rdf:type rdfs:Resource .</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs5">rdfs5</dfn></td>
+    <td class="othertable"> xxx <code>rdfs:subPropertyOf</code> yyy <code>.</code><br>
+yyy <code>rdfs:subPropertyOf</code> zzz <code>.</code></td>
+    <td class="othertable">xxx <code>rdfs:subPropertyOf</code> zzz <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs6">rdfs6</dfn></td>
+    <td class="othertable">xxx <code>rdf:type rdf:Property .</code></td>
+    <td class="othertable">xxx <code>rdfs:subPropertyOf</code> xxx <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs7">rdfs7</dfn></td>
+    <td class="othertable"> aaa <code>rdfs:subPropertyOf</code> bbb <code>.</code><br>
+xxx aaa yyy <code>.</code></td>
+    <td class="othertable">xxx bbb yyy <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs8">rdfs8</dfn></td>
+    <td class="othertable">xxx <code>rdf:type rdfs:Class .</code></td>
+    <td class="othertable">xxx <code>rdfs:subClassOf rdfs:Resource .</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs9">rdfs9</dfn></td>
+    <td class="othertable">xxx <code>rdfs:subClassOf</code> yyy <code>.</code><br>
+zzz <code>rdf:type</code> xxx <code>.</code></td>
+    <td class="othertable">zzz <code>rdf:type</code> yyy <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs10">rdfs10</dfn></td>
+    <td class="othertable">xxx <code>rdf:type rdfs:Class .</code></td>    <td class="othertable">xxx <code>rdfs:subClassOf</code> xxx <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs11">rdfs11</dfn></td>
+    <td class="othertable"> xxx <code>rdfs:subClassOf</code> yyy <code>.</code><br>
+yyy <code>rdfs:subClassOf</code> zzz <code>.</code></td>
+    <td class="othertable">xxx <code>rdfs:subClassOf</code> zzz <code>.</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs12">rdfs12</dfn></td>
+    <td class="othertable">xxx <code>rdf:type rdfs:ContainerMembershipProperty .</code></td>
+    <td class="othertable">xxx <code>rdfs:subPropertyOf rdfs:member .</code></td>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-rdfs13">rdfs13</dfn></td>
+    <td class="othertable">xxx <code>rdf:type rdfs:Datatype .</code></td>
+    <td class="othertable">xxx <code>rdfs:subClassOf rdfs:Literal .</code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>RDFSは、Dを認識して不満足であるいくつかの新しい方法を提供します。例えば、次のグラフは、{<code>xsd:integer</code>, <code>xsd:boolean</code>}を認識してRDFS不満足です。</p>
+
+<p><code>ex:p rdfs:domain xsd:boolean .<br>
+ex:a rdf:type xsd:integer .<br>
+ex:a ex:p ex:c .</code></p>
+
+</section>
+</section>
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdf-datasets">
+<!--OddPage-->
+
+<h2 id="rdf_datasets" aria-level="1" role="heading"><span class="secno">10. </span>RDFデータセット</h2>
+
+<!--
+<p>An RDF <a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset" class="externalDFN">dataset</a> (see [[!RDF11-CONCEPTS]]) is a finite set of RDF graphs each paired with an IRI or blank node called the <strong>graph name</strong>, plus a <strong>default graph</strong>, without a name. Graphs in a single dataset may share blank nodes. The association of graph name IRIs with graphs is used by SPARQL [[RDF-SPARQL-QUERY]] to allow queries to be directed against particular graphs.</p>
+-->
+
+<p><a href="http://www.w3.org/TR/rdf11-concepts/#section-dataset" class="externalDFN">RDFデータセット</a>（RDF概念[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]で定義されている）は、1つの無名のデフォルトRDFグラフと一緒に、0以上の名前付きRDFグラフをパッケージします。1つのデータセット内の複数のグラフは、空白ノードを共有することができます。SPARQL[<cite><a class="bibref" href="#bib-SPARQL11-QUERY">SPARQL11-QUERY</a></cite>]は、グラフとグラフ名IRIとの関連を用いてクエリを特定のグラフに向けることを可能とします。</p>
+
+<p>データセット内のグラフ名は、それが対となるグラフ以外のものを参照できます。これによって、人などの他の種類のエンティティーを参照するIRIを、グラフ名IRIで<a href="#dfn-denote" class="internalDFN">示される</a>エンティティーに関する情報のグラフを<a href="#dfn-identify" class="internalDFN">識別する</a>ために、データセット内で用いることが可能となります。</p>
+
+<p>グラフ名がデータセットのRDFトリプル内で用いられているとき、それは、それが指定しているグラフを参照することも、しないこともあります。外的な理由がなければ、RDFトリプル内で用いられているグラフ名が、それが指定しているグラフを参照することをセマンティクスは要求せず、RDFエンジンもそれを仮定すべきではありません。</p>
+
+<p>RDFデータセットは、RDFの内容を表すために使用できます（<em class="rfc2119" title="MAY">MAY</em>）。この方法でデータセットが用いられている場合、そのデフォルト・グラフと少なくとも同じ内容を持つと理解すべきです（<em class="rfc2119" title="SHOULD">SHOULD</em>）。しかし、データセットのデフォルト・グラフを論理上同等なグラフに置き換えることは、例えば、デフォルト・グラフとデータセット内の他のグラフとの間の空白ノードの同時発生を妨害する可能性があるため、一般的に、構造的に類似したデータセットは生成されないだろうということに注意してください。これは、データセット内のグラフのセマンティクス以外の理由から重要かもしれません。</p>
+
+<p>その他の<a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>と<a href="#dfn-entailment-regime" class="internalDFN">含意レジーム</a>は、RDFグラフと同じく、RDFデータセットにさらにセマンティックな条件と制限を設けることができます（<em class="rfc2119" title="MAY">MAY</em>）。例えば、そのような拡張の1つは、データセット間の含意が、同じ名前（求められるような空のグラフを加えて）を持つグラフ間のRDFグラフ含意を要求するように、モーダルのような解釈構造を設定できます。</p>
+
+</section>
+
+<h2 id="appendices">付録</h2>
+
+<section class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="entailment-rules-informative">
+<!--OddPage-->
+<h2 id="entailment_rules" aria-level="1" role="heading"><span class="secno">A. </span>含意規則（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>（<em>この項は、より完全に記述している</em>[<cite><a class="bibref" href="#bib-HORST04">HORST04</a></cite>]<em>、</em>[<cite><a class="bibref" href="#bib-HORST05">HORST05</a></cite>]<em>の取り組みに基づいており、技術的な詳細や証明に関しては、これらを参考にすべきです。</em>）</p>
+
+<p>上記の表に記載したRDFとRDFSの含意パターンは、含意された結論をグラフに追加する、左から右方向への規則として見ることができます。これらの規則の集合は、次の一連のオペレーションに従うことで、グラフSとEの間のRDF（またはRDFS）含意をチェックするために使用できます。</p>
+
+<p>1. コンテナ・メンバーシップ・プロパティーIRI <code>rdf:_1, rdf:_2, ...</code>が含まれているものを除き、すべてのRDF（またはRDFおよびRDFS）公理トリプルをSに追加する。<br>
+2. Eに出現するすべてのコンテナ・メンバーシップ・プロパティーIRIに対し、そのIRIが含まれているRDF（またはRDFおよびRDFS）公理トリプルを追加する。<br>
+3. RDF（またはRDFおよびRDFS）推論パターンを規則として残らず（すなわち、新たなトリプルを生成しなくなるまで）適用し、結論をそれぞれグラフに追加する。<br>
+4. Eが集合のサブセットであるインスタンスを持っているかどうか、つまり、拡大した集合がEを単純含意要するかどうかを判断する。</p>
+
+<p>このプロセスは、それが肯定的な結果をもたらす場合、実際にSがEをRDF（RDFS）含意するという点で、明らかに正しいです。しかし、これは完全ではなく、このプロセスによって検知できないSがEを含意するケースがあります。例には、次のものが含まれます。</p>
+
+<table>
+<tbody>
+  <tr>
+    <th> </th>
+    <th>RDF含意する</th>
+  </tr>
+  <tr>
+    <td class="othertable"><code>ex:a ex:p &quot;string&quot;^^xsd:string .<br>
+ex:b ex:q &quot;string&quot;^^xsd:string .</code></td>
+    <td class="othertable"><code>ex:a ex:p _:b .<br>
+ex:b ex:q _:b .<br>
+_:b rdf:type xsd:string .</code> </td>
+  </tr>
+  <tr>
+    <th> </th>
+    <th>RDFS含意する</th>
+  </tr>
+  <tr>
+    <td class="othertable"><code>ex:a rdfs:subPropertyOf _:b .<br>
+_:b rdfs:domain ex:c .<br>
+ex:d ex:a ex:e .</code></td>
+    <td class="othertable"><code>ex:d rdf:type ex:c .</code> </td>
+  </tr>
+</tbody>
+</table>
+
+<p>リテラルが主語の位置に出現でき、空白ノードが述語の位置に出現できるRDF構文の一般化に規則を適用できるようにすることで、これらの両方に対応できます。</p>
+
+<!--<p>Define a <dfn>generalized RDF triple</dfn> to be a triple &lt;x, y, z&gt; where x and z can be an IRI, a blank node or a literal, and y can be an IRI or a blank node; and extend this to the rest of RDF, so that a generalized RDF graph is a set of generalized RDF triples. -->
+
+<p>RDFのトリプル、グラフ、データセットではなく、<a href="http://www.w3.org/TR/rdf11-concepts/#section-generalized-rdf" class="externalDFN">一般化RDFトリプル、グラフ、データセット</a>について考えてみましょう（[<cite><a class="bibref" href="#bib-HORST04">HORST04</a></cite>]で用いられている一般化を拡張し、[<cite><a class="bibref" href="#bib-OWL2-PROFILES">OWL2-PROFILES</a></cite>]で用いられている用語に正確に従って）。このドキュメントで述べているセマンティクスは、そのまま一般化に適用でき、その結果、解釈、充足可能性および含意の概念を自由に使用できます。そうすると、元のRDF含意のパターンを、下記のより単純で直接的なものに置き換えることができ、</p>
+
+<table>
+<caption>G-RDF-D含意パターン</caption>
+<tbody>
+  <tr>
+    <th> </th>
+    <th><strong>Sに下記が含まれていれば、</strong></th>
+    <th><strong>Sは、Dを認識する下記をRDF含意する。</strong></th>
+  </tr>
+  <tr>
+    <td class="othertable"><dfn id="dfn-grdfd1">GrdfD1</dfn></td>
+    <td class="othertable">   xxx aaa <code>&quot;</code>sss<code>&quot;^^</code>ddd <code>.</code> <br>
+          for ddd in D</td>
+    <td class="othertable"><code>&quot;</code>sss<code>&quot;^^</code>ddd <code>rdf:type</code> ddd <code>.</code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>これは次の含意を提供し、</p>
+
+<p><code>ex:a ex:p &quot;string&quot;^^xsd:string .<br>
+ex:b ex:q &quot;string&quot;^^xsd:string .<br>
+&quot;string&quot;^^xsd:string rdf:type xsd:string .</code> <a href="#dfn-grdfd1" class="internalDFN">GrdfD1</a>による</p>
+
+<p>これは、上記の、望ましい結論のインスタンス（一般化RDF）です。</p>
+
+<p>2番目の例は、次のRDFS規則を用いて得られます。</p>
+
+<p><code>ex:a rdfs:subPropertyOf _:b .<br>
+_:b rdfs:domain ex:c .<br>
+ex:d ex:a ex:e .<br>
+ex:d _:b ex:c .</code>  <a href="#dfn-rdfs7" class="internalDFN">rdfs7</a>による<br>
+<code>ex:d rdf:type ex:c .</code> <a href="#dfn-rdfs2" class="internalDFN">rdfs2</a>による</p>
+
+<p>このとき、含意パターンは、一般化RDF構文に適用されましたが、正当なRDFである最終的な結論をもたらします。</p>
+
+<p>一般化された構文では、これらの規則はRDFおよびRDFSの含意の両方に対して完全です。正確に述べると、次のとおりです。</p>
+
+<p>SとEをRDFグラフとします。<strong>EへのSの</strong><dfn id="dfn-generalized-rdf-rdfs-closure">一般化RDF（RDFS）閉包</dfn>を、次の手続きによって得られた集合と定義します。</p>
+
+<p>1. コンテナ・メンバーシップ・プロパティーIRIが含まれていないすべてのRDF（およびRDFS）公理トリプルをSに追加する。<br>
+2. Eで出現する個々のコンテナ・メンバーシップ・プロパティーIRIに対し、そのIRIが含まれているRDF（およびRDFS）公理トリプルを追加する。<br>
+3. ステップ2でトリプルが追加されなかった場合、<code>rdf:_1</code>が含まれるRDF（およびRDFS）公理トリプルを追加する。<br>
+4. D={rdf:langString、xsd}を持つ規則GrdfD1とrdfD2（および<a href="#dfn-rdfs1" class="internalDFN">rdfs1</a>から<a href="#dfn-rdfs13" class="internalDFN">rdfs13</a>までの規則）を、あらゆる方法で残らず集合に適用する。</p>
+
+<p>すると、次の完全性の結果が得られます。</p>
+
+<p class="fact">SがRDF（RDFS）整合であれば、EへのSの<a href="#dfn-generalized-rdf-rdfs-closure" class="internalDFN">一般化RDF（RDFS）閉包</a>がEを単純含意するときにのみ、SはEをRDF含意（RDFS含意）する。</p>
+
+<p>閉包は有限です。生成プロセスは決定可能で、計算量は多項式時間（polynomial complexity）です。単純含意の検知は一般にNP-完全（NP-complete）ですが、Eに空白ノードが含まれていない場合には、多項式次数は低いです。</p>
+
+<p>すべてのRDF(S)閉包には、空のグラフで始まるものですら、元のグラフの語彙に加えて、RDFとRDFSの語彙を用いて表現できるすべてのRDF(S)の類語反復が含まれるでしょう。実際には、これらの再取得にはほとんど有用性はなく、規則のサブセットは実際に関心のあるほとんどの含意を確立するために使用できます。</p>
+
+<p>正当なRDF構文の範囲を超えないことが重要な場合には、<a href="#dfn-grdfd1" class="internalDFN">GrdfD1</a>の代わりに<a href="#dfn-rdfd1" class="internalDFN">rdfD1</a>という規則を使用でき、導入された空白ノードは、後の派生でリテラルの代わりとして使用できます。しかし、規則の結果として生じる集合は完全ではありません。</p>
+
+<p>以前に注記したように、より大きなデータ型IRIの集合に対するデータ型含意の検知には、特定のデータ型の特異な性質への対応が必要です。</p>
+
+</section>
+<section class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="finite-interpretations-informative">
+<!--OddPage-->
+
+<h2 id="finite_interpretations" aria-level="1" role="heading"><span class="secno">B. </span>有限の解釈（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>説明を簡潔にしておくために、解釈が絶対に必要なものより大きくならざるをえないような方法でRDFセマンティクスを表現してきました。例えば、すべての解釈はIRIの語彙の全体を解釈する必要があり、Dに<code>xsd:string</code>が含まれているすべてのD解釈の論議領域には、あらゆる文字列が含まれていなければならず、したがって、無限でなければなりません。この付録では、証明なしに、含意を変えずにより小さなセマンティック構造を用いてセマンティクスを言い換える方法について説明します。</p>
+
+<p>基本的に、含意を検討中であるグラフで実際に用いられている<a href="#dfn-name" class="internalDFN">名前</a>を解釈構造が解釈し、論議領域が最大でもグラフの名前や空白ノードの数と同じくらいの規模の解釈を考慮しさえすれば十分です。より形式的には、<a href="#dfn-vocabulary" class="internalDFN">語彙</a>Vの<dfn id="dfn-pre-interpretation">事前解釈</dfn>は、<a href="#dfn-simple-interpretation" class="internalDFN">単純解釈</a>に似ているけれども、Vからその論議領域IRのみへのマッピングを有する構造Iであると定義できます。次に、GがEを含意するかどうかを判断する場合には、GとEの和集合で実際に用いられる<a href="#dfn-name" class="internalDFN">名前</a>の有限語彙の事前解釈のみを考えてみてください。そのような事前解釈の論議領域は、N+B+1のカーディナリティーに制限することができ、その場合、Nは語彙の大きさで、Bはグラフの空白ノードの数です。そのような事前解釈は<a href="#dfn-simple-interpretation" class="internalDFN">単純解釈</a>に拡張することができ、そのすべては、GまたはEのトリプルに対し同じ真偽の値を提供するでしょう。そして、充足可能性、含意などは、これらの有限の事前解釈で定義でき、この仕様の本文で定義されている考えと同じものとして示すことができます。</p>
+
+<p>D含意について考えてみると、実際にGかEに出現するリテラルのみに対するリテラル値がIRに含まれ、論議領域の大きさが(N+B)×(D+1)に制限されている必要があるように、データ型付きリテラルのセマンティック条件を弱めることにより、事前解釈は有限のままでありえ、その場合、Dは認識されたデータ型の数です。（範囲をより狭めることもできます。）RDF含意では、実際にグラフに出現するコンテナ・メンバーシップ・プロパティーが含まれるRDF語彙の有限部分のみを解釈する必要があり、2番目のRDFセマンティック条件は、実際に語彙に出現するリテラルの値である値にのみ適用されるように弱められています。RDFS解釈の場合も、検討中のグラフに実際に出現する無限のコンテナ・メンバーシップ・プロパティーの語彙の有限部分のみを解釈する必要があります。これらのすべての場合に、グラフの語彙の事前解釈は、グラフのトリプルの真偽値を変えずに、適切な形式の完全解釈に拡張できます。</p>
+
+<p>全体のセマンティクスは、事前解釈（pre-interpretation）で述べることができ、それによって、同じ含意が生成され、<em>有限モデル性</em>が重要であると考えられる場合には、有限の構造で有限のRDFグラフを解釈できるようになります。</p>
+
+</section>
+<section class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="proofs-of-some-results-informative">
+<!--OddPage-->
+
+<h2 id="proofs" aria-level="1" role="heading"><span class="secno">C. </span>一部の結果の証明（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p class="fact"><a href="#dfn-empty-graph" class="internalDFN">空のグラフ</a>は、任意のグラフによって単純含意され、それ自身以外のグラフを単純含意しない。<!-- <a href="#emptygraphlemmaprf" class="termref">[Proof]</a> --></p>
+
+<p>空のグラフは、すべての単純解釈において真であるため、どのグラフでも含意されます。Gが&lt;a b c&gt;というトリプルを含んでいれば、IEXT(I(b))={ }を有する単純解釈Iにより、Gは偽になります。したがって、空のグラフはGを含意しません。QED.</p>
+
+<p class="fact">グラフは、そのサブグラフをすべて単純含意する。<!-- <a href="#subglemprf" class="termref">[Proof]</a> --></p>
+
+<p>IがGを満足するとき、Gのすべてのトリプルを満足し、したがって、Gのサブセットのすべてのトリプルを満足します。QED.</p>
+
+<p class="fact">グラフは、そのどの<a href="#dfn-instance" class="internalDFN">インスタンス</a>によっても単純含意される。<!-- <a href="#instlemprf" class="termref"> [Proof]</a> --></p>
+
+<p>Hがインスタンス化マッピングMを持つGのインスタンスとし、そのIがHを満足すると仮定します。HにないGの空白ノードnは、A(n)=I(M(n))を定義し、I+AはGを満足し、したがって、IはGを満足します。QED.</p>
+
+<p class="fact">すべてのグラフは、単純満足できる。</p>
+
+<p>aaaというIRIに対し、論議領域{x}、IEXT(x)= &lt;x,x &gt;、I(aaa)=xである単純解釈について考えてみてください。この解釈はすべてのRDFグラフを満足します。</p>
+
+<p class="fact">Gは、GのサブグラフがEのインスタンスである場合に限り、グラフEを単純含意する。</p>
+
+<p>GのサブグラフE'がEのインスタンスである場合、Gは、Eを含意するE'を含意し、したがって、GはEを含意します。さてここで、GがEを含意すると仮定し、次のように定義されているGの<a href="http://en.wikipedia.org/wiki/Herbrand_interpretation">エルブラン解釈</a>Iについて考えてみましょう。IRにはグラフに出現する<a href="#dfn-name" class="internalDFN">名前</a>と空白ノードが含まれており、<a href="#dfn-name" class="internalDFN">名前</a>nごとにI(n)=nです。トリプル&lt;a n b&gt;がグラフにある時にのみ、nはIPに、&lt;a, b&gt;はIEXT(n)にあります。（グラフに出現しないIRIの場合、それにIRの値をランダムに割り当ててください。）IはEのすべてのトリプル&lt;s p o&gt;を満足します。つまり、Eの空白ノードからGの語彙へのあるマッピングAでは、トリプル&lt;[I+A](s) I(p) [I+A](o)&gt;はGに出現します。しかし、これは、インスタンス・マッピングAの下での&lt;s p o&gt;のインスタンスです。したがって、EのインスタンスはGのサブグラフです。QED.</p>
+
+<p class="fact">Eが簡潔であり、E'がEの真のインスタンスである場合、EはE'を単純含意しない。</p>
+
+<p>EがE'を含意すると仮定すると、EのサブグラフはEのインスタンスで、それはEの真のインスタンスです。したがって、EのサブグラフはEの真のインスタンスです。したがって、Eは簡潔ではありません。QED.</p>
+
+<p class="fact">Sに出現しないIRIがEに含まれている場合、SはEを単純含意しない。</p>
+
+<p>SがEを含意する場合、SのサブグラフはEのインスタンスであり、したがって、EのすべてのIRIは、そのサブグラフに出現しなければならず、したがって、Sに出現しなければなりません。QED.</p>
+
+<p class="fact">任意のグラフHに関し、sk(G)がHを単純含意する場合、GがH'とH=sk(H')を含意するようなグラフH'が存在する。</p>
+
+<p>スコーレム化マッピングskは、個々の空白ノードを一意の新しいIRIに置き換えます。これは1:1のマッピングであるため、逆（inverse）のマッピングが存在します。ksは、個々のスコーレムIRIをそれが置換した空白ノードで置き換える逆マッピングであると定義します。sk(G)がHを含意するため、sk(G)のサブグラフはHのインスタンスで、仮にA(H)をHの空白ノードのあるインスタンス・マッピングAとします。すると、ks(A(H))はGのサブグラフです。また、Aとksの定義域は素であるためks(A(H))=A(ks(H))です。したがって、ks(H)にはGのサブグラフであるインスタンスがあり、したがって、Gによって含意されます。また、H=sk(ks(H))です。QED.</p>
+
+<p class="fact">sk(G)に導入された「新しい」IRIをまったく含んでいないグラフHに関し、GがHを単純含意する場合に限り、sk(G)はHを単純含意する。</p>
+
+<p>以前の証明での用語の使用: HにスコーレムIRIが含まれていない場合、H=ks(H)です。したがって、sk(G)がHを含意する場合、Gはks(H)=Hを含意します。また、GがHを含意する場合、sk(G)はHを含意するGを含意し、したがって、sk(G)はHを含意します。QED.</p>
+
+</section>
+<section id="whatnot" class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 id="non_semantics" aria-level="1" role="heading"><span class="secno">D. </span>RDF具象化、コンテナおよびコレクション（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>RDFのセマンティック条件は、コンテナや有限のコレクションを記述する際の使用を意図した多くのRDF語彙や、RDFグラフがRDFトリプルを記述できるようにすることを意図した具象化語彙の意味に形式的な制約を置きません。この付録では、この語彙の意図する意味を簡潔に概観します。</p>
+
+<p>形式意味論からこれらの条件を省略することは、既存のRDF使用の変更に適応し、形式的なRDF含意をチェックするプロセスの実装をより簡単にするための設計上の決定事項です。例えば、実装においては、特別な手続き型の技術を用いてRDFコレクションの語彙を実装することを決定できます。</p>
+
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="reification">
+
+<h3 id="Reif" aria-level="2" role="heading"><span class="secno">D.1 </span>具象化</h3>
+
+<div class="c1">
+<table>
+<tbody>
+  <tr>
+    <td class="othertable"><strong>RDF具象化語彙</strong></td>
+  </tr>
+  <tr>
+    <td class="othertable"><code>rdf:Statement rdf:subject rdf:predicate rdf:object</code></td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<p>この語彙が意図する意味は、RDFグラフが、他のRDFトリプルを記述するメタデータとして機能できるようにすることです。</p>
+
+<p>1つのトリプルが含まれている、次のグラフの例を見てみましょう。</p>
+
+<p><code>ex:a ex:b ex:c .</code></p>
+
+<p>そして、このグラフを<a href="#dfn-identify" class="internalDFN">識別する</a>ために<code>ex:graph1</code>というIRIが用いられていると仮定します。この識別が厳密にどのように達成されるかはRDFモデルの範囲外ですが、グラフを記述する具象構文ドキュメントに対するIRI解決、または、データセット内の名前付きグラフの関連する名前であるIRIによるかもしれません。トリプルを参照するためにIRIを使用できると仮定すると、具象化語彙によって、最初のグラフを別のグラフで記述できるようになります。</p>
+
+<p><code>ex:graph1 rdf:type rdf:Statement .<br>
+ex:graph1 rdf:subject ex:a .<br>
+ex:graph1 rdf:predicate ex:b .<br>
+ex:graph1 rdf:object ex:c .</code></p>
+
+<p>2番目のグラフは最初のグラフのトリプルの<dfn id="dfn-reification">具象化</dfn>と呼ばれます。</p>
+
+<p>具象化は引用の形式ではなく、トリプルのトークンとトリプルが参照する資源との関係を記述するものです。<code>rdf:subject</code>プロパティーの値は、主語のIRI自身ではなく、それが示すものであり、<code>rdf:predicate</code>と<code>rdf:object</code>でも同じです。例えば、<code>ex:a</code>の指示対象がエベレスト山であれば、具象化されたトリプルの主語も、それを参照するIRIではなく、その山です。</p>
+
+<p><a href="#dfn-reification" class="internalDFN">具象化</a>は、空白ノードで主語として記述するか、トリプルの具象的な実現物を<a href="#dfn-identify" class="internalDFN">識別</a>しないIRIの主語として記述することができ、どちらの場合にも、記述されたトリプルの存在をシンプルに言明します。</p>
+
+<p><a href="#dfn-reification" class="internalDFN">具象化</a>の主語は、抽象的なオブジェクトとみなされるトリプルではなく、表層構文のドキュメントなどの、RDFトリプルの具象的な実現物を参照することを意図しています。これは、構成の日付や来歴情報などのプロパティーが具象化されたトリプルに適用されるユースケースをサポートしており、それはトリプルの特定のインスタンスやトークンの参照と見なされる時にのみ意味があります。</p>
+
+<p>トリプルの<a href="#dfn-reification" class="internalDFN">具象化</a>はそのトリプルを含意せず、それによって含意されることもありません。<a href="#dfn-reification" class="internalDFN">具象化</a>は、トリプルのトークンが存在していることと、それが何なのかを述べるだけで、それが真だとは述べず、したがって、それはトリプルを含意しません。一方、トリプルを言明しても、トリプルによって記述されている論議領域にトリプルのトークンが存在するということを自動的に示唆するわけではありません。例えば、トリプルは動物について記述しているオントロジーの一部かもしれず、それは、論議領域には動物のみが含まれているという解釈によって満足でき、したがって、その<a href="#dfn-reification" class="internalDFN">具象化</a>は偽でありえます。</p>
+
+<p>任意のRDFグラフまたは複数のグラフのトリプルとトリプルの<a href="#dfn-reification" class="internalDFN">具象化</a>との関係は、1対1である必要はなく、<a href="#dfn-reification" class="internalDFN">具象化</a>で記述されたあるエンティティーに関するプロパティーの言明が、同じプロパティーが別のそのようなエンティティーを保持する（同じ構成要素を持っていたとしても）ことを含意する必要はありません。例えば、</p>
+
+<p><code>_:xxx rdf:type rdf:Statement .<br>
+_:xxx rdf:subject ex:subject .<br>
+_:xxx rdf:predicate ex:predicate .<br>
+_:xxx rdf:object ex:object .<br>
+_:yyy rdf:type rdf:Statement .<br>
+_:yyy rdf:subject ex:subject .<br>
+_:yyy rdf:predicate ex:predicate .<br>
+_:yyy rdf:object ex:object .<br>
+_:xxx ex:property ex:foo .</code></p>
+
+<p>は、</p>
+
+<p><code>_:yyy ex:property ex:foo .</code></p>
+
+<p>を含意しません。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdf-containers">
+
+<h3 id="containers" aria-level="2" role="heading"><span class="secno">D.2 </span>RDFコンテナ</h3>
+
+<table>
+<tbody>
+  <tr>
+    <td class="othertable"><strong>RDF(S)コンテナ語彙</strong></td>
+  </tr>
+  <tr>
+    <td class="othertable"><code>rdf:Seq rdf:Bag rdf:Alt rdf:_1 rdf:_2 ... rdfs:member rdfs:Container rdfs:ContainerMembershipProperty</code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>RDFは、3種類のコンテナを記述するための語彙を提供します。コンテナには型があり、そのメンバーは<em>コンテナ・メンバーシップ・プロパティー</em>の固定の集合を用いて列挙できます。これらのプロパティーは、メンバーを互いに区別する方法を提供するために整数でインデックス化されますが、これらのインデックスは必ずしもコンテナ自身の順序を定義していると考えるべきではありません。一部のコンテナは、順序付されていないと考えられます。</p>
+
+<p><a href="#dfn-rdfs-vocabulary" class="internalDFN">RDFS語彙</a>により、位置に関係なく成立する総括的なメンバーシップ・プロパティーと、すべてのコンテナとすべてのメンバーシップ・プロパティーが含まれているクラスが追加されます。</p>
+
+<p>この語彙は、コンテナを構築するためのツールと理解するのではなく、一般的にプログラミング言語で提供されるような、コンテナを<em>記述する</em>ものと理解しなければなりません。実際のコンテナはセマンティックな論議領域内のエンティティーであり、語彙を用いるRDFグラフは単にこれらのエンティティーに関する非常に基本的な情報を提供し、それにより、RDFグラフがコンテナ型を示し、コンテナのメンバーに関する部分的な情報を提供することが可能となります。RDFコンテナ語彙は非常に制限されているため、RDFコンテナに関する多くの自然な仮定が、RDF形式意味論では形式的には認められません。これは、これらの仮定が誤りであることを意味するのではなく、単にRDFはそれが真に違いないことを形式的に含意しないと考えるべきです。</p>
+
+<p>コンテナ語彙には特別なセマンティック条件はありません。そのコンテナが持っているとRDFが推定する構造のみが、この語彙の使用と一般的なRDFのセマンティック条件から推論できるものです。要するに、これは、コンテナの型を知るということと、コンテナにアイテムの部分的な列挙があるということです。意図される使用モードは、<code>rdf:Bag</code>という型は順序付けがないが重複が許され、<code>rdf:Seq</code>という型は順序付けされており、<code>rdf:Alt</code>という型は選択肢の集合を表し、恐らく優先順位付きであると考えられます。コンテナが順序付きの型であれば、コンテナ内のアイテムの順序はコンテナ・メンバーシップ・プロパティーの番号順（単一値であると思われる）に示されるようになっています。しかし、これらの非形式的な条件は形式的なRDF含意には反映されません。</p>
+
+<p>RDFセマンティクスは、順序付けのない<code>rdf:Bag</code>の要素を異なる順序で列挙することで発生する可能性がある含意をサポートしません。例えば、</p>
+
+<p><code>_:xxx rdf:type rdf:Bag .<br>
+_:xxx rdf:_1 ex:a .<br>
+_:xxx rdf:_2 ex:b .</code></p>
+
+<p>は、</p>
+
+<p><code>_:xxx rdf:_1 ex:b .<br>
+_:xxx rdf:_2 ex:a .</code></p>
+
+<p>を含意しません。</p>
+
+<p>（この結論が<a href="#dfn-valid" class="internalDFN">有効</a>であれば、それを元のグラフに追加した結果は、グラフによって<a href="#dfn-entail" class="internalDFN">含意</a>され、両方の要素が両方の位置にあることを言明するでしょう。これは、RDFが純粋に言明的な言語であるという事実の結果です。）</p>
+
+<p>コンテナのプロパティーがコンテナの要素のどれにも適用され、その逆も成り立つという仮定はできません。</p>
+
+<p>3種類のコンテナが互いに素であるという形式的な要件はないため、例えば、何かが<code>rdf:Bag</code>と<code>rdf:Seq</code>の両方であると言明することには整合性があります。コンテナが隙間がないという仮定はないため、例えば、</p>
+
+<p><code>_:xxx rdf:type rdf:Seq.<br>
+_:xxx rdf:_1 ex:a .<br>
+_:xxx rdf:_3 ex:c .</code></p>
+
+<p>は、</p>
+
+<p><code>_:xxx rdf:_2 _:yyy .</code></p>
+
+<p>を含意しません。</p>
+
+<p>RDFには、コンテナに固定数のメンバーのみが含まれていると言明する方法はありません。これは、任意のコンテナのメンバーシップ・プロパティーを言明するグラフに、トリプルを追加しても常に整合性があるという事実を反映しています。そして最後に、RDFコンテナに有限の数のメンバーがあるという既存の仮定はありません。</p>
+
+</section>
+<section typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="rdf-collections">
+
+<h3 id="collections" aria-level="2" role="heading"><span class="secno">D.3 </span>RDFコレクション</h3>
+
+<table>
+<tbody>
+  <tr>
+    <td class="othertable"><strong>RDFコレクション語彙</strong></td>
+  </tr>
+  <tr>
+    <td class="othertable"><code>rdf:List rdf:first rdf:rest rdf:nil</code></td>
+  </tr>
+</tbody>
+</table>
+
+<p>RDFはコレクション記述用の語彙、つまり、head-tailリンクでの「リスト構造」を提供します。コレクションは、分岐構造が可能で、明示的な終端があるという点でコンテナと異なっており、アプリケーションがコレクション内のアイテムの集合を正確に決定できます。</p>
+
+<p>コンテナのように、この語彙には、<code>rdf:nil</code>の型が<code>rdf:List</code>である以外に、特別なセマンティック条件は課されません。これは、次の形式の2つのトリプル
+
+<code><br>
+<br>
+_:c1 rdf:first aaa .<br>
+_:c1 rdf:rest _:c2 .</code></p>
+
+<p>で個々に記述されている「整形式の」アイテムのシーケンスを接続するために空白ノードを用いてコンテナを記述するような状況における使用を一般的に想定しており、その場合、<code>rdf:rest</code>というプロパティーの値として<code>rdf:nil</code>を用いることで最後のアイテムが示されます。よく知られている慣習では、<code>rdf:nil</code>を空のコレクションと見なすことができます。そのようなグラフは、コレクションが存在するという言明を意味し、コレクションのメンバーは検査によって決定できるため、多くの場合、何が意味されているのかをアプリケーションは十分に決定できます。セマンティクス的には、グラフで明示的に言及されたもの（そして、空のコレクション）以外にコレクションが存在する必要はありません。例えば、2つのアイテムが含まれているコレクションの存在により、交換されたアイテムと同じようなコレクションも存在することが自動的に保証されることはありません。
+
+<code>
+<br><br>
+_:c1 rdf:first ex:aaa .<br>
+_:c1 rdf:rest _:c2 .<br>
+_:c2 rdf:first ex:bbb .<br>
+_:c2 rdf:rest rdf:nil . </code></p>
+
+<p>は、</p>
+
+<p><code>_:c3 rdf:first ex:bbb .<br>
+_:c3 rdf:rest _:c4 .<br>
+<span>_:c4 rdf:first</span> ex:aaa .<br>
+_:c4 rdf:rest rdf:nil .</code></p>
+
+<p>を含意しません。</p>
+
+<p>さらに、RDFはこの語彙の使用に「整形式性」の条件を課さないため、末尾が分岐したり、リストではなかったり、先頭が複数あるリストなどの非常に特殊なオブジェクトの存在を言明するRDFグラフを書くこともできます。</p>
+
+<p><code>_:666 rdf:first ex:aaa .<br>
+     _:666 rdf:first ex:bbb .<br>
+     _:666 rdf:rest ex:ccc .<br>
+  _:666 rdf:rest rdf:nil . </code></p>
+
+<p>その<code>rdf:rest</code>プロパティーの値の指定に失敗してコレクションに曖昧さがあるトリプルの集合を書くこともできます。</p>
+
+<p><a href="#dfn-semantic-extension" class="internalDFN">セマンティックの拡張</a>では、そのようなグラフを排除するために、この語彙の使用に対して、構文上の整形式性の制限を追加できます。それらは、上記の形式の2つのトリプルのアイテムの「リンクした」コレクションの主語（<code>rdf:nil</code>で終わるアイテムで終わる）は、そのメンバーがアイテムの<code>rdf:first</code>の値を表したものであり、主語から<code>rdf:nil</code>へ<code>rdf:rest</code>プロパティーを追跡することで得られた順序で完全に順序付けられたシーケンスを表すという規定に違反するコレクション語彙の解釈を排除できます。これにより、他のシーケンスを含んだシーケンスが可能となります。</p>
+
+<p>RDFSのセマンティック条件により、<code>rdf:first</code>プロパティーの主語および<code>rdf:rest</code>プロパティーの主語または目的語は、<code>rdf:type rdf:List</code>に属する必要があります。</p>
+
+</section>
+</section>
+<section class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="change-log-informative">
+      
+<!--OddPage-->
+
+<h2 id="ChangeLog" aria-level="1" role="heading"><span class="secno">E. </span>変更履歴（参考情報）</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>勧告案以後の変更:</p>
+
+<ul>
+  <li>7項の<a href="http://lists.w3.org/Archives/Public/public-rdf-comments/2014Feb/0012.html">誤植</a>を修正</li>
+</ul>
+
+<p>勧告候補以後の変更:</p>
+
+<ul>
+  <li>軽微な誤植を修正した。データ型マップを定義した7項に説明を追加した。</li>
+</ul>
+
+<p>最終草案以後の変更:</p>
+
+<ul>
+  <li>いくつかの内部リンク切れと誤植を修正した。</li>
+  <li>RDF語彙の表を追加した。</li>
+  <li>データ型の字句空間に言及した説明を追加。</li>
+  <li>データ型マップを定義した変更の拡張注記を追加した。</li>
+  <li>真偽条件の直観的な要約に関する参考情報の項を削除した。</li>
+  <li>解釈の概念の概要説明を追加した。</li>
+  <li>問題の特殊な解釈を述べたり、より適切な用語を使用するために「解釈」および関連する用語のいくつかの使用を調整した。</li>
+  <li>旧バージョンのシリーズ編集者としてBrian McBrideに謝辞を述べた。</li>
+  <li>RDFデータセットの定義のように見える文言を、より参考情報らしい文言に置き換えた。</li>
+</ul>
+
+</section>
+<section class="informative appendix" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter" id="acknowledgements-1">
+<!--OddPage-->
+
+<h2 id="acknowledgements" aria-level="1" role="heading"><span class="secno">F. </span>謝辞</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>基礎の公理に反することなく自己適応を可能とするために明示的な拡張マッピングを使用するという基本的なアイデアは、Christopher Menzelが示唆しました。付録Aで用いている一般化RDF構文とその必要性を示す例は、Herman ter Horstが示唆したもので、彼は規則の集合の完全性と複雑さの結果も証明しました。Jeremy Carrollは、単純含意が一般にNP-完全であることを最初に示しました。Antoine Zimmermanは、証明と体裁に対し、いくつかの単純化と改善を提案しました。</p>
+
+<p>RDF 1.1の編集者は、Thomas Baker、Dan Brickley、Gavin Carothers、Jeremy Carroll、Pierre-Antoine Champin、Richard Cyganiak、Martin J. Durst、Alex Hal、Steve Harris、Ivan Herman、Eric Prud'hommeaux、Andy Seaborne、David WoodおよびAntoine Zimmermannの有益な貢献に感謝いたします。</p>
+
+<p>この仕様は、RDFワーキンググループのメンバーにより積み重ねられた議論の成果です。この仕様は、以前の仕様[<cite><a class="bibref" href="#bib-RDF-MT">RDF-MT</a></cite>]を参考にしており、その編集者は、Jeremy Carroll、Dan Connolly、Jan Grant、R. V. Guha、Herman ter Horst、Graham Klyne、Ora Lassilla、Brian McBride、Sergey Melnick、Peter Patel-Schneider、Jos deRooおよびPatrick Sticklerからの有益な情報提供に感謝いたします。Brian McBrideは、以前の仕様のシリーズ編集者でした。</p>
+
+<p>このドキュメントは、Robin Berjonが開発した<a href="http://dev.w3.org/2009/dap/ReSpec.js/documentation.html">ReSpec.js仕様記述ツール</a>を用いて準備されました。</p>
+
+</section>
+<section class="appendix" id="references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_references"><span class="secno">G. </span>参考文献</h2>
+
+<section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_normative-references"><span class="secno">G.1 </span>規範的な参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-RDF-PLAIN-LITERAL">[RDF-PLAIN-LITERAL]</dt>
+  <dd rel="dcterms:requires">Jie Bao, Sandro Hawke, Boris Motik, Peter F. Patel-Schneider, Alex Polleres. <cite><a href="http://www.w3.org/TR/rdf-plain-literal/">rdf:PlainLiteral: A Datatype for RDF Plain Literals (Second Edition)</a></cite> 11 December 2012. W3C Recommendation. URL: <a href="http://www.w3.org/TR/rdf-plain-literal/">http://www.w3.org/TR/rdf-plain-literal/</a></dd>
+  <dt id="bib-RDF11-CONCEPTS">[RDF11-CONCEPTS]</dt>
+  <dd rel="dcterms:requires">Richard Cyganiak, David Wood, Markus Lanthaler. <cite><a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">RDF 1.1 Concepts and Abstract Syntax.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/rdf11-concepts/">http://www.w3.org/TR/rdf11-concepts/</a></dd>
+  <dt id="bib-RFC2119">[RFC2119]</dt>
+  <dd rel="dcterms:requires">S. Bradner. <a href="http://www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a></dd>
+  <dt id="bib-SPARQL11-ENTAILMENT">[SPARQL11-ENTAILMENT]</dt>
+  <dd rel="dcterms:requires">Birte Glimm; Chimezie Ogbuji. <a href="http://www.w3.org/TR/sparql11-entailment/"><cite>SPARQL 1.1 Entailment Regimes</cite></a>. 21 March 2013. W3C Recommendation. URL: <a href="http://www.w3.org/TR/sparql11-entailment/">http://www.w3.org/TR/sparql11-entailment/</a></dd>
+  <dt id="bib-TURTLE">[TURTLE]</dt>
+  <dd rel="dcterms:requires">Eric Prud'hommeaux, Gavin Carothers. <cite><a href="http://www.w3.org/TR/2014/REC-turtle-20140225/">RDF 1.1 Turtle: Terse RDF Triple Language.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-turtle-20140225/">http://www.w3.org/TR/2014/REC-turtle-20140225/</a>. The latest edition is available at <a href="http://www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a></dd>
+</dl>
+
+</section>
+<section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_informative-references"><span class="secno">G.2 </span>参考情報の参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-HORST04">[HORST04]</dt>
+  <dd rel="dcterms:references">Herman J. ter Horst. <cite>Extending the RDFS Entailment Lemma</cite>, in S.A. McIlraith et al. (Eds.), The Semantic Web - ISWC2004, Proceedings of the Third International Semantic Web Conference, Hiroshima, Japan, November 2004, Springer, LNCS 3298, pp. 77-91.</dd>
+  <dt id="bib-HORST05">[HORST05]</dt>
+  <dd rel="dcterms:references">Herman J. ter Horst. <cite>Completeness, Decidability and Complexity of Entailment for RDF Schema and a Semantic Extension Involving the OWL Vocabulary</cite>, Journal of Web Semantics 3 (2005) 79-115.</dd>
+  <dt id="bib-ISO24707">[ISO24707]</dt>
+  <dd rel="dcterms:references"><cite>Information technology ? Common Logic (CL): a framework for a family of logic-based languages</cite> 1 October 2007. International Standard ISO/IEC 24707:2007(E). URL: <a href="http://standards.iso.org/ittf/PubliclyAvailableStandards/c039175_ISO_IEC_24707_2007%28E%29.zip"> http://standards.iso.org/ittf/PubliclyAvailableStandards/c039175_ISO_IEC_24707_2007%28E%29.zip</a></dd>
+  <dt id="bib-OWL2-OVERVIEW">[OWL2-OVERVIEW]</dt>
+  <dd rel="dcterms:references">W3C OWL Working Group. <a href="http://www.w3.org/TR/owl2-overview/"><cite>OWL 2 Web Ontology Language Document Overview (Second Edition)</cite></a>. 11 December 2012. W3C Recommendation. URL: <a href="http://www.w3.org/TR/owl2-overview/">http://www.w3.org/TR/owl2-overview/</a></dd>
+  <dt id="bib-OWL2-PROFILES">[OWL2-PROFILES]</dt>
+  <dd rel="dcterms:references">Boris Motik; Bernardo Cuenca Grau; Ian Horrocks; Zhe Wu; Achille Fokoue. <a href="http://www.w3.org/TR/owl2-profiles/"><cite>OWL 2 Web Ontology Language Profiles (Second Edition)</cite></a>. 11 December 2012. W3C Recommendation. URL: <a href="http://www.w3.org/TR/owl2-profiles/">http://www.w3.org/TR/owl2-profiles/</a></dd>
+  <dt id="bib-OWL2-SYNTAX">[OWL2-SYNTAX]</dt>
+  <dd rel="dcterms:references">Boris Motik; Peter Patel-Schneider; Bijan Parsia. <a href="http://www.w3.org/TR/owl2-syntax/"><cite>OWL 2 Web Ontology Language Structural Specification and Functional-Style Syntax (Second Edition)</cite></a>. 11 December 2012. W3C Recommendation. URL: <a href="http://www.w3.org/TR/owl2-syntax/">http://www.w3.org/TR/owl2-syntax/</a></dd>
+  <dt id="bib-RDF-MT">[RDF-MT]</dt>
+  <dd rel="dcterms:references">Patrick Hayes. <a href="http://www.w3.org/TR/rdf-mt/"><cite>RDF Semantics</cite></a>. 10 February 2004. W3C Recommendation. URL: <a href="http://www.w3.org/TR/rdf-mt/">http://www.w3.org/TR/rdf-mt/</a></dd>
+  <dt id="bib-RDF-TESTCASES">[RDF-TESTCASES]</dt>
+  <dd rel="dcterms:references">jan grant; Dave Beckett. <a href="http://www.w3.org/TR/rdf-testcases"><cite>RDF Test Cases</cite></a>. 10 February 2004. W3C Recommendation. URL: <a href="http://www.w3.org/TR/rdf-testcases">http://www.w3.org/TR/rdf-testcases</a></dd>
+  <dt id="bib-RDF11-SCHEMA">[RDF11-SCHEMA]</dt>
+  <dd rel="dcterms:references">Dan Brickley, R. V. Guha. <cite><a href="http://www.w3.org/TR/2014/REC-rdf-schema-20140225/">RDF Schema 1.1</a></cite>. W3C Recommendation, 25 February 2014. URL: <a href="http://www.w3.org/TR/2014/REC-rdf-schema-20140225/">http://www.w3.org/TR/2014/REC-rdf-schema-20140225/</a>. The latest published version is available at <a href="http://www.w3.org/TR/rdf-schema/">http://www.w3.org/TR/rdf-schema/</a>.
+</dd>
+  <dt id="bib-RIF-OVERVIEW">[RIF-OVERVIEW]</dt>
+  <dd rel="dcterms:references">Michael Kifer; Harold Boley. <a href="http://www.w3.org/TR/rif-overview/"><cite>RIF Overview (Second Edition)</cite></a>. 5 February 2013. W3C Note. URL: <a href="http://www.w3.org/TR/rif-overview/">http://www.w3.org/TR/rif-overview/</a></dd>
+  <dt id="bib-SPARQL11-QUERY">[SPARQL11-QUERY]</dt>
+  <dd rel="dcterms:references">Steven Harris; Andy Seaborne. <a href="http://www.w3.org/TR/sparql11-query/"><cite>SPARQL 1.1 Query Language</cite></a>. 21 March 2013. W3C Recommendation. URL: <a href="http://www.w3.org/TR/sparql11-query/">http://www.w3.org/TR/sparql11-query/</a></dd>
+  <dt id="bib-SWBP-XSCH-DATATYPES">[SWBP-XSCH-DATATYPES]</dt>
+  <dd rel="dcterms:references">Jeremy Carroll; Jeff Pan. <a href="http://www.w3.org/TR/swbp-xsch-datatypes"><cite>XML Schema Datatypes in RDF and OWL</cite></a>. 14 March 2006. W3C Note. URL: <a href="http://www.w3.org/TR/swbp-xsch-datatypes">http://www.w3.org/TR/swbp-xsch-datatypes</a></dd>
+  <dt id="bib-XML10">[XML10]</dt>
+  <dd rel="dcterms:references">Tim Bray; Jean Paoli; Michael Sperberg-McQueen; Eve Maler; Francois Yergeau et al. <a href="http://www.w3.org/TR/xml"><cite>Extensible Markup Language (XML) 1.0 (Fifth Edition)</cite></a>. 26 November 2008. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a></dd>
+  <dt id="bib-XMLSCHEMA11-2">[XMLSCHEMA11-2]</dt>
+  <dd rel="dcterms:references">David Peterson; Sandy Gao; Ashok Malhotra; Michael Sperberg-McQueen; Henry Thompson; Paul V. Biron et al. <a href="http://www.w3.org/TR/xmlschema11-2/"><cite>W3C XML Schema Definition Language (XSD) 1.1 Part 2: Datatypes</cite></a>. 5 April 2012. W3C Recommendation. URL: <a href="http://www.w3.org/TR/xmlschema11-2/">http://www.w3.org/TR/xmlschema11-2/</a></dd>
+</dl>
+
+</section>
+</section>
+
+</body>
+</html>

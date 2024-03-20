@@ -1,0 +1,2027 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>SPARQL 1.1更新</title>
+<style type="text/css">@import url("www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/local.css");
+
+code           { font-family: monospace; }
+
+div.constraint,
+div.issue,
+div.note,
+div.notice     { margin-left: 2em; }
+
+ol.enumar      { list-style-type: decimal; }
+ol.enumla      { list-style-type: lower-alpha; }
+ol.enumlr      { list-style-type: lower-roman; }
+ol.enumua      { list-style-type: upper-alpha; }
+ol.enumur      { list-style-type: upper-roman; }
+
+
+div.exampleInner pre { margin-left: 1em;
+                       margin-top: 0em; margin-bottom: 0em}
+div.exampleOuter {border: 4px double gray;
+                  margin: 0em; padding: 0em}
+div.exampleInner { background-color: #d5dee3;
+                   border-top-width: 4px;
+                   border-top-style: double;
+                   border-top-color: #d3d3d3;
+                   border-bottom-width: 4px;
+                   border-bottom-style: double;
+                   border-bottom-color: #d3d3d3;
+                   padding: 4px; margin: 0em }
+div.exampleWrapper { margin: 4px }
+div.exampleHeader { font-weight: bold;
+                    margin: 4px}
+
+em.rfc2119 { text-transform: lowercase;
+             font-variant: small-caps;
+             font-style: normal; }</style>
+<link rel="stylesheet" type="text/css" href="www.w3.org/StyleSheets/TR/W3C-REC.css">
+</head>
+<body>
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2013/REC-sparql11-update-20130321/">SPARQL 1.1 Update W3C Recommendation 21 March 2013</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2013年8月3日</p>
+
+<hr>
+
+<div class="head">
+
+<p><a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72"></a></p>
+
+<h1>
+<a name="title" id="title"></a>SPARQL 1.1更新</h1>
+
+<h2>
+<a name="w3c-doctype" id="w3c-doctype"></a>W3C勧告 2013年3月21日</h2>
+
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2013/REC-sparql11-update-20130321/">http://www.w3.org/TR/2013/REC-sparql11-update-20130321/</a></dd>
+  <dt>最新バージョン:</dt>
+  <dd><a href="www.w3.org/TR/sparql11-update/">http://www.w3.org/TR/sparql11-update/</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2012/PR-sparql11-update-20121108/">http://www.w3.org/TR/2012/PR-sparql11-update-20121108/</a></dd>
+  <dt>編集者:</dt>
+  <dd>Paul Gearon <a href="mailto:pgearon@revelytix.com">&lt;pgearon@revelytix.com&gt;</a>
+</dd>
+  <dd>Alexandre Passant, DERI Galway at the National University of Ireland, Galway, Ireland <a href="mailto:alexandre.passant@deri.org">&lt;alexandre.passant@deri.org&gt;</a>
+</dd>
+  <dd>Axel Polleres, Siemens AG <a href="mailto:axel.polleres@siemens.com">&lt;axel.polleres@siemens.com&gt;</a>
+</dd>
+</dl>
+
+<p>このドキュメントに対する<a href="www.w3.org/2013/sparql-errata#sparql11-update"><strong>正誤表</strong></a>を参照してください。いくつかの規範的な修正が含まれているかもしれません。</p>
+
+<p><a href="www.w3.org/2003/03/Translations/byTechnology?technology=sparql11-update"><strong>翻訳版</strong></a>も参照してください。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2013 <a href="www.w3.org/"><acronym title="World Wide Web Consortium">W3C</acronym></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><acronym title="Massachusetts Institute of Technology">MIT</acronym></a>, <a href="www.ercim.eu/"><acronym title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>), All Rights Reserved. W3C <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+</div>
+
+<hr>
+
+<div>
+
+<h2>
+<a name="abstract" id="abstract"></a>要約</h2>
+
+<p>このドキュメントでは、RDFグラフ用の更新言語であるSPARQL 1.1更新を記述しています。これは、RDF用のSPARQLクエリ言語に由来する構文を使用します。更新オペレーションは、グラフ・ストア内のグラフのコレクション上で実行されます。オペレーションは、グラフ・ストア内のRDFグラフを更新、作成、削除するために提供されます。</p>
+
+</div>
+<div>
+
+<h2>
+<a name="status" id="status"></a>このドキュメントのステータス</h2>
+
+<h4 id="may-be">置き換えられる可能性</h4>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行のW3Cの刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/">W3C技術報告インデックス</a>にあります。</em></p>
+
+<h4 id="related">一連のドキュメント</h4>
+
+<p>このドキュメントは、<a href="www.w3.org/2001/sw/DataAccess/">SPARQLワーキンググループ</a>が作成した以下の11のSPARQL 1.1勧告のうちの1つです。</p>
+
+<ol>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-overview-20130321">SPARQL 1.1概要</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-query-20130321">SPARQL 1.1クエリ言語</a></li>
+  <li>
+<a href="www.w3.org/TR/2013/REC-sparql11-update-20130321">SPARQL 1.1更新</a>（このドキュメント）</li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-service-description-20130321">SPARQL 1.1サービス記述</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-federated-query-20130321">SPARQL 1.1統合クエリ</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-json-20130321">SPARQL 1.1クエリ結果JSONフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-results-csv-tsv-20130321">SPARQL 1.1クエリ結果CSVおよびTSVフォーマット</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-rdf-sparql-XMLres-20130321">SPARQLクエリ結果XMLフォーマット（第2版）</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-entailment-20130321">SPARQL 1.1含意レジーム</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-protocol-20130321">SPARQL 1.1プロトコル</a></li>
+  <li><a href="www.w3.org/TR/2013/REC-sparql11-http-rdf-update-20130321">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+</ol>
+
+<h4 class="no-toc no-num" id="status-changes">本質的な変更なし</h4>
+
+<p><a href="www.w3.org/TR/2012/PR-sparql11-update-20121108/">旧バージョン</a>以降、このドキュメントには実質的な変更はありませんでした。マイナーな編集上の変更がある場合には、<a href="#changes-since-pr">変更履歴</a>に詳細が記述されており、<a href="www.asahi-net.or.jp/~ax2s-kmtn/internet/rdf/diff">色分けした差分</a>として見ることができます。</p>
+
+<h4 class="no-toc no-num" id="please">コメントの送信</h4>
+
+<p><a class="mailto" href="mailto:public-rdf-dawg-comments@w3.org">public-rdf-dawg-comments@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-rdf-dawg-comments/">公開アーカイブ</a>）にコメントをお送りください。このドキュメントに対する<a href="www.w3.org/2009/sparql/">SPARQLワーキンググループ</a>の作業は完了していますが、コメントは<a href="www.w3.org/2013/sparql-errata">正誤表</a>や今後の改定で扱われることがあります。公開討論は、<a class="mailto" href="mailto:public-sparql-dev@w3.org">public-sparql-dev@w3.org</a>（<a class="http" href="lists.w3.org/Archives/Public/public-sparql-dev/">公開アーカイブ</a>）で歓迎します。</p>
+
+<h4 class="no-toc no-num" id="endorsement">W3Cによる承認</h4>
+
+<p><em>このドキュメントは、W3Cメンバー、ソフトウェア開発者、他のW3Cグループ、および他の利害関係者によりレビューされ、W3C勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成におけるW3Cの役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</em></p>
+
+<h4 id="patents">特許</h4>
+
+<p><em>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/">2004年2月5日のW3C特許方針</a>の下で活動しているグループによって作成されました。W3Cは、このグループの成果物に関連する<a href="www.w3.org/2004/01/pp-impl/35463/status" rel="disclosure">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure">W3C特許方針の6項</a>に従って情報を開示しなければなりません。</em></p>
+
+</div>
+<div class="toc">
+
+<h2>
+<a name="contents" id="contents"></a>目次</h2>
+
+<p class="toc">1 <a href="#sec-intro">はじめに</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;1.1 <a href="#documentConventions">文書規定</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.1 <a href="#languageForm">言語形式</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.2 <a href="#terminology">用語</a><br>
+2 <a href="#graphStore">グラフ・ストア</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.1 <a href="#graphStoreQueryServices">グラフ・ストアとSPARQLクエリ・サービス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.2 <a href="#updateServices">SPARQL 1.1更新サービス</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;2.3 <a href="#entailmentConsistency">含意と整合性</a><br>3 <a href="#updateLanguage">SPARQL 1.1更新言語</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.1 <a href="#graphUpdate">グラフ更新</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.1 <a href="#insertData">INSERT DATA</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.2 <a href="#deleteData">DELETE DATA</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3 <a href="#deleteInsert">DELETE/INSERT</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3.1 <a href="#delete">DELETE（参考情報）</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3.2 <a href="#insert">INSERT（参考情報）</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.3.3 <a href="#deleteWhere">DELETE WHERE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.4 <a href="#load">LOAD</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.1.5 <a href="#clear">CLEAR</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;3.2 <a href="#graphManagement">グラフ管理</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.1 <a href="#create">CREATE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.2 <a href="#drop">DROP</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.3 <a href="#copy">COPY</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.4 <a href="#move">MOVE</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.2.5 <a href="#add">ADD</a><br>
+4 <a href="#formalModel">SPARQL更新形式モデル</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.1 <a href="#formalModelGeneral">一般的な定義</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1.1 <a href="#def_graphstore">グラフ・ストア</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.1.2 <a href="#def_updateoperation">抽象的な更新オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.2 <a href="#formalModelAuxiliary">補助的な定義</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.1 <a href="#def_datasetUnion">データセット-和集合</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.2 <a href="#def_datasetDiff">データセット-DIFF</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.3 <a href="#def_datasetQuadPattern">Dataset( QuadPattern,  μ, DS, GS )</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.2.4 <a href="#def_datasetPattern"> Dataset( QuadPattern,  P, DS, GS )</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.3 <a href="#formalModelGraphUpdate">グラフ更新オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.1 <a href="#def_insertdataoperation">データ挿入オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.2 <a href="#def_deletedataoperation">データ削除オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.3 <a href="#def_deleteinsertoperation">削除・挿入オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.4 <a href="#def_loadoperation">ロード・オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.3.5 <a href="#def_clearOperation">クリア・オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.4 <a href="#formalModelGraphMgt">グラフ管理オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.4.1 <a href="#def_createOperation">作成オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.4.2 <a href="#def_dropOperation">削除オペレーション</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;4.5 <a href="#mappingRequestsToOperations">形式モデルへの更新リクエストのマッピング</a><br>
+5 <a href="#conformance">適合性</a><br>
+</p>
+
+<h3>
+<a name="appendices" id="appendices"></a>付録</h3>
+
+<p class="toc">A <a href="#security">セキュリティに関する留意点（参考情報）</a><br>
+B <a href="#mediaType">インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</a><br>
+C <a href="#grammar">SPARQL 1.1更新文法</a><br>
+D <a href="#sec-bibliography">参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;D.1 <a href="#sec-existing-stds">規範的な参考文献</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;D.2 <a href="#null">その他の参考文献</a><br>
+</p>
+
+</div>
+
+<hr>
+<div class="body">
+<div class="div1">
+
+<h2>
+<a name="sec-intro" id="sec-intro"></a>1 はじめに</h2>
+
+<p>SPARQL 1.1更新は、グラフ・ストア内のRDFグラフに対する更新を指定し実行するための標準的な言語となることを目指しています。</p>
+
+<p>SPARQL 1.1更新は次の機能を提供します。</p>
+
+<ul>
+  <li>グラフ・ストアのRDFグラフにトリプルを挿入します。</li>
+  <li>グラフ・ストアのRDFグラフからトリプルを削除します。</li>
+  <li>グラフ・ストアにRDFグラフをロードします。</li>
+  <li>グラフ・ストアのRDFグラフをクリアします。</li>
+  <li>グラフ・ストアに新しいRDFグラフを作成します。</li>
+  <li>グラフ・ストアからRDFグラフを削除します。</li>
+  <li>グラフ・ストアのあるRDFグラフの内容を別のものにコピー、移動、または、追加します。</li>
+  <li>一連の更新オペレーションを1回のアクションで行います。</li>
+</ul>
+
+<p>このドキュメントは、特に次の他の仕様書と関係があります。</p>
+
+<ul>
+  <li><a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a></li>
+  <li><a href="www.w3.org/TR/sparql11-http-rdf-update/">SPARQL 1.1グラフ・ストアHTTPプロトコル</a></li>
+  <li><a href="www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 RDF用プロトコル</a></li>
+</ul>
+
+<p>SPARQL 1.1更新は対で用いる言語の片方で、<em>SPARQL 1.1クエリ言語</em>とともに用いることを想定しています。現在のドキュメントは、SPARQL 1.1クエリ言語仕様の文法と一部の定義を参照しています。</p>
+
+<p><em>SPARQL 1.1グラフ・ストアHTTPプロトコル</em>仕様は、PUTやDELETEなど、標準的なHTTPメソッドを用いて更新オペレーションを実行するためにHTTPプロトコルを採用しています。シンプルかつよく知られているAPIを提供するものの、HTTPプロトコルのメソッドには限界があるため、必然的にそのオペレーションには制約があります。対照的に、SPARQL 1.1更新では、1つのオペレーションで複数の修正が可能で、複合SPARQLクエリを用いて挿入するデータを構築したり、削除するデータを選択したりできます。また、更新言語を用いると、独自のAPIでのオペレーションやHTTPによらない接続が容易になります。</p>
+
+<p><em>SPARQL 1.1 RDF用プロトコル</em>の仕様は、クライアントによるSPARQL 1.1クエリとSPARQL 1.1更新のオペレーションをSPARQLクエリ処理サービスに伝え、適切な結果を返すための手段を記述しています。SPARQL 1.1クエリとSPARQL 1.1更新（このドキュメント）の仕様を合わせると、より複雑な機能ではあるけれども包括的な<em>SPARQL 1.1グラフ・ストアHTTPプロトコル</em>の代替手段となります。</p>
+
+<div class="div2">
+
+<h3>
+<a name="documentConventions" id="documentConventions"></a>1.1 文書規定</h3>
+<div class="div3">
+
+<h4>
+<a name="languageForm" id="languageForm"></a>1.1.1 言語形式</h4>
+
+<p>このドキュメントのオペレーションには、オペレーションの使用方法を示す言語形式が含まれています。これは、<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL 1.1クエリ</a>のドキュメントで述べられている形式文法の実例となる形式を意図しています。このドキュメントの言語形式とSPARQL 1.1クエリの文法に相違がある場合には、SPARQL 1.1クエリの形式文法に従います。</p>
+<p>例えば、このドキュメントでは、言語形式は、非形式的に次のように表します。</p>
+
+<pre class="defn">( <strong>WITH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em>  )?
+( ( <em><a href="www.w3.org/TR/sparql11-query/#rDeleteClause">DeleteClause</a> <a href="www.w3.org/TR/sparql11-query/#rInsertClause">InsertClause</a></em>? ) | <em><a href="www.w3.org/TR/sparql11-query/#rInsertClause">InsertClause</a></em> )
+( <strong>USING</strong> ( <strong>NAMED</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )*
+<strong>WHERE</strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></em></code></pre>
+
+<p>角括弧が選択性を表すEBNFの他の形式とは異なり、このドキュメントでは、<code><strong>[]</strong></code>は、SPARQLクエリと同様に、空白ノードに用います。<code>|</code>は選択肢を表すために用い、<code>()</code>は用語のグループ化に用い、<code>?</code>は0または1つの用語のオカレンスを、<code>*</code>は0以上のオカレンスを、<code>+</code>は1つ以上のオカレンスを表します。</p>
+
+<p><code><strong>ボールド体</strong></code>は、言語キーワードを示します。<code><em>イタリック体</em></code>は、<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">SPARQL 1.1クエリ文法</a>で定義されている構文事項を示し、リンクによって生成規則を参照することがあります。イタリック体ではないテキストは、形式文法ではより複雑な（かつ正確な）定義を持っているローカルな用語を示します。</p>
+
+<p>更新リクエストの例は次のように表します。</p>
+
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+INSERT { &lt;http://example/egbook&gt; dc:title  "This is an example title" } WHERE {}</pre>
+<div class="note">
+
+<p class="prefix"><strong>注意:</strong></p>
+
+更新リクエストの<code>PREFIX</code>の定義と<a href="www.w3.org/TR/sparql11-query/#QSynIRI">IRIの構文</a>は、一般的にSPARQL1.1クエリ言語と同じ規定に従います。</div>
+
+<p>Turtle構文では、データを次のように表します。</p>
+
+<pre class="data">@prefix dc:   &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix :     &lt;http://example.org/books/&gt; .
+:book0  dc:title  "SPARQL Tutorial" .</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="terminology" id="terminology"></a>1.1.2 用語</h4>
+
+<p>ドキュメントが、しなければならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）、してはならない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST NOT</em>）、すべきである／する必要がある（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）、すべきでない／する必要がない（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD NOT</em>）、することができる／してもよい（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）、推奨される（<strong>recommended</strong>）という単語を使用し、強調されたテキストとして出現するとき、<a href="www.faqs.org/rfcs/rfc2119.html">RFC 2119</a> [RFC2119]で記述されているとおりに解釈されなければなりません。</p>
+
+<p>このドキュメントの全体で、次の用語も使用しています。</p>
+
+<ul>
+  <li>
+<a name="operation" id="operation">オペレーション</a> - 実行するアクション。結果として、<a href="#graphStore">グラフ・ストア</a>のデータが修正され、<a href="#insertData">INSERT</a>や<a href="#deleteData">DELETE</a>のように、1つのコマンドで表現可能です。</li>
+  <li>
+<a name="request" id="request">リクエスト</a> - グラフ・ストアに送られる0以上の一連のオペレーション。<a href="www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 RDF用プロトコル</a>を用いた場合には、リクエストは1つのHTTP POSTになるでしょう。</li>
+</ul>
+
+<p>このドキュメントでは、次の用語も、SPARQL 1.1クエリ言語の定義に従って使用します。</p>
+
+<ul>
+  <li>
+<code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> - トリプルの集合のパターンを指す構文構成子で、<code><em><a href="www.w3.org/TR/sparql11-query/#rConstructTriples">ConstructTriples</a></em></code>に似ていますが、トリプルの集合が名前付きグラフに挿入または削除されることを示すために潜在的に<code>GRAPH</code>キーワードを伴います。</li>
+  <li>
+<code><em><a href="www.w3.org/TR/sparql11-query/#rQuadData">QuadData</a></em></code> - 変数のない<code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code>。</li>
+  <li>
+<code><em><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></em></code> - トリプルの集合を参照するための構文構成子で、複雑な制約を伴う可能性があります。</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="graphStore" id="graphStore"></a>2 グラフ・ストア</h2>
+
+<p>グラフ・ストアは、1つのサービスが管理するRDFグラフの可変コンテナです。SPARQL 1.1クエリ言語によってオペレーションを行う<a href="www.w3.org/TR/sparql11-query/#sparqlDataset">RDFデータセット</a>と同様に、グラフ・ストアには、<em>デフォルト・グラフ</em>を格納する1つの（名前のない）スロットと、<em>名前付きグラフ</em>を格納する0以上の名前付きスロットが含まれています。オペレーションは、修正するグラフを指定するか、そのオペレーションの<em>デフォルト・グラフ</em>に頼ることができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。上書きされなければ（例えば、SPARQLプロトコルによって）、ストアの名前のないグラフが、そのストアに対するオペレーションのデフォルト・グラフになるでしょう。実装によっては、名前のないグラフは、別のグラフ、名前付きグラフを記述しているグラフ、他のグラフの和集合の表現などを参照することもできます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+<p>RDFデータセットとは異なり、名前付きグラフを、グラフ・ストアに追加または削除できます。グラフ・ストアは、それが含んでいるグラフに対して正式なものである必要はありません。これは、グラフ・ストアが、ウェブの他の場所で定義されたRDFグラフのローカル・コピーを保持し、元のグラフとは関係なく、そのコピーを修正できることを意味します。</p>
+
+<p>1つの名前のないグラフが存在し、名前付きグラフがないというシンプルなケースでは、SPARQL 1.1更新は、グラフの更新言語として（グラフ・ストアの更新言語ではなく）使用できます。</p>
+
+<p>グラフ・ストアへのアクセス方法に関する情報は、プロトコル仕様とグラフ・ストア・プロトコル仕様で定義されています。グラフ・ストアは、更新サービス（cf.プロトコル）かグラフ・ストア・プロトコル（cf.グラフ・ストア・プロトコル）のいずれかでアクセスできます。いずれの場合でも、グラフ・ストアは、サービスの陰に隠れており、SPARQL更新サービスのURI、または、グラフ・ストア・プロトコルに応答するURIによってアクセス可能となります。</p>
+
+<p>グラフ・ストアの形式的な定義と、SPARQL 1.1更新がそれにどのような影響を与えるかは、<a href="#formalModel">SPARQL 1.1更新形式モデルの項</a>で記述しています。</p>
+
+<div class="div2">
+
+<h3>
+<a name="graphStoreQueryServices" id="graphStoreQueryServices"></a>2.1 グラフ・ストアとSPARQLクエリ・サービス</h3>
+
+<p>更新リクエストを受け付けて処理するサービス（SPARQLエンドポイントという非公式な用語で呼ばれることが多い）は、<em>更新サービス</em>と呼ばれます。更新サービスが管理しているグラフ・ストアが、クエリ・サービスが提供するRDFデータセットと完全に一致すると仮定することはできません。クエリ・サービスは、更新サービスのグラフ・ストアの一部であるグラフから生成されたRDFデータセットを提供することもできます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。クエリ・サービスのRDFデータセット内のグラフが、更新サービスのグラフ・ストア内のグラフのサブセットである場合もあります（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。さらに、クエリ・サービスのRDFデータセットと、更新サービスのグラフ・ストアが、同じグラフに対して異なる名前を用いることもあります（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="updateServices" id="updateServices"></a>2.2 SPARQL 1.1更新サービス</h3>
+
+<p>SPARQL 1.1更新リクエストは、一連のオペレーションです。</p>
+
+<p>各リクエストは、SPARQL 1.1更新サービスにより、アトミックに（atomically）処理されるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。「アトミックに」という用語は、リクエスト内に存在するオペレーションの数にかかわらず、1つのリクエストの結果は、影響がないか、完全な影響があるかのいずれかになることを意味します。その結果として生じる同時並行性の問題は、個々の実装が、そのアーキテクチャーに応じて検討すべき事項となるでしょう。特に、更新リクエストにおいて、オペレーションのWHERE句で<a href="www.w3.org/TR/sparql11-federated-query/#service">SERVICE</a>キーワードを使用すると、通常はアトミック性が失われるでしょう。</p>
+
+<p>2つの異なる更新サービスで、その個々のグラフ・ストアに同じ名前を持つグラフが含まれている場合、ストアは独立したエンティティーであるため、片方のサービスで実行した更新がもう一方に伝わると仮定することはできません。これらのサービスの相互の挙動（更新後の自動的な同期など）は、実装に依存します。</p>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="entailmentConsistency" id="entailmentConsistency"></a>2.3 含意と整合性</h3>
+
+<p>ストアが、含意された応答を演算できる場合は、<a href="www.w3.org/TR/sparql11-entailment/">SPARQL 1.1含意レジーム</a>を参照してください。そうすれば、更新オペレーションは含意されたデータと相互作用を行えます。具体的には、<code>DELETE</code>オペレーションは、実際には影響のない含意されたステートメントの削除を試みることができます。</p>
+
+<p>更新リクエストの完了後に、ストアが自身のグラフの特定の含意レジームに関する整合性をチェックする場合、グラフ・ストアの新たな状況の整合性をチェックできます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。矛盾が検知された場合、そのストアは、リクエストに対してエラーを返すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+<p>同様に注意すべき点は、一部のストアは、RDFSやOWLのような、より高レベルの処理が可能なオントロジーに関して含意を実行できるかもしれないということです。更新は、これらの体系において、これらの含意レジームと相互作用を行えます。</p>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="updateLanguage" id="updateLanguage"></a>3 SPARQL 1.1更新言語</h2>
+
+<p>SPARQL 1.1更新は、グラフ・ストアに対し、2つのカテゴリーの更新オペレーションをサポートしています。</p>
+
+<ul>
+  <li>グラフ更新 - グラフ・ストア内のグラフのトリプルの追加と削除</li>
+  <li>グラフ管理 - グラフ管理（グラフの追加、移動、コピー）の間にしばしば用いられるグラフ更新オペレーションに対する便利な省略形に加え、グラフ・ストア内のグラフの作成と削除</li>
+</ul>
+
+<p>リクエストは一連のオペレーションであり、EOF（End of File）で終了します。複数のオペレーションは、「;」（セミコロン）で区切られます。リクエスト内の最後のオペレーションの後のセミコロンは任意です。実装は、1つのリクエストの複数のオペレーションは、リクエストに出現する順序で連続して実行されるのと同じ結果を保証する形で実行されることを保証しなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</p>
+
+<p>オペレーションの結果はすべて、<em>成功</em>か<em>失敗</em>のいずれかになります。<em>失敗</em>の結果に追加情報を付し、そのリクエストのオペレーションの一部が成功であったことを示すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。結果の正確な形式は、HTTPやプログラマチックAPIによる<a href="www.w3.org/TR/sparql11-protocol/">SPARQL 1.1プロトコル</a>などの、使用するインターフェースに依存するため、このドキュメントでは規定していません。1つのリクエストに複数のオペレーションが存在している場合、任意のオペレーションの結果が<em>失敗</em>すれば、一連のオペレーションは中止されなければならず（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）、それによって、その後のオペレーションは無視されます。</p>
+
+<p>その後のオペレーションの形式意味論は、このドキュメントの<a href="#formalModel">4項</a>で定義しています。</p>
+
+<div class="div2">
+
+<h3>
+<a name="graphUpdate" id="graphUpdate"></a>3.1 グラフ更新</h3>
+
+<p>グラフ更新オペレーションは、グラフ・ストア内の既存のグラフの変更を行いますが、それを明示的に削除、作成することはありません。しかし、存在しないグラフに空でない挿入を行うと、グラフが<em>暗黙的に</em>作成されるでしょう。つまり、更新リクエストを実行する実装で、トリプルが挿入される前には存在しなかったグラフを黙って自動的に作成すべき（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）で、何らかの理由でそうならない場合、失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。（例えば、実装の資源が十分でないかもしれません。または、実装は、一定のグラフに更新サービスを提供するのみで、暗黙的に作成されたグラフはこの一定の範囲内にないかもしれません。）実装は、トリプルの削除後に空のままのグラフを削除できます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+<p>更新オペレーションによってグラフが暗黙的に作成された場合、グラフ・ストアの挙動は、グラフがCREATEオペレーションによって明示的に作成された場合の挙動と関数的に同等でなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）</p>
+
+<p>SPARQL 1.1更新は、下記のグラフ更新オペレーションを提供します。</p>
+
+<ul>
+  <li>
+<code><a href="#insertData">INSERT DATA</a></code>オペレーションは、トリプル（リクエスト内でインラインで与えられる）をグラフに追加します。宛先グラフ（destination graph）が存在していなければ、これによって作成されるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。グラフが存在せず、何らかの理由でそれを作成できない場合、失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</li>
+  <li>
+<code><a href="#deleteData">DELETE DATA</a></code>オペレーションは、個々のグラフにトリプルが含まれていれば、トリプル（リクエスト内でインラインで与えられる）を削除します。</li>
+  <li>グラフ更新のための基本的なパターンに基づくアクションは、<code>INSERT</code>と<code>DELETE</code>（1つの<code><a href="#deleteInsert">DELETE/INSERT</a></code>オペレーションに同時に出現可能）です。これらのアクションは、削除するトリプルのグループと、追加するトリプルのグループで構成されます。トリプルの仕様は、クエリ・パターンに基づいています。<code>INSERT</code> / <code>DELETE</code>と<code>INSERT DATA</code> / <code>DELETE DATA</code>との違いは、<code>INSERT DATA</code>と<code>DELETE DATA</code>はパターンのテンプレートにバインディングを代入しないという点です。<code>DATA</code>形式には、具象データ（<code>DELETE DATA</code>と<code>INSERT DATA</code>のオペレーション内の変数を含んだトリプル・テンプレートは認められておらず、<code>DELETE DATA</code>内では空白ノードは認められていません。<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">文法</a>の注意8と9を参照）が必要です。具象データに対して特定のオペレーションを持っているということは、大きい、純粋なデータの更新が可能となるリクエストを流すことができることを意味します。</li>
+  <li>
+<code><a href="#load">LOAD</a></code>オペレーションは、グラフを表しているドキュメントの内容を、グラフ・ストア内のグラフに読み込みます。</li>
+  <li>
+<code><a href="#clear">CLEAR</a></code>オペレーションは、（1つ以上の）グラフのトリプルをすべて削除します。</li>
+</ul>
+
+<div class="div3">
+
+<h4>
+<a name="insertData" id="insertData"></a>3.1.1 INSERT DATA</h4>
+
+<p><code><a href="#insertData">INSERT DATA</a></code>オペレーションは、トリプル（リクエスト内でインラインで与えられる）をグラフ・ストアに追加します。</p>
+
+<pre class="defn"><strong>INSERT DATA </strong> <em><code><a href="www.w3.org/TR/sparql11-query/#rQuadData">QuadData</a></code></em> <strong></strong>
+</pre>
+
+<p>この場合、<code><em>QuadData</em></code>は、オプションで<code>GRAPH</code>ブロックにラップされる<code><em><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></em></code>（つまり、トリプル・パターンの集合）によって形成されます。</p>
+
+<pre class="defn"> <code>( <strong>GRAPH</strong>  <em><a href="www.w3.org/TR/sparql11-query/#rVarOrIri">VarOrIri</a></em> )? { <em><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></em>? }</code>
+</pre>
+
+<p><code><em>QuadData</em></code>の変数は、<code>INSERT DATA</code>リクエストでは認められていません（<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">文法</a>の注意8を参照）。つまり、<code>INSERT DATA</code>ステートメントでは、基底トリプル（ground triples）の挿入のみが認められています。<code><em>QuadData</em></code>の空白ノードは、グラフ・ストアの空白ノードとは素であると想定される、つまり、新しい空白ノードとともに挿入されるでしょう。</p>
+
+<p>グラフが<code><em>QuadData</em></code>に記述されていない場合、デフォルト・グラフが仮定されます。グラフ・ストアに存在しないグラフにデータが挿入されれば、それは作成されるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）（一定のグラフに対して更新サービスを提供している実装がありえます。その場合、認められていないグラフにデータを挿入した更新リクエストには失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>））。</p>
+
+<p>トリプルは、そのトリプルが既にグラフに存在していれば、アクションなしに「処理された」と考えられる（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）ことに注意してください。さらに、</p>
+
+<pre class="query">INSERT DATA { GRAPH &lt;g&gt; {} } ...</pre>
+<p>が<code>&lt;g&gt;</code>を作成しないことに注意してください。ユーザがグラフを作成するだけのつもりであれば、挿入オペレーションより先にグラフ管理のオペレーション（<code>CREATE</code>/<code>LOAD</code>）を使用できます。</p>
+
+<p><strong>例1: <a name="example_1" id="example_1"></a>トリプルをグラフに追加する</strong></p>
+
+<p>この断片は、グラフ・ストアのデフォルト・グラフに挿入される2つのRDFを記述しています。</p>
+
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+INSERT DATA
+{ 
+  &lt;http://example/book1&gt; dc:title "A new book" ;
+                         dc:creator "A.N.Other" .
+}</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ns: &lt;http://example.org/ns#&gt; .
+
+&lt;http://example/book1&gt; ns:price 42 .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ns: &lt;http://example.org/ns#&gt; .
+
+&lt;http://example/book1&gt; ns:price 42 .
+&lt;http://example/book1&gt; dc:title "A new book" .
+&lt;http://example/book1&gt; dc:creator "A.N.Other" .</pre>
+
+<p><strong>例2:</strong></p>
+
+<p><a name="example_2" id="example_2"></a>このSPARQL 1.1更新リクエストは、本の値段を提供するためにトリプルを追加しています。以前の例（デフォルト・グラフに影響を与えた）とは対照的に、リクエストされた変更は、<code>http://example/bookStore</code>というIRIで識別される名前付きグラフで発生します。</p>
+
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX ns: &lt;http://example.org/ns#&gt;
+INSERT DATA
+{ GRAPH &lt;http://example/bookStore&gt; { &lt;http://example/book1&gt;  ns:price  42 } }
+</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ns: &lt;http://example.org/ns#&gt; .
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; ns:price 42 .
+</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="deleteData" id="deleteData"></a>3.1.2 DELETE DATA</h4>
+
+<p><code><a href="#deleteData">DELETE DATA</a></code>オペレーションは、グラフ・ストアの個々のグラフにトリプルが含まれていれば、トリプル（リクエスト内でインラインで与えられる）を削除します。</p>
+
+<pre class="defn"><strong>DELETE DATA </strong> <em><code><a href="www.w3.org/TR/sparql11-query/#rQuadData">QuadData</a></code></em> <strong></strong>
+</pre>
+
+<p><code><em>QuadData</em></code>は、削除するトリプルを示し、<code><a href="#insertData">INSERT DATA</a></code>で記述されているとおりですが、<code>DELETE DATA</code>オペレーションでは、変数も空白ノードも認められていないという点に違いがあります（<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">文法</a>の注意8と9を参照）。</p>
+
+<p><code>INSERT DATA</code>と同様に、<code>DELETE DATA</code>は、基底トリプルのデータを削除するためのものであり、これが、変数や空白ノードが含まれているQuadDataが<code>DELETE DATA</code>オペレーションでは認められていない理由です。<code><a href="#deleteInsert">DELETE/INSERT</a></code>オペレーションは、空白ノードが含まれているトリプルを削除するために使用できます。</p>
+
+<p>存在しないトリプルの削除は影響を与えないことに注意してください。つまり、グラフ・ストアに存在していなかった<code><em>QuadData</em></code>のトリプルは無視されます。空白ノードは、既存のデータとマッチしないため、<code><em>QuadData</em></code>では認められていません。</p>
+
+<p><strong>例3: グラフからトリプルを削除する</strong></p>
+
+<p><a name="example_3" id="example_3"></a>このリクエストは、グラフ・ストアのデフォルト・グラフから削除する2つのトリプルを記述しています。</p>
+
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+
+DELETE DATA
+{
+  &lt;http://example/book2&gt; dc:title "David Copperfield" ;
+                         dc:creator "Edmund Wells" .
+}</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ns: &lt;http://example.org/ns#&gt; .
+
+&lt;http://example/book2&gt; ns:price 42 .
+&lt;http://example/book2&gt; dc:title "David Copperfield" .
+&lt;http://example/book2&gt; dc:creator "Edmund Wells" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix ns: &lt;http://example.org/ns#&gt; .
+
+&lt;http://example/book2&gt; ns:price 42 .</pre>
+
+<p><strong>例4:</strong></p>
+
+<p><a name="example_4" id="example_4"></a>このSPARQL 1.1更新リクエストは、削除するトリプルと追加する（ここでは、書名を修正するために使用されている）トリプルの2つのオペレーションで構成されます。以前の例（デフォルト・グラフに影響を与えた）とは対照的に、リクエストされた変更は、<code>http://example/bookStore</code>というIRIで識別される名前付きグラフで発生します。</p>
+
+<pre class="query">PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+DELETE DATA
+{ GRAPH &lt;http://example/bookStore&gt; { &lt;http://example/book1&gt;  dc:title  "Fundamentals of Compiler Desing" } } ;
+
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/&gt;
+INSERT DATA
+{ GRAPH &lt;http://example/bookStore&gt; { &lt;http://example/book1&gt;  dc:title  "Fundamentals of Compiler Design" } }
+</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Desing" .
+</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+</pre>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="deleteInsert" id="deleteInsert"></a>3.1.3 DELETE/INSERT</h4>
+
+<p><code><a href="#deleteInsert">DELETE/INSERT</a></code>オペレーションは、WHERE句で指定されたクエリ・パターンのバインディングに基づき、グラフ・ストアからトリプルを削除または追加するために使用できます。</p>
+
+<pre class="defn">( <strong>WITH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )?
+( ( <em><a href="www.w3.org/TR/sparql11-query/#rDeleteData">DeleteClause</a> <a href="www.w3.org/TR/sparql11-query/#rInsertData">InsertClause</a></em>? ) | <em><a href="www.w3.org/TR/sparql11-query/#rInsertData">InsertClause</a></em> )
+( <strong>USING ( NAMED )?</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )*
+<strong>WHERE</strong> <em><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></em></pre>
+
+<p><em>DeleteClause</em>と<em>InsertClause</em>の形式は次のように分解できます。</p>
+
+<pre class="defn" id="delete_insert_clause"><em>DeleteClause</em> ::= <strong>DELETE </strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> <strong></strong>
+<em>InsertClause</em> ::= <strong>INSERT </strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> <strong></strong>
+</pre>
+
+<p>このオペレーションは、WHERE句でデータを識別し、それは変数の集合に対するバインディングのソリューション・シーケンスを演算するために用いられます。その後、各ソリューションのバインディングは、トリプルを削除するために<code>DELETE</code>テンプレートに代入され、次に、新しいトリプルを作成するために<code>INSERT</code>テンプレートに代入されます。ソリューションによって、主語や述語の位置のリテラルのような、バインディングされていない変数や不正なRDF構成子を含んだトリプルが生成されれば、オペレーションの処理時には、そのトリプルは含まれないでしょう。<code>INSERT</code>は、出力グラフで新しいデータをインスタンス化せず、<code>DELETE</code>は何も削除しないでしょう。ソリューション・シーケンスの演算に使用されるグラフは、<code>DELETE</code>と<code>INSERT</code>のテンプレートで修正されたグラフとは異なるかもしれません。</p>
+
+<p><code>WITH</code>句は、後続する要素（<code>DELETE</code>句、<code>INSERT</code>句、または<code>WHERE</code>句内）でグラフが明示的に指定されていなければ、その要素を修正またはマッチングを行うグラフを定義します。提供されていない場合は、グラフ・ストアのデフォルト・グラフ（または、<code>WHERE</code>句内で明示的に宣言されているデータセット）が仮定されます。つまり、<code>WITH</code>句は、後続する<code>DELETE</code>句と<code>INSERT</code>句内の<code><em>QuadPattern</em></code>と、後続する<code>WHERE</code>句内の<code><em>GroupGraphPattern</em></code>の両方を、<code>GRAPH</code>パターンにラップするための糖衣構文と見なせます。これは、1つのオペレーションで、同じグラフを複数回参照しないようにするために使用できます。</p>
+
+<p>オプションの<code>WITH</code>句の後に<code>INSERT</code>句および/または<code>DELETE</code>句が続きます。挿入の前にトリプルの削除が発生します。オペレーションの削除部分が実行される前に、<code>WHERE</code>句内のパターンが一度だけ評価されます。全体的な処理モデルは、パターンが実行され、DELETEテンプレートをインスタンス化するためにその結果が用いられ、削除が行われ、再びINSERTテンプレートをインスタンス化するためにその結果が用いられ、挿入が実行されるというものです。</p>
+
+<p><code>DELETE</code>句が省略されれば、オペレーションはデータを挿入するだけです（<code><a href="#insert">INSERT</a></code>を参照）。INSERT句が省略された場合には、オペレーションはデータを削除するだけです（<code><a href="#delete">DELETE</a></code>を参照）。文法上、同じオペレーションで<code>DELETE</code>と<code>INSERT</code>の両方を省略することは認められていません。</p>
+
+<p><a id="defUSING"><code>USING</code></a>句と<code>USING NAMED</code>句は、<code>WHERE</code>句を評価している間に用いられる<a href="www.w3.org/TR/sparql11-query/#rdfDataset">RDFデータセット</a>に影響を与えます。これは、<code>FROM</code>句と<code>FROM NAMED</code>句が<a href="www.w3.org/TR/sparql11-query/#specifyingDataset">SPARQL 1.1クエリ言語でRDFデータセット</a>を記述するのと同じ方法でデータセットを記述します。更新リクエストにおいて<code>FROM</code>ではなく<code>USING</code>というキーワードを用いるのは、「<code>DELETE FROM</code>」という記述により発生しえる曖昧さを回避するためです。つまり、<code>WHERE</code>句内の<a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern"><code><em>GroupGraphPattern</em></code></a>は、明示的な<code>USING</code>句か<code>USING NAMED</code>句が指定されている場合には、それらによって記述されたデータセットとマッチし、そうでない場合には、グラフ・ストアとマッチするでしょう。</p>
+
+<p><code>WITH</code>句は、オペレーションが主に1つのグラフを参照する場合に便利です。<code>WITH</code>句内でグラフ名が指定されていれば、<code>WHERE</code>句を評価する目的のために、これは、指定された名前を持つデフォルト・グラフが含まれるRDFデータセットを定義するでしょう。ただし、<code>USING</code>句または<code>USING NAMED</code>句がない場合のみです。<code>USING</code>句および/または<code>USING NAMED</code>句内で参照されている1つ以上のグラフが存在していれば、<code>WITH</code>句は<code>WHERE</code>句を評価している間、無視されるでしょう。</p>
+
+<p>WHERE句内の<a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern"><code><em>GroupGraphPattern</em></code></a>は、SPARQLクエリの「<code>SELECT * WHERE <em>GroupGraphPattern</em></code>」と同じように評価され、グラフ・ストアから削除または挿入するトリプルを定義するために、すべてのソリューション・バインディングは、先行する<code>DELETE</code>と<code>INSERT</code>のテンプレートに適用されます。</p>
+
+<p>再び、<code><em>QuadPattern</em></code>は、<code><em><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></em></code>（つまり、トリプル・パターンの集合）によって形成され、オプションで<code>GRAPH</code>ブロックにラップされ、その場合、<code>GRAPH</code>句は、更新されるグラフ・ストア内の指定されたグラフを示します。<code>GRAPH</code>句のない<code><em>TripleTemplate</em></code>では、<code>INSERT</code>句または<code>DELETE</code>句は、<code>WITH</code>句で指定されているグラフに当てはまり、<code>WITH</code>句が存在しない場合には、グラフ・ストアのデフォルト・グラフに当てはまります。</p>
+
+<p><code>WITH</code>句の用法を例示すると、次の一般的な形式のオペレーション</p>
+
+<pre class="query">WITH &lt;g1&gt; DELETE { a b c } INSERT { x y z } WHERE { ... }</pre>
+
+<p>は、次と同等と見なされます。</p>
+
+<pre class="query">DELETE { GRAPH &lt;g1&gt; { a b c } } INSERT { GRAPH &lt;g1&gt; { x y z } } USING &lt;g1&gt; WHERE { ... }</pre>
+
+<p>明示的な<code>GRAPH</code>句によって<code>WITH</code>句が上書されることに注意してください。<code>WITH</code>は、<code>GRAPH</code>が明示的に規定していない場合に使用するグラフ（デフォルト・グラフとは異なる）を指定するためのフォールバックを提供します。</p>
+
+<p>存在しないトリプルや存在しないグラフのトリプルを削除しても影響はなく、その結果は<em>成功</em>になるでしょう。新しい空白ノードはグラフ・ストア内のどれともマッチできないので、<code>DELETE</code>テンプレートで新しい空白ノードを使用しても何も削除されないため、<code>DELETE</code>テンプレートでは空白ノードは禁止されています。この制限は<a href="www.w3.org/TR/sparql11-query/#rDeleteClause"><code><em>DeleteClause</em></code></a>自身に関してはEBNFにはないものの、<a href="www.w3.org/TR/sparql11-query/#sparqlGrammar">文法</a>の注9において明示されているということに注意すべきです。</p>
+
+<p>オペレーションによって、存在しないグラフに挿入を試みた場合には、そのグラフは作成されるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。再び、一定のグラフに更新サービスを提供する実装があり、その場合、認められていないグラフを作成する更新リクエストに失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。挿入するデータが何もなければ、グラフは作成されないでしょう。特に、</p>
+
+<pre class="query">INSERT ... { GRAPH &lt;g&gt; {} } ...</pre>
+
+<p>が&lt;g&gt;を作成しないことに注意してください。ユーザが、挿入するデータに関係なくグラフを作成するつもりであれば、挿入オペレーションより先にグラフの管理オペレーション（<code><a href="#create">CREATE</a></code>/<code><a href="#create">LOAD</a></code>）を使用できます。</p>
+
+<p><code>INSERT</code>句に出現する空白ノードは、<code>CONSTRUCT</code>クエリのテンプレート内の空白ノードと同様のオペレーションを行います。つまり、それは<code>WHERE</code>句の任意のソリューションに再インスタンス化されます。詳細に関しては、下記のSPARQLクエリ1.1内の<a href="www.w3.org/TR/sparql11-query/#templatesWithBNodes">空白ノードを持つテンプレート</a>と<a href="#def_deleteinsertoperation">DELETE/INSERTの形式意味論</a>を参照してください。<code>WHERE</code>句内の空白ノードは、SPARQLクエリと同じ方法でデータとマッチします。</p>
+
+<p><strong>例5:</strong></p>
+
+<p><a name="example_5" id="example_5"></a>「Bill」という名を持つすべての人を「William」という名に変更するためにグラフ<code>http://example/addresses</code>を更新する例。</p>
+
+<pre class="query">PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH &lt;http://example/addresses&gt;
+DELETE { ?person foaf:givenName 'Bill' }
+INSERT { ?person foaf:givenName 'William' }
+WHERE
+  { ?person foaf:givenName 'Bill'
+  } </pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/president25&gt; foaf:givenName "Bill" .
+&lt;http://example/president25&gt; foaf:familyName "McKinley" .
+&lt;http://example/president27&gt; foaf:givenName "Bill" .
+&lt;http://example/president27&gt; foaf:familyName "Taft" .
+&lt;http://example/president42&gt; foaf:givenName "Bill" .
+&lt;http://example/president42&gt; foaf:familyName "Clinton" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/president25&gt; foaf:givenName "William" .
+&lt;http://example/president25&gt; foaf:familyName "McKinley" .
+&lt;http://example/president27&gt; foaf:givenName "William" .
+&lt;http://example/president27&gt; foaf:familyName "Taft" .
+&lt;http://example/president42&gt; foaf:givenName "William" .
+&lt;http://example/president42&gt; foaf:familyName "Clinton" .
+</pre>
+<div class="div4">
+
+<h5>
+<a name="delete" id="delete"></a>3.1.3.1 DELETE（参考情報）</h5>
+
+<pre class="defn">( <strong>WITH</strong>  <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )?
+<strong>DELETE </strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> <strong></strong>
+( <strong>USING ( NAMED )?</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )*
+<strong>WHERE</strong> <em><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></em>
+</pre>
+
+<p><code>DELETE</code>オペレーションは、<a href="#deleteInsert"><code>DELETE/INSERT</code></a>オペレーションの<code>INSERT</code>部分がない形式です。<code>DELETE/INSERT</code>に準拠している実装は、このオペレーションも正しく実行できるでしょう。<code>DELETE</code>オペレーションは、明確にするために、ここでは別途に記述しています。<a href="#deleteInsert"><code>DELETE/INSERT</code></a>と同じように、存在しないトリプルや存在しないグラフのトリプルを削除しても影響はなく、その結果は成功になるでしょう。</p>
+
+<p><code>DELETE</code>テンプレートで<code>GRAPH</code>が指定されれば、これは影響を受けたグラフになるでしょう。そうでない場合、オペレーションは、<code>WITH</code>句内でグラフが指定されていればそのグラフに適用され、そうでない場合には、デフォルト・グラフに適用されるでしょう。</p>
+
+<p><code>WHERE</code>句は、既存のグラフのデータを識別し、テンプレートで使用するバインディングを作成します。<em>GroupGraphPattern</em>を適用するグラフは、<code>DELETE/INSERT</code>と同じ規則に従います。</p>
+
+<p><strong>例6:</strong></p>
+
+<p><a name="example_6" id="example_6"></a>この例のリクエストは、ストアのデフォルト・グラフからすべての古い本（1970年より前の日付のもの）のデータを削除します。</p>
+
+<pre class="query">PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+DELETE
+ { ?book ?p ?v }
+WHERE
+ { ?book dc:date ?date .
+   FILTER ( ?date &gt; "1970-01-01T00:00:00-02:00"^^xsd:dateTime )
+   ?book ?p ?v
+ }</pre>
+
+<p><code>WHERE</code>内のパターンは、グラフ・ストアに対してマッチングが行われます。WHERE句に対するソリューションの結果として生じるシーケンスは、SPARQL 1.1クエリのCONSTRUCTと同じように、<code>DELETE</code>テンプレートのトリプル・パターンをインスタンス化するために用いられます。その後、結果として生じるトリプルが、グラフ・ストアから削除されます。</p>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+&lt;http://example/book1&gt; dc:title "Principles of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book2&gt; ns:price 42 .
+&lt;http://example/book2&gt; dc:title "David Copperfield" .
+&lt;http://example/book2&gt; dc:creator "Edmund Wells" .
+&lt;http://example/book2&gt; dc:date "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+&lt;http://example/book2&gt; ns:price 42 .
+&lt;http://example/book2&gt; dc:title "David Copperfield" .
+&lt;http://example/book2&gt; dc:creator "Edmund Wells" .
+&lt;http://example/book2&gt; dc:date "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+
+<p><strong>例7:</strong></p>
+
+<p><a name="example_7" id="example_7"></a>この例のリクエストは、グラフ<code>http://example/addresses</code>から「Fred」という名を持つものに関するステートメントをすべて削除します。<code>WITH</code>句が存在しており、これは、グラフ<code>http://example/addresses</code>は、トリプルが削除されたものであるということと、<code>WHERE</code>句がマッチするものであるということの両方を意味します。</p>
+
+<pre class="query">PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+WITH &lt;http://example/addresses&gt;
+DELETE { ?person ?property ?value } 
+WHERE { ?person ?property ?value ; foaf:givenName 'Fred' } 
+                       
+</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox &lt;mailto:bill@example&gt; .
+
+&lt;http://example/fred&gt; a foaf:Person .
+&lt;http://example/fred&gt; foaf:givenName "Fred" .
+&lt;http://example/fred&gt; foaf:mbox  &lt;mailto:fred@example&gt; .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+<p><code>INSERT</code>と<code>DELETE</code>を組み合わせた複数のオペレーションについて説明している<code>DELETE</code>の別の例を、次の項の<a href="#example_9">最終の例</a>で提供しています。</p>
+
+</div>
+<div class="div4">
+
+<h5>
+<a name="insert" id="insert"></a>3.1.3.2 INSERT（参考情報）</h5>
+
+<pre class="defn">( <strong>WITH</strong>  <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )?
+<strong>INSERT </strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> <strong></strong>
+( <strong>USING ( NAMED )?</strong>  <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> )*
+<strong>WHERE</strong> <em><a href="www.w3.org/TR/sparql11-query/#rGroupGraphPattern">GroupGraphPattern</a></em>
+</pre>
+
+<p><code>INSERT</code>オペレーションは、<a href="#deleteInsert"><code>DELETE/INSERT</code></a>オペレーションの<code>DELETE</code>部分がない形式です。<code>DELETE/INSERT</code>に準拠している実装は、このオペレーションも正しく実行できるでしょう。<code>INSERT</code>オペレーションは、明確にするために、ここでは別途に記述しています。</p>
+
+<p><code>INSERT</code>テンプレートで<code>GRAPH</code>ブロックが指定されれば、これは影響を受けたグラフになるでしょう。そうでない場合、オペレーションは、デフォルト・グラフに適用されるか、<code>WITH</code>句内でグラフが指定されていればそのグラフにそれぞれ適用されるでしょう。<code>USING (NAMED)</code>句が存在していなければ、<code>WHERE</code>句内のパターンは、グラフ・ストアとマッチし、そうでない場合には、<code>USING (NAMED)</code>句によって指定されているデータセットにマッチするでしょう。<code>WHERE</code>句に対するマッチは、挿入されるトリプルを決定するためにテンプレートに適用されるバインディングを作成します（<a href="#deleteInsert"><code>DELETE/INSERT</code></a>と同じ規則に従って）。</p>
+
+<p>ソリューション・シーケンスから発生するインスタンス化によって、主語や述語の位置のリテラルのような、バインディングされていない変数や不正なRDF構成子を含んだトリプルが生成されれば、トリプルは挿入されません。テンプレートには、変数のないトリプル（基底的または明示的なトリプルとして知られている）を含むことができ、ソリューション・シーケンスが空でなければ、これも挿入されるでしょう。</p>
+
+<p><strong>例8:</strong></p>
+
+<p><a name="example_8" id="example_8"></a>この例は、パターンに基づいて、ある名前付きグラフから別の名前付きグラフにトリプルをコピーします。</p>
+
+<pre class="query">PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+INSERT 
+  { GRAPH &lt;http://example/bookStore2&gt; { ?book ?p ?v } }
+WHERE
+  { GRAPH  &lt;http://example/bookStore&gt;
+       { ?book dc:date ?date .
+         FILTER ( ?date &gt; "1970-01-01T00:00:00-02:00"^^xsd:dateTime )
+         ?book ?p ?v
+  } }	</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book2&gt; ns:price 42 .
+&lt;http://example/book2&gt; dc:title "David Copperfield" .
+&lt;http://example/book2&gt; dc:creator "Edmund Wells" .
+&lt;http://example/book2&gt; dc:date "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+<pre class="data"><strong># Graph: http://example/bookStore2</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+&lt;http://example/book4&gt; dc:title "SPARQL 1.0 Tutorial" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book2&gt; ns:price 42 .
+&lt;http://example/book2&gt; dc:title "David Copperfield" .
+&lt;http://example/book2&gt; dc:creator "Edmund Wells" .
+&lt;http://example/book2&gt; dc:date "1948-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+<pre class="data"><strong># Graph: http://example/bookStore2</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1977-01-01T00:00:00-02:00"^^xsd:dateTime .
+
+&lt;http://example/book4&gt; dc:title "SPARQL 1.0 Tutorial" .</pre>
+
+<p><strong>例9:</strong></p>
+
+<p><a name="example_9" id="example_9"></a>この例は、名前と電子メールのトリプルを、ある名前付きグラフから別のグラフにコピーします。一部の個人は、アドレスを持っていないかもしれませんが、それに関係なく、名前はコピーされます。</p>
+
+<pre class="query">PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;
+
+INSERT 
+  { GRAPH &lt;http://example/addresses&gt;
+    {
+      ?person  foaf:name  ?name .
+      ?person  foaf:mbox  ?email
+    } }
+WHERE
+  { GRAPH  &lt;http://example/people&gt;
+    {
+      ?person  foaf:name  ?name .
+      OPTIONAL { ?person  foaf:mbox  ?email }
+    } }</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/people</strong>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:  &gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+
+_:a  rdf:type        foaf:Person .
+_:a  foaf:name       "Alice" .
+_:a  foaf:mbox       &lt;mailto:alice@example.com&gt; .
+
+_:b  rdf:type        foaf:Person .
+_:b  foaf:name       "Bob" .</pre>
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/people</strong>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+@prefix rdf:  &gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+
+_:a  rdf:type        foaf:Person .
+_:a  foaf:name       "Alice" .
+_:a  foaf:mbox       &lt;mailto:alice@example.com&gt; .
+
+_:b  rdf:type        foaf:Person .
+_:b  foaf:name       "Bob" .</pre>
+<pre class="data"><strong># Graph: http://example/addresses</strong>
+@prefix foaf: &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+_:a  foaf:name       "Alice" .
+_:a  foaf:mbox       &lt;mailto:alice@example.com&gt; .
+
+_:b  foaf:name       "Bob" .</pre>
+
+<p><strong>例10:</strong></p>
+
+<p><a name="example_10" id="example_10"></a>この例のリクエストは、パターンに基づいて、ある名前付きグラフから別の名前付きグラフに、最初にトリプルをコピーし、次にPhysical Objectsと分類されているすべてのコピーされた物体に関するトリプルを削除します。これは、1つのリクエスト内の2つのオペレーションについて説明しています。それらは両方とも、同じ<code>PREFIX</code>の定義を共有しています。</p>
+
+<pre class="query">PREFIX dc:  &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX dcmitype: &lt;http://purl.org/dc/dcmitype/&gt;
+PREFIX xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt;
+
+INSERT
+  { GRAPH &lt;http://example/bookStore2&gt; { ?book ?p ?v } }
+WHERE
+  { GRAPH  &lt;http://example/bookStore&gt;
+     { ?book dc:date ?date . 
+       FILTER ( ?date &lt; "2000-01-01T00:00:00-02:00"^^xsd:dateTime )
+       ?book ?p ?v
+     }
+  } ;
+
+WITH &lt;http://example/bookStore&gt;
+DELETE
+ { ?book ?p ?v }
+WHERE
+ { ?book dc:date ?date ;
+         dc:type dcmitype:PhysicalObject .
+   FILTER ( ?date &lt; "2000-01-01T00:00:00-02:00"^^xsd:dateTime ) 
+   ?book ?p ?v
+ } 
+</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix dcmitype: &lt;http://purl.org/dc/dcmitype/&gt; .
+
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1996-01-01T00:00:00-02:00"^^xsd:dateTime .
+&lt;http://example/book1&gt; a dcmitype:PhysicalObject .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+<pre class="data"><strong># Graph: http://example/bookStore2</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+
+&lt;http://example/book4&gt; dc:title "SPARQL 1.0 Tutorial" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example/bookStore</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix dcmitype: &lt;http://purl.org/dc/dcmitype/&gt; .
+
+&lt;http://example/book3&gt; dc:title "SPARQL 1.1 Tutorial" .</pre>
+<pre class="data"><strong># Graph: http://example/bookStore2</strong>
+@prefix dc: &lt;http://purl.org/dc/elements/1.1/&gt; .
+@prefix dcmitype: &lt;http://purl.org/dc/dcmitype/&gt; .
+
+&lt;http://example/book1&gt; dc:title "Fundamentals of Compiler Design" .
+&lt;http://example/book1&gt; dc:date "1996-01-01T00:00:00-02:00"^^xsd:dateTime .
+&lt;http://example/book1&gt; a dcmitype:PhysicalObject .
+
+&lt;http://example/book4&gt; dc:title "SPARQL 1.0 Tutorial" .</pre>
+
+</div>
+<div class="div4">
+
+<h5>
+<a name="deleteWhere" id="deleteWhere"></a>3.1.3.3 DELETE WHERE</h5>
+
+<pre class="defn"><strong>DELETE WHERE </strong> <code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code> <strong></strong>
+</pre>
+
+<p><code>DELETE WHERE</code>オペレーションは<a href="#deleteInsert"><code>DELETE/INSERT</code></a>オペレーションの省略形で、<code>WHERE</code>句でマッチしたバインディングで、削除されるグラフのトリプルを定義するために用います。<code>DELETE/INSERT</code>と同じように、存在しないトリプルや存在しないグラフのトリプルを削除しても影響はなく、その結果は成功になるでしょう。</p>
+
+<p><code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code>は、トリプルとグラフのマッチングのためのパターンと、削除用のテンプレートの両方として用いられます。<code><em><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></em></code>内の<code><em>TripleTemplate</em></code>が<code>GRAPH</code>句の範囲に出現すれば、そのテンプレートがマッチしたグラフと、マッチしたトリプルが削除されるグラフが決まるでしょう。<code>GRAPH</code>句の範囲内にない<code><em>TripleTemplate</em></code>は、デフォルト・グラフにマッチするか削除されるでしょう。</p>
+
+<p><strong>例11:</strong></p>
+
+<p><a name="example_11" id="example_11"></a>この例のリクエストは、デフォルト・グラフから「Fred」という名を持つものに関するステートメントをすべて削除します。</p>
+
+<pre class="query">PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+DELETE WHERE { ?person foaf:givenName 'Fred';
+                       ?property      ?value }
+</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .
+
+&lt;http://example/fred&gt; a foaf:Person .
+&lt;http://example/fred&gt; foaf:givenName "Fred" .
+&lt;http://example/fred&gt; foaf:mbox  &lt;mailto:fred@example&gt; .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+<p><strong>例12:</strong></p>
+
+<p><a name="example_12" id="example_12"></a>この例のリクエストは、グラフ<code>http://example.com/names</code>の資源を「Fred」と命名しているステートメントと、グラフ<code>http://example/addresses</code>にある、その資源に関するステートメントの両方を削除します（グラフ<code>http://example.com/names</code>の資源の一部には、グラフ<code>http://example/addresses</code>に対応するトリプルがあると仮定して）。</p>
+
+<pre class="query">PREFIX foaf:  &lt;http://xmlns.com/foaf/0.1/&gt;
+
+DELETE WHERE {
+  GRAPH &lt;http://example.com/names&gt; {
+    ?person foaf:givenName 'Fred' ;
+            ?property1 ?value1
+  }
+  GRAPH &lt;http://example.com/addresses&gt; {
+    ?person ?property2 ?value2
+  }
+}
+</pre>
+<pre class="data"><strong># Graph: http://example.com/names</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+
+&lt;http://example/fred&gt; a foaf:Person .
+&lt;http://example/fred&gt; foaf:givenName "Fred" .</pre>
+<pre class="data"><strong># Graph: http://example.com/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .
+
+&lt;http://example/fred&gt; foaf:mbox  &lt;mailto:fred@example&gt; .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Graph: http://example.com/names</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+</pre>
+<pre class="data"><strong># Graph: http://example.com/addresses</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="load" id="load"></a>3.1.4 LOAD</h4>
+
+<p><code>LOAD</code>オペレーションは、IRIからRDFドキュメントを読み込み、グラフ・ストア内の指定されたグラフにそのトリプルを挿入します。指定された宛先グラフは、要求されれば作成されるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。再び、一定のグラフに更新サービスを提供する実装は、認められていないグラフを作成するリクエストに失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。宛先グラフが既に存在していれば、そのグラフのデータは削除されないでしょう。</p>
+
+<pre class="defn"><strong>LOAD</strong> ( <strong>SILENT</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> ( <strong>INTO GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> )?</pre>
+
+<p><em>IRIref_from</em>は、ストアがドキュメントを識別し、発見し、読み込むことができるよう、ドキュメントのIRIを指定します。最も一般的な形式は、<em>http</em>IRIスキームを持つURLでしょう。ドキュメントが読み込まれれば、結果として生じるトリプルは、<em>IRIref_to</em>で参照しているIRIで指定された宛先グラフに挿入されるでしょう。</p>
+
+<p>トリプルをロードするための宛先グラフのIRI（<em>IRIref_to</em>）が提供されていなければ、データはデフォルト・グラフにロードされるでしょう。</p>
+
+<p><em>IRIref_from</em>で示されているIRIからRDFデータを検索できない場合（空のグラフが検索されるのとは対照的に）、または、検索方法によってエラー（例えば、HTTPエラー・コードなど）が返される場合、SPARQL 1.1更新サービスは失敗を返すべき（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）で、グラフ・ストアの状況は、リクエストを行う前と同じままであるべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。しかし、SILENTというキーワードが存在していれば、オペレーションは依然として成功を返し、グラフ・ストアの状況は現在のドキュメントによって指定されません。実装は、宛先グラフを作成することもしないこともあり、部分的なデータを受信するという送受信エラー（それ自体は、正当なRDFでありえる）の場合には、データを部分的にロードします。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="clear" id="clear"></a>3.1.5 CLEAR</h4>
+
+<p><code>CLEAR</code>オペレーションは、グラフ・ストア内で指定されているグラフのすべてのトリプルを削除します。</p>
+
+<pre class="defn"><strong>CLEAR</strong>  ( <strong>SILENT</strong> )? (<strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> | <strong>DEFAULT</strong> | <strong>NAMED</strong> | <strong>ALL</strong> )</pre>
+
+<p>ここでは、<code>DEFAULT</code>キーワードは、グラフ・ストアのデフォルト・グラフのすべてのトリプルを削除するために用い、<code>NAMED</code>キーワードは、グラフ・ストアのすべての名前付きグラフのすべてのトリプルを削除するために用い、<code>ALL</code>キーワードは、グラフ・ストアのすべてのグラフのすべてのトリプルを削除するために用います。<code>GRAPH</code>キーワードは、<code><em>IRIref</em></code>で示されているグラフからすべてのトリプルを削除するために用います。このオペレーションでは、グラフ・ストアから空のグラフを削除することは必須ではありませんが、実装では、削除することを選択することもできます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。</p>
+
+<pre class="defn"># 指定されたグラフからすべてのトリプルを削除する。
+<strong>CLEAR GRAPH</strong> <em>IRIref</em> </pre>
+
+<p>これは、原理的に、次と同じ影響を与えます。</p>
+
+<pre class="defn"># <em>IRIref</em>で示されているIRIで指定されたグラフからすべてのトリプルを削除する。
+<strong>DELETE</strong> { <strong>GRAPH</strong> <em>IRIref</em> { ?s ?p ?o } } <strong>WHERE</strong> { <strong>GRAPH</strong> <em>IRIref</em> { ?s ?p ?o } }</pre>
+
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+他のグラフの和集合からデフォルト・グラフを生成するサービスの場合、<code>CLEAR DEFAULT</code>にはさらなる暗示があるかもしれませが、ここではそれは規定しないままにしておきます。</div>
+
+<p>ストアに空のグラフの存在が記録されている場合、指定されたグラフが存在していなければ、SPARQL 1.1更新サービスは、デフォルトで<em>失敗</em>を返すべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。<code>SILENT</code>が存在していれば、オペレーションの結果は常に成功になるでしょう。</p>
+
+<p>空のグラフが記録されていないストアは、常に<em>成功</em>を返すでしょう。</p>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="graphManagement" id="graphManagement"></a>3.2 グラフ管理</h3>
+
+<p>グラフ管理オペレーションによって、グラフ・ストアの名前付きグラフを作成、破棄、移動、コピーしたり、あるグラフの内容を別のグラフに追加することが可能となります。グラフ・ストアに空の名前付きグラフの存在を記録することは必須ではないため、作成と破棄のオペレーションの結果がアクションになる必要はありません。</p>
+
+<p>グラフ・ストアのデフォルト・グラフは、常に存在しています。</p>
+
+<p>SPARQL 1.1更新は、次のグラフ管理オペレーションを提供します。</p>
+
+<ul>
+  <li>
+<code><a href="#create">CREATE</a></code>オペレーションは、空のグラフをサポートしているストアに新しいグラフを作成します。</li>
+  <li>
+<code><a href="#drop">DROP</a></code>オペレーションは、グラフとその内容のすべてを削除します。</li>
+  <li>
+<code><a href="#copy">COPY</a></code>オペレーションは、別のグラフのコピーを含むようにグラフを修正します。</li>
+  <li>
+<code><a href="#move">MOVE</a></code>オペレーションは、あるグラフから別のグラフにすべてのデータを移動させます。</li>
+  <li>
+<code><a href="#add">ADD</a></code>オペレーションは、あるグラフのすべてのデータを別のグラフへと再作成させます。</li>
+</ul>
+
+<div class="div3">
+
+<h4>
+<a name="create" id="create"></a>3.2.1 CREATE</h4>
+
+<p>このオペレーションは、グラフ・ストアにグラフを作成します。</p>
+
+<pre class="defn"><strong>CREATE</strong> ( <strong>SILENT</strong> )? <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em></pre>
+
+<p>空のグラフが記録されているストアの場合、これによって、IRIで指定されている名前を持つストアに新しい空のグラフが作成されるでしょう。グラフが既に存在していれば、<code>SILENT</code>キーワードが用いられている場合を除き、<em>失敗</em>を返すべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。いずれの場合も、既存のグラフの内容は変更されないままとなります。グラフが作成されなければ、<code>SILENT</code>キーワードが用いられている場合を除き、失敗を返さなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。</p>
+
+<p>空の名前付きグラフが記録されていないストアは、存在しないグラフの作成時に常に<em>成功</em>を返すでしょう。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="drop" id="drop"></a>3.2.2 DROP</h4>
+<pre class="query"><strong>DROP</strong>  ( <strong>SILENT</strong> )? (<strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref</a></em> | <strong>DEFAULT</strong> | <strong>NAMED</strong> | <strong>ALL</strong> )</pre>
+
+<p><code>DROP</code>オペレーションは、指定されたグラフ・ストアからグラフを削除します。<code>GRAPH</code>キーワードは、<code><em>IRIref</em></code>で示されているグラフを削除するために用い、<code>DEFAULT</code>キーワードは、グラフ・ストアからデフォルト・グラフを削除するために用い、<code>NAMED</code>キーワードは、グラフ・ストアからすべての名前付きグラフを削除するために用い、<code>ALL</code>キーワードは、グラフ・ストアからすべてのグラフを削除するため、つまり、ストアをリセットするために用います。このオペレーションが成功裡に完了した後、指定されたグラフは、それ以降のグラフ更新オペレーションにはもう利用できません。しかし、グラフ・ストアの<code>DEFAULT</code>グラフが削除されれば、実装は、削除後にそれを回復しなければなりません（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MUST</em>）。つまり、<code>DROP DEFAULT</code>は<code><a href="#clear">CLEAR DEFAULT</a></code>と同等です。</p>
+
+<p>ストアに空のグラフの存在が記録されている場合、指定された名前付きグラフが存在していなければ、SPARQL 1.1更新サービスは、デフォルトで<em>失敗</em>を返すべきです（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">SHOULD</em>）。<code>SILENT</code>が存在していれば、オペレーションの結果は常に成功になるでしょう。</p>
+
+<p>空のグラフが記録されていないストアは、常に<em>成功</em>を返すでしょう。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="copy" id="copy"></a>3.2.3 COPY</h4>
+
+<p><code>COPY</code>オペレーションは、入力グラフから宛先グラフにすべてのデータを挿入するための省略形です。入力グラフのデータは影響を受けませんが、宛先グラフのデータは、それがもしあれば、挿入の前に削除されます。</p>
+
+<pre class="query"><strong>COPY</strong> ( <strong>SILENT</strong> )? ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> | <strong>DEFAULT</strong>) <strong>TO</strong> ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> | <strong>DEFAULT</strong> )</pre>
+
+<p>これは、オペレーション上、次と類似しています。</p>
+
+<pre class="query"><strong>DROP</strong> <strong>SILENT</strong> (<strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> | <strong>DEFAULT</strong>);
+      <strong>INSERT</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> )? <strong>{ ?s ?p ?o } } WHERE</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> )? <strong>{ ?s ?p ?o } }</strong></pre>
+
+<p><code>COPY</code>と<code>DROP/INSERT</code>の組み合わせとの違いは、グラフを自身にコピーするために<code>COPY</code>を用いた場合には、オペレーションは実行されず、データは元のままであろうという点です。この状況で<code>DROP/INSERT</code>を用いると、結果は空のグラフになるでしょう。</p>
+
+<p>宛先グラフが存在していなければ、作成されます。デフォルトでは、入力グラフが存在していない場合、サービスは失敗を返すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。<code>SILENT</code>が存在していれば、オペレーションの結果は常に成功になるでしょう。</p>
+
+<p><strong>例13:</strong></p>
+
+<p><a name="example_13" id="example_13"></a>この例のリクエストは、デフォルト・グラフから名前付きグラフにすべてのステートメントをコピーします。</p>
+
+<pre class="query">COPY DEFAULT TO &lt;http://example.org/named&gt;</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+&lt;http://example/fred&gt; a foaf:Person .
+&lt;http://example/fred&gt; foaf:givenName "Fred" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+<p><code>http://example.org/named</code>の元の内容が<code>COPY</code>オペレーションによって失われることに注意してください。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="move" id="move"></a>3.2.4 MOVE</h4>
+
+<p><code>MOVE</code>オペレーションは、入力グラフから宛先グラフにすべてのデータを移動させるための省略形です。挿入後に入力グラフは削除され、宛先グラフのデータは、それがもしあれば、挿入前に削除されます。</p>
+
+<pre class="query"><strong>MOVE</strong> (<strong>SILENT</strong>)? ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> | <strong>DEFAULT</strong>) <strong>TO</strong> ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> | <strong>DEFAULT</strong>)</pre>
+
+<p>これは、オペレーション上、次と類似しています。</p>
+
+<pre class="query"><strong>DROP SILENT</strong> (<strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> | <strong>DEFAULT</strong>);
+      <strong>INSERT</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> )? <strong>{ ?s ?p ?o } } WHERE</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> )? <strong>{ ?s ?p ?o } };
+DROP</strong> ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> | <strong>DEFAULT</strong>)</pre>
+
+<p><code>MOVE</code>と<code>DROP/INSERT/DROP</code>の組み合わせとの違いは、グラフを自身に移動させるために<code>MOVE</code>を用いた場合には、オペレーションは実行されず、データは元のままであろうという点です。この状況で<code>DROP/INSERT/DROP</code>を用いると、その結果、グラフが削除されるでしょう。</p>
+
+<p>宛先グラフが存在していなければ、作成されます。デフォルトでは、入力グラフが存在していない場合、サービスは<em>失敗</em>を返すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。<code>SILENT</code>が存在していれば、オペレーションの結果は常に成功になるでしょう。</p>
+
+<p><strong>例14:</strong></p>
+
+<p><a name="example_14" id="example_14"></a>この例のリクエストは、デフォルト・グラフから名前付きグラフにすべてのステートメントを移動させます。</p>
+
+<pre class="query">MOVE DEFAULT TO &lt;http://example.org/named&gt;</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/fred&gt; a foaf:Person .
+&lt;http://example/fred&gt; foaf:givenName "Fred" .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+<p><code>http://example.org/named</code>の元の内容が<code>MOVE</code>オペレーションによって失われることに注意してください。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="add" id="add"></a>3.2.5 ADD</h4>
+
+<p><code>ADD</code>オペレーションは、入力グラフから宛先グラフにすべてのデータを挿入するための省略形です。入力グラフのデータは影響を受けず、宛先グラフの初期データは、それがもしあれば、手付かずのままとなります。</p>
+
+<pre class="query"><strong>ADD</strong> ( <strong>SILENT</strong> )? ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> | <strong>DEFAULT</strong>) <strong>TO</strong> ( ( <strong>GRAPH</strong> )? <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> | <strong>DEFAULT</strong>)</pre>
+
+<p>これは、次と同等です。</p>
+
+<pre class="query"><strong>INSERT</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_to</a></em> )? <strong>{ ?s ?p ?o } } WHERE</strong> { ( <strong>GRAPH</strong> <em><a href="www.w3.org/TR/sparql11-query/#rIRIREF">IRIref_from</a></em> )? <strong>{ ?s ?p ?o } }</strong></pre>
+
+<p>宛先グラフが存在していなければ、作成されます。デフォルトでは、入力グラフが存在していない場合、サービスは<em>失敗</em>を返すことができます（<em class="rfc2119" title="RFC 2119のコンテキストにおけるキーワード">MAY</em>）。<code>SILENT</code>が存在していれば、オペレーションの結果は常に成功になるでしょう。</p>
+
+<p><strong>例15:</strong></p>
+
+<p><a name="example_15" id="example_15"></a>この例のリクエストは、デフォルト・グラフから名前付きグラフにすべてのステートメントを追加します。</p>
+
+<pre class="query">ADD DEFAULT TO &lt;http://example.org/named&gt;</pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/fred&gt; a foaf:Person .</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+<pre class="data"><strong># Graph http://example.org/named</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+&lt;http://example/fred&gt; a foaf:Person .
+
+&lt;http://example/william&gt; a foaf:Person .
+&lt;http://example/william&gt; foaf:givenName "William" .
+&lt;http://example/william&gt; foaf:mbox  &lt;mailto:bill@example&gt; .</pre>
+
+</div>
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="formalModel" id="formalModel"></a>4 SPARQL更新形式モデル</h2>
+
+<p>この項では、グラフ・ストアの変換に関する影響について記述することにより、更新オペレーションのセマンティクスを形式的に定義します。</p>
+
+<div class="div2">
+
+<h3>
+<a name="formalModelGeneral" id="formalModelGeneral"></a>4.1 一般的な定義</h3>
+
+<div class="div3">
+
+<h4>
+<a name="def_graphstore" id="def_graphstore"></a>4.1.1 グラフ・ストア</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_graphStore" id="defn_graphStore">定義: グラフ・ストア</a></strong></p>
+
+<p>グラフ・ストアGSは、RDFグラフの可変コンテナです。それには1つの名前のない（デフォルトの）スロットと、0以上の名前付きスロットがあります。名前のないスロットには、RDFグラフが格納されています。それぞれの名前付きスロットは、グラフと関連するIRIとの対です。グラフ・ストアは、可変の<a href="www.w3.org/TR/sparql11-query/#sparqlDataset">RDFデータセット</a>と見ることができます。</p>
+
+<p>GS = {DG, (iri<sub>1</sub>, G<sub>1</sub>),  ... , (iri<sub>n</sub>, G<sub>n</sub>) }</p>
+
+<p>この場合、次のとおりです。</p>
+
+<ul>
+  <li>デフォルト・グラフDGは、名前のないスロットに関連付けられているRDFグラフです。</li>
+  <li>n &#x2265; 0で、1 &#x2264; i &#x2264; nごとに、G<sub>i</sub>がIRI iri<sub>i</sub>で識別される名前付きスロットに関連付けられているRDFグラフです。</li>
+  <li>すべてのIRIは、個別的（distinct）です。つまり、i≠jはiri<sub>i</sub>≠iri<sub>j</sub>を意味します。</li>
+</ul>
+
+</div>
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+このドキュメントでは、GSは、グラフ・ストアに対して用いますが、以後の定義では、同義的に、現在のグラフ・ストアの内容に対応したRDFデータセットに対しても用いることがあります。また、便宜上、以後の定義では中のGS = {DG, (iri<sub>1</sub>, G<sub>1</sub>),  ... , (iri<sub>n</sub>, G<sub>n</sub>) }に対する数学表記の代わりに、GS = {DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}と書く場合もあります。</div>
+
+<h4>
+<a name="def_updateoperation" id="def_updateoperation"></a>4.1.2 抽象的な更新オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_updateOperation" id="defn_updateOperation">定義: 更新オペレーション</a></strong></p>
+
+<p>更新オペレーションOpは、引数Argsを受け入れ、グラフ・ストアGSを別のグラフ・ストアGS'に変換するアトミックなオペレーションで、次のとおりに表示されます。</p>
+
+<p>Op(GS, Args) = GS'</p>
+
+<p>「アトミックなオペレーション」とは、オペレーションがグラフ・ストア内で記述されている変換を、完全に実行するか、グラフ・ストアを変更しないまま実行するかのいずれかであることを意味します。つまり、結果は、GS'かGS（エラーの場合）のいずれかです。</p>
+
+<p>更新オペレーションは、新しいスロットや新しいRDFグラフを作成したり、既存のスロットや対応するグラフを削除できます。各スロットの状況を個々に変更することもできます。</p>
+
+</div>
+
+<p>このドキュメントでは、この抽象的な更新オペレーションの定義の具体的なインスタンスに関して、個々の具体的な更新オペレーションのセマンティクスを定義しています。</p>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="formalModelAuxiliary" id="formalModelAuxiliary"></a>4.2 補助的な定義</h3>
+
+<p>下記では、和集合を作成するための補助関数と基本的なオペレーション、そして、<a href="www.w3.org/TR/sparql11-query/#rdfDataset">RDFデータセット</a>の違いを提示しています。具体的な更新オペレーションは、その基本的なオペレーションの観点で定義されるでしょう。</p>
+
+<div class="note">
+<p class="prefix"><strong>注:</strong></p>
+
+次の定義では、個々の集合演算（和集合、積集合、差集合）を示すために「和集合」、「積集合」、「マイナス」と記述しています。
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_datasetUnion" id="def_datasetUnion"></a>4.2.1 データセット-UNION</h4>
+
+<p>この基本的なオペレーションは、2つのRDFデータセットの和集合を作成します。</p>
+
+<div class="defn">
+
+<p><strong><a name="defn_datasetUnion" id="defn_datasetUnion">定義: データセット-UNION</a></strong></p>
+
+<p>DS={DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}とDS' = {DG'} union {(iri'<sub>j</sub>, G'<sub>j</sub>) | 1 &#x2264; j &#x2264; m}を2つのRDFデータセットとします。 さらに、graphNames(DS) = { iri<sub>i</sub> | 1 &#x2264; i &#x2264; n}とし、graphNames(DS') = {iri'<sub>j</sub> | 1 &#x2264; j &#x2264; m}とします。 DSとDS'の間のデータセット-UNIONは、次のとおりに定義されます。</p>
+
+<p>Dataset-UNION(DS, DS') = {DG union DG'} union {(iri, G) | iri in graphNames(DS) union graphNames(DS')}</p>
+
+<p>そして、Gは次のとおりに定義されます。</p>
+
+<ul>
+  <li>G<sub>i</sub> for iri = iri<sub>i</sub> such that iri<sub>i</sub> in graphNames(DS) minus graphNames(DS')</li>
+  <li>G<sub>j</sub> for iri = iri'<sub>j</sub> such that iri<sub>j</sub> in graphNames(DS') minus graphNames(DS)</li>
+  <li>G<sub>i</sub> union G<sub>j</sub> for iri = iri<sub>i</sub> = iri'<sub>j</sub> in graphNames(DS) intersect graphNames(DS')</li>
+</ul>
+
+<p>このとき、グラフ間の和集合は、それらのグラフのトリプルの和集合と定義されています。</p>
+
+</div>
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+以下で、Dataset-UNION( <em>X</em> ) where <em>X</em> = {DS<sub>1</sub>,DS<sub>2</sub>,... ,DS<sub>n</sub>}がデータセットの集合であると記述している場合には常に、これはDataset-UNION(DS<sub>1</sub>, Dataset-UNION(DS<sub>2</sub>, ... , Dataset-UNION(DS<sub>n</sub>,{})...))に対する省略形であるという理解によるものであることに注意してください。
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_datasetDiff" id="def_datasetDiff"></a>4.2.2 データセット-DIFF</h4>
+
+<p>このオペレーションは、与えられたデータセットのトリプルを別のデータセットから削除します。</p>
+
+<div class="defn">
+
+<p><strong><a name="defn_datasetDiff" id="defn_datasetDiff">定義: データセット-DIFF</a></strong></p>
+
+<p>DS={DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}とDS' = {DG'} union {(iri'<sub>j</sub>, G'<sub>j</sub>) | 1 &#x2264; j &#x2264; m})を2つのRDFデータセットとします。さらに、graphNames(DS) = { iri<sub>i</sub> | 1 &#x2264; i &#x2264; n}とし、graphNames(DS') = {iri'<sub>j</sub> | 1 &#x2264; j &#x2264; m}とします。DSとDS'の間のデータセット-DIFFは、次のとおりに定義されます。</p>
+
+<p>Dataset-DIFF(DS, DS') = {DG minus DG'} union { (iri, G) | iri in graphNames(DS) })</p>
+
+<p>そして、Gは次のとおりに定義されます。</p>
+
+<ul>
+  <li>G<sub>i</sub> for iri = iri<sub>i</sub>  such that iri<sub>i</sub> in graphNames(DS) minus graphNames(DS')</li>
+  <li>G<sub>i</sub> minus G'<sub>j</sub> for iri = iri<sub>i</sub> = iri'<sub>j</sub> in graphNames(DS) intersect graphNames(DS')</li>
+</ul>
+
+<p>このとき、G<sub>i</sub> minus G'<sub>j</sub>は、2つのグラフのトリプルの集合の差集合と定義されています。</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_datasetQuadPattern" id="def_datasetQuadPattern"></a>4.2.3 Dataset( <code><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></code>,  μ, DS, GS )</h4>
+
+<p>次の補助関数は、ソリューション・マッピングとRDFデータセットを与えられた場合に、<code><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></code>からRDFデータセットを構築します。</p>
+
+<div class="defn">
+
+<p>μをa <a href="www.w3.org/TR/sparql11-query/#sparqlSolutions">solution mapping</a>とし、DS={DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}をRDFデータセットとし、GSをグラフ・ストアの現在の状況とします。例えば、DSを修正するために<code>USING [NAMED]</code>の用いているため、DSはGSとは異なるものとして区別されます。</p>
+
+<p>形式の<em>QuadPattern</em>について</p>
+
+<ul>
+  <li>
+
+<p><code><span class="token">'{}'</span></code></p> 
+
+<p>Dataset(<em>QuadPattern</em>,  μ, DS, GS ) =  {{}} つまり、空のデフォルト・グラフのみで構成される空のデータセット。</p>
+
+</li>
+  <li>
+
+<p><code><span class="token">'{'</span> <a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a>? <span class="token">'}'</span></code></p>
+  
+
+<p>Dataset(<em>QuadPattern</em>,  μ, DS, GS )は、変数をsk<sub>μ</sub>(<code><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></code>)に代用して得られた、すべて<a href="www.w3.org/TR/rdf-concepts/#xtocid103646">有効なRDFのトリプル</a>から成るデフォルト・グラフのみで構成されるデータセットで、μに従い、また、和集合によってこれらのトリプルを1つのRDFグラフに組み合わせます。</p>
+
+</li>
+  <li>
+
+<p><code><span class="token">'GRAPH'</span> <a href="www.w3.org/TR/sparql11-query/#rVarOrIri">VarOrIri</a> <span class="token">'{'</span> <a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a>? <span class="token">'}'</span></code></p>
+
+<p>Dataset(<em>QuadPattern</em>,  μ, DS, GS  )は、空のデフォルト・グラフと、それに加えて、μ(<code><a href="www.w3.org/TR/sparql11-query/#rVarOrIri">VarOrIri</a></code>)が有効なIRIを生成した場合には、<em>G</em>が、変数をsk<sub>μ</sub>(<code><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></code>)に代用して得られた、すべて有効なRDFのトリプルから成るような名前付きグラフ(μ(<code><a href="www.w3.org/TR/sparql11-query/#rVarOrIri">VarOrIri</a></code>)とで構成されるデータセットで、μに従い、また、和集合によってこれらのトリプルを1つのRDFグラフに組み合わせます。</p>
+
+</li>
+  <li>
+
+<p><code><span class="token">'{'</span></code> <em>QuadPattern1</em> <em>QuadPattern2</em> <code><span class="token">'}'</span></code></p>
+
+<p>Dataset(<em>QuadPattern</em>,  μ , DS, GS ) = Dataset-UNION ( Dataset(<em>QuadPattern1</em>,  μ, DS, GS ) , Dataset(<em>QuadPattern2</em>,  μ, DS, GS ) )</p>
+
+</li>
+</ul>
+
+<p>ここでは、sk<sub>μ</sub>(<code><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></code>)は、<code><a href="www.w3.org/TR/sparql11-query/#rTriplesTemplate">TriplesTemplate</a></code>に出現する空白ノードを、新しい一意の空白ノード（現在の更新リクエストと個々のμに対して一意で、DSまたはGSで使用される任意の空白ノードとは異なる）と入れ替えるということを表します。</p>
+
+</div>
+
+<p>関数sk<sub>μ</sub>は、QuadPatternの「新しい」空白ノードのインスタンスが、μという「1つのソリューションによって」（<a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>の<a href="www.w3.org/TR/sparql11-query/#templatesWithBNodes"><code>CONSTRUCT</code>テンプレートの空白ノードの処理</a>と同じように）再び作成されることを保証します。SPARQL文法のリクエスト内の空白ノードのスコーピングに関する個々の言及も参照してください。</p>
+
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_datasetPattern" id="def_datasetPattern"></a>4.2.4  Dataset( <code><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></code>,  <em>P</em>, DS, GS )</h4>
+
+<p>次の補助関数は、グラフ・パターンとRDFデータセットを与えられた場合に、<code><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></code>からRDFデータセットを構築します。</p>
+
+<div class="defn">
+
+<p><em>P</em>をグラフ・パターンとし、DS={DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}をRDFデータセットとし、GSをグラフ・ストアの現在の状況とします。その場合、次のとおりです。</p>
+
+<p>Dataset(<em>QuadPattern</em>, <em>P</em>, DS, GS ) = Dataset-UNION( { Dataset(<em>QuadPattern</em>, μ, DS, GS) | μ in <em>eval'</em>(DS(DG),<em>P</em>) } )</p>
+
+<p>つまり、μがデータセットDSに対する<em>P</em>のソリューション内にあるようなすべてのμに対する和集合。</p>
+
+<p>ここでは、<em>eval'</em>()は、ただ1つの例外を除いて、<a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ言語</a>の評価関数<a href="www.w3.org/TR/sparql11-query/#sparqlAlgebraEval">eval</a>()と全く同じように、<a href="www.w3.org/TR/sparql11-query/#BGPsparqlBNodes">SPARQL 1.1クエリのBGPマッチングの空白ノードの処理</a>とは対照的に、ここでは、BGPマッチングに用いられた<em>スコーピング・グラフ</em>SGは、アクティブ・グラフと同等であると定義されています。つまり、アクティブ・グラフの空白ノードは、ソリューション内で維持されています。</p>
+
+</div>
+
+<p>eval'()の定義は、DS内で共通参照を行う空白ノードが、パターン評価の間に「失われ」ないことを保証します。<a href="www.w3.org/TR/sparql11-query/">SPARQL 1.1クエリ</a>の<a href="www.w3.org/TR/sparql11-query/#BGPsparqlBNodes">空白ノードの処理</a>を参照してください。後者は、トリプルを削除/追加するために、DSの空白ノードがGSの既存の空白ノードにマッチング可能であることを保証するために必要です。グラフ・ストア内の既存の空白ノードに対するマッチングについて説明するために、次の更新リクエストでは、空白ノードを主語として持つすべてのトリプルを削除します。</p>
+
+<pre class="query">DELETE { ?S ?P ?O . } WHERE { ?S ?P ?O . FILTER ( isBlank(?S)) } </pre>
+
+<p>事前のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix :      &lt;http://example.com/&gt; .
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+_:b a foaf:Person .
+:s  a foaf:Person .
+</pre>
+
+<p>事後のデータ:</p>
+
+<pre class="data"><strong># Default graph</strong>
+@prefix foaf:  &lt;http://xmlns.com/foaf/0.1/&gt; .
+
+:s  a foaf:Person .
+</pre>
+
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="formalModelGraphUpdate" id="formalModelGraphUpdate"></a>4.3 グラフ更新オペレーション</h3>
+
+<div class="div3">
+
+<h4>
+<a name="def_insertdataoperation" id="def_insertdataoperation"></a>4.3.1 データ挿入オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_insertDataOperation" id="defn_insertDataOperation">定義: データ挿入オペレーション</a></strong></p>
+
+<p><a href="#insertData">Insert Dataオペレーション</a>は、新しいトリプル（（基底）<em>QuadPattern</em>として与えられる）が、グラフ・ストアGS（デフォルト・スロットか名前付きスロット）に追加される更新オペレーションです。</p>
+
+<p>OpInsertData(GS, <em>QuadPattern</em>) = Dataset-UNION(GS, Dataset(<em>QuadPattern</em>,{},GS,GS))</p>
+
+<p>この場合、{}は空のソリューション・マッピングです。</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_deletedataoperation" id="def_deletedataoperation"></a>4.3.2 データ削除オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_deleteDataOperation" id="defn_deleteDataOperation">定義: データ削除オペレーション</a></strong></p>
+
+<p><a href="#deleteData">Delete Dataオペレーション</a>OpDeleteDataは、トリプル（（基底）<em>QuadPattern</em>として与えられる）がグラフ・ストアGS（デフォルト・スロットか名前付きスロット）から削除される更新オペレーションです。</p>
+
+<p>OpDeleteData(GS, <em>QuadPattern</em>) = Dataset-DIFF(GS, Dataset(<em>QuadPattern</em>,{},GS,GS))</p>
+
+<p>この場合、{}は空のソリューション・マッピングです。</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_deleteinsertoperation" id="def_deleteinsertoperation"></a>4.3.3 削除・挿入オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_deleteInsertOperation" id="defn_deleteInsertOperation">定義: 削除・挿入オペレーション</a></strong></p>
+
+<p><a href="#deleteInsert">Delete Insertオペレーション</a>OpDeleteInsertは、(1)トリプルが、グラフ・ストアGS（デフォルト・スロットか名前付きスロットのいずれか）から削除され、その後、(2)新しいトリプルが、グラフ・ストアGS（デフォルト・スロットか名前付きスロットのいずれか）に追加される更新オペレーションです。削除される（または挿入される）トリプルは、DSに対するグループ・グラフ・パターン<em>P</em>のパターン・ソリューションを、<code><a href="www.w3.org/TR/sparql11-query/#rQuadPattern">QuadPattern</a></code> <em>QuadPattern</em><sub>DEL</sub>（または<em>QuadPattern</em><sub>INS</sub>）に適用することにより識別されます。</p>
+
+<p>OpDeleteInsert(GS, DS, <em>QuadPattern</em><sub>DEL</sub>, <em>QuadPattern</em><sub>INS</sub>, <em>P</em>) = Dataset-UNION(Dataset-DIFF(GS, Dataset(<em>QuadPattern</em><sub>DEL</sub>,<em>P</em>,DS,GS)), Dataset(<em>QuadPattern</em><sub>INS</sub>, <em>P</em>,DS,GS)</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_loadoperation" id="def_loadoperation"></a>4.3.4 ロード・オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_loadOperation" id="defn_loadOperation">定義: ロード・オペレーション</a></strong></p>
+
+<p><a href="#load">Loadオペレーション</a>OpLoadは、（離れたグラフの）新しいトリプルがグラフ・ストア（デフォルト・スロットか名前付きスロットのいずれか）に（指定されていれば）追加される更新オペレーションです、</p>
+
+<p>OpLoad(GS, <em>documentIRI</em>) = Dataset-UNION(GS, { graph(<em>documentIRI</em>) } )</p>
+
+<p>OpLoad(GS, <em>documentIRI</em>, <em>iri</em>) = Dataset-UNION(GS, { {}, (<em>iri</em>,graph(<em>documentIRI</em>)) } )</p>
+
+<p>この場合、graph(<em>documentIRI</em>)は、IRI <em>documentIRI</em>から検索されたRDFドキュメントによってシリアル化を行ったRDFグラフを返す関数で、その場合、検索されたグラフの中に存在する空白ノードは「標準化分離」（standardized apart）であると想定されます。つまり、ロードしたグラフの空白ノードは、グラフ・ストアGSに既に存在する空白ノードと素である必要があります。</p>
+
+</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_clearOperation" id="def_clearOperation"></a>4.3.5 クリア・オペレーション</h4>
+<div class="defn">
+
+<p><strong><a name="defn_clearOperation" id="defn_clearOperation">定義: クリア・オペレーション</a></strong></p>
+
+<p><a href="#clear">Clearオペレーション</a>OpClearは、トリプルがグラフ・ストア（名前付きスロット、デフォルト・スロット、すべての名前付きスロット、すべてのスロットのいずれか）から削除される更新オペレーションです。クリア・オペレーションには、名前付きグラフをクリアするためのOpClear、デフォルト・グラフをクリアするためのOpClear<sub>def</sub> 、すべての名前付きグラフをクリアするためのOpClear<sub>named</sub>、デフォルト・グラフを含むすべてのグラフをクリアするためのOpClear<sub>all</sub>というバリエーションがあります。</p>
+
+<p>GS = {DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}とし、graphNames(GS) = { iri<sub>i</sub> | 1 &#x2264; i &#x2264; n}とすると、次のとおりです。</p>
+
+<p>OpClear(GS, iri) = GS if iri not in graphNames(GS); otherwise, OpClear(GS, iri<sub>j</sub>) = ( GS minus {(iri<sub>j</sub>, G<sub>j</sub>)} ) union {(iri<sub>j</sub>,{})}, where (iri<sub>j</sub>, G<sub>j</sub>) ∈ GS and iri = iri<sub>j</sub></p>
+
+<p>OpClear<sub>def</sub>(GS) = {{}} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}</p>
+
+<p>OpClear<sub>named</sub>(GS) = {DG} union {(iri<sub>i</sub>, {}) | 1 &#x2264; i &#x2264; n}</p>
+
+<p>OpClear<sub>all</sub>(GS) =  {{}} union {(iri<sub>i</sub>, {}) | 1 &#x2264; i &#x2264; n}</p>
+
+</div>
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+グラフ・ストアが空のままのグラフを削除できるため、そのようなグラフ・ストアでは、名前付きグラフで実行したクリア・オペレーションには、<a href="#defn_dropOperation">削除オペレーション</a>が直後に続くように見えるかもしれません。下記を参照してください。</div>
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="formalModelGraphMgt" id="formalModelGraphMgt"></a>4.4 グラフ管理オペレーション</h3>
+
+<div class="div3">
+
+<h4>
+<a name="def_createOperation" id="def_createOperation"></a>4.4.1 作成オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_createOperation" id="defn_createOperation">定義: 作成オペレーション</a></strong></p>
+
+<p><a href="#create">Createオペレーション</a>OpCreateは、(1)新しい名前付きスロットと(2)新しいグラフGが、グラフ・ストアで作成される更新オペレーションです。新しいグラフは、新しいスロットに格納され、空です。他のスロットとグラフは影響を受けません。</p>
+
+<p>GS = {DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}とし、graphNames(GS) = { iri<sub>i</sub> | 1 &#x2264; i &#x2264; n}とすると、次のとおりです。</p>
+
+<p>OpCreate(GS, iri) = GS union {(iri, {})} if iri not in graphNames(GS); otherwise, OpCreate(GS, iri) = GS</p>
+
+</div>
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+グラフ・ストアが空のままのグラフを削除できるため、そのようなグラフ・ストアでは、空または存在しないグラフで実行した作成オペレーションには、<a href="#def_dropOperation">削除オペレーション</a>（次の小項目を参照）が暗黙的に直後に続くように、または単純に影響のないオペレーションのように見えるかもしれません。</div>
+</div>
+<div class="div3">
+
+<h4>
+<a name="def_dropOperation" id="def_dropOperation"></a>4.4.2 削除オペレーション</h4>
+
+<div class="defn">
+
+<p><strong><a name="defn_dropOperation" id="defn_dropOperation">定義: 削除オペレーション</a></strong></p>
+
+<p><a href="#drop">Dropオペレーション</a>OpDropは、1つ以上のスロット（名前付きスロットiri<sub>i</sub>、デフォルト・スロット、すべての名前付きスロット、またはすべてのスロット）とそれに対応するグラフが、グラフ・ストアから削除される更新オペレーションです。削除オペレーションには、名前付きグラフを削除するためのOpDrop、デフォルト・グラフを削除するためのOpDrop<sub>def</sub>（デフォルト・グラフを削除できないけれども、それを削除することは、クリアすることを意味するに過ぎないため、OpCleardefと同等です）、すべての名前付きグラフを削除するためのOpDrop<sub>named</sub>、デフォルト・グラフを含むすべてのグラフを削除するためのOpDrop<sub>all</sub>というバリエーションがあります。</p>
+
+<p>GS = {DG} union {(iri<sub>i</sub>, G<sub>i</sub>) | 1 &#x2264; i &#x2264; n}とし、graphNames(GS) = { iri<sub>i</sub> | 1 &#x2264; i &#x2264; n}とすると、次のとおりです。</p>
+
+<p>OpDrop(GS, iri) = GS if iri not in graphNames(GS); otherwise, OpDrop(GS, iri<sub>j</sub>) = {DG} union {(iri<sub>i</sub>, G<sub>i</sub> ) | i ≠ j and 1 &#x2264; i &#x2264; n} where iri = iri<sub>j</sub></p>
+
+<p>OpDrop<sub>def</sub>(GS) = OpClear<sub>def</sub>(GS)</p>
+
+<p>OpDrop<sub>named</sub>(GS) = {DG}</p>
+
+<p>OpDrop<sub>all</sub>(GS) = {{}}</p>
+
+</div>
+</div>
+</div>
+<div class="div2">
+
+<h3>
+<a name="mappingRequestsToOperations" id="mappingRequestsToOperations"></a>4.5 形式モデルへの更新リクエストのマッピング</h3>
+
+<p>この項では、SPARQL 1.1更新言語の更新リクエストを、この項の最初の部分で定義しているグラフ・ストア上の更新オペレーションにマッピングする方法を示しています。このマッピングは、すべての更新リクエストにおいて、<code>PREFIX</code>が拡張されていると仮定します。さらに、<code>WITH</code>句は、後続する<code>DELETE</code>句と<code>INSERT</code>句内の<code><em>QuadPattern</em></code>と、<code>USING</code>と<code>USING NAMED</code>がない場合には、後続する<code>WHERE</code>句内の<code><em>GroupGraphPattern</em></code>の両方を、<code>GRAPH</code>パターンにラップすることで置き換えられたと想定します。</p>
+
+<p>リクエストから更新オペレーションへのマッピングは、入力としてGraphstore GS（リクエストの実行前に）と更新リクエスト<em>R</em>をとり、次のテーブルで示している<a href="#defn_updateOperation">更新オペレーション</a>の呼び出しへと拡張する、再帰的な置換関数<em>Tr</em>(GS,<em>R</em>)の観点で定義されています。<code><a href="#copy">COPY</a></code>、<code><a href="#move">MOVE</a></code>と<code><a href="#add">ADD</a></code>のオペレーションについては、これらは省略形であると理解されているため、ここでは明示的に言及しません。</p>
+
+<table>
+  <caption>表1: 更新リクエストから更新オペレーションへのマッピング</caption>
+  <tr>
+    <th>更新リクエスト<em>R</em> </th>
+    <th>
+<em>Tr</em>(GS,<em>R</em>) = </th>
+  </tr>
+  <tr>
+    <td> <em>R<sub>1</sub></em> ; <em>R<sub>2</sub></em> </td>
+    <td> <em>Tr</em>(<em>Tr</em>(GS, <em>R<sub>1</sub></em>), <em>R<sub>2</sub></em>)</td>
+  </tr>
+  <tr>
+    <td>
+<code>INSERT DATA</code> <em>QuadData</em> </td>
+    <td>
+<a href="#defn_deleteDataOperation">OpInsertData</a>(GS, <em>QuadData</em>)</td>
+  </tr>
+  <tr>
+    <td>
+<code>DELETE DATA</code> <em>QuadData</em> </td>
+    <td>
+<a href="#defn_deleteDataOperation">OpDeleteData</a>(GS, <em>QuadData</em>)</td>
+  </tr>
+  <tr>
+    <td>
+<code>DELETE</code> <em>QuadPattern</em><sub>DEL</sub> <code>INSERT</code> <em>QuadPattern</em><sub>INS</sub><br>
+<em>UsingClause</em>*<br>
+<code>WHERE</code> <em>GroupGraphPattern</em>
+</td>
+    <td>
+<a href="#defn_deleteInsertOperation">OpDeleteInsert</a>(GS, <em>Tr<sub>Dataset</sub></em>(GS,<em>UsingClause</em>*), <em>QuadPattern</em><sub>DEL</sub>, <em>QuadPattern</em><sub>INS</sub>, <em>GroupGraphPattern</em>)</td>
+  </tr>
+  <tr>
+    <td>
+<code>DELETE</code> <em>QuadPattern</em><sub>DEL</sub><br>
+<em>UsingClause</em>*<br>
+<code>WHERE</code> <em>GroupGraphPattern</em>
+</td>
+    <td>
+<a href="#defn_deleteInsertOperation">OpDeleteInsert</a>(GS, <em>Tr<sub>Dataset</sub></em>(GS,<em>UsingClause</em>*), <em>QuadPattern</em><sub>DEL</sub>, {}, <em>GroupGraphPattern</em>)</td>
+  </tr>
+  <tr>
+    <td>
+<code>INSERT</code> <em>QuadPattern</em><sub>INS</sub><br>
+<em>UsingClause</em>*<br>
+<code>WHERE</code> <em>GroupGraphPattern</em>
+</td>
+    <td>
+<a href="#defn_deleteInsertOperation">OpDeleteInsert</a>(GS, <em>Tr<sub>Dataset</sub></em>(GS,<em>UsingClause</em>*), {}, <em>QuadPattern</em><sub>INS</sub>, <em>GroupGraphPattern</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>DELETE WHERE</code> <em>QuadPattern</em> </td>
+    <td>
+<a href="#defn_deleteInsertOperation">OpDeleteInsert</a>(GS, GS, <em>QuadPattern</em>, {},  <em>QuadPattern</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>LOAD (SILENT)?</code> <em>IRIref</em> </td>
+    <td>
+<a href="#defn_loadOperation">OpLoad</a>(GS, <em>IRIref</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>LOAD (SILENT)?</code> <em>IRIref</em><sub>from</sub> <code>INTO GRAPH</code> <em>IRIref</em><sub>to</sub>
+</td>
+    <td>
+<a href="#defn_loadOperation">OpLoad</a>(GS, <em>IRIref</em><sub>from</sub>, <em>IRIref</em><sub>to</sub>)</td>
+  </tr>
+  <tr>
+    <td> <code>CLEAR (SILENT)? GRAPH</code> <em>IRIref</em>
+</td>
+    <td>
+<a href="#defn_clearOperation">OpClear</a>(GS, <em>IRIref</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>CLEAR (SILENT)? DEFAULT</code>
+</td>
+    <td>
+<a href="#defn_clearOperation">OpClear</a><sub>def</sub>(GS)</td>
+  </tr>
+  <tr>
+    <td> <code>CLEAR (SILENT)? NAMED</code>
+</td>
+    <td>
+<a href="#defn_clearOperation">OpClear</a><sub>named</sub>(GS)</td>
+  </tr>
+  <tr>
+    <td> <code>CLEAR (SILENT)? ALL</code>
+</td>
+    <td>
+<a href="#defn_clearOperation">OpClear</a><sub>all</sub>(GS)</td>
+  </tr>
+  <tr>
+    <td> <code>CREATE (SILENT)? GRAPH</code> <em>IRIref</em> </td>
+    <td>
+<a href="#defn_createOperation">OpCreate</a>(GS, <em>IRIref</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>DROP (SILENT)? GRAPH</code> <em>IRIref</em>
+</td>
+    <td>
+<a href="#defn_dropOperation">OpDrop</a>(GS, <em>IRIref</em>)</td>
+  </tr>
+  <tr>
+    <td> <code>DROP (SILENT)? DEFAULT</code>
+</td>
+    <td>
+<a href="#defn_dropOperation">OpDrop</a><sub>def</sub>(GS)</td>
+  </tr>
+  <tr>
+    <td> <code>DROP (SILENT)? NAMED</code>
+</td>
+    <td>
+<a href="#defn_dropOperation">OpDrop</a><sub>named</sub>(GS)</td>
+  </tr>
+  <tr>
+    <td> <code>DROP (SILENT)? ALL</code>
+</td>
+    <td>
+<a href="#defn_dropOperation">OpDrop</a><sub>all</sub>(GS)</td>
+  </tr>
+</table>
+
+<p>この表は、<code>USING</code>句と<code>USING NAMED</code>句のオプションの集合からデータセットを構築する1つの補助置換関数<em>Tr<sub>Dataset</sub></em>()を用いており、次のとおりに定義されます。</p>
+
+<table>
+  <caption>表2: RDFデータセットへの<em><a href="www.w3.org/TR/sparql11-query/#rUsingClause">UsingClause</a></em>のマッピング</caption>
+  <tr>
+    <th>置換関数</th>
+    <th>定義</th>
+  </tr>
+  <tr>
+    <td>
+<em>Tr<sub>Dataset</sub></em>(GS,<em><a href="www.w3.org/TR/sparql11-query/#rUsingClause">UsingClause</a></em>*) = </td>
+    <td>
+<ul>
+  <li>空でない場合には、<em>UsingClause</em>で記述されたRDFデータセットDS</li>
+  <li>それ以外の場合には、GSの現在の状況に対応するRDFデータセット</li>
+</ul>
+</td>
+  </tr>
+</table>
+
+<div class="note">
+
+<p class="prefix"><strong>注:</strong></p>
+
+<code>USING</code>句と<code>USING NAMED</code>句からどのくらい正確にRDFデータセットを得られるか（例えば、グラフ名IRIを逆参照してそれらの検索を試みることにより、または、既存のグラフ・ストアからそれらのグラフを選択することにより）は、実装に依存します。特に、この仕様では、SPARQL 1.1クエリ言語仕様の<a href="www.w3.org/TR/sparql11-query/#specifyingDataset">RDFデータセットの指定</a>の項の、類似する<code>FROM</code>句と<code>FROM NAMED</code>句に対する検討の範囲を超える空白ノードの同一性に関する仮定を強制しません。</div>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="conformance" id="conformance"></a>5 適合性</h2>
+
+<p>SPARQL更新の文字列の適合性に関しては、<a href="#grammar">付録BのSPARQL 1.1更新文法</a>を参照してください。</p>
+
+<p>この仕様は、<a href="www.w3.org/TR/sparql11-http-rdf-update/">SPARQL 1.1グラフ・ストアHTTPプロトコル</a>および<a href="www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 RDF用プロトコル</a>との併用を意図しています。</p>
+
+</div>
+</div>
+<div class="back">
+<div class="div1">
+
+<h2>
+<a name="security" id="security"></a>A セキュリティに関する留意点（参考情報）</h2>
+
+<p>更新用のRDFデータを公開すると、あらゆる開発において認識し、付随する危険について考慮しなければならない多くのセキュリティ上の課題が発生します。この提案では、一部の潜在的な課題について議論します。定期的に新しいセキュリティの課題が発見され、個々の実装は自身の懸案事項を取り入れています。したがって、実装者は、これが考えられる課題を含んだ部分的なリストにすぎず、完全で正式なものと考えることはできないことを知っているべきです。</p>
+
+<ul>
+  <li>データへの書き込みアクセスを提供すると、悪意のあるアクセスに対して本質的に弱くなります。ネットワークにつながれた環境では、標準的なアクセスおよび認証技術を用いるべきです。具体的には、特にSPARQL HTTPベースのプロトコルを実装する場合には、HTTPSを用いるべきです。（つまり、チャレンジ/レスポンスに基づくパスワード表示での暗号化、暗号化されたセッション・トークンなど）。HTTPSが対応している弱点の一部は、認証、クライアントとサーバの間のアクティブ・セッションのインテグリティ、リプレイの防止、消滅したセッションの継続防止です。</li>
+  <li>SPARQL更新では、SPARQLクエリのセキュリティ上のすべての問題がもたらされます。特に、IRIを逆参照可能なものとして扱うストアは、逆参照されたIRIがクロスサイトスクリプティング攻撃の呼び出しに用いられないようにする必要があります。</li>
+  <li>実装は、自身の標準的な権限スキームを注意深く強化する必要があるでしょう。権限スキームは、常に注意深く設計する必要があり、1つのエリアの特権が、うっかりシステムの他の部分にも適用されないことを確保することは重要です。</li>
+  <li>読み出し専用インターフェースと書き込み可能なインターフェースの両方を提供するシステムは、読み出し専用のインターフェースにおいてインジェクション攻撃を受ける対象となりえます。特に、クエリ・サービスのSPARQLエンドポイントは、同じSPARQLエンドポイントの更新サービスとの相互作用をターゲットにしたインジェクション攻撃に注意しなければなりません。クライアント・コードのように、クエリ・サービスと更新サービスとの相互作用は、ユーザが提供する文字列の正しいエスケーピングを確保すべきです。</li>
+  <li>SPARQL更新とSPARQLクエリは別々の言語ですが、一部の実装は両方を同じSPARQLエンドポイントで提供することを選択するかもしれません。この場合、クエリになりすますために、更新オペレーションが不明瞭になりえると考えることは重要です。例えば、PREFIX句内のUnicodeエスケープの文字列を用いて更新オペレーションを非表示にできます。したがって、シンプルな構文テストは、文字列がクエリを記述しているのか更新を記述しているのかを判断するのに適していません。</li>
+</ul>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="mediaType" id="mediaType"></a>B インターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</h2>
+
+<p>SPARQL更新言語のインターネット・メディア・タイプ/MIMEタイプは、「<tt>application/sparql-update</tt>」です。</p>
+
+<p>SPARQL更新ファイルは、すべてのプラットフォーム上で拡張子「.ru」（小文字）であることが推奨されます。</p>
+
+<p>マッキントッシュHFSファイル・システム上に保存されたSPARQL更新ファイルには、ファイル・タイプ「TEXT」が付与されていることが推奨されます。</p>
+
+<div class="mime">
+<dl>
+      <dt>タイプ名:</dt>
+      <dd>application</dd>
+      <dt>サブタイプ名:</dt>
+      <dd>sparql-update</dd>
+      <dt>必須パラメータ:</dt>
+      <dd>なし</dd>
+      <dt>任意のパラメータ:</dt>
+      <dd>なし</dd>
+      <dt>コード化に関する留意点:</dt>
+      <dd>SPARQL更新言語の構文は、Unicode[<a href="#UNICODE">UNICODE</a>]のコード・ポイントで表されます。コード化は、常にUTF-8[<a href="#rfc3629">RFC3629</a>]です。</dd>
+      <dd>Unicodeコード・ポイントは、Xが16進の[0-9A-F]である場合、\uXXXX（U+0～U+FFFF）または\UXXXXXXXX構文（U+10000以降）を用いて表現できます。 </dd>
+      <dt>セキュリティに関する留意点:</dt>
+      <dd>SPARQL更新付録A、<a href="#security">セキュリティに関する留意点</a>および<a class="norm" href="www.ietf.org/rfc/rfc3629.txt">RFC 3629</a>[<a href="#rfc3629">RFC3629</a>]の7項、セキュリティに関する留意点を参照してください。</dd>
+      <dt>互換性に関する留意点:</dt>
+      <dd>互換性の問題は知られていません。</dd>
+      <dt>公開済み仕様書:</dt>
+      <dd>この仕様書。</dd>
+      <dt>このメディア・タイプを使用するアプリケーション:</dt>
+      <dd>現時点でこのメディア・タイプを使用するアプリケーションは知られていません。</dd>
+      <dt>追加情報:</dt>
+      <dt>マジック・ナンバー:</dt>
+      <dd>SPARQLクエリは、ドキュメントの冒頭付近に、文字列「PREFIX」（大文字と小文字を区別しない）を持つことができます。</dd>
+      <dt>ファイル拡張子:</dt>
+      <dd>「.ru」</dd>
+      <dt>基底IRI:</dt>
+      <dd>SPARQL「BASE &lt;IRIref&gt;」用語は、現在の基底IRIを、ドキュメントにおいて後ほど順次使用されるクエリ言語内の相対IRIrefに変更できます。</dd>
+      <dt>マッキントッシュ・ファイル・タイプ・コード:</dt>
+      <dd>「TEXT」</dd>      <dt>詳細情報に関する連絡先:</dt>
+      <dd>public-rdf-dawg-comments@w3.org</dd>
+      <dt>意図する用途:</dt>
+      <dd>汎用</dd>
+      <dt>使用上の制限:</dt>
+      <dd>なし</dd>
+      <dt>著者／改版管理者:</dt>
+      <dd>SPARQL 1.1仕様は、ワールド・ワイド・ウェブ・コンソーシアム（World Wide Web Consortium）のSPARQLワーキンググループ（SPARQL Working Group）の作業の成果です。W3Cは、これらの仕様の変更に対する管理権を有します。</dd>
+    </dl>
+
+</div>
+</div>
+<div class="div1">
+
+<h2>
+<a name="grammar" id="grammar"></a>C SPARQL 1.1更新文法</h2>
+
+<p>SPARQL 1.1更新文法の形式的な定義は、<a href="www.w3.org/TR/sparql11-query/#grammar">SPARQL 1.1クエリ文法</a>で提供しています。これは、SPARQL 1.1更新の文法が、その構造のほとんどをSPARQL 1.1クエリと共有するためです。</p>
+
+</div>
+<div class="div1">
+
+<h2>
+<a name="sec-bibliography" id="sec-bibliography"></a>D 参考文献</h2>
+<div class="div2">
+
+<h3>
+<a name="sec-existing-stds" id="sec-existing-stds"></a>D.1 規範的な参考文献</h3>
+
+<dl>
+  <dt class="label">
+<a name="IANA" id="IANA"></a>IANA-CHARSETS</dt>
+  <dd>(Internet
+Assigned Numbers Authority) <a href="www.iana.org/assignments/character-sets"><cite>Official Names for Character Sets</cite></a>,
+ed. Keld Simonsen et al.  (See http://www.iana.org/assignments/character-sets.)</dd>
+  <dt class="label">
+<a name="rfc3987" id="rfc3987"></a>RFC3987</dt>
+  <dd>
+<a href="www.ietf.org/rfc/rfc3987.txt"><cite>Internationalized Resource Identifiers (IRIs)</cite></a>,
+M. Durst , M. Suignard  (See http://www.ietf.org/rfc/rfc3987.txt.)</dd>
+  <dt class="label">
+<a name="RDF-MT" id="RDF-MT"></a>RDF-MT</dt>
+  <dd>
+<a href="www.w3.org/TR/2004/REC-rdf-mt-20040210/"><cite>RDF Semantics</cite></a>, P. Hayes, Editor, W3C Recommendation,
+      10 February 2004, see http://www.w3.org/TR/2004/REC-rdf-mt-20040210/,  
+    <a title="Latest version of RDF Semantics" href="www.w3.org/TR/rdf-mt/">Latest version</a> available
+      at http://www.w3.org/TR/rdf-mt/.
+  (See http://www.w3.org/TR/2004/REC-rdf-mt-20040210/.)</dd>
+</dl>
+
+</div>
+<div class="div2">
+
+<h3>
+<a name="null" id="null"></a>D.2 その他の参考文献</h3>
+
+<dl>
+  <dt class="label">
+<a name="Aho" id="Aho"></a>Aho/Ullman</dt>
+  <dd>Aho, Alfred V., Ravi Sethi, and Jeffrey D. Ullman. <cite>Compilers: Principles, Techniques, and Tools</cite>. Reading: Addison-Wesley, 1986, rpt. corr. 1988.</dd>
+  <dt class="label">
+<a name="ABK" id="ABK"></a>Bruggemann-Klein</dt>
+  <dd>Bruggemann-Klein, Anne. <a href="ftp://ftp.informatik.uni-freiburg.de/documents/papers/brueggem/habil.ps"><cite>Formal Models in Document Processing</cite></a>. Habilitationsschrift. Faculty of Mathematics at the University of Freiburg, 1993.  (See ftp://ftp.informatik.uni-freiburg.de/documents/papers/brueggem/habil.ps.)</dd>
+  <dt class="label">
+<a name="ABKDW" id="ABKDW"></a>Bruggemann-Klein and Wood</dt>
+  <dd>Bruggemann-Klein, Anne, and Derick Wood. <cite>Deterministic Regular Languages</cite>. Universitat Freiburg, Institut fur Informatik, Bericht 38, Oktober 1991. Extended abstract in A. Finkel, M. Jantzen, Hrsg., STACS 1992, S. 173-184. Springer-Verlag, Berlin 1992. Lecture Notes in Computer Science 577. Full version titled <cite>One-Unambiguous Regular Languages</cite> in Information and Computation 140 (2): 229-253, February 1998.</dd>
+  <dt class="label">
+<a name="Clark" id="Clark"></a>Clark</dt>
+  <dd>James Clark. <a href="www.w3.org/TR/NOTE-sgml-xml-971215"><cite>Comparison of SGML and XML</cite></a>.  (See http://www.w3.org/TR/NOTE-sgml-xml-971215.)</dd>
+  <dt class="label">
+<a name="IANA-LANGCODES" id="IANA-LANGCODES"></a>IANA-LANGCODES</dt>
+  <dd>(Internet Assigned Numbers Authority) <a href="www.iana.org/assignments/language-subtag-registry"><cite>Registry of Language Tags</cite></a>  (See http://www.iana.org/assignments/language-subtag-registry.)</dd>
+  <dt class="label">
+<a name="RFC2141" id="RFC2141"></a>IETF RFC 2141</dt>
+  <dd>IETF (Internet Engineering Task Force). <a href="www.ietf.org/rfc/rfc2141.txt"><cite>RFC 2141: URN Syntax</cite></a>, ed. R. Moats. 1997.   (See http://www.ietf.org/rfc/rfc2141.txt.)</dd>
+  <dt class="label">
+<a name="rfc2376" id="rfc2376"></a>IETF RFC 3023</dt>
+  <dd>IETF (Internet Engineering Task Force). <a href="www.ietf.org/rfc/rfc3023.txt"><cite>RFC 3023: XML Media Types</cite></a>. eds. M. Murata, S. St.Laurent, D. Kohn. 2001.  (See http://www.ietf.org/rfc/rfc3023.txt.)</dd>
+  <dt class="label">
+<a name="rfc2781" id="rfc2781"></a>IETF RFC 2781</dt>
+  <dd>IETF (Internet Engineering Task Force). <a href="www.ietf.org/rfc/rfc2781.txt"><cite>RFC 2781: UTF-16, an encoding of ISO 10646</cite></a>, ed. P. Hoffman, F. Yergeau. 2000.  (See http://www.ietf.org/rfc/rfc2781.txt.)</dd>
+  <dt class="label">
+<a name="rfc3629" id="rfc3629"></a>IETF RFC 3629</dt>
+  <dd>IETF (Internet Engineering Task Force). <a href="www.ietf.org/rfc/rfc3629.txt"><cite>RFC 3629: UTF-8, a transformation format of ISO 10646</cite></a>, F. Yergeau. November 2003.  (See http://www.ietf.org/rfc/rfc3629.txt.)</dd>
+  <dt class="label">
+<a name="ISO639" id="ISO639"></a>ISO 639</dt>
+  <dd>(International Organization for Standardization). <cite>ISO 639:1988 (E). Code for the representation of names of languages.</cite> [Geneva]: International Organization for Standardization, 1988.</dd>
+  <dt class="label">
+<a name="ISO3166" id="ISO3166"></a>ISO 3166</dt>
+  <dd>(International Organization for Standardization). <cite>ISO 3166-1:1997 (E). Codes for the representation of names of countries and their subdivisions ― Part 1: Country codes</cite> [Geneva]: International Organization for Standardization, 1997.</dd>
+  <dt class="label">
+<a name="ISO8879" id="ISO8879"></a>ISO 8879</dt>
+  <dd>ISO (International Organization for Standardization). <cite>ISO 8879:1986(E). Information processing ― Text and Office Systems ― Standard Generalized Markup Language (SGML).</cite> First edition ― 1986-10-15. [Geneva]: International Organization for Standardization, 1986. </dd>
+  <dt class="label">
+<a name="ISO10744" id="ISO10744"></a>ISO/IEC 10744</dt>
+  <dd>ISO (International Organization for Standardization). <cite>ISO/IEC 10744-1992 (E). Information technology ― Hypermedia/Time-based Structuring Language (HyTime). </cite> [Geneva]: International Organization for Standardization, 1992. <em>Extended Facilities Annexe.</em> [Geneva]: International Organization for Standardization, 1996. </dd>
+  <dt class="label">
+<a name="UNICODE" id="UNICODE"></a>UNICODE</dt>
+  <dd>The Unicode Consortium. <a href="www.unicode.org/unicode/standard/versions/"><cite>The Unicode Standard, Version 5.0.0.</cite></a> Boston, MA, Addison-Wesley, 2007. ISBN 0-321-48091-0.  (See http://www.unicode.org/unicode/standard/versions/.)</dd>
+  <dt class="label">
+<a name="websgml" id="websgml"></a>WEBSGML</dt>
+  <dd>ISO (International Organization for Standardization). <a href="www.sgmlsource.com/8879/n0029.htm"><cite>ISO 8879:1986 TC2. Information technology ― Document Description and Processing Languages</cite></a>. [Geneva]: International Organization for Standardization, 1998.  (See http://www.sgmlsource.com/8879/n0029.htm.)</dd>
+  <dt class="label">
+<a name="xml-names" id="xml-names"></a>XML Names</dt>
+  <dd>Tim Bray, Dave Hollander, and Andrew Layman, editors. <a href="www.w3.org/TR/xml-names/"><cite>Namespaces in XML</cite></a>. Textuality, Hewlett-Packard, and Microsoft. World Wide Web Consortium, 1999.  (See http://www.w3.org/TR/xml-names/.)</dd>
+</dl>
+
+</div>
+</div>
+<div>
+
+<h2 id="changelog">変更履歴</h2>
+
+<h3 id="changes-since-pr">勧告案以後の変更履歴</h3>
+
+<ul>
+  <li>SPARQL 1.1クエリへのフラグメントのリンク切れを修正</li>
+</ul>
+
+<h3 id="changes-since-lc">最終草案以後の変更履歴</h3>
+
+<ul>
+  <li>1つのリクエストにおける複数のオペレーションにまたがって共有された空白ノードの禁止に関する説明文を単純化した。</li>
+  <li>定義4.2.3および説明文に対する編集上の修正を行った。</li>
+  <li>「用語」の項にQuadDataの説明を追加した。</li>
+  <li>既存のグラフがLOADの途中でトリプルを失わないことを示すコメントを追加した。</li>
+  <li>（本質的に）すべてのグラフ・ストアはグラフに対応しているため、「(non graph-aware)」の削除を含むいくつかの小さな編集上の変更を行った。</li>
+  <li>3.2.3 CopyのSHOULDをMAYに変更した。</li>
+  <li>様々な編集上の更新を行った。</li>
+</ul>
+
+</div>
+</div>
+
+</body>
+</html>

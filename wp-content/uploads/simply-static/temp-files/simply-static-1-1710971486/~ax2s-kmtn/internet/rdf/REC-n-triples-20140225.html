@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ja" dir="ltr" typeof="bibo:Document w3p:REC" about="" property="dcterms:language" content="ja" prefix="bibo: http://purl.org/ontology/bibo/ w3p: http://www.w3.org/2001/02pd/rec54#" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>RDF 1.1 N-Triples</title>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+
+<style type="text/css">/* Style Turtle script blocks to be visible */
+    pre.example script {
+        display:block;
+        overflow-x: auto;
+    }
+    .separated thead tr th { border:1px solid black; padding: .2em; }
+    .separated tbody tr td { border:1px solid black; text-align: center; }
+    .separated tbody tr td.r { text-align: right; padding: .5em; }
+    .grammar td { font-family: monospace;}
+    .grammar-literal { color: gray;}</style>
+<style>/*****************************************************************
+ * ReSpec 3 CSS
+ * Robin Berjon - http://berjon.com/
+ *****************************************************************/
+
+/* --- INLINES --- */
+em.rfc2119 { 
+    text-transform:     lowercase;
+    font-variant:       small-caps;
+    font-style:         normal;
+    color:              #900;
+}
+
+h1 acronym, h2 acronym, h3 acronym, h4 acronym, h5 acronym, h6 acronym, a acronym,
+h1 abbr, h2 abbr, h3 abbr, h4 abbr, h5 abbr, h6 abbr, a abbr {
+    border: none;
+}
+
+dfn {
+    font-weight:    bold;
+}
+
+a.internalDFN {
+    color:  inherit;
+    border-bottom:  1px solid #99c;
+    text-decoration:    none;
+}
+
+a.externalDFN {
+    color:  inherit;
+    border-bottom:  1px dotted #ccc;
+    text-decoration:    none;
+}
+
+a.bibref {
+    text-decoration:    none;
+}
+
+cite .bibref {
+    font-style: normal;
+}
+
+code {
+    color:  #ff4500;
+}
+
+/* --- TOC --- */
+.toc a, .tof a {
+    text-decoration:    none;
+}
+
+a .secno, a .figno {
+    color:  #000;
+}
+
+ul.tof, ol.tof {
+    list-style: none outside none;
+}
+
+.caption {
+    margin-top: 0.5em;
+    font-style:   italic;
+}
+
+/* --- TABLE --- */
+table.simple {
+    border-spacing: 0;
+    border-collapse:    collapse;
+    border-bottom:  3px solid #005a9c;
+}
+
+.simple th {
+    background: #005a9c;
+    color:  #fff;
+    padding:    3px 5px;
+    text-align: left;
+}
+
+.simple th[scope="row"] {
+    background: inherit;
+    color:  inherit;
+    border-top: 1px solid #ddd;
+}
+
+.simple td {
+    padding:    3px 10px;
+    border-top: 1px solid #ddd;
+}
+
+.simple tr:nth-child(even) {
+    background: #f0f6ff;
+}
+
+/* --- DL --- */
+.section dd > p:first-child {
+    margin-top: 0;
+}
+
+.section dd > p:last-child {
+    margin-bottom: 0;
+}
+
+.section dd {
+    margin-bottom:  1em;
+}
+
+.section dl.attrs dd, .section dl.eldef dd {
+    margin-bottom:  0;
+}
+
+@media print {
+    .removeOnSave {
+        display: none;
+    }
+}</style>
+<style>/* --- EXAMPLES --- */
+div.example-title {
+    min-width: 7.5em;
+    color: #b9ab2d;
+}
+div.example-title span {
+    text-transform: uppercase;   
+}
+aside.example, div.example, div.illegal-example {
+    padding: 0.5em;
+    margin: 1em 0;
+    position: relative;
+    clear: both;
+}
+div.illegal-example { color: red }
+div.illegal-example p { color: black }
+aside.example, div.example {
+    padding: .5em;
+    border-left-width: .5em;
+    border-left-style: solid;
+    border-color: #e0cb52;
+    background: #fcfaee;    
+}
+
+aside.example div.example {
+    border-left-width: .1em;
+    border-color: #999;
+    background: #fff;
+}
+aside.example div.example div.example-title {
+    color: #999;
+}</style>
+<link rel="stylesheet" href="www.w3.org/StyleSheets/TR/W3C-REC">
+<!--[if lt IE 9]><script src='https://www.w3.org/2008/site/js/html5shiv.js'></script><![endif]-->
+</head>
+
+<body class="h-entry" role="document" id="respecDocument">
+<div class="head" role="contentinfo" id="respecHeader">
+
+<p><a href="www.asahi-net.or.jp/~ax2s-kmtn/index.html"><img src="www.asahi-net.or.jp/~ax2s-kmtn/images/logo.gif" alt="CyberLibrarian" width="105" height="19"></a></p>
+
+<p>【注意】 このドキュメントは、W3Cの<a href="www.w3.org/TR/2014/REC-n-triples-20140225/">RDF 1.1 N-Triples : A line-based syntax for an RDF graph W3C Recommendation 25 February 2014</a>の和訳です。<br>
+このドキュメントの正式版はW3Cのサイト上にある英語版であり、このドキュメントには翻訳に起因する誤りがありえます。誤訳、誤植などのご指摘は、<a href="www.asahi-net.or.jp/~ax2s-kmtn/mail.html">訳者</a>までお願い致します。</p>
+
+<p>First Update: 2016年4月8日</p>
+
+<hr>
+
+<p><a href="www.w3.org/"><img width="72" height="48" alt="W3C" src="www.w3.org/Icons/w3c_home"></a></p>
+
+<h1 property="dcterms:title" id="title" class="title p-name">RDF 1.1 N-Triples</h1>
+
+<h2 id="subtitle" property="bibo:subtitle">RDFグラフの行ベースの構文</h2>
+
+<h2 content="2014-02-24T23:00:00.000Z" datatype="xsd:dateTime" property="dcterms:issued" id="w3c-recommendation-25-february-2014">
+<abbr title="World Wide Web Consortium">W3C</abbr>勧告 <time datetime="2014-02-25" class="dt-published">2014年2月25日</time>
+</h2>
+<dl>
+  <dt>本バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2014/REC-n-triples-20140225/" class="u-url">http://www.w3.org/TR/2014/REC-n-triples-20140225/</a></dd>
+  <dt>最新公開バージョン:</dt>
+  <dd><a href="www.w3.org/TR/n-triples/">http://www.w3.org/TR/n-triples/</a></dd>
+  <dt>テスト・スイート:</dt>
+  <dd><a href="www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/">http://www.w3.org/TR/2014/NOTE-rdf11-testcases-20140225/</a></dd>
+  <dt>実装報告:</dt>
+  <dd><a href="www.w3.org/2013/N-TriplesReports/index.html">http://www.w3.org/2013/N-TriplesReports/index.html</a></dd>
+  <dt>旧バージョン:</dt>
+  <dd><a href="www.w3.org/TR/2014/PR-n-triples-20140109/" rel="dcterms:replaces">http://www.w3.org/TR/2014/PR-n-triples-20140109/</a></dd>
+  <dt>編集者:</dt>
+    <dd inlist="" rel="bibo:editor" class="p-author h-card vcard">
+<span typeof="foaf:Person"><span class="p-name fn" property="foaf:name">Gavin Carothers</span>, <a href="lexmachina.com/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">Lex Machina, Inc</a></span>
+</dd>
+  <dd inlist="" rel="bibo:editor" class="p-author h-card vcard">
+<span typeof="foaf:Person"><span class="p-name fn" property="foaf:name">Andy Seaborne</span>, <a href="www.apache.org/" class="p-org org h-org h-card" rel="foaf:workplaceHomepage">The Apache Software Foundation</a></span>
+</dd>
+  <dt>著者:</dt>
+  <dd rel="dcterms:contributor" class="p-author h-card vcard">
+<span typeof="foaf:Person"><a href="www.dajobe.org/" content="David Beckett" property="foaf:name" rel="foaf:homepage" class="u-url url p-name fn">David Beckett</a></span>
+</dd>
+</dl>
+
+<p>公開以後に報告されたエラーや問題がないか<a href="www.w3.org/2014/rdf1.1-errata"><strong>正誤表</strong></a>を確認してください。</p>
+
+<p>この仕様の英語版が唯一の規範のバージョンです。非規範の<a href="www.w3.org/Consortium/Translation/">翻訳版</a>も入手可能かもしれません。</p>
+
+<p class="copyright"><a href="www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &#xa9; 2001-2014 <a href="www.w3.org/"><abbr title="World Wide Web Consortium">W3C</abbr></a><sup>&#xae;</sup> (<a href="www.csail.mit.edu/"><abbr title="Massachusetts Institute of Technology">MIT</abbr></a>, <a href="www.ercim.eu/"><abbr title="European Research Consortium for Informatics and Mathematics">ERCIM</abbr></a>, <a href="www.keio.ac.jp/">Keio</a>, <a href="ev.buaa.edu.cn/">Beihang</a>),  All Rights Reserved. <abbr title="World Wide Web Consortium">W3C</abbr> <a href="www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>, <a href="www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a> and <a href="www.w3.org/Consortium/Legal/copyright-documents">document use</a> rules apply.</p>
+
+<hr>
+
+</div>
+
+<section id="abstract" class="introductory" property="dcterms:abstract" datatype="" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_abstract">要約</h2>
+
+<p>N-Triplesは、RDFグラフをコード化するための、行ベースの、プレーン・テキストの形式です。</p>
+
+</section>
+<section class="introductory" id="sotd" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h2 aria-level="1" role="heading" id="h2_sotd">このドキュメントのステータス</h2>
+
+<p><em>この項は、このドキュメントの公開時のステータスについて記述しています。他のドキュメントがこのドキュメントに取って代わることがありえます。現行の<abbr title="World Wide Web Consortium">W3C</abbr>の刊行物およびこの技術報告の最新の改訂版のリストは、http://www.w3.org/TR/の<a href="www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr>技術報告インデックス</a>にあります。</em></p>
+
+このドキュメントは、RDF 1.1ドキュメント群の一部です。N-Triplesは、元々RDFテストケース[<cite><a class="bibref" href="#bib-RDF-TESTCASES">RDF-TESTCASES</a></cite>]ドキュメントの構文として定義されました。交換フォーマットとして評判が良かったため、<a href="www.w3.org/2011/rdf-wg/">RDFワーキンググループ</a>は、更新バージョンを公表することにしました。
+
+<p>このドキュメントは、<a href="www.w3.org/2011/rdf-wg/">RDFワーキンググループ</a>によって勧告として公開されましたこのドキュメントに関してコメントを行いたい場合には、<a href="mailto:public-rdf-comments@w3.org">public-rdf-comments@w3.org</a>（<a href="mailto:public-rdf-comments-request@w3.org?subject=subscribe">購読</a>、<a href="lists.w3.org/Archives/Public/public-rdf-comments/">アーカイブ</a>）にお送りください。どのようなコメントでも歓迎します。</p>
+
+<p>ワーキンググループの<a href="www.w3.org/2013/N-TriplesReports/index.html">実装報告書</a>を参照してください。</p>
+
+<p>このドキュメントは、<abbr title="World Wide Web Consortium">W3C</abbr>メンバー、ソフトウェア開発者、他の<abbr title="World Wide Web Consortium">W3C</abbr>グループ、および他の利害関係者によりレビューされ、<abbr title="World Wide Web Consortium">W3C</abbr>勧告として管理者の協賛を得ました。これは確定済みドキュメントであり、参考資料として用いたり、別のドキュメントで引用することができます。勧告の作成における<abbr title="World Wide Web Consortium">W3C</abbr>の役割は、仕様に注意を引き付け、広範囲な開発を促進することです。これによってウェブの機能性および相互運用性が増強されます。</p>
+
+<p>このドキュメントは、<a href="www.w3.org/Consortium/Patent-Policy-20040205/" rel="w3p:patentRules" about="" id="sotd_patent">2004年2月5日の<abbr title="World Wide Web Consortium">W3C</abbr>特許方針</a>の下で活動しているグループによって作成されました。<abbr title="World Wide Web Consortium">W3C</abbr>は、このグループの成果物に関連する<a rel="disclosure" href="www.w3.org/2004/01/pp-impl/46168/status">あらゆる特許の開示の公開リスト</a>を維持し、このページには特許の開示に関する指示も含まれています。<a href="www.w3.org/Consortium/Patent-Policy-20040205/#def-essential">不可欠な請求権</a>（Essential Claim(s)）を含んでいると思われる特許に関して実際に知っている人は、<a href="www.w3.org/Consortium/Patent-Policy-20040205/#sec-Disclosure"><abbr title="World Wide Web Consortium">W3C</abbr>特許方針の6項</a>に従って情報を開示しなければなりません。</p>
+
+</section><section id="toc">
+
+<h2 class="introductory" aria-level="1" role="heading" id="h2_toc">目次</h2>
+
+<ul class="toc" role="directory" id="respecContents">
+  <li class="tocline"><a href="#sec-introduction" class="tocxref"><span class="secno">1. </span>はじめに</a></li>
+  <li class="tocline">
+<a href="#sec-n-triples-language" class="tocxref"><span class="secno">2. </span>N-Triples言語</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#simple-triples" class="tocxref"><span class="secno">2.1 </span>シンプルなトリプル</a></li>
+    <li class="tocline"><a href="#sec-iri" class="tocxref"><span class="secno">2.2 </span>IRI</a></li>
+    <li class="tocline"><a href="#sec-literals" class="tocxref"><span class="secno">2.3 </span>RDFリテラル</a></li>
+    <li class="tocline"><a href="#BNodes" class="tocxref"><span class="secno">2.4 </span>RDF空白ノード</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#n-triples-changes" class="tocxref"><span class="secno">3. </span>RDFテストケース形式からの変更</a></li>
+  <li class="tocline"><a href="#canonical-ntriples" class="tocxref"><span class="secno">4. </span>N-Triplesの正規形式</a></li>
+  <li class="tocline"><a href="#conformance" class="tocxref"><span class="secno">5. </span>適合性</a></li>
+  <li class="tocline">
+<a href="#n-triples-mediatype" class="tocxref"><span class="secno">6. </span>メディア・タイプとコンテンツ・エンコーディング</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-other-media-types" class="tocxref"><span class="secno">6.1 </span>その他のメディア・タイプ</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#n-triples-grammar" class="tocxref"><span class="secno">7. </span>文法</a></li>
+  <li class="tocline">
+<a href="#sec-parsing" class="tocxref"><span class="secno">8. </span>解析</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#sec-parsing-terms" class="tocxref"><span class="secno">8.1 </span>RDF用語コンストラクタ</a></li>
+    <li class="tocline"><a href="#rdf-triple-construction" class="tocxref"><span class="secno">8.2 </span>RDFトリプルの構築</a></li>
+  </ul>  </li>
+  <li class="tocline"><a href="#section-ack" class="tocxref"><span class="secno">9. </span>謝辞</a></li>
+  <li class="tocline">
+<a href="#sec-changes" class="tocxref"><span class="secno">A. </span>変更履歴</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#changes-between-proposed-recommendation-and-recommendation" class="tocxref"><span class="secno">A.1 </span>勧告案と勧告との変更</a></li>
+    <li class="tocline"><a href="#changes-between-candidate-recommendation-and-proposed-recommendation" class="tocxref"><span class="secno">A.2 </span>勧告候補と勧告案との変更</a></li>
+    <li class="tocline"><a href="#changes-between-last-call-working-draft-and-candidate-recommendation" class="tocxref"><span class="secno">A.3 </span>最終草案と勧告候補との変更</a></li>
+    <li class="tocline"><a href="#changes-between-last-call-working-draft-and-publication-as-note" class="tocxref"><span class="secno">A.4 </span>最終草案とノートとしての公開との変更</a></li>
+  </ul>
+  </li>
+  <li class="tocline"><a href="#sec-mediaReg-n-triples" class="tocxref"><span class="secno">B. </span>N-Triplesのインターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</a></li>
+  <li class="tocline">
+<a href="#references" class="tocxref"><span class="secno">C. </span>参考文献</a>
+  <ul class="toc">
+    <li class="tocline"><a href="#normative-references" class="tocxref"><span class="secno">C.1 </span>規範的な参考文献</a></li>
+    <li class="tocline"><a href="#informative-references" class="tocxref"><span class="secno">C.2 </span>参考情報の参考文献</a></li>
+  </ul>
+  </li>
+</ul>
+
+</section>
+<!-- BEGIN N-TRIPLES SPEC -->
+<section id="sec-introduction" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-introduction">
+<span class="secno">1. </span>はじめに</h2>
+
+<p>このドキュメントは、N-Triplesという、RDF[<cite><a class="bibref" href="#bib-RDF11-CONCEPTS">RDF11-CONCEPTS</a></cite>]の具象構文を定義しています。N-Triplesは、解析が容易な、行ベースの、Turtle[<cite><a class="bibref" href="#bib-TURTLE">TURTLE</a></cite>]のサブセットです。</p>
+
+<p>この構文は、RDFテストケース[<cite><a class="bibref" href="#bib-RDF-TESTCASES">RDF-TESTCASES</a></cite>]ドキュメントで元々定義されていたN-Triplesの改訂バージョンです。元々の目的は、テストケースを記述するためでしたが、RDFデータの交換フォーマットとして評判が良いことが判明しました。</p>
+
+<p>N-Triplesドキュメントには解析指示子が含まれていません。</p>
+
+<p>N-Triplesのトリプルは、RDFトリプルの主語、述語、目的語を表すRDF用語のシーケンスです。これらは空白（<code>U+0020</code>の空白または<code>U+0009</code>のタブ）で区切られている可能性があります。このシーケンスは「<code>.</code>」と改行（ドキュメント末尾ではオプション）で終了します。</p>
+
+<div class="example">
+<div class="example-title"><span>例1</span></div>
+<pre class="example"><script type="application/n-triples"><http://one.example/subject1> <http://one.example/predicate1> <http://one.example/object1> . # comments here
+# or on a line by themselves
+_:subject1 <http://an.example/predicate1> "object1" .
+_:subject2 <http://an.example/predicate2> "object2" .
+</script></pre>
+</div>
+
+<p>N-Triplesのトリプルは、Turtleの<a href="#simple-triples">シンプルなトリプル</a>でもありますが、Turtleには他のRDF用語の表現や<a href="www.w3.org/TR/turtle/#predicate-lists">RDFトリプルの省略形</a>が含まれています。N-Triples形式のデータを、Turtleパーサで解析すると、N-triples言語のパーサとまったく同じトリプルが作成されます。</p>
+
+<p>N-Triplesドキュメントで表されるRDFグラフには、N-Triplesの<a href="#grammar-production-triple"><code>triple</code></a>生成規則とマッチする各トリプルが正確に含まれています。</p>
+
+</section>
+<section id="sec-n-triples-language" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-n-triples-language">
+<span class="secno">2. </span>N-Triples言語</h2>
+
+<section id="simple-triples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_simple-triples">
+<span class="secno">2.1 </span>シンプルなトリプル</h3>
+
+<p>最もシンプルなトリプルのステートメントは、（主語、述語、目的語）用語のシーケンスであり、空白で区切られ、各トリプルは「<code>.</code>」で終了します。</p>
+
+<div class="example">
+<div class="example-title"><span>例2</span></div>
+<pre class="example"><script type="application/n-triples"><http://example.org/#spiderman> <http://www.perceive.net/schemas/relationship/enemyOf> <http://example.org/#green-goblin> .</script></pre>
+</div>
+
+</section>
+<section id="sec-iri" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-iri">
+<span class="secno">2.2 </span>IRI</h3>
+
+<p><a href="www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a>は絶対IRIとしてのみ記述できます。IRIは「<code>&lt;</code>」と「<code>&gt;</code>」で囲まれ、数値エスケープ・シーケンスが含まれる可能性があります（下記で説明）。例えば、<code>&lt;http://example.org/#green-goblin&gt;</code>。</p>
+
+</section>
+<section id="sec-literals" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-literals">
+<span class="secno">2.3 </span>RDFリテラル</h3>
+
+<p><a href="www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a>は、文字列、数値、日付などの値を識別するために用います。</p>
+
+<p>リテラル（文法生成規則<a href="#grammar-production-literal">リテラル</a>）では、字句形式の後に言語タグまたはデータ型IRI（または、これらのどちらもない）が置かれます。字句形式の表現は、<code>&quot;</code>（<span class="codepoint">U+0022</span>）という先頭の区切り記号、認められている文字列か数値エスケープ・シーケンスか文字列エスケープ・シーケンス、最後の区切り記号で構成されます。リテラルには、エスケープ形式による場合を除き、<code>&quot;</code>、 <code title="LINE FEED"><sub>LF</sub></code>、<code title="CARRIAGE RETURN"><sub>CR</sub></code>という文字は含まれていないかもしれません。さらに、「<code>\</code>」（<span class="codepoint">U+005C</span>）は、エスケープ・シーケンスの一部として出現する場合を除き、引用符付きリテラルには出現できません。対応する<a href="www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">RDF字句形式</a>は、エスケープ・シーケンス処理後の、区切り記号の間の文字です。<a href="www.w3.org/TR/rdf11-concepts/#dfn-language-tagged-string">言語タグ</a>があれば、その前に「<code>@</code>」（<span class="codepoint">U+0040</span>）が置かれます。言語タグがなければ、「<code>^^</code>」（<span class="codepoint">U+005E</span> <span class="codepoint">U+005E</span>）の後に<a href="www.w3.org/TR/rdf11-concepts/#dfn-datatype-iri">データ型IRI</a>が置かれるかもしれません。データ型IRIも言語タグもないときには、それは<a href="www.w3.org/TR/rdf11-concepts/#dfn-simple-literal">シンプルなリテラル</a>であり、データ型は<code>http://www.w3.org/2001/XMLSchema#string</code>です。</p>
+
+<div class="example">
+<div class="example-title"><span>例3</span></div>
+<pre class="example"><script type="application/n-triples"><http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show"^^<http://www.w3.org/2001/XMLSchema#string> . # literal with XML Schema string datatype
+<http://example.org/show/218> <http://www.w3.org/2000/01/rdf-schema#label> "That Seventies Show" . # same as above
+<http://example.org/show/218> <http://example.org/show/localName> "That Seventies Show"@en . # literal with a language tag
+<http://example.org/show/218> <http://example.org/show/localName> "Cette Serie des Annees Septante"@fr-be .  # literal outside of ASCII range with a region subtag
+<http://example.org/#spiderman> <http://example.org/text> "This is a multi-line\nliteral with many quotes (\"\"\"\"\")\nand two apostrophes ('')." .
+<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/atomicNumber> "2"^^<http://www.w3.org/2001/XMLSchema#integer> . # xsd:integer
+<http://en.wikipedia.org/wiki/Helium> <http://example.org/elements/specificGravity> "1.663E-4"^^<http://www.w3.org/2001/XMLSchema#double> .     # xsd:double
+</script></pre>
+</div>
+
+</section>
+<section id="BNodes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_BNodes">
+<span class="secno">2.4 </span>RDF空白ノード</h3>
+
+<p>N-Triplesの<a href="www.w3.org/TR/rdf11-concepts/#dfn-blank-node">RDF空白ノード</a>は、<code>_:</code>で表され、その後に一連の名前文字である空白ノード・ラベルが続きます。ラベル内の文字は、<a href="#grammar-production-PN_CHARS_BASE">PN_CHARS_BASE</a>に基づいて構築されますが、次のとおりに緩和されています。</p>
+
+<ul>
+  <li>
+<code>_</code>という文字と<code>[0-9]</code>字は、空白ノード・ラベルのどこに出現してもよい。</li>
+  <li>
+<code>.</code>という文字は、最初または最後の文字を除き、どこに出現してもよい。</li>
+  <li>
+<code>-</code>、<code>U+00B7</code>、<code>U+0300</code>～<code>U+036F</code>、<code>U+203F</code>～<code>U+2040</code>の文字は、最初の文字を除き、どこでも認められる。</li>
+</ul>
+
+<p>新しいRDF空白ノードは、ドキュメント内の一意の空白ノード・ラベルにそれぞれ割り当てられます。同じ空白ノード・ラベルを繰り返して用いると、同じRDF空白ノードを識別します。</p>
+
+<div class="example">
+<div class="example-title"><span>例4</span></div>
+<pre class="example"><script type="application/n-triples">_:alice <http://xmlns.com/foaf/0.1/knows> _:bob .
+_:bob <http://xmlns.com/foaf/0.1/knows> _:alice .</script></pre>
+</div>
+
+</section>
+</section>
+<section class="informative" id="n-triples-changes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_n-triples-changes">
+<span class="secno">3. </span>RDFテストケース形式からの変更</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<ul>
+  <li>コード化はUS-ASCIIではなくUTF-8</li>
+  <li>RDF URI参照ではなくIRIを使用</li>
+  <li>
+<code>application/n-triples</code>という固有のメディアタイプを定義</li>
+  <li>Notation 3ではなくTurtleのサブセット</li>
+  <li>コメントはトリプルの生成規則の後に出現可能</li>
+  <li>バックスペースとフォーム・フィード用に<code>\b</code>と<code>\f</code>が認められている</li>
+  <li>1つの文字を表す方法が複数ある</li>
+  <li>空白ノード・ラベルを数字で始めることができる</li>
+</ul>
+
+</section>
+<section id="canonical-ntriples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_canonical-ntriples">
+<span class="secno">4. </span>N-Triplesの正規形式</h2>
+
+<p>この項では、レイアウトに可変性が少ないN-Triplesの正規形式を定義しました。言語の文法は同じです。実装者は、この形式を作成することをお進めします。</p>
+
+<p>正規N-Triplesは、レイアウトに次の追加的な制約があります。</p>
+
+<ul>
+  <li>
+<code>subject</code>（主語）、<code>predicate</code>（述語）、<code>object</code>（目的語）の後の空白は、1つの空白（<code>U+0020</code>）でなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。空白が認められている他のすべての位置は空でなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。</li>
+  <li>コメントがあってはなりません（<em class="rfc2119" title="MUST">MUST</em>）。</li>
+  <li>
+<code>HEX</code>には大文字（<code>[A-F]</code>）のみを用いなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。</li>
+  <li>文字を<code>UCHAR</code>で表現してはなりません（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）。</li>
+  <li>
+<a href="#grammar-production-STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</a>内では、<code>ECHAR</code>を用いてコード化されるのは<code>U+0022</code>、<code>U+005C</code>、<code>U+000A</code>、<code>U+000D</code>という文字のみです。<a href="#grammar-production-STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</a>で直接認められている文字に<code>ECHAR</code>を用いてはなりません（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）。</li>
+</ul>
+
+</section>
+<section id="conformance" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_conformance">
+<span class="secno">5. </span>適合性</h2>
+
+<p>非規範的と記している項と同じく、この仕様のすべての作成ガイドライン、図、例、注は、非規範的です。この仕様のその他の部分はすべて規範的です。</p>
+
+<p>この仕様の「しなければならない（<em class="rfc2119" title="MUST">MUST</em>）」、「してはならない（<em class="rfc2119" title="MUST NOT">MUST NOT</em>）」、「必須である／要求される（<em class="rfc2119" title="REQUIRED">REQUIRED</em>）」、「すべきである／する必要がある（<em class="rfc2119" title="SHOULD">SHOULD</em>）」、「すべきでない／する必要がない（<em class="rfc2119" title="SHOULD NOT">SHOULD NOT</em>）」、「推奨される（<em class="rfc2119" title="RECOMMENDED">RECOMMENDED</em>）」、「することができる／してもよい（<em class="rfc2119" title="MAY">MAY</em>）」、「選択できる／任意である（<em class="rfc2119" title="OPTIONAL">OPTIONAL</em>）」というキーワードは、[<cite><a class="bibref" href="#bib-RFC2119">RFC2119</a></cite>]で記述されているように解釈されるべきです。</p>
+
+<p>この仕様は、次のものに関する適合性基準を定義しています。</p>
+
+<ul>
+  <li>N-Triplesドキュメント</li>
+  <li>正規N-Triplesドキュメント</li>
+  <li>N-Triplesパーサ</li>
+</ul>
+
+<p>適合<dfn id="dfn-n-triples-document">N-Triplesドキュメント</dfn>は、<a class="sectionRef sec-ref" href="#n-triples-grammar"><span class="secno">7</span>項 <span class="sec-title">文法</span></a>で定義されている文法と追加の制約に準拠したUnicodeの文字列で、<a href="#grammar-production-ntriplesDoc"><code>ntriplesDoc</code>生成規則</a>で始まります。N-QuadドキュメントはRDFデータセットをシリアル化します。N-TriplesドキュメントはRDFグラフをシリアル化します。</p>
+
+<p>適合<dfn id="dfn-canonical-n-triples-document">正規N-Triplesドキュメント</dfn>は、正規N-Triplesの<a href="#canonical-ntriples">追加的な制約</a>に従った<strong>N-Triplesドキュメント</strong>です。</p>
+
+<p>適合<dfn id="dfn-n-triples-parser">N-Triplesパーサ</dfn>は、アプリケーションの代わりにN-Triplesドキュメントを読むことができるシステムです。<a class="sectionRef sec-ref" href="#sec-parsing"><span class="secno">5</span>項 <span class="sec-title">解析</span></a>で定義しているように、これによってシリアル化されたRDFグラフが作成され、通常は何らかのAPI形式で、それをアプリケーションに利用できます。</p>
+
+<p>N-Triples言語を識別するIRIは、<code>http://www.w3.org/ns/formats/N-Triples</code>です。</p>
+
+</section>
+<section id="n-triples-mediatype" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_n-triples-mediatype">
+<span class="secno">6. </span>メディア・タイプとコンテンツ・エンコーディング</h2>
+
+<p>N-Triplesのメディア・タイプは<code>application/n-triples</code>です。N-Triplesのコンテンツ・エンコーディングは、常にUTF-8です。メディア・タイプの登録形式については、<a href="#sec-mediaReg-n-triples">N-Triplesメディア・タイプ</a>を参照してください。</p>
+
+<section id="sec-other-media-types" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-other-media-types">
+<span class="secno">6.1 </span>その他のメディア・タイプ</h3>
+
+<p>N-Triplesは、以前は他のメディアタイプで提供されていました。N-Triplesは<code>text/plain</code>でも提供できます。N-Triplesをこの方法で用いる場合には、US-ASCII以外の文字のエスケープ形式を用いなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。N-TriplesはTurtleのサブセットであるため、N-Triplesドキュメントは、<code>text/turtle</code>でも提供できます（<em class="rfc2119" title="MAY">MAY</em>）。N-Triplesドキュメントは<code>application/n-triples</code>でのみ提供されるため、これらのどちらのケースでも、ドキュメントはN-Triplesドキュメントではありません。</p>
+
+</section>
+</section>
+<section id="n-triples-grammar" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_n-triples-grammar">
+<span class="secno">7. </span>文法</h2>
+
+<p>N-Triplesドキュメントは、UTF-8でエンコードされたUnicode[<cite><a class="bibref" href="#bib-UNICODE">UNICODE</a></cite>]文字列です。U+0～U+10FFFFの範囲のUnicodeコード・ポイントのみが認められています。</p>
+
+<p>空白（<code>U+0009</code>のタブまたは<code>U+0020</code>の空白）は、そうしないと1つの終端記号と（誤）認識されてしまう2つの終端記号を分離するために用いられます。空白は生成規則<a href="#grammar-production-STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</a>において重要です。</p>
+
+<p>N-Triples内のコメントは、<code>IRIREF</code>や<code>STRING_LITERAL_QUOTE</code>の外部では、「<code>#</code>」の形式をとり、行末（<code>EOL</code>）（行末を含まない）まで続くか、コメント記号の後に行末がない場合にはファイルの最後まで続きます。コメントは空白として扱われます。</p>
+
+<p>ここで用いる<abbr title="Extended Backus?Naur Form">EBNF</abbr>は、XML 1.0[<cite><a class="bibref" href="#bib-EBNF-NOTATION">EBNF-NOTATION</a></cite>]で定義されています。</p>
+
+<p>エスケープ・シーケンスの規則はTurtle[<cite><a class="bibref" href="#bib-TURTLE">TURTLE</a></cite>]と同じです。しかし、<a href="#grammar-production-STRING_LITERAL_QUOTE"><code>STRING_LITERAL_QUOTE</code></a>生成規則のみが認められているため、リテラル内の改行はエスケープしなければなりません（<em class="rfc2119" title="MUST">MUST</em>）。</p>
+
+<div>
+
+<table class="grammar">
+<tbody class="grammar-productions">
+  <tr data-grammar-expression="(',', [('?', ('id', 'triple')), ('*', (',', [('id', 'EOL'), ('id', 'triple')])), ('?', ('id', 'EOL'))])" data-grammar-original="[1]  ntriplesDoc        ::= triple? (EOL triple)* EOL?" id="grammar-production-ntriplesDoc">
+    <td>[1]</td>
+    <td><code>ntriplesDoc</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-triple">triple</a>? (<a href="#grammar-production-EOL">EOL</a> <a href="#grammar-production-triple">triple</a>)<code class="grammar-star">*</code> <a href="#grammar-production-EOL">EOL</a>?</td>
+  </tr>
+  <tr data-grammar-expression="(',', [('id', 'subject'), ('id', 'predicate'), ('id', 'object'), (&quot;'&quot;, '.')])" data-grammar-original="[2]  triple             ::= subject predicate object '.'" id="grammar-production-triple">
+    <td>[2]</td>
+    <td><code>triple</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-subject">subject</a> <a href="#grammar-production-predicate">predicate</a> <a href="#grammar-production-object">object</a> '<code class="grammar-literal">.</code>'</td>
+  </tr>
+  <tr data-grammar-expression="('|', [('id', 'IRIREF'), ('id', 'BLANK_NODE_LABEL')])" data-grammar-original="[3]  subject            ::= IRIREF | BLANK_NODE_LABEL" id="grammar-production-subject">
+    <td>[3]</td>
+    <td><code>subject</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-IRIREF">IRIREF</a> <code>| </code> <a href="#grammar-production-BLANK_NODE_LABEL">BLANK_NODE_LABEL</a>
+</td>
+  </tr>
+  <tr data-grammar-expression="('id', 'IRIREF')" data-grammar-original="[4]  predicate          ::= IRIREF" id="grammar-production-predicate">
+    <td>[4]</td>
+    <td><code>predicate</code></td>
+    <td>::=</td>
+    <td><a href="#grammar-production-IRIREF">IRIREF</a></td>
+  </tr>
+  <tr data-grammar-expression="('|', [('id', 'IRIREF'), ('id', 'BLANK_NODE_LABEL'), ('id', 'literal')])" data-grammar-original="[5]  object             ::= IRIREF | BLANK_NODE_LABEL | literal" id="grammar-production-object">
+    <td>[5]</td>
+    <td><code>object</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-IRIREF">IRIREF</a> <code>| </code> <a href="#grammar-production-BLANK_NODE_LABEL">BLANK_NODE_LABEL</a> <code>| </code> <a href="#grammar-production-literal">literal</a>
+</td>
+  </tr>
+  <tr data-grammar-expression="(',', [('id', 'STRING_LITERAL_QUOTE'), ('?', ('|', [(',', [(&quot;'&quot;, '^^'), ('id', 'IRIREF')]), (',', ['id', 'LANGTAG')])]))])" data-grammar-original="[6]  literal            ::= STRING_LITERAL_QUOTE ('^^' IRIREF | LANGTAG )?" id="grammar-production-literal">
+    <td>[6]</td>
+    <td><code>literal</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-STRING_LITERAL_QUOTE">STRING_LITERAL_QUOTE</a> ('<code class="grammar-literal">^^</code>' <a href="#grammar-production-IRIREF">IRIREF</a> <code>| </code> <a href="#grammar-production-LANGTAG">LANGTAG</a>)?</td>
+  </tr>
+  <tr>
+    <td colspan="4"><h2 id="terminals">終端記号の生成規則</h2></td>
+  </tr>
+            <tr class="grammar-token" data-grammar-expression="(',', [(&quot;'&quot;, '@'), ('+', ('[', 'a-zA-Z')), ('*', (',', [(&quot;'&quot;, '-'), ('+', ('[', 'a-zA-Z0-9'))]))])" data-grammar-original="[144s] LANGTAG          ::= &quot;@&quot; [a-zA-Z]+ ( &quot;-&quot; [a-zA-Z0-9]+ )*" id="grammar-production-LANGTAG">
+    <td>[144s]</td>
+    <td><code>LANGTAG</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">@</code>' [<code class="grammar-chars">a-zA-Z</code>]<code class="grammar-plus">+</code> ('<code class="grammar-literal">-</code>' [<code class="grammar-chars">a-zA-Z0-9</code>]<code class="grammar-plus">+</code>)<code class="grammar-star">*</code>
+</td>
+</tr>
+  <tr class="grammar-token" data-grammar-expression="('+', ('[', '#xD#xA'))" data-grammar-original="[7]  EOL                ::= [#xD#xA]+" id="grammar-production-EOL">
+    <td>[7]</td>
+    <td><code>EOL</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">#xD#xA</code>]<code class="grammar-plus">+</code>
+</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="(',', [(&quot;'&quot;, '&lt;'), ('*', ('|', [('[', '^#x00-#x20&lt;&gt;&quot;{}|^`\\'), ('id', 'UCHAR')])), (&quot;'&quot;, '&gt;')])" data-grammar-original="[8] IRIREF ::=  '&lt;' ([^#x00-#x20&lt;&gt;&quot;{}|^`\] | UCHAR)* '&gt;'" id="grammar-production-IRIREF">
+    <td>[8]</td>
+    <td><code>IRIREF</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">&lt;</code>' ([<code class="grammar-chars">^#x00-#x20&lt;&gt;&quot;{}|^`\</code>] <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>)<code class="grammar-star">*</code> '<code class="grammar-literal">&gt;</code>'</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="(',', [(&quot;'&quot;, '&quot;'), ('*', ('|', [('[', '^#x22#x5C#xA#xD'), ('id', 'ECHAR'), ('id', 'UCHAR')])), (&quot;'&quot;, '&quot;')])" data-grammar-original="[9] STRING_LITERAL_QUOTE ::= '&quot;' ( [^#x22#x5C#xA#xD] | ECHAR | UCHAR )* '&quot;'" id="grammar-production-STRING_LITERAL_QUOTE">
+    <td>[9]</td>
+    <td><code>STRING_LITERAL_QUOTE</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">&quot;</code>' ([<code class="grammar-chars">^#x22#x5C#xA#xD</code>] <code>| </code> <a href="#grammar-production-ECHAR">ECHAR</a> <code>| </code> <a href="#grammar-production-UCHAR">UCHAR</a>)<code class="grammar-star">*</code> '<code class="grammar-literal">&quot;</code>'</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="(',', [(&quot;'&quot;, '_:'), ('|', [('id', 'PN_CHARS_U'), ('[', '0-9')]), ('?', (',', [('*', ('|', [('id', 'PN_CHARS'), (&quot;'&quot;, '.')])), ('id', 'PN_CHARS')]))])" data-grammar-original="[141s] BLANK_NODE_LABEL ::= '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?" id="grammar-production-BLANK_NODE_LABEL">
+    <td>[141s]</td>
+    <td><code>BLANK_NODE_LABEL</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">_:</code>' (<a href="#grammar-production-PN_CHARS_U">PN_CHARS_U</a> <code>| </code> [<code class="grammar-chars">0-9</code>]) ((<a href="#grammar-production-PN_CHARS">PN_CHARS</a> <code>| </code> '<code class="grammar-literal">.</code>')<code class="grammar-star">*</code> <a href="#grammar-production-PN_CHARS">PN_CHARS</a>)?</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="('|', [(',', [(&quot;'&quot;, '\\u'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX')]), (',', [(&quot;'&quot;, '\\U'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX'), ('id', 'HEX')])])" data-grammar-original="[10] UCHAR ::= ( &quot;\u&quot; HEX HEX HEX HEX )| ( &quot;\U&quot; HEX HEX HEX HEX HEX HEX HEX HEX )" id="grammar-production-UCHAR">
+    <td>[10]</td>
+    <td><code>UCHAR</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">\u</code>' <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <code>| </code> '<code class="grammar-literal">\U</code>' <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a> <a href="#grammar-production-HEX">HEX</a>
+</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="(',', [(&quot;'&quot;, '\\'), ('[', 'tbnrf&quot;\'')])" data-grammar-original="[153s] ECHAR ::= &quot;\&quot; [tbnrf&quot;\]" id="grammar-production-ECHAR">
+    <td>[153s]</td>
+    <td><code>ECHAR</code></td>
+    <td>::=</td>
+    <td>'<code class="grammar-literal">\</code>' [<code class="grammar-chars">tbnrf&quot;'\</code>]</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="('|', [('[', 'A-Z'), ('[', 'a-z'), ('[', '#x00C0-#x00D6'), ('[', '#x00D8-#x00F6'), ('[', '#x00F8-#x02FF'), ('[', '#x0370-#x037D'), ('[', '#x037F-#x1FFF'), ('[', '#x200C-#x200D'), ('[', '#x2070-#x218F'), ('[', '#x2C00-#x2FEF'), ('[', '#x3001-#xD7FF'), ('[', '#xF900-#xFDCF'), ('[', '#xFDF0-#xFFFD'), ('[', '#x10000-#xEFFFF')])" data-grammar-original="[157s] PN_CHARS_BASE    ::= [A-Z]| [a-z]| [#x00C0-#x00D6]| [#x00D8-#x00F6]| [#x00F8-#x02FF]| [#x0370-#x037D]| [#x037F-#x1FFF]| [#x200C-#x200D]| [#x2070-#x218F]| [#x2C00-#x2FEF]| [#x3001-#xD7FF]| [#xF900-#xFDCF]| [#xFDF0-#xFFFD]| [#x10000-#xEFFFF]" id="grammar-production-PN_CHARS_BASE">
+    <td>[157s]</td>
+    <td><code>PN_CHARS_BASE</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">A-Z</code>] <code>| </code> [<code class="grammar-chars">a-z</code>] <code>| </code> [<code class="grammar-chars">#x00C0-#x00D6</code>] <code>| </code> [<code class="grammar-chars">#x00D8-#x00F6</code>] <code>| </code> [<code class="grammar-chars">#x00F8-#x02FF</code>] <code>| </code> [<code class="grammar-chars">#x0370-#x037D</code>] <code>| </code> [<code class="grammar-chars">#x037F-#x1FFF</code>] <code>| </code> [<code class="grammar-chars">#x200C-#x200D</code>] <code>| </code> [<code class="grammar-chars">#x2070-#x218F</code>] <code>| </code> [<code class="grammar-chars">#x2C00-#x2FEF</code>] <code>| </code> [<code class="grammar-chars">#x3001-#xD7FF</code>] <code>| </code> [<code class="grammar-chars">#xF900-#xFDCF</code>] <code>| </code> [<code class="grammar-chars">#xFDF0-#xFFFD</code>] <code>| </code> [<code class="grammar-chars">#x10000-#xEFFFF</code>]</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="('|', [('id', 'PN_CHARS_BASE'), (&quot;'&quot;, '_'), (&quot;'&quot;, ':')])" data-grammar-original="[158s] PN_CHARS_U       ::=  PN_CHARS_BASE| '_'| ':'" id="grammar-production-PN_CHARS_U">
+    <td>[158s]</td>
+    <td><code>PN_CHARS_U</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-PN_CHARS_BASE">PN_CHARS_BASE</a> <code>| </code> '<code class="grammar-literal">_</code>' <code>| </code> '<code class="grammar-literal">:</code>'</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="('|', [('id', 'PN_CHARS_U'), (&quot;'&quot;, '-'), ('[', '0-9'), ('#', '#x00B7'), ('[', '#x0300-#x036F'), ('[', '#x203F-#x2040')])" data-grammar-original="[160s] PN_CHARS         ::= PN_CHARS_U| &quot;-&quot;| [0-9]| #x00B7| [#x0300-#x036F]| [#x203F-#x2040]" id="grammar-production-PN_CHARS">
+    <td>[160s]</td>
+    <td><code>PN_CHARS</code></td>
+    <td>::=</td>
+    <td>
+<a href="#grammar-production-PN_CHARS_U">PN_CHARS_U</a> <code>| </code> '<code class="grammar-literal">-</code>' <code>| </code> [<code class="grammar-chars">0-9</code>] <code>| </code> <code class="grammar-char-escape">#x00B7</code> <code>| </code> [<code class="grammar-chars">#x0300-#x036F</code>] <code>| </code> [<code class="grammar-chars">#x203F-#x2040</code>]</td>
+  </tr>
+  <tr class="grammar-token" data-grammar-expression="('|', [('[', '0-9'), ('[', 'A-F'), ('[', 'a-f')])" data-grammar-original="[162s] HEX              ::= [0-9] | [A-F] | [a-f]" id="grammar-production-HEX">
+    <td>[162s]</td>
+    <td><code>HEX</code></td>
+    <td>::=</td>
+    <td>[<code class="grammar-chars">0-9</code>] <code>| </code> [<code class="grammar-chars">A-F</code>] <code>| </code> [<code class="grammar-chars">a-f</code>]</td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section id="sec-parsing" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-parsing">
+<span class="secno">8. </span>解析</h2>
+
+<p>N-Triplesの解析には、次の1つのアイテムの状態が必要です。</p>
+
+<ul>
+  <li id="bnodeLabels">Map[string -&gt; <a href="www.w3.org/TR/rdf11-concepts/#dfn-blank-node">blank node</a>] <code class="dfn">bnodeLabels</code> &#x2014; 文字列から空白ノードへのマッピング。</li>
+</ul>
+
+<section id="sec-parsing-terms" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_sec-parsing-terms">
+<span class="secno">8.1 </span>RDF用語コンストラクタ</h3>
+
+<p>次の表は、生成規則と字句トークンを、<code>RDF terms</code>または<a class="sectionRef sec-ref" href="#sec-parsing"><span class="secno">8</span>項 <span class="sec-title">解析</span></a>で挙げた<code>RDF terms</code>の構成要素にマッピングしています。</p>
+
+<table class="simple">
+<thead>
+  <tr>
+    <th>生成規則</th>
+    <th>型</th>
+    <th>手順</th>
+  </tr>
+</thead>
+<tbody>
+  <tr id="handle-IRIREF">
+    <td style="text-align:left;"><a href="#grammar-production-IRIREF" class="type IRI">IRIREF</a></td>
+    <td><a href="www.w3.org/TR/rdf11-concepts/#dfn-iri">IRI</a></td>
+    <td>「&lt;」と「&gt;」の間の文字を用いて、エスケープ・シーケンスをエスケープしないで、IRIのUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-STRING_LITERAL_QUOTE">
+    <td style="text-align:left;"><a href="#grammar-production-STRING_LITERAL_QUOTE" class="type lexicalForm">STRING_LITERAL_QUOTE</a></td>
+    <td><a href="www.w3.org/TR/rdf11-concepts/#dfn-lexical-form">字句形式</a></td>
+    <td>最も外側の「&quot;」の間の文字を用いて、エスケープ・シーケンスをエスケープしないで、字句形式のUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-LANGTAG">
+<td style="text-align:left;"><a href="#grammar-production-LANGTAG" class="type langTag">LANGTAG</a></td>
+    <td><a href="www.w3.org/TR/rdf11-concepts/#dfn-language-tag">言語タグ</a></td>
+  <td>
+<code>@</code>の後の文字は、言語タグのUnicode文字列を形成します。</td>
+  </tr>
+  <tr id="handle-literal">
+<td style="text-align:left;"><a href="#grammar-production-literal" class="type literal">literal</a></td>
+    <td><a href="www.w3.org/TR/rdf11-concepts/#dfn-literal">リテラル</a></td>
+    <td>リテラルには、<code>STRING_LITERAL_QUOTE</code>という最初の規則の引数、および<code>LANGTAG</code>の言語タグか<code>iri</code>のデータ型式IRIの語彙のフォームのいずれか（リテラルがどの規則が入力とマッチしたかによる）の字句形式があります。<code>LANGTAG</code>の規則がマッチした場合、データ型は<code>rdf:langString</code>で、言語タグは<code>LANGTAG</code>です。言語タグもデータ型IRIも提供されなければ、リテラルは<code>xsd:string</code>というデータ型を持ちます。
+</td>
+  </tr>
+  <tr id="handle-BLANK_NODE_LABEL">
+    <td style="text-align:left;"><a href="#grammar-production-BLANK_NODE_LABEL" class="type bNode">BLANK_NODE_LABEL</a></td>
+    <td><a href="www.w3.org/TR/rdf11-concepts/#dfn-blank-node">空白ノード</a></td>
+    <td>
+<code>_:</code>の後の文字列は、<a href="#bnodeLabels">bnodeLabels</a>のキーです。マップに対応する空白ノードがない場合、1が割り当てられます。</td>
+  </tr>
+</tbody>
+</table>
+
+</section>
+<section id="rdf-triple-construction">
+
+<h3 aria-level="2" role="heading" id="h3_rdf-triple-construction">
+<span class="secno">8.2 </span>RDFトリプルの構築</h3>
+
+<p>N-Triplesドキュメントは、RDFトリプルの集合で構成されるRDFグラフを定義しています。<code><a href="#grammar-production-triple">triple</a></code>（トリプル）生成規則により、<code><a href="#grammar-production-subject">subject</a></code>（主語）、<code><a href="#grammar-production-predicate">predicate</a></code>（述語）、<code><a href="#grammar-production-object">object</a></code>（目的語）のために構築された用語により定義されたトリプルが作成されます。</p>
+
+</section>
+</section>
+<section class="informative" id="section-ack" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_section-ack">
+<span class="secno">9. </span>謝辞</h2>
+
+<p><em>この項は非規範的です。</em></p>
+
+<p>RDF 1.1の編集者は、Gregg Kellogg、Eric Prud'hommeaux、Dave Beckett、David Robillard、Gregory Williams、Pat Hayes、Richard Cyganiak、Henry S. Thompson、Peter Ansell、Evan Patton、およびDavid Boothの有益な貢献に感謝いたします。</p>
+
+<p>この仕様は、RDFワーキンググループのメンバーにより積み重ねられた議論の成果です。 これは、Dave Beckettにより編集された<a href="www.w3.org/TR/2004/REC-rdf-testcases-20040210/#ntriples">RDFテストケース</a>という過去の仕様を参考にしています。</p>
+
+</section>
+<section class="appendix" id="sec-changes" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-changes">
+<span class="secno">A. </span>変更履歴</h2>
+
+<section id="changes-between-proposed-recommendation-and-recommendation">
+
+<h3 aria-level="2" role="heading" id="h3_changes-between-proposed-recommendation-and-recommendation">
+<span class="secno">A.1 </span>勧告案と勧告との変更</h3>
+
+<ul>
+  <li>言語型付きリテラルに関する<a href="lists.w3.org/Archives/Public/public-rdf-comments/2014Feb/0009.html">文法規則[6]のバグ</a>を修正。</li>
+</ul>
+
+</section>
+<section id="changes-between-candidate-recommendation-and-proposed-recommendation">
+
+<h3 aria-level="2" role="heading" id="h3_changes-between-candidate-recommendation-and-proposed-recommendation">
+<span class="secno">A.2 </span>勧告候補と勧告案との変更</h3>
+
+<ul>
+  <li>RDF概念の規範的参考文献を追加。</li>
+  <li>「正規N-Triples」に関する記述を別の項にした。</li> 
+</ul>
+
+</section>
+<section id="changes-between-last-call-working-draft-and-candidate-recommendation">
+
+<h3 aria-level="2" role="heading" id="h3_changes-between-last-call-working-draft-and-candidate-recommendation">
+<span class="secno">A.3 </span>最終草案と勧告候補との変更</h3>
+
+<p>実質的な変更なし。</p>
+
+</section>
+<section id="changes-between-last-call-working-draft-and-publication-as-note">
+
+<h3 aria-level="2" role="heading" id="h3_changes-between-last-call-working-draft-and-publication-as-note">
+<span class="secno">A.4 </span>最終草案とノートとしての公開との変更</h3>
+
+<ul>
+  <li>
+<a href="#dfn-canonical-n-triples-document">正規N-Triplesドキュメント</a>を定義した項。</li>
+  <li>Turtleと同様に、空白規則を文法外で定義。</li>
+  <li>コメント処理を定義。</li>
+  <li>解析を定義。</li>
+  <li>「N-TriplesとTurtleの違いの要約」を削除。</li>
+  <li>ワーキンググループ・ノートではなく、勧告トラックに。</li>
+</ul>
+
+</section>
+</section>
+<section class="appendix" id="sec-mediaReg-n-triples" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_sec-mediaReg-n-triples">
+<span class="secno">B. </span>N-Triplesのインターネット・メディア・タイプ、ファイル拡張子、およびマッキントッシュ・ファイル・タイプ</h2>
+
+<dl>
+  <dt>連絡先:</dt>
+  <dd>Eric Prud'hommeaux</dd>
+  <dt>参照:</dt>
+  <dd><a href="www.w3.org/2002/06/registering-mediatype"><abbr title="World Wide Web Consortium">W3C</abbr>仕様に関するメディア・タイプの登録方法</a></dd>
+  <dd>
+<a href="www.w3.org/2001/tag/2002/0129-mime">インターネット・メディア・タイプ登録、使用の整合性</a><br>
+TAGの発見事項 2002年6月3日（2002年9月4日改定）</dd>
+</dl>
+
+<p>N-Triplesのインターネット・メディア・タイプ/MIMEタイプは、「application/n-triples」です。</p>
+
+<p>N-Triplesファイルは、すべてのプラットホーム上で拡張子「.nt」（すべて小文字）であることが推奨されます。</p>
+
+<p>マッキントッシュHFSファイル・システム上に保存されたN-Triplesファイルには、ファイル・タイプ「TEXT」が付与されていることが推奨されます。</p>
+
+<p>下記のこの情報は、IANAでのレビュー、承認、および登録のためにIESGに提出されるでしょう。</p>
+
+<dl>
+  <dt>タイプ名:</dt>
+  <dd>application</dd>
+  <dt>サブタイプ名:</dt>
+  <dd>n-triples</dd>
+  <dt>必須パラメータ:</dt>
+  <dd>なし</dd>
+  <dt>任意のパラメータ:</dt>
+  <dd>なし</dd>
+  <dt>コード化に関する留意点:</dt>
+  <dd>N-Triplesの構文は、Unicode[<cite><a class="bibref" href="#bib-UNICODE">UNICODE</a></cite>]のコード・ポイントで表されます。コード化は、常にUTF-8[<cite><a class="bibref" href="#bib-UTF-8">UTF-8</a></cite>]です。</dd>
+  <dd>Unicodeコード・ポイントは、Xが16進の[0-9A-F]である場合、\uXXXX（U+0～U+FFFF）または\UXXXXXXXX構文（U+10000以降）を用いて表現できます。</dd>
+  <dt>セキュリティに関する留意点:</dt>
+  <dd>は汎用の言明言語です。アプリケーションは、より多くの言明を推論したり、IRIを逆参照するためにデータを評価でき、そのIRIのスキームに関するセキュリティ上の検討事項が生じます。特に、HTTP IRIに関する[<cite><a class="bibref" href="#bib-RFC3023">RFC3023</a></cite>]の10項のプライバシー問題に注意してください。不正確または悪質なデータ情報源から得たデータは、意図しないIRIの逆参照のみならず、不正確または誤解を招く結果に結びつくかもしれません。調べた資源に対する信頼性を、意図されているデータ利用の感度と慎重に合わせなければなりません。例えば、潜在的な内科療法の推論には、旅行計画の推論とは恐らく異なる信頼性が必要でしょう。</dd>
+  <dd>N-Triplesは任意のアプリケーション・データを表すために用います。セキュリティ上の検討事項は、使用領域によって変わるでしょう。テキストに適用できるセキュリティ・ツールやプロトコル（例えば、PGP暗号化、MD5チェックサム検証、パスワードで保護された圧縮）は、N-Triplesドキュメントにも使用できます。組み込まれた情報の感度を反映したセキュリティー/プライバシー・プロトコルを課さなければなりません。</dd>
+  <dd>N-Triplesは、ユーザに提示するデータを表すことができます（例えば、RDFスキーマ・ラベル）。信頼できないN-Triplesドキュメントから検索された文字列を表示するアプリケーションは、読者を誤解させるような悪質な文字列が用いられていなことを保証しなければなりません。XMLのメディア・タイプ登録におけるセキュリティに関する考察（[<cite><a class="bibref" href="#bib-RFC3023">RFC3023</a></cite>]の10項）は、任意のデータとマークアップの表現に関するガイダンスを追加提供します。</dd>
+  <dd>N-Triplesは、IRIを用語識別子として用います。N-Quadsで表現されたデータを解釈するアプリケーションは、<em>URI</em>（Uniform Resource Identifier）: 一般的構文[<cite><a class="bibref" href="#bib-RFC3986">RFC3986</a></cite>]の7項と<em>IRI</em>（Internationalized Resource Identifiers）[<cite><a class="bibref" href="#bib-RFC3987">RFC3987</a></cite>]の8項のセキュリティ問題に取り組むべきです。</dd>
+  <dd>複数のIRIの見た目が同じでありえます。異なるスクリプトの文字が同じに見えるかもしれません（キリル文字の「о」はラテン文字の「o」と同じに見えるかもしれません）<!-- (<code>foo:resum&#40751;code> and <code>f&#1086;&#1086;:resume&#769;</code>)-->Turtleでデータを記述または解釈する人やアプリケーションは、意図するセマンティクスとマッチするIRIを慎重に用いて、同じように見えるIRIを回避しなければなりません。類似している文字のマッチングに関する詳細は、<em>Unicodeセキュリティに関する留意点</em>[<cite><a class="bibref" href="#bib-UNICODE-SECURITY">UNICODE-SECURITY</a></cite>]および<em>IRI</em>（Internationalized Resource Identifiers）[<cite><a class="bibref" href="#bib-RFC3987">RFC3987</a></cite>]の8項にあります。 </dd>
+  <dt>互換性に関する留意点:</dt>
+  <dd>互換性の問題は知られていません。</dd>
+  <dt>公開済み仕様書:</dt>
+  <dd>この仕様書。</dd>
+  <dt>このメディア・タイプを使用するアプリケーション:</dt>
+  <dd>このメディア・タイプを用いる広く展開したアプリケーションは知られていません。これは、これらのデータを用いる一部のウェブ・サービスとクライアントで使用できます。</dd>
+  <dt>追加情報:</dt>
+  <dt>マジック・ナンバー:</dt>
+  <dd>なし</dd>
+  <dt>ファイル拡張子:</dt>
+  <dd>「.nt」</dd>
+  <dt>マッキントッシュ・ファイル・タイプ・コード:</dt>
+  <dd>「TEXT」</dd>
+  <dt>詳細情報に関する連絡先:</dt>
+  <dd>Eric Prud'hommeaux &lt;eric@w3.org&gt;</dd>
+  <dt>意図する使途:</dt>
+  <dd>汎用</dd>
+  <dt>使用上の制限:</dt>
+  <dd>なし</dd>
+  <dt>著者／改版管理者:</dt>
+  <dd>N-Triples仕様は、RDF WGの成果です。<abbr title="World Wide Web Consortium">W3C</abbr>は、この仕様書に対する変更管理を保持します。</dd>
+</dl>
+
+</section>
+<section class="appendix" id="references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+<!--OddPage-->
+
+<h2 aria-level="1" role="heading" id="h2_references">
+<span class="secno">C. </span>参考文献</h2>
+
+<section id="normative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_normative-references">
+<span class="secno">C.1 </span>規範的な参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-EBNF-NOTATION">[EBNF-NOTATION]</dt>
+  <dd rel="dcterms:requires">Tim Bray; Jean Paoli; C. M. Sperberg-McQueen; Eve Maler; Francois Yergeau. <a href="www.w3.org/TR/REC-xml/#sec-notation"><cite>EBNF Notation</cite></a> 26 November 2008. W3C Recommendation. URL: <a href="www.w3.org/TR/REC-xml/#sec-notation">http://www.w3.org/TR/REC-xml/#sec-notation</a>
+</dd>
+  <dt id="bib-RDF-TESTCASES">[RDF-TESTCASES]</dt>
+  <dd rel="dcterms:requires">jan grant; Dave Beckett. <a href="www.w3.org/TR/rdf-testcases"><cite>RDF Test Cases</cite></a>. 10 February 2004. W3C Recommendation. URL: <a href="www.w3.org/TR/rdf-testcases">http://www.w3.org/TR/rdf-testcases</a>
+</dd>
+  <dt id="bib-RDF11-CONCEPTS">[RDF11-CONCEPTS]</dt>
+  <dd rel="dcterms:requires">Richard Cyganiak, David Wood, Markus Lanthaler. <cite><a href="www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">RDF 1.1 Concepts and Abstract Syntax.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="www.w3.org/TR/2014/REC-rdf11-concepts-20140225/">http://www.w3.org/TR/2014/REC-rdf11-concepts-20140225/</a>. The latest edition is available at <a href="www.w3.org/TR/rdf11-concepts/">http://www.w3.org/TR/rdf11-concepts/</a>
+</dd>
+  <dt id="bib-RFC2119">[RFC2119]</dt>
+  <dd rel="dcterms:requires">S. Bradner. <a href="www.ietf.org/rfc/rfc2119.txt"><cite>Key words for use in RFCs to Indicate Requirement Levels.</cite></a> March 1997. Internet RFC 2119.  URL: <a href="www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</a>
+</dd>
+  <dt id="bib-RFC3023">[RFC3023]</dt>
+  <dd rel="dcterms:requires">M. Murata; S. St.Laurent; D. Kohn. <a href="www.ietf.org/rfc/rfc3023.txt"><cite>XML Media Types (RFC 3023)</cite></a>. January 2001. RFC. URL: <a href="www.ietf.org/rfc/rfc3023.txt">http://www.ietf.org/rfc/rfc3023.txt</a>
+</dd>
+  <dt id="bib-RFC3986">[RFC3986]</dt>
+  <dd rel="dcterms:requires">T. Berners-Lee; R. Fielding; L. Masinter. <a href="www.ietf.org/rfc/rfc3986.txt"><cite>Uniform Resource Identifier (URI): Generic Syntax (RFC 3986)</cite></a>. January 2005. RFC. URL: <a href="www.ietf.org/rfc/rfc3986.txt">http://www.ietf.org/rfc/rfc3986.txt</a>
+</dd>
+  <dt id="bib-RFC3987">[RFC3987]</dt>
+  <dd rel="dcterms:requires">M. Durst; M. Suignard. <a href="www.ietf.org/rfc/rfc3987.txt"><cite>Internationalized Resource Identifiers (IRIs)</cite></a>. January 2005. RFC. URL: <a href="www.ietf.org/rfc/rfc3987.txt">http://www.ietf.org/rfc/rfc3987.txt</a>
+</dd>
+  <dt id="bib-TURTLE">[TURTLE]</dt>
+  <dd rel="dcterms:requires">Eric Prud'hommeaux, Gavin Carothers. <cite><a href="www.w3.org/TR/2014/REC-turtle-20140225/">RDF 1.1 Turtle: Terse RDF Triple Language.</a></cite> W3C Recommendation, 25 February 2014. URL: <a href="www.w3.org/TR/2014/REC-turtle-20140225/">http://www.w3.org/TR/2014/REC-turtle-20140225/</a>. The latest edition is available at <a href="www.w3.org/TR/turtle/">http://www.w3.org/TR/turtle/</a>
+</dd>
+  <dt id="bib-UNICODE">[UNICODE]</dt>
+  <dd rel="dcterms:requires">
+<a href="www.unicode.org/versions/latest/"><cite>The Unicode Standard</cite></a>. URL: <a href="www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a>
+</dd>
+  <dt id="bib-UTF-8">[UTF-8]</dt>
+  <dd rel="dcterms:requires">F. Yergeau. <a href="www.ietf.org/rfc/rfc3629.txt"><cite>UTF-8, a transformation format of ISO 10646</cite></a>. IETF RFC 3629. November 2003. URL: <a href="www.ietf.org/rfc/rfc3629.txt">http://www.ietf.org/rfc/rfc3629.txt</a>
+</dd>
+</dl>
+
+</section>
+<section id="informative-references" typeof="bibo:Chapter" resource="#ref" rel="bibo:Chapter">
+
+<h3 aria-level="2" role="heading" id="h3_informative-references">
+<span class="secno">C.2 </span>参考情報の参考文献</h3>
+
+<dl class="bibliography" about="">
+  <dt id="bib-UNICODE-SECURITY">[UNICODE-SECURITY]</dt>
+  <dd rel="dcterms:references">Mark Davis; Michel Suignard. <a href="www.unicode.org/reports/tr36/"><cite>Unicode Security Considerations</cite></a>. URL: <a href="www.unicode.org/reports/tr36/">http://www.unicode.org/reports/tr36/</a>
+</dd>
+</dl>
+
+</section>
+</section>
+
+</body>
+</html>

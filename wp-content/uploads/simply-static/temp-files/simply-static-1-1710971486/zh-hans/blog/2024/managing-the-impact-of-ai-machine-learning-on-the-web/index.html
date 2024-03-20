@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-hans" class="no-js">
+<head>
+    <title>分析人工智能与机器学习对 Web 的影响 | 2024 | 博客 | W3C</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="这篇文章分析了人工智能（特别是基于机器学习模型的）系统对 Web 的影响，以及 Web 标准可能在此发挥的作用。">
+    <meta name="thumbnail" content="www.w3.org/assets/website-2021/images/w3c-opengraph-image.png">
+    <meta property="og:url" content="www.w3.org/zh-hans/blog/2024/managing-the-impact-of-ai-machine-learning-on-the-web/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="分析人工智能与机器学习对 Web 的影响">
+    <meta property="og:image" content="www.w3.org/assets/website-2021/images/w3c-opengraph-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:description" content="这篇文章分析了人工智能（特别是基于机器学习模型的）系统对 Web 的影响，以及 Web 标准可能在此发挥的作用。">
+    <meta property="og:site_name" content="W3C">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="w3c">
+    <meta name="twitter:url" content="www.w3.org/zh-hans/blog/2024/managing-the-impact-of-ai-machine-learning-on-the-web/">
+    <meta name="twitter:title" content="分析人工智能与机器学习对 Web 的影响">
+    <meta name="twitter:description" content="这篇文章分析了人工智能（特别是基于机器学习模型的）系统对 Web 的影响，以及 Web 标准可能在此发挥的作用。">
+    <meta name="twitter:image" content="www.w3.org/assets/website-2021/images/w3c-opengraph-image.png">    <link rel="home" href="www.w3.org/">
+
+            <link rel="stylesheet" href="www.w3.org/assets/website-2021/styles/core.css?ver=1.4" media="screen">
+
+        <!--
+        CSS Mustard Cut
+        Print (Edge doesn't apply to print otherwise)
+        Edge, Chrome 39+, Opera 26+, Safari 9+, iOS 9+, Android ~5+, Android UCBrowser ~11.8+
+        FF 47+
+        -->
+        <link rel="stylesheet" id="advanced-stylesheet" href="www.w3.org/assets/website-2021/styles/advanced.css?ver=1.4" media="
+            only print,
+            only all and (pointer: fine), only all and (pointer: coarse), only all and (pointer: none),
+            only all and (min--moz-device-pixel-ratio:0) and (display-mode:browser), (min--moz-device-pixel-ratio:0) and (display-mode:fullscreen)
+        ">
+        <link rel="stylesheet" href="www.w3.org/assets/website-2021/styles/print.css" media="print">
+    
+            <script src="www.w3.org/assets/website-2021/js/libraries/fontfaceobserver.js"></script>
+
+        <script>var myFont = new FontFaceObserver('Noto Sans');
+
+            Promise.all([myFont.load()]).then(function () {
+                document.documentElement.className += " fonts-loaded";
+            });
+
+            (function () {
+                var linkEl = document.getElementById('advanced-stylesheet');
+                if (window.matchMedia && window.matchMedia(linkEl.media).matches) {
+                    var script = document.createElement('script');
+                    script.src = '/assets/website-2021/js/main.js?ver=1.4';
+                    script.defer = true;
+                    document.querySelector('head').appendChild(script);
+                    (function (H) {
+                        H.className = H.className.replace(/\bno-js\b/, 'js')
+                    })(document.documentElement);
+                }
+            })();</script>
+    
+                        <link href="www.w3.org/zh-hans/blog/feed/" title="W3C - Blog" rel="alternate" type="application/rss+xml">
+                    <link href="www.w3.org/zh-hans/categories/web-architecture/feed/" title="W3C - Web Architecture" rel="alternate" type="application/rss+xml">
+            
+    </head>
+
+<body class="post">
+<a class="skip-link" href="#main">转到内容</a>
+<div class="grid-wrap">
+    <div class="wrap">
+        <header class="global-header">
+            <span role="status" aria-live="polite"></span>
+                                        
+                                        <nav id="lang-nav" aria-label="语言">
+    <div class="l-center">
+        <div class="l-cluster">
+            <ul class="clean-list" role="list">
+                                                        <li><a href="www.w3.org/" hreflang="en" lang="en">English homepage<span class="visuallyhidden" lang="zh-hans">英文</span></a></li>
+                                                        <li><a href="www.w3.org/ja/" hreflang="ja" lang="ja">日本語ホームページ<span class="visuallyhidden" lang="zh-hans">日语</span></a></li>
+                            </ul>
+        </div>
+    </div>
+</nav>
+
+                                        <nav id="global-nav" aria-label="Main">
+    <div class="global-nav__inner l-center">
+        <a class="logo-link" href="www.w3.org/zh-hans/" hreflang="zh-hans">
+            <span class="logo">
+                <img src="www.w3.org/assets/logos/w3c/w3c-no-bars.svg" alt="W3C" role="img">
+            </span>
+            <span class="visuallyhidden">访问 W3C 主页</span>
+        </a>
+        <button type="button" class="button button--ghost with-icon--after with-icon--larger" data-trigger="mobile-nav" style="display: none;"></button>
+        <ul class="clean-list" data-component="nav-double-intro">
+                        <li class="top-nav-item">
+                <a hreflang="en" href="www.w3.org/help/search/" class="nav-link icon-link">
+                    <img class="icon" src="www.w3.org/assets/website-2021/svg/search.svg" width="24" height="24" alt aria-hidden="true"><span class="hide-at-max-width">搜索</span>
+                </a>
+            </li>
+            <li class="top-nav-item">
+                <a hreflang="en" href="www.w3.org/users/myprofile/" id="account-login-link" class="account-login icon-link with-icon--after">
+                    我的账号 <span class="avatar avatar--small icon">
+                        <img src="www.w3.org/assets/website-2021/svg/avatar.svg" width="24" height="24" alt aria-hidden="true">
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+                    </header>
+                        
+<nav id="breadcrumb" aria-label="Breadcrumb">
+    <div class="l-center">
+        <div class="l-cluster">
+            <ol class="breadcrumbs clean-list" role="list">
+                                                                                <li><a href="www.w3.org/zh-hans/">主页</a></li>
+
+        <li><a href="www.w3.org/zh-hans/blog/">博客</a></li>
+
+        <li><a href="www.w3.org/zh-hans/blog/2024/">2024</a></li>
+
+        <li><a href="www.w3.org/zh-hans/blog/2024/managing-the-impact-of-ai-machine-learning-on-the-web/" aria-current="page">分析人工智能与机器学习对 Web 的影响</a></li>
+
+                            </ol>
+        </div>
+    </div>
+</nav>
+                <main id="main">
+                                            
+
+                                
+
+                                
+
+                                
+
+                        	<div class="content">
+		<article>
+			<h1>分析人工智能与机器学习对 Web 的影响</h1>
+							<div class="sub-head">Part of <a href="www.w3.org/zh-hans/blog/category/web-architecture/">Web Architecture</a>
+</div>
+			
+							<nav class="l-box l-box--no-border translations" aria-label="翻译">
+    <div class="l-sidebar">
+        <div>
+            <div class="sidebar">
+                <span>切换语言：</span>
+            </div>
+            <div class="not-sidebar">
+    <div class="l-cluster">
+        <ul class="clean-list translation-list">
+                            <li>
+                    <a href="www.w3.org/blog/2024/managing-the-impact-of-ai-machine-learning-on-the-web/" hreflang="en" lang="en" dir="auto">
+                        English
+                    </a>
+                </li>
+                    </ul>
+    </div>
+</div>
+
+        </div>
+    </div>
+</nav>
+
+			
+							<section class="meta">
+					<h2 class="visuallyhidden">作者及发布日期</h2>
+					<dl>
+													<dt>由:
+</dt>
+							<dd class="l-cluster">
+								<ul class="clean-list" role="presentation">
+																		<li>
+										<span class="with-icon--before with-icon--larger">
+											<span class="avatar avatar--small icon">
+																									<img alt="" src="www.w3.org/avatars/f899d431f2c6c7079dba0e4dca031482/?s=48" loading="lazy">
+																							</span>
+											Dominique Hazaël-Massieux
+										</span>
+									</li>
+																	</ul>
+							</dd>
+																			<dt>发布:
+</dt>
+																					<dd>
+								<time datetime="2024-03-13T21:08:00+00:00" title="2024年3月13日 21:08:00">
+									2024年3月13日
+								</time>
+							</dd>
+											</dl>
+									</section>
+																					    <div class="component component--text">
+                <p>过去几个月里，我们看到了大量与人工智能（大多基于机器学习模型的）系统相关的消息。</p>
+<p>这些系统与作为平台的 Web 紧密结合：许多模型是从大规模抓取的 Web 内容中训练出来的，通过 Web 接口分发或显示，很多情况下用于生成迅速在 Web 上发布的内容。</p>
+<p>这些交叉<strong>对 Web 产生了诸多系统性影响</strong>，引发了一系列关于它们如何改变我们所知的 Web 的重要讨论，其中有利有弊。</p>
+<p>这些讨论分散在多个社区，因此有时很难全面了解问题空间。为了推动这些讨论更快走向具体成果，我写下了我从这些围绕人工智能和 Web 的讨论中所发现的系统性影响，以及一些早期的管理建议，这些建议涉及到标准化工作的开展和协调。</p>
+<p>作为这些对话的切入点，W3C 团队今天发布了一份文档，名为《<a href="www.w3.org/reports/ai-web-impact/" hreflang="en">AI 与 Web：理解和管理机器学习模型对 Web 的影响</a>》。我们诚邀全球社区<a href="github.com/w3c/ai-web-impact/issues" hreflang="en">就此提供反馈</a>，帮助我们改善这项分析。 欢迎于2024年6月30日前反馈意见与建议。</p>
+<p>我们希望提供一个广泛的交流平台，协助社区形成一条可靠路线，巩固 Web 在迅速发展的信息生态中的基础地位。</p>
+        </div>
+
+																												</article>
+									<section class="related">
+					<div class="related__inner">
+						<h2 class="txt-jupiter">相关内容</h2>
+													<div>
+								<h3>标签</h3>
+								<ul class="clean-list" role="list">
+																	<li><a href="www.w3.org/zh-hans/blog/tags/ai/">ai</a></li>
+																</ul>
+							</div>
+																													</div>
+				</section>
+						</div>
+
+	    <section class="rss">
+	<h2 class="txt-jupiter">相关的 RSS</h2>
+	<div class="with-icon--before with-icon--larger">
+		<img class="icon icon--larger" src="www.w3.org/assets/website-2021/svg/rss.svg" width="30" height="30" alt="" aria-hidden="true">
+		<a href="www.w3.org/blog/feed">订阅我们的blog信息源</a>
+	</div>
+</section>
+
+                    </main>
+        	                    
+	    
+    <section class="comments">
+    <div class="l-center">
+        <h2 id="comments">第<span>(0)</span>条评论</h2>
+                            <p>该贴的评论区已关闭。</p>
+            </div>
+</section>
+    </div>
+                <footer class="global-footer">
+    <div class="l-center">
+        <div class="global-footer__links">
+            <div class="l-cluster">
+                <ul class="clean-list" role="list">
+                                            <li>
+                            <a href="www.w3.org/zh-hans/" hreflang="zh-hans">
+                                主页
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="www.w3.org/zh-hans/contact/" hreflang="zh-hans">
+                                联系方式
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="www.w3.org/zh-hans/help/" hreflang="zh-hans">
+                                帮助
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="www.w3.org/zh-hans/donate/" hreflang="zh-hans">
+                                捐赠
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="www.w3.org/zh-hans/policies/" hreflang="zh-hans">
+                                法务与政策
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="www.w3.org/zh-hans/about/corporation/" hreflang="zh-hans">
+                                法人实体
+                            </a>
+                        </li>
+                                            <li>
+                            <a href="status.w3.org/" hreflang="zh-hans">
+                                系统状态
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+            <ul class="clean-list" role="list">
+                <li>
+<a class="with-icon--larger" href="w3c.social/@w3c" hreflang="en">
+                        <img class="icon icon--larger" src="www.w3.org/assets/website-2021/svg/mastodon.svg" width="20" height="20" alt aria-hidden="true" loading="lazy">
+                        <span class="visuallyhidden">W3C 在 Mastodon</span></a>
+                </li>
+                <li>
+<a class="with-icon--larger" href="github.com/w3c/" hreflang="en">
+                        <img class="icon icon--larger" src="www.w3.org/assets/website-2021/svg/github.svg" width="20" height="20" alt aria-hidden="true" loading="lazy">
+                        <span class="visuallyhidden">W3C 在 GitHub</span></a>
+                </li>
+            </ul>
+        </div>
+        <p class="copyright">版权所有 &copy; 2024年<a hreflang="zh-hans" href="www.w3.org/zh-hans/">万维网联盟</a>。<br>遵循 <abbr title="万维网联盟">W3C</abbr><sup>&reg;</sup> <a href="www.w3.org/policies/#disclaimers" hreflang="en">责任声明</a>、<a href="www.w3.org/policies/#trademarks" hreflang="en">标志使用</a>以及<a rel="license" href="www.w3.org/copyright/document-license/" hreflang="en" title="W3C 软件许可">宽松许可</a>。</p>
+    </div>
+</footer>
+    </div>
+
+    <script>var commentsScript = document.createElement('script');
+        commentsScript.src = "/assets/website-2021/js/comments.js";
+        document.querySelector('body').appendChild(commentsScript);</script>
+</body>
+
+</html>

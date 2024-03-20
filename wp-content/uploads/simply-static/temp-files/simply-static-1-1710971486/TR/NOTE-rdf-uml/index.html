@@ -1,0 +1,575 @@
+<meta name="GENERATOR" content="Adobe PageMill 3.0 Win">
+  <title>A Discussion of the Relationship Between RDF-Schema
+and UML</title>
+  <link rel="STYLESHEET" href="www.w3.org/StyleSheets/TR/NOTE.css" type="text/css">
+
+
+
+<h4 align="right">
+<a href="www.w3.org/"><img src="www.w3.org/Icons/w3c_home" alt="W3C" border="0" align="left"></a>
+NOTE-rdf-uml-19980804
+</h4>
+
+<h1 class="maintitle" align="center" style="text-align: center">
+A Discussion of the Relationship Between RDF-Schema and UML
+</h1>
+<p align="center" style="text-align: center">
+<strong>W3C Note 04-Aug-1998</strong>
+</p>
+
+<center><a href="www.w3.org/1998/.status/NOTE-rdf-uml-19980804/status"><img src="www.w3.org/1998/.status/NOTE-rdf-uml-19980804/statusimg" border="0" alt="Status of this Document"></a></center>
+
+<div class="intro">
+
+<dl>
+<dt>This document:
+</dt>
+<dd>
+<a href="www.w3.org/TR/1998/NOTE-rdf-uml-19980804/">http://www.w3.org/TR/1998/NOTE-rdf-uml-19980804</a>
+
+</dd>
+<dt>Author:
+</dt>
+<dd>
+<a href="mailto:wchang@adobe.com">Walter W. Chang</a>, Advanced Technology Group, Adobe Systems
+</dd>
+</dl>
+
+<h2>Status of This Document</h2>
+
+<p>This document is a
+<a href="www.w3.org/Consortium/Process/#Notes">NOTE</a> made
+available by W3C for discussion only. This indicates no endorsement of
+its content, nor that W3C has had any editorial control in its
+preparation, nor that W3C has, is, or will be allocating any resources
+to the issues addressed by the NOTE.</p>
+
+<p>Comments may be sent to
+<a href="mailto:www-rdf-comments@w3.org">www-rdf-comments@w3.org</a>.
+All mail is
+<a href="lists.w3.org/Archives/Public/www-rdf-comments/">archived</a>
+and available for review.</p>
+</div>
+<hr>
+
+<h2>Introduction</h2>
+
+<p>This note summarizes the relationship between RDF-Schema and
+UML, the generic industry standard object-oriented modeling framework
+for information systems modeling. This note will briefly describe
+these systems then relate them to each other.</p>
+
+<h2>RDF-Schema</h2>
+
+<p>RDF-Schema specifies information about classes in a schema,
+including properties (attributes) and relationships between classes.
+RDF-Schema provides a typing system: informally, it is a basic
+set of nodes and relations that can be used to express properties
+of classes of the schema. RDF-Schema includes a facility to indicate
+that certain classes are subclasses of others, and provides a
+small number of basic classes. Finally, it contains a facility
+for specifying a small number of constraints such as the cardinality
+(number of occurrences) required and permitted of properties of
+instances of classes.</p>
+
+<p>&quot;RDF-Schemas are specified using a declarative representation
+language influenced by ideas from knowledge representation, e.g.,
+semantic nets, frames, and predicate logic, as well as database
+schema representation models such as binary relational models
+([NIAM], etc.) and graph data models. The RDF schema specification
+language is less expressive, but simpler, than full predicate
+calculus languages such as CycL [CycL] and KIF [KIF].&quot;</p>
+
+<h2>UML</h2>
+
+<p>The Unified Modeling Language (UML) is a framework for describing
+a set of models that capture the functional and structural semantics
+of any complex information system. UML defines the following models
+for representing such systems:</p>
+
+<p>1. A use case model that states the requirements of the user<br>
+2. A class model that captures the static information structure
+of objects<br>
+3. A state model that describes the dynamic behavior of objects
+<br>
+4. An activity implementation model that describes work unit actions<br>
+5. An interaction model that models scenarios and message flows<br>
+6. A deployment model that describes how software subsystems are
+allocated<br>
+to actual hardware components</p>
+
+<h2>How RDF and UML Relate to Each Other</h2>
+
+<p>Web-based and non-Web based applications can be described by
+a number of schema specification mechanisms, including RDF-Schema.
+The RDF-Schema model itself is equivalent to a subset of the class
+model in UML. RDF-Schema uses a DLG (Directed Labeled Graph) model
+for describing schemas.</p>
+
+<p>Class schemas expressed in UML can be viewed also as DLGs.
+If a DLG is used for a class model schema in UML, the RDF-Schema
+DLG can be shown to be isomorphic to a subgraph of the UML class
+schema DLG. This is possible because RDF-Schema elements map directly
+into UML class model elements.</p>
+
+<p>In addition, the DAG formed by considering RDF-Schema subClassOf
+class inheritance structures maps directly to UML class generalization
+DAGs, RDF class properties map to UML class attributes, and RDF
+properties and property cardinality constraints map to UML associations
+and association <br>
+constraints.</p>
+
+<p>The various constructs and elements in the class models of
+UML (#2.) and RDF-Schema readily map between each other. While
+currently the RDF-Schema work does not have counterparts to the
+other 5 remaining UML modeling areas, RDF-Schema could be extended
+to support these models as well.</p>
+
+<p>Given that an application schema can be described by RDF-Schema
+(or UML), how do RDF-Schema and UML actually relate to each other?
+The remainder of this note describes the relationship between
+the elements of the class models for RDF-Schema and UML. An outline
+is presented below to show how a given schema represented by the
+RDF-Schema model can be transformed into an equivalent UML class
+schema representation.</p>
+
+<p>Further, given any UML class schema representation, we can
+specify an equivalent RDF-Schema representation.</p>
+
+<h2>Comparison of Models</h2>
+
+<p>Outlined below are the steps for showing that class schema
+representations using RDF-Schema and the class model subset of
+UML are equivalent.</p>
+
+<p></p>
+<center><table width="515" border="1" cellspacing="2" cellpadding="0">
+  <tr>
+    <td width="25%" height="25">
+    &nbsp;Step</td> 
+    <td width="75%">
+    <p></p>
+<center>&nbsp;Description</center>
+</td>
+  </tr>
+  <tr>
+    <td height="47">
+    &nbsp;1.</td> 
+    <td>
+    Show that RDF-Schema and UML classes map between each other.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="47">
+    &nbsp;1a.</td> 
+    <td>
+    Show that single and multiple class inheritance constructs in
+    each system maps to the other.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="68">
+    &nbsp;1b.</td> 
+    <td>
+    Show that the class inheritance DAGs for RDF-Schema and UML (using
+    RDF-Schema subClassOf and UML subclass relationships respectively)
+    are isomorphic.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="89">
+    &nbsp;1c.</td> 
+    <td>
+    Note that RDF-Schema does not explicitly support the notion of
+    operations or methods, We ignore this for now. When RDF-Schema
+    supports this, map these methods into UML operations.</td>
+  </tr> 
+  <tr>
+    <td height="68">
+    &nbsp;2.</td> 
+    <td>
+    Show that RDF-Schema properties and UML attributes can be directly
+    mapped between each other. Extensions can be added later to support
+    this if necessary.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="47">
+    &nbsp;3.</td> 
+    <td>
+    Show that any UML associations can be expressed as RDF-Schema
+    properties.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="46">
+    &nbsp;3a.</td> 
+    <td>
+    Show that UML multiplicity constraints on associations are equivalent
+    to a subset of RDF-Schema cardinality constraints</td>
+  </tr> 
+  <tr>
+    <td height="44">
+    &nbsp;3b.</td> 
+    <td>
+    Show that property naming and reification in RDF-Schema maps
+    to UML association names and attributes.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="84">
+    &nbsp;4.</td> 
+    <td>
+    Show that while currently missing from RDF-Schema, a generalized
+    constraint model can be created by extending RDF-Schema using
+    reification allowing it to map into the general UML Class constraint
+    model.&nbsp;</td>
+  </tr> 
+  <tr>
+    <td height="84">
+    &nbsp;5.</td> 
+    <td>
+    Having accomplished 1,2, and the portion of 3 relevant to the
+    RDF-Schema, we can then show that the full RDF-Schema DLG can
+    map into a proper subgraph of the UML class model DLG.&nbsp;</td>
+  </tr> 
+</table></center>
+
+<p><br>
+As noted, because UML contains additional modeling constructs
+not found in RDF-Schema, full specification using UML may result
+in a DLG model that is a superset of the model specified by RDF-Schema.
+However, as indicated earlier, extensions to the RDF-Schema model
+could be made to support these class model constructs as well
+as other UML system models as needed by future application schemas
+that use RDF-Schema.</p>
+
+<h2>How RDF-Schema Properties and UML Roles Relate</h2>
+
+<p>We note that RDF-Schema properties can correspond to UML roles,
+and when a PropertyType actually names a range that is another
+RDF-Schema class, one way this can be viewed is that the RDF-Schema
+property is in fact being used as an association in the UML sense.
+More precisely, an RDF-Schema property corresponds to a named
+role within an unnamed association. UML has some facilities here
+(such as naming associations and associating roles) that RDF-Schema
+does not. [Layman,1]</p>
+
+<p>[Wickstead] has presented several good examples of this in
+the context of RDF-Schema WG discussions about non-Web resource
+identifiers: he suggests that instead of introducing database
+Primary/Foreign Keys, we let properties name actual classes. This
+would cause the property to be used as an association to other
+objects constrained by whatever cardinality constraint was specified.</p>
+
+<h2>Conclusion</h2>
+
+<p>A class of application schemas can be described by RDF-Schema.
+RDF-Schema in turn can be shown to map into a subset of the UML
+framework through inheritance schema DAG isomorphism and isomorphism
+of RDF-Schema DLGs to a subgraph of UML full schema DLGs using
+the procedure outlined above.</p>
+
+<p>Thanks to Ron Daniels for his careful review of earlier draft
+versions of this document and his comments and suggestions.</p>
+
+<h2>Appendix 1</h2>
+
+<h3>Summary of Schema Model Differences Between RDF-Schema and UML</h3>
+
+<p>The table below summarizes how the two different schema modeling
+systems support specific object constructs.</p>
+
+<p></p>
+<center><table width="450" border="1" cellspacing="2" cellpadding="0">
+  <tr>
+    <td width="36%" height="24">
+    Construct</td> 
+    <td width="29%">
+    RDF-Schema</td> 
+    <td width="35%">
+    UML</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    Classes</td> 
+    <td>
+    Y</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Members</td> 
+    <td>
+    Properties</td> 
+    <td>
+    Attributes</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Methods</td> 
+    <td>
+    N</td> 
+    <td>
+    Operations</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Generalization</td> 
+    <td>
+    Y, S.I., M.I.</td> 
+    <td>
+    Y, S.I., M.I.</td>
+  </tr> 
+  <tr>
+    <td height="44">
+    - Visibility of Attr/Meth.</td> 
+    <td>
+    Public</td> 
+    <td>
+    Public (1), Protected (2), and Private (3)</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Interfaces</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Template Classes</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Utility Classes</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    Associations</td> 
+    <td>
+    Y</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Assoc. Naming</td> 
+    <td>
+    via Properties</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Role Naming</td> 
+    <td>
+    via Properties</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Cardinality</td> 
+    <td>
+    &nbsp;</td> 
+    <td>
+    (6)</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - - - One</td> 
+    <td>
+    ExactlyOne</td> 
+    <td>
+    1</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - - - Zero or One</td> 
+    <td>
+    ZeroOrMore</td> 
+    <td>
+    0..1</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - - - From 0 to N</td> 
+    <td>
+    ZeroOrMore</td> 
+    <td>
+    0..N</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - - - From 1 to N</td> 
+    <td>
+    OneOrMore</td> 
+    <td>
+    1..N</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - - - From M to N</td> 
+    <td>
+    No</td> 
+    <td>
+    M..N</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - General Constraints</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Association Classes</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - N-ary Associations</td> 
+    <td>
+    reification</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    - Association Qualifiers</td> 
+    <td>
+    N</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    Aggregation</td> 
+    <td>
+    Y (4)</td> 
+    <td>
+    Y</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    Navigation</td> 
+    <td>
+    Y</td> 
+    <td>
+    Y (5)</td>
+  </tr> 
+  <tr>
+    <td height="24">
+    MetaModel</td> 
+    <td>
+    Y</td> 
+    <td>
+    Y (7)</td>
+  </tr> 
+</table></center>
+
+<h3>Table Notes:</h3>
+
+<p>(1) Public - the element is visible to all clients of the class.<br>
+(2) Protected - the element is visible only to the subclass of
+the class.<br>
+(3) Private - the element is visible to only the class itself.<br>
+(4) UML distinguishes between aggregation and composition: aggregation
+is an abstract modeling, composition is a containment model
+that can correspond to the RDF-Schema collection, bag, or
+sequence constructs.<br>
+(5) RDF-Schema can use directed arcs, UML uses directed associations.<br>
+(6) RDF-Schema cardinality constraints are a subset of UML multiplicity
+constraints. UML allows specification of multiplicity information
+at
+both ends of an association. RDF-Schema currently does not directly
+support cardinality constraints besides the 4 listed. Supporting
+arbitrary cardinalities e.g., 2-100 times would be useful, as
+well as
+intervals e.g., 3..5,17..23 would be useful. In the table, M and N
+are integers &gt; 1.<br>
+(7) While both RDF-Schema and UML have MetaModels, it is worth
+pointing
+out that the UML meta model is both substantially more elaborate
+and
+different than that of RDF-Schema meta model. [Layman,2]<br>
+(8) We note that the intended usages for RDF-Schema and UML may
+differ.
+While both systems can describe schemas, each system may be better
+suited for a particular application. Eg., databases are described
+by
+schemas defining tables, views, referential integrity constraints,
+and other database mechanisms; models of tree-structure grammars
+such
+as XML are described by schemas such as XML DTDs; models of entities
+and relations are described in E-R schemas such as UML; models
+of
+nodes and arcs are described by node-and-arc schemas such as RDF
+schemas. While there is substantial overlap between RDF and UML,
+we anticipate that each will be used to describe somewhat different
+entities. [Layman,2]</p>
+
+<h2>References:</h2>
+
+<p>[Rumbaugh et. al.] Jim Rumbaugh, Ivar Jacobson, and Grady Booch,
+Unified
+Modeling Language Reference Manual, ISBN: 0-201-30998-X, Addison
+Wesley,
+est. publication December 1997.</p>
+
+<p>[RDF M+S] <a href="www.w3.org/TR/WD-rdf-syntax">Resource Description Framework, (RDF) Model and Syntax</a>,
+W3C 
+Working Draft 16 Feb 1998, http://www.w3.org/TR/WD-rdf-syntax
+,<br>
+Ora Lassila &lt;<a href="mailto:ora.lassila@research.nokia.com">ora.lassila@research.nokia.com</a>&gt;, Nokia Research
+Center<br>
+Ralph R. Swick &lt;<a href="mailto:swick@w3.org">swick@w3.org</a>&gt;, World Wide Web Consortium
+<br>
+et. al.</p>
+
+<p>[RDF-Schema] <a href="www.w3.org/RDF/Group/WD-rdf-schema">Resource Description Framework, (RDF) Schemas</a>,
+W3C Working
+Draft 1 May 1998, http://www.w3.org/RDF/Group/WD-rdf-schema ,<br>
+Dan Brickley, University of Bristol, R.V. Guha, Netscape, Andrew
+Layman, <br>
+Microsoft.</p>
+
+<p>[UML-Tk] Hans-Erik Eriksson and Magnus Penker, &quot;UML Toolkit&quot;,
+John Wiley &amp; <br>
+Sons, New York, 1997.</p>
+
+<p>[IUML] Pierre-Alain Muller. &quot;Instant UML&quot;, Wrox Press
+Ltd., Birmingham, <br>
+UK, 1997. Original French Edition: &quot;Modelisation objet avec
+UML&quot;, <br>
+Editions Eyrolles, Paris France, 1997.</p>
+
+<p>[NIAM] G. M. Nijssen and Terry Halpin, Conceptual Schema and
+Relational <br>
+Database Design, (Prentice Hall, Sydney:1989)</p>
+
+<p>[CycL] CycL: The CYC Representation Language; <br>
+<a href="www.cyc.com/tech.html#cycl">http://www.cyc.com/tech.html#cycl</a></p>
+
+<p>[KIF] Knowledge Interchange Format (KIF); <br>
+<a href="logic.stanford.edu/kif/kif">http://logic.stanford.edu/kif/kif</a>.</p>
+
+<p>[Wicksteed] Charles Wicksteed, Reuters.<br>
+<a href="www.w3.org/1998/08/NOTE-rdf-uml-19980804-references">Working Group mail archive</a>
+(<a href="www.w3.org/Consortium/Prospectus/Joining">member only</a>)</p>
+
+<p>[Layman], Andrew Layman. Microsoft Corporation.<br>
+<a href="www.w3.org/1998/08/NOTE-rdf-uml-19980804-references">Working Group mail archive</a>
+(<a href="www.w3.org/Consortium/Prospectus/Joining">member only</a>)</p>
+
+<script src="www.w3.org/scripts/TR/fixup.js"></script>
