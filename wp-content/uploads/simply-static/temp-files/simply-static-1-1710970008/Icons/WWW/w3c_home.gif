@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Redirecting...</title>
+		<meta http-equiv="refresh" content="0;url=https://www.w3.org/Icons/w3c_home.gif">
+	</head>
+	<body>
+		<script type="text/javascript">
+			window.location = "https://www.w3.org/Icons/w3c_home.gif";
+		</script>
+
+		<p>You are being redirected to <a href="https://www.w3.org/Icons/w3c_home.gif">https://www.w3.org/Icons/w3c_home.gif</a></p>
+	</body>
+</html>
