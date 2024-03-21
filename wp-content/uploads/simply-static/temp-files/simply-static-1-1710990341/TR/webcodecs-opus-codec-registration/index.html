@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Opus WebCodecs Registration</title>
+  <meta content="DNOTE" name="w3c-status">
+  <meta content="Bikeshed version 82ce88815, updated Thu Sep 7 16:33:55 2023 -0700" name="generator">
+  <link href="www.w3.org/TR/webcodecs-opus-codec-registration/" rel="canonical">
+  <meta content="b680b0051f54ebf3aeca2ff9f07cc4ab971ef14c" name="document-revision">
+<style>/* Boilerplate: style-autolinks */
+.css.css, .property.property, .descriptor.descriptor {
+    color: var(--a-normal-text);
+    font-size: inherit;
+    font-family: inherit;
+}
+.css::before, .property::before, .descriptor::before {
+    content: "‘";
+}
+.css::after, .property::after, .descriptor::after {
+    content: "’";
+}
+.property, .descriptor {
+    /* Don't wrap property and descriptor names */
+    white-space: nowrap;
+}
+.type { /* CSS value <type> */
+    font-style: italic;
+}
+pre .property::before, pre .property::after {
+    content: "";
+}
+[data-link-type="property"]::before,
+[data-link-type="propdesc"]::before,
+[data-link-type="descriptor"]::before,
+[data-link-type="value"]::before,
+[data-link-type="function"]::before,
+[data-link-type="at-rule"]::before,
+[data-link-type="selector"]::before,
+[data-link-type="maybe"]::before {
+    content: "‘";
+}
+[data-link-type="property"]::after,
+[data-link-type="propdesc"]::after,
+[data-link-type="descriptor"]::after,
+[data-link-type="value"]::after,
+[data-link-type="function"]::after,
+[data-link-type="at-rule"]::after,
+[data-link-type="selector"]::after,
+[data-link-type="maybe"]::after {
+    content: "’";
+}
+
+[data-link-type].production::before,
+[data-link-type].production::after,
+.prod [data-link-type]::before,
+.prod [data-link-type]::after {
+    content: "";
+}
+
+[data-link-type=element],
+[data-link-type=element-attr] {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace;
+    font-size: .9em;
+}
+[data-link-type=element]::before { content: "<" }
+[data-link-type=element]::after  { content: ">" }
+
+[data-link-type=biblio] {
+    white-space: pre;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --selflink-text: black;
+        --selflink-bg: silver;
+        --selflink-hover-text: white;
+    }
+}
+</style>
+<style>/* Boilerplate: style-colors */
+
+/* Any --*-text not paired with a --*-bg is assumed to have a transparent bg */
+:root {
+    color-scheme: light dark;
+
+    --text: black;
+    --bg: white;
+
+    --unofficial-watermark: url(https://www.w3.org/StyleSheets/TR/2016/logos/UD-watermark);
+
+    --logo-bg: #1a5e9a;
+    --logo-active-bg: #c00;
+    --logo-text: white;
+
+    --tocnav-normal-text: #707070;
+    --tocnav-normal-bg: var(--bg);
+    --tocnav-hover-text: var(--tocnav-normal-text);
+    --tocnav-hover-bg: #f8f8f8;
+    --tocnav-active-text: #c00;
+    --tocnav-active-bg: var(--tocnav-normal-bg);
+
+    --tocsidebar-text: var(--text);
+    --tocsidebar-bg: #f7f8f9;
+    --tocsidebar-shadow: rgba(0,0,0,.1);
+    --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+    --toclink-text: var(--text);
+    --toclink-underline: #3980b5;
+    --toclink-visited-text: var(--toclink-text);
+    --toclink-visited-underline: #054572;
+
+    --heading-text: #005a9c;
+
+    --hr-text: var(--text);
+
+    --algo-border: #def;
+
+    --del-text: red;
+    --del-bg: transparent;
+    --ins-text: #080;
+    --ins-bg: transparent;
+
+    --a-normal-text: #034575;
+    --a-normal-underline: #bbb;
+    --a-visited-text: var(--a-normal-text);
+    --a-visited-underline: #707070;
+    --a-hover-bg: rgba(75%, 75%, 75%, .25);
+    --a-active-text: #c00;
+    --a-active-underline: #c00;
+
+    --blockquote-border: silver;
+    --blockquote-bg: transparent;
+    --blockquote-text: currentcolor;
+
+    --issue-border: #e05252;
+    --issue-bg: #fbe9e9;
+    --issue-text: var(--text);
+    --issueheading-text: #831616;
+
+    --example-border: #e0cb52;
+    --example-bg: #fcfaee;
+    --example-text: var(--text);
+    --exampleheading-text: #574b0f;
+
+    --note-border: #52e052;
+    --note-bg: #e9fbe9;
+    --note-text: var(--text);
+    --noteheading-text: hsl(120, 70%, 30%);
+    --notesummary-underline: silver;
+
+    --assertion-border: #aaa;
+    --assertion-bg: #eee;
+    --assertion-text: black;
+
+    --advisement-border: orange;
+    --advisement-bg: #fec;
+    --advisement-text: var(--text);
+    --advisementheading-text: #b35f00;
+
+    --warning-border: red;
+    --warning-bg: hsla(40,100%,50%,0.95);
+    --warning-text: var(--text);
+
+    --amendment-border: #330099;
+    --amendment-bg: #F5F0FF;
+    --amendment-text: var(--text);
+    --amendmentheading-text: #220066;
+
+    --def-border: #8ccbf2;
+    --def-bg: #def;
+    --def-text: var(--text);
+    --defrow-border: #bbd7e9;
+
+    --datacell-border: silver;
+
+    --indexinfo-text: #707070;
+
+    --indextable-hover-text: black;
+    --indextable-hover-bg: #f7f8f9;
+
+    --outdatedspec-bg: rgba(0, 0, 0, .5);
+    --outdatedspec-text: black;
+    --outdated-bg: maroon;
+    --outdated-text: white;
+    --outdated-shadow: red;
+
+    --editedrec-bg: darkorange;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text: #ddd;
+        --bg: black;
+
+        --unofficial-watermark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cg fill='%23100808' transform='translate(200 200) rotate(-45) translate(-200 -200)' stroke='%23100808' stroke-width='3'%3E%3Ctext x='50%25' y='220' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EUNOFFICIAL%3C/text%3E%3Ctext x='50%25' y='305' style='font: bold 70px sans-serif; text-anchor: middle; letter-spacing: 6px;'%3EDRAFT%3C/text%3E%3C/g%3E%3C/svg%3E");
+
+        --logo-bg: #1a5e9a;
+        --logo-active-bg: #c00;
+        --logo-text: white;
+
+        --tocnav-normal-text: #999;
+        --tocnav-normal-bg: var(--bg);
+        --tocnav-hover-text: var(--tocnav-normal-text);
+        --tocnav-hover-bg: #080808;
+        --tocnav-active-text: #f44;
+        --tocnav-active-bg: var(--tocnav-normal-bg);
+
+        --tocsidebar-text: var(--text);
+        --tocsidebar-bg: #080808;
+        --tocsidebar-shadow: rgba(255,255,255,.1);
+        --tocsidebar-heading-text: hsla(203,20%,40%,.7);
+
+        --toclink-text: var(--text);
+        --toclink-underline: #6af;
+        --toclink-visited-text: var(--toclink-text);
+        --toclink-visited-underline: #054572;
+
+        --heading-text: #8af;
+
+        --hr-text: var(--text);
+
+        --algo-border: #456;
+
+        --del-text: #f44;
+        --del-bg: transparent;
+        --ins-text: #4a4;
+        --ins-bg: transparent;
+
+        --a-normal-text: #6af;
+        --a-normal-underline: #555;
+        --a-visited-text: var(--a-normal-text);
+        --a-visited-underline: var(--a-normal-underline);
+        --a-hover-bg: rgba(25%, 25%, 25%, .2);
+        --a-active-text: #f44;
+        --a-active-underline: var(--a-active-text);
+
+        --borderedblock-bg: rgba(255, 255, 255, .05);
+
+        --blockquote-border: silver;
+        --blockquote-bg: var(--borderedblock-bg);
+        --blockquote-text: currentcolor;
+
+        --issue-border: #e05252;
+        --issue-bg: var(--borderedblock-bg);
+        --issue-text: var(--text);
+        --issueheading-text: hsl(0deg, 70%, 70%);
+
+        --example-border: hsl(50deg, 90%, 60%);
+        --example-bg: var(--borderedblock-bg);
+        --example-text: var(--text);
+        --exampleheading-text: hsl(50deg, 70%, 70%);
+
+        --note-border: hsl(120deg, 100%, 35%);
+        --note-bg: var(--borderedblock-bg);
+        --note-text: var(--text);
+        --noteheading-text: hsl(120, 70%, 70%);
+        --notesummary-underline: silver;
+
+        --assertion-border: #444;
+        --assertion-bg: var(--borderedblock-bg);
+        --assertion-text: var(--text);
+
+        --advisement-border: orange;
+        --advisement-bg: #222218;
+        --advisement-text: var(--text);
+        --advisementheading-text: #f84;
+
+        --warning-border: red;
+        --warning-bg: hsla(40,100%,20%,0.95);
+        --warning-text: var(--text);
+
+        --amendment-border: #330099;
+        --amendment-bg: #080010;
+        --amendment-text: var(--text);
+        --amendmentheading-text: #cc00ff;
+
+        --def-border: #8ccbf2;
+        --def-bg: #080818;
+        --def-text: var(--text);
+        --defrow-border: #136;
+
+        --datacell-border: silver;
+
+        --indexinfo-text: #aaa;
+
+        --indextable-hover-text: var(--text);
+        --indextable-hover-bg: #181818;
+
+        --outdatedspec-bg: rgba(255, 255, 255, .5);
+        --outdatedspec-text: black;
+        --outdated-bg: maroon;
+        --outdated-text: white;
+        --outdated-shadow: red;
+
+        --editedrec-bg: darkorange;
+    }
+    /* In case a transparent-bg image doesn't expect to be on a dark bg,
+       which is quite common in practice... */
+    img { background: white; }
+}
+</style>
+<style>/* Boilerplate: style-counters */
+body {
+    counter-reset: example figure issue;
+}
+.issue {
+    counter-increment: issue;
+}
+.issue:not(.no-marker)::before {
+    content: "Issue " counter(issue);
+}
+
+.example {
+    counter-increment: example;
+}
+.example:not(.no-marker)::before {
+    content: "Example " counter(example);
+}
+.invalid.example:not(.no-marker)::before,
+.illegal.example:not(.no-marker)::before {
+    content: "Invalid Example" counter(example);
+}
+
+figcaption {
+    counter-increment: figure;
+}
+figcaption:not(.no-marker)::before {
+    content: "Figure " counter(figure) " ";
+}</style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+    }
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    white-space: pre;
+    display: inline-block;
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled[role="button"] { cursor: pointer; }</style>
+<style>/* Boilerplate: style-dfn-panel */
+:root {
+    --dfnpanel-bg: #ddd;
+    --dfnpanel-text: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --dfnpanel-bg: #222;
+        --dfnpanel-text: var(--text);
+    }
+}
+.dfn-panel {
+    position: absolute;
+    z-index: 35;
+    width: 20em;
+    width: 300px;
+    height: auto;
+    max-height: 500px;
+    overflow: auto;
+    padding: 0.5em 0.75em;
+    font: small Helvetica Neue, sans-serif, Droid Sans Fallback;
+    background: var(--dfnpanel-bg);
+    color: var(--dfnpanel-text);
+    border: outset 0.2em;
+    white-space: normal; /* in case it's moved into a pre */
+}
+.dfn-panel:not(.on) { display: none; }
+.dfn-panel * { margin: 0; padding: 0; text-indent: 0; }
+.dfn-panel > b { display: block; }
+.dfn-panel a { color: var(--dfnpanel-text); }
+.dfn-panel a:not(:hover) { text-decoration: none !important; border-bottom: none !important; }
+.dfn-panel > b + b { margin-top: 0.25em; }
+.dfn-panel ul { padding: 0 0 0 1em; list-style: none; }
+.dfn-panel li a {
+    white-space: pre;
+    display: inline-block;
+    max-width: calc(300px - 1.5em - 1em);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dfn-panel.activated {
+    display: inline-block;
+    position: fixed;
+    left: .5em;
+    bottom: 2em;
+    margin: 0 auto;
+    max-width: calc(100vw - 1.5em - .4em - .5em);
+    max-height: 30vh;
+}
+
+.dfn-paneled[role="button"] { cursor: pointer; }</style>
+<style>/* Boilerplate: style-issues */
+a[href].issue-return {
+    float: right;
+    float: inline-end;
+    color: var(--issueheading-text);
+    font-weight: bold;
+    text-decoration: none;
+}</style>
+<style>/* Boilerplate: style-md-lists */
+/* This is a weird hack for me not yet following the commonmark spec
+   regarding paragraph and lists. */
+[data-md] > :first-child {
+    margin-top: 0;
+}
+[data-md] > :last-child {
+    margin-bottom: 0;
+}</style>
+<style>/* Boilerplate: style-selflinks */
+
+:root {
+    --selflink-text: white;
+    --selflink-bg: gray;
+    --selflink-hover-text: black;
+}
+.heading, .issue, .note, .example, li, dt {
+    position: relative;
+}
+a.self-link {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * (3.5rem - 26px));
+    width: calc(3.5rem - 26px);
+    height: 2em;
+    text-align: center;
+    border: none;
+    transition: opacity .2s;
+    opacity: .5;
+}
+a.self-link:hover {
+    opacity: 1;
+}
+.heading > a.self-link {
+    font-size: 83%;
+}
+.example > a.self-link,
+.note > a.self-link,
+.issue > a.self-link {
+    /* These blocks are overflow:auto, so positioning outside
+       doesn't work. */
+    left: auto;
+    right: 0;
+}
+li > a.self-link {
+    left: calc(-1 * (3.5rem - 26px) - 2em);
+}
+dfn > a.self-link {
+    top: auto;
+    left: auto;
+    opacity: 0;
+    width: 1.5em;
+    height: 1.5em;
+    background: var(--selflink-bg);
+    color: var(--selflink-text);
+    font-style: normal;
+    transition: opacity .2s, background-color .2s, color .2s;
+}
+dfn:hover > a.self-link {
+    opacity: 1;
+}
+dfn > a.self-link:hover {
+    color: var(--selflink-hover-text);
+}
+
+a.self-link::before            { content: "¶"; }
+.heading > a.self-link::before { content: "§"; }
+dfn > a.self-link::before      { content: "#"; }</style>
+<style>/* Boilerplate: style-syntax-highlighting */
+
+            pre.idl.highlight {
+                background: var(--borderedblock-bg, var(--def-bg));
+            }</style>
+<style>/* Boilerplate: style-syntax-highlighting */
+
+code.highlight { padding: .1em; border-radius: .3em; }
+pre.highlight, pre > code.highlight { display: block; padding: 1em; margin: .5em 0; overflow: auto; border-radius: 0; }
+
+.highlight:not(.idl) { background: rgba(0, 0, 0, .03); }
+c-[a] { color: #990055 } /* Keyword.Declaration */
+c-[b] { color: #990055 } /* Keyword.Type */
+c-[c] { color: #708090 } /* Comment */
+c-[d] { color: #708090 } /* Comment.Multiline */
+c-[e] { color: #0077aa } /* Name.Attribute */
+c-[f] { color: #669900 } /* Name.Tag */
+c-[g] { color: #222222 } /* Name.Variable */
+c-[k] { color: #990055 } /* Keyword */
+c-[l] { color: #000000 } /* Literal */
+c-[m] { color: #000000 } /* Literal.Number */
+c-[n] { color: #0077aa } /* Name */
+c-[o] { color: #999999 } /* Operator */
+c-[p] { color: #999999 } /* Punctuation */
+c-[s] { color: #a67f59 } /* Literal.String */
+c-[t] { color: #a67f59 } /* Literal.String.Single */
+c-[u] { color: #a67f59 } /* Literal.String.Double */
+c-[cp] { color: #708090 } /* Comment.Preproc */
+c-[c1] { color: #708090 } /* Comment.Single */
+c-[cs] { color: #708090 } /* Comment.Special */
+c-[kc] { color: #990055 } /* Keyword.Constant */
+c-[kn] { color: #990055 } /* Keyword.Namespace */
+c-[kp] { color: #990055 } /* Keyword.Pseudo */
+c-[kr] { color: #990055 } /* Keyword.Reserved */
+c-[ld] { color: #000000 } /* Literal.Date */
+c-[nc] { color: #0077aa } /* Name.Class */
+c-[no] { color: #0077aa } /* Name.Constant */
+c-[nd] { color: #0077aa } /* Name.Decorator */
+c-[ni] { color: #0077aa } /* Name.Entity */
+c-[ne] { color: #0077aa } /* Name.Exception */
+c-[nf] { color: #0077aa } /* Name.Function */
+c-[nl] { color: #0077aa } /* Name.Label */
+c-[nn] { color: #0077aa } /* Name.Namespace */
+c-[py] { color: #0077aa } /* Name.Property */
+c-[ow] { color: #999999 } /* Operator.Word */
+c-[mb] { color: #000000 } /* Literal.Number.Bin */
+c-[mf] { color: #000000 } /* Literal.Number.Float */
+c-[mh] { color: #000000 } /* Literal.Number.Hex */
+c-[mi] { color: #000000 } /* Literal.Number.Integer */
+c-[mo] { color: #000000 } /* Literal.Number.Oct */
+c-[sb] { color: #a67f59 } /* Literal.String.Backtick */
+c-[sc] { color: #a67f59 } /* Literal.String.Char */
+c-[sd] { color: #a67f59 } /* Literal.String.Doc */
+c-[se] { color: #a67f59 } /* Literal.String.Escape */
+c-[sh] { color: #a67f59 } /* Literal.String.Heredoc */
+c-[si] { color: #a67f59 } /* Literal.String.Interpol */
+c-[sx] { color: #a67f59 } /* Literal.String.Other */
+c-[sr] { color: #a67f59 } /* Literal.String.Regex */
+c-[ss] { color: #a67f59 } /* Literal.String.Symbol */
+c-[vc] { color: #0077aa } /* Name.Variable.Class */
+c-[vg] { color: #0077aa } /* Name.Variable.Global */
+c-[vi] { color: #0077aa } /* Name.Variable.Instance */
+c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
+
+
+@media (prefers-color-scheme: dark) {
+    .highlight:not(.idl) { background: rgba(255, 255, 255, .05); }
+
+    c-[a] { color: #d33682 } /* Keyword.Declaration */
+    c-[b] { color: #d33682 } /* Keyword.Type */
+    c-[c] { color: #2aa198 } /* Comment */
+    c-[d] { color: #2aa198 } /* Comment.Multiline */
+    c-[e] { color: #268bd2 } /* Name.Attribute */
+    c-[f] { color: #b58900 } /* Name.Tag */
+    c-[g] { color: #cb4b16 } /* Name.Variable */
+    c-[k] { color: #d33682 } /* Keyword */
+    c-[l] { color: #657b83 } /* Literal */
+    c-[m] { color: #657b83 } /* Literal.Number */
+    c-[n] { color: #268bd2 } /* Name */
+    c-[o] { color: #657b83 } /* Operator */
+    c-[p] { color: #657b83 } /* Punctuation */
+    c-[s] { color: #6c71c4 } /* Literal.String */
+    c-[t] { color: #6c71c4 } /* Literal.String.Single */
+    c-[u] { color: #6c71c4 } /* Literal.String.Double */
+    c-[ch] { color: #2aa198 } /* Comment.Hashbang */
+    c-[cp] { color: #2aa198 } /* Comment.Preproc */
+    c-[cpf] { color: #2aa198 } /* Comment.PreprocFile */
+    c-[c1] { color: #2aa198 } /* Comment.Single */
+    c-[cs] { color: #2aa198 } /* Comment.Special */
+    c-[kc] { color: #d33682 } /* Keyword.Constant */
+    c-[kn] { color: #d33682 } /* Keyword.Namespace */
+    c-[kp] { color: #d33682 } /* Keyword.Pseudo */
+    c-[kr] { color: #d33682 } /* Keyword.Reserved */
+    c-[ld] { color: #657b83 } /* Literal.Date */
+    c-[nc] { color: #268bd2 } /* Name.Class */
+    c-[no] { color: #268bd2 } /* Name.Constant */
+    c-[nd] { color: #268bd2 } /* Name.Decorator */
+    c-[ni] { color: #268bd2 } /* Name.Entity */
+    c-[ne] { color: #268bd2 } /* Name.Exception */
+    c-[nf] { color: #268bd2 } /* Name.Function */
+    c-[nl] { color: #268bd2 } /* Name.Label */
+    c-[nn] { color: #268bd2 } /* Name.Namespace */
+    c-[py] { color: #268bd2 } /* Name.Property */
+    c-[ow] { color: #657b83 } /* Operator.Word */
+    c-[mb] { color: #657b83 } /* Literal.Number.Bin */
+    c-[mf] { color: #657b83 } /* Literal.Number.Float */
+    c-[mh] { color: #657b83 } /* Literal.Number.Hex */
+    c-[mi] { color: #657b83 } /* Literal.Number.Integer */
+    c-[mo] { color: #657b83 } /* Literal.Number.Oct */
+    c-[sa] { color: #6c71c4 } /* Literal.String.Affix */
+    c-[sb] { color: #6c71c4 } /* Literal.String.Backtick */
+    c-[sc] { color: #6c71c4 } /* Literal.String.Char */
+    c-[dl] { color: #6c71c4 } /* Literal.String.Delimiter */
+    c-[sd] { color: #6c71c4 } /* Literal.String.Doc */
+    c-[se] { color: #6c71c4 } /* Literal.String.Escape */
+    c-[sh] { color: #6c71c4 } /* Literal.String.Heredoc */
+    c-[si] { color: #6c71c4 } /* Literal.String.Interpol */
+    c-[sx] { color: #6c71c4 } /* Literal.String.Other */
+    c-[sr] { color: #6c71c4 } /* Literal.String.Regex */
+    c-[ss] { color: #6c71c4 } /* Literal.String.Symbol */
+    c-[fm] { color: #268bd2 } /* Name.Function.Magic */
+    c-[vc] { color: #cb4b16 } /* Name.Variable.Class */
+    c-[vg] { color: #cb4b16 } /* Name.Variable.Global */
+    c-[vi] { color: #cb4b16 } /* Name.Variable.Instance */
+    c-[vm] { color: #cb4b16 } /* Name.Variable.Magic */
+    c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
+}</style>
+  <link href="www.w3.org/StyleSheets/TR/2021/W3C-DNOTE" rel="stylesheet">
+ </head>
+<body class="h-entry">
+  <div class="head">
+   <p data-fill-with="logo"><a class="logo" href="www.w3.org/"> <img alt="W3C" height="48" src="www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
+   <h1 class="p-name no-ref" id="title">Opus WebCodecs Registration</h1>
+   <p id="w3c-state"><a href="www.w3.org/standards/types#DNOTE">W3C Group Draft Note</a>, <time class="dt-updated" datetime="2024-03-19">19 March 2024</time></p>
+   <details open>
+    <summary>More details about this document</summary>
+    <div data-fill-with="spec-metadata">
+     <dl>
+      <dt>This version:
+      </dt>
+<dd>
+<a class="u-url" href="www.w3.org/TR/2024/DNOTE-webcodecs-opus-codec-registration-20240319/">https://www.w3.org/TR/2024/DNOTE-webcodecs-opus-codec-registration-20240319/</a>
+      </dd>
+<dt>Latest published version:
+      </dt>
+<dd>
+<a href="www.w3.org/TR/webcodecs-opus-codec-registration/">https://www.w3.org/TR/webcodecs-opus-codec-registration/</a>
+      </dd>
+<dt>Editor's Draft:
+      </dt>
+<dd>
+<a href="w3c.github.io/webcodecs/opus_codec_registration.html">https://w3c.github.io/webcodecs/opus_codec_registration.html</a>
+      </dd>
+<dt>Previous Versions:
+      </dt>
+<dd>
+<a href="www.w3.org/TR/2024/DNOTE-webcodecs-opus-codec-registration-20240318/" rel="prev">https://www.w3.org/TR/2024/DNOTE-webcodecs-opus-codec-registration-20240318/</a>
+      </dd>
+<dt>History:
+      </dt>
+<dd>
+<a class="u-url" href="www.w3.org/standards/history/webcodecs-opus-codec-registration/">https://www.w3.org/standards/history/webcodecs-opus-codec-registration/</a>
+      </dd>
+<dt>Feedback:
+      </dt>
+<dd>
+<a href="github.com/w3c/webcodecs/issues/">GitHub</a>
+      </dd>
+<dt class="editor">Editors:
+      </dt>
+<dd class="editor p-author h-card vcard" data-editor-id="62410">
+<span class="p-name fn">Paul Adenot</span> (<a class="p-org org" href="www.mozilla.org/">Mozilla</a>)
+      <dd class="editor p-author h-card vcard" data-editor-id="65611">
+<span class="p-name fn">Bernard Aboba</span> (<a class="p-org org" href="www.microsoft.com/">Microsoft Corporation</a>)
+      </dd>
+</dd>
+<dt class="editor">Former Editor:
+      </dt>
+<dd class="editor p-author h-card vcard" data-editor-id="114832">
+<span class="p-name fn">Chris Cunningham</span> (<a class="p-org org" href="www.google.com/">Google Inc.</a>)
+      </dd>
+<dt>Participate:
+      </dt>
+<dd>
+<a href="github.com/w3c/webcodecs">Git Repository.</a>
+      <dd>
+<a href="github.com/w3c/webcodecs/issues/new">File an issue.</a>
+      </dd>
+</dd>
+<dt>Version History:
+      </dt>
+<dd>
+<a href="github.com/w3c/webcodecs/commits">https://github.com/w3c/webcodecs/commits</a>
+     </dd>
+</dl>
+    </div>
+   </details>
+   <div data-fill-with="warning"></div>
+   <p class="copyright" data-fill-with="copyright"><a href="www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <hr title="Separator for header">
+  </div>
+  <div class="p-summary" data-fill-with="abstract">
+   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <p>This registration is entered into the <a data-link-type="biblio" href="#biblio-webcodecs-codec-registry" title="WebCodecs Codec Registry">[webcodecs-codec-registry]</a>.
+
+    It describes, for Opus, the (1) fully qualified codec strings, (2) the
+    codec-specific <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk">EncodedAudioChunk</a></code> <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-encodedaudiochunk-internal-data-slot" id="ref-for-dom-encodedaudiochunk-internal-data-slot">[[internal data]]</a></code> bytes, (3) the <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description" id="ref-for-dom-audiodecoderconfig-description">AudioDecoderConfig.description</a></code> bytes, (4) the values of <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk①">EncodedAudioChunk</a></code> <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-encodedaudiochunk-type-slot" id="ref-for-dom-encodedaudiochunk-type-slot">[[type]]</a></code>,
+    and (5) the codec-specific extensions to <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dictdef-audioencoderconfig" id="ref-for-dictdef-audioencoderconfig">AudioEncoderConfig</a></code></p>
+   <p>The registration is not intended to include any information on whether a
+
+    codec format is encumbered by intellectual property claims. Implementers and
+    authors are advised to seek appropriate legal counsel in this matter if they
+    intend to implement or use a specific codec format. Implementers of
+    WebCodecs are not required to support the Opus codec.</p>
+   <p>This registration is non-normative.</p>
+  </div>
+  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <div data-fill-with="status">
+   <p> <em>This section describes the status of this document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr> publications and the latest revision of this technical report can be found in the <a href="www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at https://www.w3.org/TR/.</em> </p>
+   <p> Feedback and comments on this specification are welcome. <a href="github.com/w3c/webcodecs/issues">GitHub Issues</a> are preferred for discussion on this specification. Alternatively, you can send comments to the Media Working Group’s mailing-list, <a href="mailto:public-media-wg@w3.org">public-media-wg@w3.org</a> (<a href="lists.w3.org/Archives/Public/public-media-wg/">archives</a>).
+  This draft highlights some of the pending issues that are still to be discussed in the working group.
+  No decision has been taken on the outcome of these issues including whether they are valid. </p>
+   <p> This document was published by the <a href="www.w3.org/groups/wg/media">Media Working Group</a> as a Group Draft Note using the <a href="www.w3.org/2023/Process-20231103/#recs-and-notes">Note
+    track</a>. </p>
+   <p> Group Draft Notes are not endorsed
+      by <abbr title="World Wide Web Consortium">W3C</abbr> nor its Members. </p>
+   <p> This is a draft document and may be updated, replaced or obsoleted by other documents at any time.
+  It is inappropriate to cite this document as other than work in progress. </p>
+   <p data-deliverer="115198"> The <a href="www.w3.org/Consortium/Patent-Policy/">W3C Patent Policy</a> does not carry any licensing requirements or commitments on this document. </p>
+   <p> This document is governed by the <a href="www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
+   <p></p>
+  </div>
+  <div data-fill-with="at-risk"></div>
+  <nav data-fill-with="table-of-contents" id="toc">
+   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
+   <ol class="toc" role="directory">
+    <li>
+<a href="#fully-qualified-codec-strings"><span class="secno">1</span> <span class="content">Fully qualified codec strings</span></a>
+    </li>
+<li>
+<a href="#encodedaudiochunk-data"><span class="secno">2</span> <span class="content">EncodedAudioChunk data</span></a>
+    </li>
+<li>
+<a href="#audiodecoderconfig-description"><span class="secno">3</span> <span class="content">AudioDecoderConfig description</span></a>
+    </li>
+<li>
+<a href="#encodedaudiochunk-type"><span class="secno">4</span> <span class="content">EncodedAudioChunk type</span></a>
+    </li>
+<li>
+     <a href="#audioencoderconfig-extensions"><span class="secno">5</span> <span class="content">AudioEncoderConfig extensions</span></a>
+     <ol class="toc">
+      <li>
+<a href="#opus-encoder-config"><span class="secno">5.1</span> <span class="content">OpusEncoderConfig</span></a>
+      </li>
+<li>
+<a href="#opus-bitstream-format"><span class="secno">5.2</span> <span class="content">OpusBitstreamFormat</span></a>
+      </li>
+<li>
+<a href="#opus-signal"><span class="secno">5.3</span> <span class="content">OpusSignal</span></a>
+      </li>
+<li>
+<a href="#opus-application"><span class="secno">5.4</span> <span class="content">OpusApplication</span></a>
+     </li>
+</ol>
+    </li>
+<li>
+<a href="#privacy-considerations"><span class="secno">6</span> <span class="content">Privacy Considerations</span></a>
+    </li>
+<li>
+<a href="#security-considerations"><span class="secno">7</span> <span class="content">Security Considerations</span></a>
+    </li>
+<li>
+     <a href="#w3c-conformance"><span class="secno"></span> <span class="content">Conformance</span></a>
+     <ol class="toc">
+      <li>
+<a href="#w3c-conventions"><span class="secno"></span> <span class="content">Document conventions</span></a>
+     </li>
+</ol>
+    </li>
+<li>
+     <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
+     <ol class="toc">
+      <li>
+<a href="#index-defined-here"><span class="secno"></span> <span class="content">Terms defined by this specification</span></a>
+      </li>
+<li>
+<a href="#index-defined-elsewhere"><span class="secno"></span> <span class="content">Terms defined by reference</span></a>
+     </li>
+</ol>
+    </li>
+<li>
+     <a href="#references"><span class="secno"></span> <span class="content">References</span></a>
+     <ol class="toc">
+      <li>
+<a href="#normative"><span class="secno"></span> <span class="content">Normative References</span></a>
+      </li>
+<li>
+<a href="#informative"><span class="secno"></span> <span class="content">Informative References</span></a>
+     </li>
+</ol>
+    </li>
+<li>
+<a href="#idl-index"><span class="secno"></span> <span class="content">IDL Index</span></a>
+   </li>
+</ol>
+  </nav>
+  <main>
+   <h2 class="heading settled" data-level="1" id="fully-qualified-codec-strings">
+<span class="secno">1. </span><span class="content">Fully qualified codec strings</span><a class="self-link" href="#fully-qualified-codec-strings"></a>
+</h2>
+   <p>The codec string is <code>"opus"</code>.</p>
+   <h2 class="heading settled" data-level="2" id="encodedaudiochunk-data">
+<span class="secno">2. </span><span class="content">EncodedAudioChunk data</span><a class="self-link" href="#encodedaudiochunk-data"></a>
+</h2>
+   <p>An <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk②">EncodedAudioChunk</a></code> containing Opus can be in two different formats.</p>
+   <p>If the bitstream is in <code class="idl"><a data-link-type="idl" href="#dom-opusbitstreamformat-opus" id="ref-for-dom-opusbitstreamformat-opus">opus</a></code> format, <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk③">EncodedAudioChunk</a></code> have to be Opus packets, as described in <a href="datatracker.ietf.org/doc/html/rfc6716#section-3">section
+3</a> of <a data-link-type="biblio" href="#biblio-opus" title="RFC 6716: Definition of the Opus Audio Codec">[OPUS]</a></p>
+   <p>If the bitstream is in <code class="idl"><a data-link-type="idl" href="#dom-opusbitstreamformat-ogg" id="ref-for-dom-opusbitstreamformat-ogg">ogg</a></code> format, <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk④">EncodedAudioChunk</a></code> have to be audio data packets, as described in <a href="datatracker.ietf.org/doc/html/rfc7845#section-3">section
+3</a> of <a data-link-type="biblio" href="#biblio-opus-in-ogg" title="RFC 7845: Ogg Encapsulation for the Opus Audio Codec">[OPUS-IN-OGG]</a>.</p>
+   <h2 class="heading settled" data-level="3" id="audiodecoderconfig-description">
+<span class="secno">3. </span><span class="content">AudioDecoderConfig description</span><a class="self-link" href="#audiodecoderconfig-description"></a>
+</h2>
+   <p><code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description" id="ref-for-dom-audiodecoderconfig-description①">description</a></code> can be optionally set to an Identification
+Header, described in section 5.1 of <a data-link-type="biblio" href="#biblio-opus-in-ogg" title="RFC 7845: Ogg Encapsulation for the Opus Audio Codec">[OPUS-IN-OGG]</a>.</p>
+   <p>If a <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description" id="ref-for-dom-audiodecoderconfig-description②">description</a></code> has been set, the bitstream is assumed
+to be in <code class="idl"><a data-link-type="idl" href="#dom-opusbitstreamformat-ogg" id="ref-for-dom-opusbitstreamformat-ogg①">ogg</a></code> format.</p>
+   <p>If a <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description" id="ref-for-dom-audiodecoderconfig-description③">description</a></code> has not been set, the bitstream is
+assumed to be in <code class="idl"><a data-link-type="idl" href="#dom-opusbitstreamformat-opus" id="ref-for-dom-opusbitstreamformat-opus①">opus</a></code> format.</p>
+   <h2 class="heading settled" data-level="4" id="encodedaudiochunk-type">
+<span class="secno">4. </span><span class="content">EncodedAudioChunk type</span><a class="self-link" href="#encodedaudiochunk-type"></a>
+</h2>
+   <p>The <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-encodedaudiochunk-type-slot" id="ref-for-dom-encodedaudiochunk-type-slot①">[[type]]</a></code> for an <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk⑤">EncodedAudioChunk</a></code> containing
+Opus is always "<code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-encodedaudiochunktype-key" id="ref-for-dom-encodedaudiochunktype-key">key</a></code>".</p>
+   <p class="note" role="note"><span class="marker">NOTE:</span> Once the initialization has succeeded, any packet can be decoded at any
+time without error, but this might not result in the expected audio output.</p>
+   <h2 class="heading settled" data-level="5" id="audioencoderconfig-extensions">
+<span class="secno">5. </span><span class="content">AudioEncoderConfig extensions</span><a class="self-link" href="#audioencoderconfig-extensions"></a>
+</h2>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="www.w3.org/TR/webcodecs/#dictdef-audioencoderconfig" id="ref-for-dictdef-audioencoderconfig①"><c- g>AudioEncoderConfig</c-></a> {
+  <a data-link-type="idl-name" href="#dictdef-opusencoderconfig" id="ref-for-dictdef-opusencoderconfig"><c- n>OpusEncoderConfig</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="OpusEncoderConfig " href="#dom-audioencoderconfig-opus" id="ref-for-dom-audioencoderconfig-opus"><c- g>opus</c-></a>;
+};
+
+</pre>
+   <dl>
+    <dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="AudioEncoderConfig" data-dfn-type="dict-member" data-export id="dom-audioencoderconfig-opus"><code>opus</code></dfn>, <span> of type <a data-link-type="idl-name" href="#dictdef-opusencoderconfig" id="ref-for-dictdef-opusencoderconfig①">OpusEncoderConfig</a></span>
+    </dt>
+<dd> Contains codec specific configuration options for the Opus codec. 
+   </dd>
+</dl>
+   <h3 class="heading settled" data-level="5.1" id="opus-encoder-config">
+<span class="secno">5.1. </span><span class="content">OpusEncoderConfig</span><a class="self-link" href="#opus-encoder-config"></a>
+</h3>
+<pre class="idl highlight def"><c- b>dictionary</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="dictionary" data-export id="dictdef-opusencoderconfig"><code><c- g>OpusEncoderConfig</c-></code></dfn> {
+  <a data-link-type="idl-name" href="#enumdef-opusbitstreamformat" id="ref-for-enumdef-opusbitstreamformat"><c- n>OpusBitstreamFormat</c-></a> <a class="idl-code" data-default="&quot;opus&quot;" data-link-type="dict-member" data-type="OpusBitstreamFormat " href="#dom-opusencoderconfig-format" id="ref-for-dom-opusencoderconfig-format"><c- g>format</c-></a> = "opus";
+  <a data-link-type="idl-name" href="#enumdef-opussignal" id="ref-for-enumdef-opussignal"><c- n>OpusSignal</c-></a> <a class="idl-code" data-default="&quot;auto&quot;" data-link-type="dict-member" data-type="OpusSignal " href="#dom-opusencoderconfig-signal" id="ref-for-dom-opusencoderconfig-signal"><c- g>signal</c-></a> = "auto";
+  <a data-link-type="idl-name" href="#enumdef-opusapplication" id="ref-for-enumdef-opusapplication"><c- n>OpusApplication</c-></a> <a class="idl-code" data-default="&quot;audio&quot;" data-link-type="dict-member" data-type="OpusApplication " href="#dom-opusencoderconfig-application" id="ref-for-dom-opusencoderconfig-application"><c- g>application</c-></a> = "audio";
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a class="idl-code" data-default="20000" data-link-type="dict-member" data-type="unsigned long long " href="#dom-opusencoderconfig-frameduration" id="ref-for-dom-opusencoderconfig-frameduration"><c- g>frameDuration</c-></a> = 20000;
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange①"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long" id="ref-for-idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="unsigned long " href="#dom-opusencoderconfig-complexity" id="ref-for-dom-opusencoderconfig-complexity"><c- g>complexity</c-></a>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange" id="ref-for-EnforceRange②"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long" id="ref-for-idl-unsigned-long①"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-default="0" data-link-type="dict-member" data-type="unsigned long " href="#dom-opusencoderconfig-packetlossperc" id="ref-for-dom-opusencoderconfig-packetlossperc"><c- g>packetlossperc</c-></a> = 0;
+  <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-opusencoderconfig-useinbandfec" id="ref-for-dom-opusencoderconfig-useinbandfec"><c- g>useinbandfec</c-></a> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean①"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-opusencoderconfig-usedtx" id="ref-for-dom-opusencoderconfig-usedtx"><c- g>usedtx</c-></a> = <c- b>false</c->;
+};
+
+</pre>
+   <p>To check if an <code class="idl"><a data-link-type="idl" href="#dictdef-opusencoderconfig" id="ref-for-dictdef-opusencoderconfig②">OpusEncoderConfig</a></code> is valid, run these steps:</p>
+   <ol>
+    <li data-md>
+     <p>If <code class="idl"><a data-link-type="idl" href="#dom-opusencoderconfig-frameduration" id="ref-for-dom-opusencoderconfig-frameduration①">frameDuration</a></code> is not a valid frame duration,
+which is described section 2.1.4 of <a data-link-type="biblio" href="#biblio-rfc6716" title="Definition of the Opus Audio Codec">[RFC6716]</a>, return <code>false</code>.</p>
+    </li>
+<li data-md>
+     <p>If <code class="idl"><a data-link-type="idl" href="#dom-opusencoderconfig-complexity" id="ref-for-dom-opusencoderconfig-complexity①">complexity</a></code> is specified and not within the range of <code>0</code> and <code>10</code> inclusively, return <code>false</code>.</p>
+    </li>
+<li data-md>
+     <p>If <code class="idl"><a data-link-type="idl" href="#dom-opusencoderconfig-packetlossperc" id="ref-for-dom-opusencoderconfig-packetlossperc①">packetlossperc</a></code> is specified and not within the range of <code>0</code> and <code>100</code> inclusively, return <code>false</code>.</p>
+    </li>
+<li data-md>
+     <p>Return <code>true</code>.</p>
+   </li>
+</ol>
+   <dl>
+    <dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-format"><code>format</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-opusbitstreamformat" id="ref-for-enumdef-opusbitstreamformat①">OpusBitstreamFormat</a>, defaulting to <code>"opus"</code></span>
+    </dt>
+<dd> Configures the format of output <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk⑥">EncodedAudioChunk</a></code>s. See <code class="idl"><a data-link-type="idl" href="#enumdef-opusbitstreamformat" id="ref-for-enumdef-opusbitstreamformat②">OpusBitstreamFormat</a></code>. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-signal"><code>signal</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-opussignal" id="ref-for-enumdef-opussignal①">OpusSignal</a>, defaulting to <code>"auto"</code></span>
+    </dt>
+<dd> Specificies the type of audio signal being encoded. See <code class="idl"><a data-link-type="idl" href="#enumdef-opussignal" id="ref-for-enumdef-opussignal②">OpusSignal</a></code>. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-application"><code>application</code></dfn>, <span> of type <a data-link-type="idl-name" href="#enumdef-opusapplication" id="ref-for-enumdef-opusapplication①">OpusApplication</a>, defaulting to <code>"audio"</code></span>
+    </dt>
+<dd> Specificies the encoder’s intended application. See <code class="idl"><a data-link-type="idl" href="#enumdef-opusapplication" id="ref-for-enumdef-opusapplication②">OpusApplication</a></code>. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-frameduration"><code>frameDuration</code></dfn>, <span> of type <a data-link-type="idl-name" href="webidl.spec.whatwg.org/#idl-unsigned-long-long" id="ref-for-idl-unsigned-long-long①">unsigned long long</a>, defaulting to <code>20000</code></span>
+    </dt>
+<dd> Configures the frame duration, in microseconds, of output <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#encodedaudiochunk" id="ref-for-encodedaudiochunk⑦">EncodedAudioChunk</a></code>s. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-complexity"><code>complexity</code></dfn>, <span> of type <a data-link-type="idl-name" href="webidl.spec.whatwg.org/#idl-unsigned-long" id="ref-for-idl-unsigned-long②">unsigned long</a></span>
+    </dt>
+<dd> Configures the encoder’s computational complexity, as described in section 2.1.9.
+    of <a data-link-type="biblio" href="#biblio-rfc6716" title="Definition of the Opus Audio Codec">[RFC6716]</a>. The valid range is <code>0</code> to <code>10</code>, with <code>10</code> representing the highest
+    complexity. If no value is specificied, the default value is platform-specific:
+    User Agents <em class="rfc2119">SHOULD</em> set a default of <code>5</code> for mobile
+    platforms, and a default of <code>9</code> for all other platforms. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-packetlossperc"><code>packetlossperc</code></dfn>, <span> of type <a data-link-type="idl-name" href="webidl.spec.whatwg.org/#idl-unsigned-long" id="ref-for-idl-unsigned-long③">unsigned long</a>, defaulting to <code>0</code></span>
+    </dt>
+<dd>
+      Configures the encoder’s expected packet loss percentage. The valid range is <code>0</code> to <code>100</code>. 
+     <p class="note" role="note"><span class="marker">NOTE:</span> The packet loss percentage might be updated over the course of an
+    encoding, and it is recommended for User Agents to support these reconfigurations.</p>
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-useinbandfec"><code>useinbandfec</code></dfn>, <span> of type <a data-link-type="idl-name" href="webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean②">boolean</a>, defaulting to <code>false</code></span>
+    </dt>
+<dd> Specifies whether the encoder provides Opus in-band Forward Error Correction
+    (FEC), as described by section 2.1.7. of <a data-link-type="biblio" href="#biblio-rfc6716" title="Definition of the Opus Audio Codec">[RFC6716]</a>. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusEncoderConfig" data-dfn-type="dict-member" data-export id="dom-opusencoderconfig-usedtx"><code>usedtx</code></dfn>, <span> of type <a data-link-type="idl-name" href="webidl.spec.whatwg.org/#idl-boolean" id="ref-for-idl-boolean③">boolean</a>, defaulting to <code>false</code></span>
+    </dt>
+<dd> Specifies if the encoder uses Discontinuous Transmission (DTX), as described
+    by section 2.1.9. of <a data-link-type="biblio" href="#biblio-rfc6716" title="Definition of the Opus Audio Codec">[RFC6716]</a>. 
+   </dd>
+</dl>
+   <h3 class="heading settled" data-level="5.2" id="opus-bitstream-format">
+<span class="secno">5.2. </span><span class="content">OpusBitstreamFormat</span><a class="self-link" href="#opus-bitstream-format"></a>
+</h3>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-opusbitstreamformat"><code><c- g>OpusBitstreamFormat</c-></code></dfn> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusbitstreamformat-opus" id="ref-for-dom-opusbitstreamformat-opus②"><c- s>"opus"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusbitstreamformat-ogg" id="ref-for-dom-opusbitstreamformat-ogg②"><c- s>"ogg"</c-></a>,
+};
+
+</pre>
+   <p>The <code class="idl"><a data-link-type="idl" href="#enumdef-opusbitstreamformat" id="ref-for-enumdef-opusbitstreamformat③">OpusBitstreamFormat</a></code> determines if extra-data are necessary to decode the
+encoded audio stream.</p>
+   <dl>
+    <dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusBitstreamFormat" data-dfn-type="enum-value" data-export data-lt="&quot;opus&quot;|opus" id="dom-opusbitstreamformat-opus"><code>opus</code></dfn>
+    </dt>
+<dd> No metadata are necessary to decode the encoded audio stream. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusBitstreamFormat" data-dfn-type="enum-value" data-export data-lt="&quot;ogg&quot;|ogg" id="dom-opusbitstreamformat-ogg"><code>ogg</code></dfn>
+    </dt>
+<dd> The metadata of the encoded audio stream are provided at configuration via <code class="idl"><a data-link-type="idl" href="www.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description" id="ref-for-dom-audiodecoderconfig-description④">AudioDecoderConfig.description</a></code>. 
+   </dd>
+</dl>
+   <h3 class="heading settled" data-level="5.3" id="opus-signal">
+<span class="secno">5.3. </span><span class="content">OpusSignal</span><a class="self-link" href="#opus-signal"></a>
+</h3>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-opussignal"><code><c- g>OpusSignal</c-></code></dfn> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-auto" id="ref-for-dom-opussignal-auto"><c- s>"auto"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-music" id="ref-for-dom-opussignal-music"><c- s>"music"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-voice" id="ref-for-dom-opussignal-voice"><c- s>"voice"</c-></a>,
+};
+
+</pre>
+   <p>The <code class="idl"><a data-link-type="idl" href="#enumdef-opussignal" id="ref-for-enumdef-opussignal③">OpusSignal</a></code> indicates the default value for the type of signal being encoded.</p>
+   <dl>
+    <dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusSignal" data-dfn-type="enum-value" data-export data-lt="&quot;auto&quot;|auto" id="dom-opussignal-auto"><code>auto</code></dfn>
+    </dt>
+<dd> The audio signal is not specified to be of a particular type. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusSignal" data-dfn-type="enum-value" data-export data-lt="&quot;music&quot;|music" id="dom-opussignal-music"><code>music</code></dfn>
+    </dt>
+<dd> The audio signal is music. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusSignal" data-dfn-type="enum-value" data-export data-lt="&quot;voice&quot;|voice" id="dom-opussignal-voice"><code>voice</code></dfn>
+    </dt>
+<dd> The audio signal is voice or speech. 
+   </dd>
+</dl>
+   <h3 class="heading settled" data-level="5.4" id="opus-application">
+<span class="secno">5.4. </span><span class="content">OpusApplication</span><a class="self-link" href="#opus-application"></a>
+</h3>
+<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-opusapplication"><code><c- g>OpusApplication</c-></code></dfn> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-voip" id="ref-for-dom-opusapplication-voip"><c- s>"voip"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-audio" id="ref-for-dom-opusapplication-audio"><c- s>"audio"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-lowdelay" id="ref-for-dom-opusapplication-lowdelay"><c- s>"lowdelay"</c-></a>,
+};
+
+</pre>
+   <p>The <code class="idl"><a data-link-type="idl" href="#enumdef-opusapplication" id="ref-for-enumdef-opusapplication③">OpusApplication</a></code> indicates the default value for the encoder’s intended
+application.</p>
+   <dl>
+    <dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusApplication" data-dfn-type="enum-value" data-export data-lt="&quot;voip&quot;|voip" id="dom-opusapplication-voip"><code>voip</code></dfn>
+    </dt>
+<dd> Process signal for improved speech intelligibility. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusApplication" data-dfn-type="enum-value" data-export data-lt="&quot;audio&quot;|audio" id="dom-opusapplication-audio"><code>audio</code></dfn>
+    </dt>
+<dd> Favor faithfulness to the original input. 
+    </dd>
+<dt>
+<dfn class="dfn-paneled idl-code" data-dfn-for="OpusApplication" data-dfn-type="enum-value" data-export data-lt="&quot;lowdelay&quot;|lowdelay" id="dom-opusapplication-lowdelay"><code>lowdelay</code></dfn>
+    </dt>
+<dd> Configure the minimum possible coding delay by disabling certain modes of
+    operation. 
+   </dd>
+</dl>
+   <h2 class="heading settled" data-level="6" id="privacy-considerations">
+<span class="secno">6. </span><span class="content">Privacy Considerations</span><a class="self-link" href="#privacy-considerations"></a>
+</h2>
+   <p>Please refer to the section <a href="www.w3.org/TR/webcodecs/#privacy-considerations">Privacy
+Considerations</a> in <a data-link-type="biblio" href="#biblio-webcodecs" title="WebCodecs">[WEBCODECS]</a>.</p>
+   <h2 class="heading settled" data-level="7" id="security-considerations">
+<span class="secno">7. </span><span class="content">Security Considerations</span><a class="self-link" href="#security-considerations"></a>
+</h2>
+   <p>Please refer to the section <a href="www.w3.org/TR/webcodecs/#security-considerations">Security
+Considerations</a> in <a data-link-type="biblio" href="#biblio-webcodecs" title="WebCodecs">[WEBCODECS]</a>.</p>
+  </main>
+  <div data-fill-with="conformance">
+   <h2 class="no-ref no-num heading settled" id="w3c-conformance">
+<span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a>
+</h2>
+   <h3 class="no-ref no-num heading settled" id="w3c-conventions">
+<span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a>
+</h3>
+   <p>Conformance requirements are expressed
+    with a combination of descriptive assertions
+    and RFC 2119 terminology.
+    The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL”
+    in the normative parts of this document
+    are to be interpreted as described in RFC 2119.
+    However, for readability,
+    these words do not appear in all uppercase letters in this specification. </p>
+   <p>All of the text of this specification is normative
+    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a> </p>
+   <p>Examples in this specification are introduced with the words “for example”
+    or are set apart from the normative text
+    with <code>class="example"</code>,
+    like this: </p>
+   <div class="example" id="w3c-example">
+    <a class="self-link" href="#w3c-example"></a> 
+    <p>This is an example of an informative example. </p>
+   </div>
+   <p>Informative notes begin with the word “Note”
+    and are set apart from the normative text
+    with <code>class="note"</code>,
+    like this: </p>
+   <p class="note" role="note">Note, this is an informative note.</p>
+  </div>
+<script src="www.w3.org/scripts/TR/2021/fixup.js"></script>
+  <h2 class="no-num no-ref heading settled" id="index">
+<span class="content">Index</span><a class="self-link" href="#index"></a>
+</h2>
+  <h3 class="no-num no-ref heading settled" id="index-defined-here">
+<span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a>
+</h3>
+  <ul class="index">
+   <li>
+<a href="#dom-opusencoderconfig-application">application</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-audio">"audio"</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-audio">audio</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#dom-opussignal-auto">"auto"</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opussignal-auto">auto</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-complexity">complexity</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-format">format</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-frameduration">frameDuration</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-lowdelay">"lowdelay"</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-lowdelay">lowdelay</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#dom-opussignal-music">"music"</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opussignal-music">music</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opusbitstreamformat-ogg">"ogg"</a><span>, in § 5.2</span>
+   </li>
+<li>
+<a href="#dom-opusbitstreamformat-ogg">ogg</a><span>, in § 5.2</span>
+   </li>
+<li>
+<a href="#dom-opusbitstreamformat-opus">"opus"</a><span>, in § 5.2</span>
+   </li>
+<li>
+    opus
+    <ul>
+     <li>
+<a href="#dom-audioencoderconfig-opus">dict-member for AudioEncoderConfig</a><span>, in § 5</span>
+     </li>
+<li>
+<a href="#dom-opusbitstreamformat-opus">enum-value for OpusBitstreamFormat</a><span>, in § 5.2</span>
+    </li>
+</ul>
+   </li>
+<li>
+<a href="#enumdef-opusapplication">OpusApplication</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#enumdef-opusbitstreamformat">OpusBitstreamFormat</a><span>, in § 5.2</span>
+   </li>
+<li>
+<a href="#dictdef-opusencoderconfig">OpusEncoderConfig</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#enumdef-opussignal">OpusSignal</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-packetlossperc">packetlossperc</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-signal">signal</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-usedtx">usedtx</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opusencoderconfig-useinbandfec">useinbandfec</a><span>, in § 5.1</span>
+   </li>
+<li>
+<a href="#dom-opussignal-voice">"voice"</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opussignal-voice">voice</a><span>, in § 5.3</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-voip">"voip"</a><span>, in § 5.4</span>
+   </li>
+<li>
+<a href="#dom-opusapplication-voip">voip</a><span>, in § 5.4</span>
+  </li>
+</ul>
+  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere">
+<span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a>
+</h3>
+  <ul class="index">
+   <li>
+    <a data-link-type="biblio">[WEBCODECS]</a> defines the following terms:
+    <ul>
+     <li>
+<span class="dfn-paneled" id="c30731e3">"key"</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="94a945f4">AudioEncoderConfig</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="3e400611">EncodedAudioChunk</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="7405dd40">[[internal data]]</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="65dc4f12">[[type]]</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="73685fdd">description</span>
+    </li>
+</ul>
+   </li>
+<li>
+    <a data-link-type="biblio">[WEBIDL]</a> defines the following terms:
+    <ul>
+     <li>
+<span class="dfn-paneled" id="c01cbda0">EnforceRange</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="5372cca8">boolean</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="e97a9688">unsigned long</span>
+     </li>
+<li>
+<span class="dfn-paneled" id="f14b47b8">unsigned long long</span>
+    </li>
+</ul>
+  </li>
+</ul>
+  <h2 class="no-num no-ref heading settled" id="references">
+<span class="content">References</span><a class="self-link" href="#references"></a>
+</h2>
+  <h3 class="no-num no-ref heading settled" id="normative">
+<span class="content">Normative References</span><a class="self-link" href="#normative"></a>
+</h3>
+  <dl>
+   <dt id="biblio-rfc2119">[RFC2119]
+   </dt>
+<dd>S. Bradner. <a href="datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
+   </dd>
+<dt id="biblio-webcodecs">[WEBCODECS]
+   </dt>
+<dd>Paul Adenot; Bernard Aboba; Eugene Zemtsov. <a href="www.w3.org/TR/webcodecs/"><cite>WebCodecs</cite></a>. 6 February 2024. WD. URL: <a href="www.w3.org/TR/webcodecs/">https://www.w3.org/TR/webcodecs/</a>
+   </dd>
+<dt id="biblio-webidl">[WEBIDL]
+   </dt>
+<dd>Edgar Chen; Timothy Gu. <a href="webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
+  </dd>
+</dl>
+  <h3 class="no-num no-ref heading settled" id="informative">
+<span class="content">Informative References</span><a class="self-link" href="#informative"></a>
+</h3>
+  <dl>
+   <dt id="biblio-opus">[OPUS]
+   </dt>
+<dd>
+<a href="datatracker.ietf.org/doc/html/rfc6716"><cite>RFC 6716: Definition of the Opus Audio Codec</cite></a>. September 2012. URL: <a href="datatracker.ietf.org/doc/html/rfc6716">https://datatracker.ietf.org/doc/html/rfc6716</a>
+   </dd>
+<dt id="biblio-opus-in-ogg">[OPUS-IN-OGG]
+   </dt>
+<dd>
+<a href="datatracker.ietf.org/doc/html/rfc7845"><cite>RFC 7845: Ogg Encapsulation for the Opus Audio Codec</cite></a>. April 2016. URL: <a href="datatracker.ietf.org/doc/html/rfc7845">https://datatracker.ietf.org/doc/html/rfc7845</a>
+   </dd>
+<dt id="biblio-rfc6716">[RFC6716]
+   </dt>
+<dd>JM. Valin; K. Vos; T. Terriberry. <a href="www.rfc-editor.org/rfc/rfc6716"><cite>Definition of the Opus Audio Codec</cite></a>. September 2012. Proposed Standard. URL: <a href="www.rfc-editor.org/rfc/rfc6716">https://www.rfc-editor.org/rfc/rfc6716</a>
+   </dd>
+<dt id="biblio-webcodecs-codec-registry">[WEBCODECS-CODEC-REGISTRY]
+   </dt>
+<dd>Chris Cunningham; Paul Adenot; Bernard Aboba. <a href="www.w3.org/TR/webcodecs-codec-registry/"><cite>WebCodecs Codec Registry</cite></a>. 10 October 2022. NOTE. URL: <a href="www.w3.org/TR/webcodecs-codec-registry/">https://www.w3.org/TR/webcodecs-codec-registry/</a>
+  </dd>
+</dl>
+  <h2 class="no-num no-ref heading settled" id="idl-index">
+<span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a>
+</h2>
+<pre class="idl highlight def"><c- b>partial</c-> <c- b>dictionary</c-> <a class="idl-code" data-link-type="dictionary" href="www.w3.org/TR/webcodecs/#dictdef-audioencoderconfig"><c- g>AudioEncoderConfig</c-></a> {
+  <a data-link-type="idl-name" href="#dictdef-opusencoderconfig"><c- n>OpusEncoderConfig</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="OpusEncoderConfig " href="#dom-audioencoderconfig-opus"><c- g>opus</c-></a>;
+};
+
+
+<c- b>dictionary</c-> <a href="#dictdef-opusencoderconfig"><code><c- g>OpusEncoderConfig</c-></code></a> {
+  <a data-link-type="idl-name" href="#enumdef-opusbitstreamformat"><c- n>OpusBitstreamFormat</c-></a> <a class="idl-code" data-default="&quot;opus&quot;" data-link-type="dict-member" data-type="OpusBitstreamFormat " href="#dom-opusencoderconfig-format"><c- g>format</c-></a> = "opus";
+  <a data-link-type="idl-name" href="#enumdef-opussignal"><c- n>OpusSignal</c-></a> <a class="idl-code" data-default="&quot;auto&quot;" data-link-type="dict-member" data-type="OpusSignal " href="#dom-opusencoderconfig-signal"><c- g>signal</c-></a> = "auto";
+  <a data-link-type="idl-name" href="#enumdef-opusapplication"><c- n>OpusApplication</c-></a> <a class="idl-code" data-default="&quot;audio&quot;" data-link-type="dict-member" data-type="OpusApplication " href="#dom-opusencoderconfig-application"><c- g>application</c-></a> = "audio";
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long-long"><c- b>unsigned</c-> <c- b>long</c-> <c- b>long</c-></a> <a class="idl-code" data-default="20000" data-link-type="dict-member" data-type="unsigned long long " href="#dom-opusencoderconfig-frameduration"><c- g>frameDuration</c-></a> = 20000;
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-link-type="dict-member" data-type="unsigned long " href="#dom-opusencoderconfig-complexity"><c- g>complexity</c-></a>;
+  [<a class="idl-code" data-link-type="extended-attribute" href="webidl.spec.whatwg.org/#EnforceRange"><c- g>EnforceRange</c-></a>] <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-unsigned-long"><c- b>unsigned</c-> <c- b>long</c-></a> <a class="idl-code" data-default="0" data-link-type="dict-member" data-type="unsigned long " href="#dom-opusencoderconfig-packetlossperc"><c- g>packetlossperc</c-></a> = 0;
+  <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-opusencoderconfig-useinbandfec"><c- g>useinbandfec</c-></a> = <c- b>false</c->;
+  <a class="idl-code" data-link-type="interface" href="webidl.spec.whatwg.org/#idl-boolean"><c- b>boolean</c-></a> <a class="idl-code" data-default="false" data-link-type="dict-member" data-type="boolean " href="#dom-opusencoderconfig-usedtx"><c- g>usedtx</c-></a> = <c- b>false</c->;
+};
+
+
+<c- b>enum</c-> <a href="#enumdef-opusbitstreamformat"><code><c- g>OpusBitstreamFormat</c-></code></a> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusbitstreamformat-opus"><c- s>"opus"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusbitstreamformat-ogg"><c- s>"ogg"</c-></a>,
+};
+
+
+<c- b>enum</c-> <a href="#enumdef-opussignal"><code><c- g>OpusSignal</c-></code></a> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-auto"><c- s>"auto"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-music"><c- s>"music"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opussignal-voice"><c- s>"voice"</c-></a>,
+};
+
+
+<c- b>enum</c-> <a href="#enumdef-opusapplication"><code><c- g>OpusApplication</c-></code></a> {
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-voip"><c- s>"voip"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-audio"><c- s>"audio"</c-></a>,
+  <a class="idl-code" data-link-type="enum-value" href="#dom-opusapplication-lowdelay"><c- s>"lowdelay"</c-></a>,
+};
+
+
+</pre>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+    const dfnsJson = window.dfnsJson || {};
+
+    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
+        return mk.aside({
+            class: "dfn-panel",
+            id: `infopanel-for-${dfnID}`,
+            "data-for": dfnID,
+            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+            },
+            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+                `Info about the '${dfnText}' ${external?"external":""} reference.`),
+            mk.a({href:url}, url),
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({
+                                    href: `#${ref.id}`
+                                    },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    function genAllDfnPanels() {
+        for(const panelData of Object.values(window.dfnpanelData)) {
+            const dfnID = panelData.dfnID;
+            const dfn = document.getElementById(dfnID);
+            if(!dfn) {
+                console.log(`Can't find dfn#${dfnID}.`, panelData);
+            } else {
+                const panel = genDfnPanel(panelData);
+                append(document.body, panel);
+                insertDfnPopupAction(dfn, panel)
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+        genAllDfnPanels();
+
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Add popup behavior to all dfns to show the corresponding dfn-panel.
+        var dfns = queryAll('.dfn-paneled');
+        for(let dfn of dfns) { ; }
+
+        document.body.addEventListener("click", (e) => {
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders If not handled already, just hide all dfn panels.
+            hideAllDfnPanels();
+        });
+    })
+
+
+    function hideAllDfnPanels() {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
+    }
+
+    function showDfnPanel(dfnPanel, dfn) {
+        hideAllDfnPanels(); https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Only display one at this time.
+        dfn.setAttribute("aria-expanded", "true");
+        dfnPanel.classList.add("on");
+        dfnPanel.style.left = "5px";
+        dfnPanel.style.top = "0px";
+        const panelRect = dfnPanel.getBoundingClientRect();
+        const panelWidth = panelRect.right - panelRect.left;
+        if (panelRect.right > document.body.scrollWidth) {
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Panel's overflowing the screen.
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Just drop it below the dfn and flip it rightward instead.
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders This still wont' fix things if the screen is *really* wide,
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders but fixing that's a lot harder without 'anchor()'.
+            dfnPanel.style.top = "1.5em";
+            dfnPanel.style.left = "auto";
+            dfnPanel.style.right = "0px";
+        }
+    }
+
+    function pinDfnPanel(dfnPanel) {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Switch it to "activated" state, which pins it.
+        dfnPanel.classList.add("activated");
+        dfnPanel.style.left = null;
+        dfnPanel.style.top = null;
+    }
+
+    function hideDfnPanel(dfnPanel, dfn) {
+        if(!dfn) {
+            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
+        }
+        dfn.setAttribute("aria-expanded", "false")
+        dfnPanel.classList.remove("on");
+        dfnPanel.classList.remove("activated");
+    }
+
+    function toggleDfnPanel(dfnPanel, dfn) {
+        if(dfnPanel.classList.contains("on")) {
+            hideDfnPanel(dfnPanel, dfn);
+        } else {
+            showDfnPanel(dfnPanel, dfn);
+        }
+    }
+
+    function insertDfnPopupAction(dfn, dfnPanel) {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Find dfn panel
+        const panelWrapper = document.createElement('span');
+        panelWrapper.appendChild(dfnPanel);
+        panelWrapper.style.position = "relative";
+        panelWrapper.style.height = "0px";
+        dfn.insertAdjacentElement("afterend", panelWrapper);
+        dfn.setAttribute('role', 'button');
+        dfn.setAttribute('aria-expanded', 'false')
+        dfn.tabIndex = 0;
+        dfn.classList.add('has-dfn-panel');
+        dfn.addEventListener('click', (event) => {
+            showDfnPanel(dfnPanel, dfn);
+            event.stopPropagation();
+        });
+        dfn.addEventListener('keypress', (event) => {
+            const kc = event.keyCode;
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders 32->Space, 13->Enter
+            if(kc == 32 || kc == 13) {
+                toggleDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+
+        dfnPanel.addEventListener('click', (event) => {
+            if (event.target.nodeName == 'A') {
+                pinDfnPanel(dfnPanel);
+            }
+            event.stopPropagation();
+        });
+
+        dfnPanel.addEventListener('keydown', (event) => {
+            if(event.keyCode == 27) { https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Escape key
+                hideDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        })
+    }
+}</script>
+<script>/* Boilerplate: script-dfn-panel */
+"use strict";
+{
+    const dfnsJson = window.dfnsJson || {};
+
+    function genDfnPanel({dfnID, url, dfnText, refSections, external}) {
+        return mk.aside({
+            class: "dfn-panel",
+            id: `infopanel-for-${dfnID}`,
+            "data-for": dfnID,
+            "aria-labelled-by":`infopaneltitle-for-${dfnID}`,
+            },
+            mk.span({id:`infopaneltitle-for-${dfnID}`, style:"display:none"},
+                `Info about the '${dfnText}' ${external?"external":""} reference.`),
+            mk.a({href:url}, url),
+            mk.b({}, "Referenced in:"),
+            mk.ul({},
+                ...refSections.map(section=>
+                    mk.li({},
+                        ...section.refs.map((ref, refI)=>
+                            [
+                                mk.a({
+                                    href: `#${ref.id}`
+                                    },
+                                    (refI == 0) ? section.title : `(${refI + 1})`
+                                ),
+                                " ",
+                            ]
+                        ),
+                    ),
+                ),
+            ),
+        );
+    }
+
+    function genAllDfnPanels() {
+        for(const panelData of Object.values(window.dfnpanelData)) {
+            const dfnID = panelData.dfnID;
+            const dfn = document.getElementById(dfnID);
+            if(!dfn) {
+                console.log(`Can't find dfn#${dfnID}.`, panelData);
+            } else {
+                const panel = genDfnPanel(panelData);
+                append(document.body, panel);
+                insertDfnPopupAction(dfn, panel)
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", ()=>{
+        genAllDfnPanels();
+
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Add popup behavior to all dfns to show the corresponding dfn-panel.
+        var dfns = queryAll('.dfn-paneled');
+        for(let dfn of dfns) { ; }
+
+        document.body.addEventListener("click", (e) => {
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders If not handled already, just hide all dfn panels.
+            hideAllDfnPanels();
+        });
+    })
+
+
+    function hideAllDfnPanels() {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Turn off any currently "on" or "activated" panels.
+        queryAll(".dfn-panel.on, .dfn-panel.activated").forEach(el=>hideDfnPanel(el));
+    }
+
+    function showDfnPanel(dfnPanel, dfn) {
+        hideAllDfnPanels(); https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Only display one at this time.
+        dfn.setAttribute("aria-expanded", "true");
+        dfnPanel.classList.add("on");
+        dfnPanel.style.left = "5px";
+        dfnPanel.style.top = "0px";
+        const panelRect = dfnPanel.getBoundingClientRect();
+        const panelWidth = panelRect.right - panelRect.left;
+        if (panelRect.right > document.body.scrollWidth) {
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Panel's overflowing the screen.
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Just drop it below the dfn and flip it rightward instead.
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders This still wont' fix things if the screen is *really* wide,
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders but fixing that's a lot harder without 'anchor()'.
+            dfnPanel.style.top = "1.5em";
+            dfnPanel.style.left = "auto";
+            dfnPanel.style.right = "0px";
+        }
+    }
+
+    function pinDfnPanel(dfnPanel) {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Switch it to "activated" state, which pins it.
+        dfnPanel.classList.add("activated");
+        dfnPanel.style.left = null;
+        dfnPanel.style.top = null;
+    }
+
+    function hideDfnPanel(dfnPanel, dfn) {
+        if(!dfn) {
+            dfn = document.getElementById(dfnPanel.getAttribute("data-for"));
+        }
+        dfn.setAttribute("aria-expanded", "false")
+        dfnPanel.classList.remove("on");
+        dfnPanel.classList.remove("activated");
+    }
+
+    function toggleDfnPanel(dfnPanel, dfn) {
+        if(dfnPanel.classList.contains("on")) {
+            hideDfnPanel(dfnPanel, dfn);
+        } else {
+            showDfnPanel(dfnPanel, dfn);
+        }
+    }
+
+    function insertDfnPopupAction(dfn, dfnPanel) {
+        https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Find dfn panel
+        const panelWrapper = document.createElement('span');
+        panelWrapper.appendChild(dfnPanel);
+        panelWrapper.style.position = "relative";
+        panelWrapper.style.height = "0px";
+        dfn.insertAdjacentElement("afterend", panelWrapper);
+        dfn.setAttribute('role', 'button');
+        dfn.setAttribute('aria-expanded', 'false')
+        dfn.tabIndex = 0;
+        dfn.classList.add('has-dfn-panel');
+        dfn.addEventListener('click', (event) => {
+            showDfnPanel(dfnPanel, dfn);
+            event.stopPropagation();
+        });
+        dfn.addEventListener('keypress', (event) => {
+            const kc = event.keyCode;
+            https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders 32->Space, 13->Enter
+            if(kc == 32 || kc == 13) {
+                toggleDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        });
+
+        dfnPanel.addEventListener('click', (event) => {
+            if (event.target.nodeName == 'A') {
+                pinDfnPanel(dfnPanel);
+            }
+            event.stopPropagation();
+        });
+
+        dfnPanel.addEventListener('keydown', (event) => {
+            if(event.keyCode == 27) { https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonders Escape key
+                hideDfnPanel(dfnPanel, dfn);
+                event.stopPropagation();
+                event.preventDefault();
+            }
+        })
+    }
+}</script>
+<script>/* Boilerplate: script-dfn-panel-json */
+window.dfnpanelData = {};
+window.dfnpanelData['c30731e3'] = {"dfnID": "c30731e3", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#dom-encodedaudiochunktype-key", "dfnText": "\"key\"", "refSections": [{"refs": [{"id": "ref-for-dom-encodedaudiochunktype-key"}], "title": "4. EncodedAudioChunk type"}], "external": true};
+window.dfnpanelData['94a945f4'] = {"dfnID": "94a945f4", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#dictdef-audioencoderconfig", "dfnText": "AudioEncoderConfig", "refSections": [{"refs": [{"id": "ref-for-dictdef-audioencoderconfig"}], "title": "Unnumbered Section"}, {"refs": [{"id": "ref-for-dictdef-audioencoderconfig①"}], "title": "5. AudioEncoderConfig extensions"}], "external": true};
+window.dfnpanelData['3e400611'] = {"dfnID": "3e400611", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#encodedaudiochunk", "dfnText": "EncodedAudioChunk", "refSections": [{"refs": [{"id": "ref-for-encodedaudiochunk"}, {"id": "ref-for-encodedaudiochunk①"}], "title": "Unnumbered Section"}, {"refs": [{"id": "ref-for-encodedaudiochunk②"}, {"id": "ref-for-encodedaudiochunk③"}, {"id": "ref-for-encodedaudiochunk④"}], "title": "2. EncodedAudioChunk data"}, {"refs": [{"id": "ref-for-encodedaudiochunk⑤"}], "title": "4. EncodedAudioChunk type"}, {"refs": [{"id": "ref-for-encodedaudiochunk⑥"}, {"id": "ref-for-encodedaudiochunk⑦"}], "title": "5.1. OpusEncoderConfig"}], "external": true};
+window.dfnpanelData['7405dd40'] = {"dfnID": "7405dd40", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#dom-encodedaudiochunk-internal-data-slot", "dfnText": "[[internal data]]", "refSections": [{"refs": [{"id": "ref-for-dom-encodedaudiochunk-internal-data-slot"}], "title": "Unnumbered Section"}], "external": true};
+window.dfnpanelData['65dc4f12'] = {"dfnID": "65dc4f12", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#dom-encodedaudiochunk-type-slot", "dfnText": "[[type]]", "refSections": [{"refs": [{"id": "ref-for-dom-encodedaudiochunk-type-slot"}], "title": "Unnumbered Section"}, {"refs": [{"id": "ref-for-dom-encodedaudiochunk-type-slot①"}], "title": "4. EncodedAudioChunk type"}], "external": true};
+window.dfnpanelData['73685fdd'] = {"dfnID": "73685fdd", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/webcodecs/#dom-audiodecoderconfig-description", "dfnText": "description", "refSections": [{"refs": [{"id": "ref-for-dom-audiodecoderconfig-description"}], "title": "Unnumbered Section"}, {"refs": [{"id": "ref-for-dom-audiodecoderconfig-description①"}, {"id": "ref-for-dom-audiodecoderconfig-description②"}, {"id": "ref-for-dom-audiodecoderconfig-description③"}], "title": "3. AudioDecoderConfig description"}, {"refs": [{"id": "ref-for-dom-audiodecoderconfig-description④"}], "title": "5.2. OpusBitstreamFormat"}], "external": true};
+window.dfnpanelData['c01cbda0'] = {"dfnID": "c01cbda0", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswebidl.spec.whatwg.org/#EnforceRange", "dfnText": "EnforceRange", "refSections": [{"refs": [{"id": "ref-for-EnforceRange"}, {"id": "ref-for-EnforceRange①"}, {"id": "ref-for-EnforceRange②"}], "title": "5.1. OpusEncoderConfig"}], "external": true};
+window.dfnpanelData['5372cca8'] = {"dfnID": "5372cca8", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswebidl.spec.whatwg.org/#idl-boolean", "dfnText": "boolean", "refSections": [{"refs": [{"id": "ref-for-idl-boolean"}, {"id": "ref-for-idl-boolean①"}, {"id": "ref-for-idl-boolean②"}, {"id": "ref-for-idl-boolean③"}], "title": "5.1. OpusEncoderConfig"}], "external": true};
+window.dfnpanelData['e97a9688'] = {"dfnID": "e97a9688", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswebidl.spec.whatwg.org/#idl-unsigned-long", "dfnText": "unsigned long", "refSections": [{"refs": [{"id": "ref-for-idl-unsigned-long"}, {"id": "ref-for-idl-unsigned-long①"}, {"id": "ref-for-idl-unsigned-long②"}, {"id": "ref-for-idl-unsigned-long③"}], "title": "5.1. OpusEncoderConfig"}], "external": true};
+window.dfnpanelData['f14b47b8'] = {"dfnID": "f14b47b8", "url": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswebidl.spec.whatwg.org/#idl-unsigned-long-long", "dfnText": "unsigned long long", "refSections": [{"refs": [{"id": "ref-for-idl-unsigned-long-long"}, {"id": "ref-for-idl-unsigned-long-long①"}], "title": "5.1. OpusEncoderConfig"}], "external": true};
+window.dfnpanelData['dom-audioencoderconfig-opus'] = {"dfnID": "dom-audioencoderconfig-opus", "url": "#dom-audioencoderconfig-opus", "dfnText": "opus", "refSections": [{"refs": [{"id": "ref-for-dom-audioencoderconfig-opus"}], "title": "5. AudioEncoderConfig extensions"}], "external": false};
+window.dfnpanelData['dictdef-opusencoderconfig'] = {"dfnID": "dictdef-opusencoderconfig", "url": "#dictdef-opusencoderconfig", "dfnText": "OpusEncoderConfig", "refSections": [{"refs": [{"id": "ref-for-dictdef-opusencoderconfig"}, {"id": "ref-for-dictdef-opusencoderconfig①"}], "title": "5. AudioEncoderConfig extensions"}, {"refs": [{"id": "ref-for-dictdef-opusencoderconfig②"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-format'] = {"dfnID": "dom-opusencoderconfig-format", "url": "#dom-opusencoderconfig-format", "dfnText": "format", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-format"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-signal'] = {"dfnID": "dom-opusencoderconfig-signal", "url": "#dom-opusencoderconfig-signal", "dfnText": "signal", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-signal"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-application'] = {"dfnID": "dom-opusencoderconfig-application", "url": "#dom-opusencoderconfig-application", "dfnText": "application", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-application"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-frameduration'] = {"dfnID": "dom-opusencoderconfig-frameduration", "url": "#dom-opusencoderconfig-frameduration", "dfnText": "frameDuration", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-frameduration"}, {"id": "ref-for-dom-opusencoderconfig-frameduration①"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-complexity'] = {"dfnID": "dom-opusencoderconfig-complexity", "url": "#dom-opusencoderconfig-complexity", "dfnText": "complexity", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-complexity"}, {"id": "ref-for-dom-opusencoderconfig-complexity①"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-packetlossperc'] = {"dfnID": "dom-opusencoderconfig-packetlossperc", "url": "#dom-opusencoderconfig-packetlossperc", "dfnText": "packetlossperc", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-packetlossperc"}, {"id": "ref-for-dom-opusencoderconfig-packetlossperc①"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-useinbandfec'] = {"dfnID": "dom-opusencoderconfig-useinbandfec", "url": "#dom-opusencoderconfig-useinbandfec", "dfnText": "useinbandfec", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-useinbandfec"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['dom-opusencoderconfig-usedtx'] = {"dfnID": "dom-opusencoderconfig-usedtx", "url": "#dom-opusencoderconfig-usedtx", "dfnText": "usedtx", "refSections": [{"refs": [{"id": "ref-for-dom-opusencoderconfig-usedtx"}], "title": "5.1. OpusEncoderConfig"}], "external": false};
+window.dfnpanelData['enumdef-opusbitstreamformat'] = {"dfnID": "enumdef-opusbitstreamformat", "url": "#enumdef-opusbitstreamformat", "dfnText": "OpusBitstreamFormat", "refSections": [{"refs": [{"id": "ref-for-enumdef-opusbitstreamformat"}, {"id": "ref-for-enumdef-opusbitstreamformat①"}, {"id": "ref-for-enumdef-opusbitstreamformat②"}], "title": "5.1. OpusEncoderConfig"}, {"refs": [{"id": "ref-for-enumdef-opusbitstreamformat③"}], "title": "5.2. OpusBitstreamFormat"}], "external": false};
+window.dfnpanelData['dom-opusbitstreamformat-opus'] = {"dfnID": "dom-opusbitstreamformat-opus", "url": "#dom-opusbitstreamformat-opus", "dfnText": "opus", "refSections": [{"refs": [{"id": "ref-for-dom-opusbitstreamformat-opus"}], "title": "2. EncodedAudioChunk data"}, {"refs": [{"id": "ref-for-dom-opusbitstreamformat-opus①"}], "title": "3. AudioDecoderConfig description"}, {"refs": [{"id": "ref-for-dom-opusbitstreamformat-opus②"}], "title": "5.2. OpusBitstreamFormat"}], "external": false};
+window.dfnpanelData['dom-opusbitstreamformat-ogg'] = {"dfnID": "dom-opusbitstreamformat-ogg", "url": "#dom-opusbitstreamformat-ogg", "dfnText": "ogg", "refSections": [{"refs": [{"id": "ref-for-dom-opusbitstreamformat-ogg"}], "title": "2. EncodedAudioChunk data"}, {"refs": [{"id": "ref-for-dom-opusbitstreamformat-ogg①"}], "title": "3. AudioDecoderConfig description"}, {"refs": [{"id": "ref-for-dom-opusbitstreamformat-ogg②"}], "title": "5.2. OpusBitstreamFormat"}], "external": false};
+window.dfnpanelData['enumdef-opussignal'] = {"dfnID": "enumdef-opussignal", "url": "#enumdef-opussignal", "dfnText": "OpusSignal", "refSections": [{"refs": [{"id": "ref-for-enumdef-opussignal"}, {"id": "ref-for-enumdef-opussignal①"}, {"id": "ref-for-enumdef-opussignal②"}], "title": "5.1. OpusEncoderConfig"}, {"refs": [{"id": "ref-for-enumdef-opussignal③"}], "title": "5.3. OpusSignal"}], "external": false};
+window.dfnpanelData['dom-opussignal-auto'] = {"dfnID": "dom-opussignal-auto", "url": "#dom-opussignal-auto", "dfnText": "auto", "refSections": [{"refs": [{"id": "ref-for-dom-opussignal-auto"}], "title": "5.3. OpusSignal"}], "external": false};
+window.dfnpanelData['dom-opussignal-music'] = {"dfnID": "dom-opussignal-music", "url": "#dom-opussignal-music", "dfnText": "music", "refSections": [{"refs": [{"id": "ref-for-dom-opussignal-music"}], "title": "5.3. OpusSignal"}], "external": false};
+window.dfnpanelData['dom-opussignal-voice'] = {"dfnID": "dom-opussignal-voice", "url": "#dom-opussignal-voice", "dfnText": "voice", "refSections": [{"refs": [{"id": "ref-for-dom-opussignal-voice"}], "title": "5.3. OpusSignal"}], "external": false};
+window.dfnpanelData['enumdef-opusapplication'] = {"dfnID": "enumdef-opusapplication", "url": "#enumdef-opusapplication", "dfnText": "OpusApplication", "refSections": [{"refs": [{"id": "ref-for-enumdef-opusapplication"}, {"id": "ref-for-enumdef-opusapplication①"}, {"id": "ref-for-enumdef-opusapplication②"}], "title": "5.1. OpusEncoderConfig"}, {"refs": [{"id": "ref-for-enumdef-opusapplication③"}], "title": "5.4. OpusApplication"}], "external": false};
+window.dfnpanelData['dom-opusapplication-voip'] = {"dfnID": "dom-opusapplication-voip", "url": "#dom-opusapplication-voip", "dfnText": "voip", "refSections": [{"refs": [{"id": "ref-for-dom-opusapplication-voip"}], "title": "5.4. OpusApplication"}], "external": false};
+window.dfnpanelData['dom-opusapplication-audio'] = {"dfnID": "dom-opusapplication-audio", "url": "#dom-opusapplication-audio", "dfnText": "audio", "refSections": [{"refs": [{"id": "ref-for-dom-opusapplication-audio"}], "title": "5.4. OpusApplication"}], "external": false};
+window.dfnpanelData['dom-opusapplication-lowdelay'] = {"dfnID": "dom-opusapplication-lowdelay", "url": "#dom-opusapplication-lowdelay", "dfnText": "lowdelay", "refSections": [{"refs": [{"id": "ref-for-dom-opusapplication-lowdelay"}], "title": "5.4. OpusApplication"}], "external": false};</script>
+<script>/* Boilerplate: script-dom-helper */
+function query(sel) { return document.querySelector(sel); }
+
+function queryAll(sel) { return [...document.querySelectorAll(sel)]; }
+
+function iter(obj) {
+	if(!obj) return [];
+	var it = obj[Symbol.iterator];
+	if(it) return it;
+	return Object.entries(obj);
+}
+
+function mk(tagname, attrs, ...children) {
+	const el = document.createElement(tagname);
+	for(const [k,v] of iter(attrs)) {
+		if(k.slice(0,3) == "_on") {
+			const eventName = k.slice(3);
+			el.addEventListener(eventName, v);
+		} else if(k[0] == "_") {
+			// property, not attribute
+			el[k.slice(1)] = v;
+		} else {
+			if(v === false || v == null) {
+        continue;
+      } else if(v === true) {
+        el.setAttribute(k, "");
+        continue;
+      } else {
+  			el.setAttribute(k, v);
+      }
+		}
+	}
+	append(el, children);
+	return el;
+}
+
+/* Create shortcuts for every known HTML element */
+[
+  "a",
+  "abbr",
+  "acronym",
+  "address",
+  "applet",
+  "area",
+  "article",
+  "aside",
+  "audio",
+  "b",
+  "base",
+  "basefont",
+  "bdo",
+  "big",
+  "blockquote",
+  "body",
+  "br",
+  "button",
+  "canvas",
+  "caption",
+  "center",
+  "cite",
+  "code",
+  "col",
+  "colgroup",
+  "datalist",
+  "dd",
+  "del",
+  "details",
+  "dfn",
+  "dialog",
+  "div",
+  "dl",
+  "dt",
+  "em",
+  "embed",
+  "fieldset",
+  "figcaption",
+  "figure",
+  "font",
+  "footer",
+  "form",
+  "frame",
+  "frameset",
+  "head",
+  "header",
+  "h1",
+  "h2",
+  "h3",
+  "h4",
+  "h5",
+  "h6",
+  "hr",
+  "html",
+  "i",
+  "iframe",
+  "img",
+  "input",
+  "ins",
+  "kbd",
+  "label",
+  "legend",
+  "li",
+  "link",
+  "main",
+  "map",
+  "mark",
+  "meta",
+  "meter",
+  "nav",
+  "nobr",
+  "noscript",
+  "object",
+  "ol",
+  "optgroup",
+  "option",
+  "output",
+  "p",
+  "param",
+  "pre",
+  "progress",
+  "q",
+  "s",
+  "samp",
+  "script",
+  "section",
+  "select",
+  "small",
+  "source",
+  "span",
+  "strike",
+  "strong",
+  "style",
+  "sub",
+  "summary",
+  "sup",
+  "table",
+  "tbody",
+  "td",
+  "template",
+  "textarea",
+  "tfoot",
+  "th",
+  "thead",
+  "time",
+  "title",
+  "tr",
+  "u",
+  "ul",
+  "var",
+  "video",
+  "wbr",
+  "xmp",
+].forEach(tagname=>{
+	mk[tagname] = (...args) => mk(tagname, ...args);
+});
+
+function* nodesFromChildList(children) {
+	for(const child of children.flat(Infinity)) {
+		if(child instanceof Node) {
+			yield child;
+		} else {
+			yield new Text(child);
+		}
+	}
+}
+function append(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		if(el instanceof Node) el.appendChild(child);
+		else el.push(child);
+	}
+	return el;
+}
+
+function insertAfter(el, ...children) {
+	for(const child of nodesFromChildList(children)) {
+		el.parentNode.insertBefore(child, el.nextSibling);
+	}
+	return el;
+}
+
+function clearContents(el) {
+	el.innerHTML = "";
+	return el;
+}
+
+function parseHTML(markup) {
+	if(markup.toLowerCase().trim().indexOf('<!doctype') === 0) {
+		const doc = document.implementation.createHTMLDocument("");
+		doc.documentElement.innerHTML = markup;
+		return doc;
+	} else {
+		const el = mk.template({});
+		el.innerHTML = markup;
+		return el.content;
+	}
+}
+</script>
+</body>
+</html>
