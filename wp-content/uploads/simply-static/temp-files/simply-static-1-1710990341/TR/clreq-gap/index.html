@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="generator" content="ReSpec 34.4.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<style>dfn{cursor:pointer}
+.dfn-panel{position:absolute;z-index:35;min-width:300px;max-width:500px;padding:.5em .75em;margin-top:.6em;font-family:"Helvetica Neue",sans-serif;font-size:small;background:#fff;color:#000;box-shadow:0 1em 3em -.4em rgba(0,0,0,.3),0 0 1px 1px rgba(0,0,0,.05);border-radius:2px}
+.dfn-panel:not(.docked)>.caret{position:absolute;top:-9px}
+.dfn-panel:not(.docked)>.caret::after,.dfn-panel:not(.docked)>.caret::before{content:"";position:absolute;border:10px solid transparent;border-top:0;border-bottom:10px solid #fff;top:0}
+.dfn-panel:not(.docked)>.caret::before{border-bottom:9px solid #a2a9b1}
+.dfn-panel *{margin:0}
+.dfn-panel b{display:block;color:#000;margin-top:.25em}
+.dfn-panel ul a[href]{color:#333}
+.dfn-panel>div{display:flex}
+.dfn-panel a.self-link{font-weight:700;margin-right:auto}
+.dfn-panel .marker{padding:.1em;margin-left:.5em;border-radius:.2em;text-align:center;white-space:nowrap;font-size:90%;color:#040b1c}
+.dfn-panel .marker.dfn-exported{background:#d1edfd;box-shadow:0 0 0 .125em #1ca5f940}
+.dfn-panel .marker.idl-block{background:#8ccbf2;box-shadow:0 0 0 .125em #0670b161}
+.dfn-panel a:not(:hover){text-decoration:none!important;border-bottom:none!important}
+.dfn-panel a[href]:hover{border-bottom-width:1px}
+.dfn-panel ul{padding:0}
+.dfn-panel li{margin-left:1em}
+.dfn-panel.docked{position:fixed;left:.5em;top:unset;bottom:2em;margin:0 auto;max-width:calc(100vw - .75em * 2 - .5em - .2em * 2);max-height:30vh;overflow:auto}</style>
+
+
+
+<title>Chinese Layout Gap Analysis</title>
+
+
+
+
+
+  
+
+<style>body { font-size: 15px; }
+h2 { margin-left: 0; margin-top: 8em; }
+h3 { margin-top: 3em; }
+h3 a { color: #006; }
+h3 a:link { color: #006; }
+h3 a:active { color: #006; }
+h3 a:visited { color: #006; }
+h4 { margin-left: 0; font-size:1.4rem !important; }
+h5 { margin-top: 1rem !important; border-block-end:1px solid #ccc !important; width:100% !important; font-style:normal !important; }
+
+
+.status_prompt {
+    font-style: italic;
+    color: #aaa;
+    font-size: 90%;
+    margin-bottom: 4em;
+    }
+
+.issueLink { font-weight:bold; padding:.5rem 1rem; border-radius:.2rem; }
+
+.ok { border-left: 5em solid green; padding-left: 2em; }
+.ok:after { content: 'OK'; color: gray; font-weight: normal; font-size: 120%; }
+.okIssue { background-color: green; color:antiquewhite;  }
+.issueLink.okIssue:visited, .issueLink.basicIssue:link { color: antiquewhite; }
+
+.na { border-left: 5em solid green; padding-left: 2em; }
+.na:after { content: 'Not applicable'; color: gray; font-weight: normal; font-size: 120%; }
+.naIssue { background-color: green; color:antiquewhite; }
+.issueLink.naIssue:visited, .issueLink.basicIssue:link { color: antiquewhite; }
+
+.advanced { border-left: 5em solid #0f0; padding-left: 2em; }
+.advanced { border-left: 5em solid moccasin; padding-left: 2em; }
+.advanced:after { content: 'Needs work for advanced level support.'; color: gray; font-weight: normal; font-size: 120%; }
+.advancedIssue { background-color: moccasin; color:chocolate; }
+.issueLink.advancedIssue:visited, .issueLink.basicIssue:link { color: chocolate; }
+
+.basic { border-left: 5em solid orange; padding-left: 2em; }
+.basic:after { content: 'Needs work for basic styling support.'; color: gray; font-weight: normal; font-size: 120%; }
+.basicIssue { background-color: orange; color:antiquewhite; }
+.issueLink.basicIssue:visited, .issueLink.basicIssue:link { color: antiquewhite; }
+
+.broken { border-left: 5em solid red; padding-left: 2em; }
+.broken:after { content: 'Basic display issues that prevent effective use on the Web for this language.'; color: gray; font-weight: normal; font-size: 120%; }
+.brokenIssue { background-color: red; color:antiquewhite; }
+.issueLink.brokenIssue:visited, .issueLink.basicIssue:link { color: antiquewhite; }
+
+
+.tbd { border-left: 5em solid #eee; padding-left: 2em; }
+.tbd:after { content: 'Needs research.'; color: gray; font-weight: normal; font-size: 120%; }
+
+.pass { background-color:greenyellow; padding: 0 4px; border-radius: 2px;  }
+.fail { padding: 0 4px; color: white; background-color: crimson; border-radius: 2px; }
+.partial { background-color: orange;  padding: 0 4px; color: white;  }
+
+.reviewme:after {
+	content: "Needs review";
+	margin-left: 2em;
+	background-color: crimson;
+	color: white;
+	font-size: 80%;
+	padding: .2em .4em;
+	border-radius: .2em;
+	}
+
+.subhead {
+	display: block;
+	font-weight: bold;
+	}
+
+.ghLink {
+	margin-block-start: 0;
+	float: right;
+	font-size: 90%;
+	}</style>
+
+<style id="respec-mainstyle">@keyframes pop{
+0%{transform:scale(1,1)}
+25%{transform:scale(1.25,1.25);opacity:.75}
+100%{transform:scale(1,1)}
+}
+:is(h1,h2,h3,h4,h5,h6,a) abbr{border:none}
+dfn{font-weight:700}
+a.internalDFN{color:inherit;border-bottom:1px solid #99c;text-decoration:none}
+a.externalDFN{color:inherit;border-bottom:1px dotted #ccc;text-decoration:none}
+a.bibref{text-decoration:none}
+.respec-offending-element:target{animation:pop .25s ease-in-out 0s 1}
+.respec-offending-element,a[href].respec-offending-element{text-decoration:red wavy underline}
+@supports not (text-decoration:red wavy underline){
+.respec-offending-element:not(pre){display:inline-block}
+.respec-offending-element{background:url(data:image/gif;base64,R0lGODdhBAADAPEAANv///8AAP///wAAACwAAAAABAADAEACBZQjmIAFADs) bottom repeat-x}
+}
+#references :target{background:#eaf3ff;animation:pop .4s ease-in-out 0s 1}
+cite .bibref{font-style:normal}
+a[href].orcid{padding-left:4px;padding-right:4px}
+a[href].orcid>svg{margin-bottom:-2px}
+.toc a,.tof a{text-decoration:none}
+a .figno,a .secno{color:#000}
+ol.tof,ul.tof{list-style:none outside none}
+.caption{margin-top:.5em;font-style:italic}
+table.simple{border-spacing:0;border-collapse:collapse;border-bottom:3px solid #005a9c}
+.simple th{background:#005a9c;color:#fff;padding:3px 5px;text-align:left}
+.simple th a{color:#fff;padding:3px 5px;text-align:left}
+.simple th[scope=row]{background:inherit;color:inherit;border-top:1px solid #ddd}
+.simple td{padding:3px 10px;border-top:1px solid #ddd}
+.simple tr:nth-child(even){background:#f0f6ff}
+.section dd>p:first-child{margin-top:0}
+.section dd>p:last-child{margin-bottom:0}
+.section dd{margin-bottom:1em}
+.section dl.attrs dd,.section dl.eldef dd{margin-bottom:0}
+#issue-summary>ul{column-count:2}
+#issue-summary li{list-style:none;display:inline-block}
+details.respec-tests-details{margin-left:1em;display:inline-block;vertical-align:top}
+details.respec-tests-details>*{padding-right:2em}
+details.respec-tests-details[open]{z-index:999999;position:absolute;border:thin solid #cad3e2;border-radius:.3em;background-color:#fff;padding-bottom:.5em}
+details.respec-tests-details[open]>summary{border-bottom:thin solid #cad3e2;padding-left:1em;margin-bottom:1em;line-height:2em}
+details.respec-tests-details>ul{width:100%;margin-top:-.3em}
+details.respec-tests-details>li{padding-left:1em}
+.self-link:hover{opacity:1;text-decoration:none;background-color:transparent}
+aside.example .marker>a.self-link{color:inherit}
+.header-wrapper{display:flex;align-items:baseline}
+:is(h2,h3,h4,h5,h6):not(#toc>h2,#abstract>h2,#sotd>h2,.head>h2){position:relative;left:-.5em}
+:is(h2,h3,h4,h5,h6):not(#toch2)+a.self-link{color:inherit;order:-1;position:relative;left:-1.1em;font-size:1rem;opacity:.5}
+:is(h2,h3,h4,h5,h6)+a.self-link::before{content:"§";text-decoration:none;color:var(--heading-text)}
+:is(h2,h3)+a.self-link{top:-.2em}
+:is(h4,h5,h6)+a.self-link::before{color:#000}
+@media (max-width:767px){
+dd{margin-left:0}
+}
+@media print{
+.removeOnSave{display:none}
+}</style>
+<meta name="description" content="This document describes and prioritises gaps for the support of Simplified and Traditional Chinese on the Web and in eBooks. In particular, it is concerned with text layout. It checks that needed features are supported in W3C specifications, in particular HTML and CSS and those relating to digital publications. It also checks whether the features have been implemented in browsers and ereaders. This is a preliminary analysis.">
+<link rel="canonical" href="www.w3.org/TR/clreq-gap/">
+<style>.hljs{display:block;overflow-x:auto;padding:.5em;color:#383a42;background:#fafafa}
+.hljs-comment,.hljs-quote{color:#717277;font-style:italic}
+.hljs-doctag,.hljs-formula,.hljs-keyword{color:#a626a4}
+.hljs-deletion,.hljs-name,.hljs-section,.hljs-selector-tag,.hljs-subst{color:#ca4706;font-weight:700}
+.hljs-literal{color:#0b76c5}
+.hljs-addition,.hljs-attribute,.hljs-meta-string,.hljs-regexp,.hljs-string{color:#42803c}
+.hljs-built_in,.hljs-class .hljs-title{color:#9a6a01}
+.hljs-attr,.hljs-number,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-pseudo,.hljs-template-variable,.hljs-type,.hljs-variable{color:#986801}
+.hljs-bullet,.hljs-link,.hljs-meta,.hljs-selector-id,.hljs-symbol,.hljs-title{color:#336ae3}
+.hljs-emphasis{font-style:italic}
+.hljs-strong{font-weight:700}
+.hljs-link{text-decoration:underline}</style>
+<style>var{position:relative;cursor:pointer}
+var[data-type]::after,var[data-type]::before{position:absolute;left:50%;top:-6px;opacity:0;transition:opacity .4s;pointer-events:none}
+var[data-type]::before{content:"";transform:translateX(-50%);border-width:4px 6px 0 6px;border-style:solid;border-color:transparent;border-top-color:#000}
+var[data-type]::after{content:attr(data-type);transform:translateX(-50%) translateY(-100%);background:#000;text-align:center;font-family:"Dank Mono","Fira Code",monospace;font-style:normal;padding:6px;border-radius:3px;color:#daca88;text-indent:0;font-weight:400}
+var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}</style>
+<script id="initialUserConfig" type="application/json">{
+  "specStatus": "DNOTE",
+  "noRecTrack": true,
+  "shortName": "clreq-gap",
+  "copyrightStart": "2018",
+  "edDraftURI": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/International/clreq/gap-analysis/",
+  "editors": [
+    {
+      "name": "Fuqiao Xue",
+      "company": "W3C",
+      "w3cid": 95475
+    },
+    {
+      "name": "Richard Ishida",
+      "company": "W3C",
+      "w3cid": 3439
+    }
+  ],
+  "group": "i18n",
+  "github": "w3c/clreq",
+  "preProcess": [
+    null,
+    null
+  ],
+  "postProcess": [
+    null
+  ],
+  "langs": [
+    "SChinese",
+    "TChinese"
+  ],
+  "gapDocPath": "https://https://tawasl-zahra.github.io/whimsywondershttps://https://tawasl-zahra.github.io/whimsywonderstawasl-zahra.github.io/whimsywonderswww.w3.org/TR/clreq-gap/",
+  "publishDate": "2024-02-08",
+  "publishISODate": "2024-02-08T00:00:00.000Z",
+  "generatedSubtitle": "W3C Group Draft Note 08 February 2024"
+}</script>
+<link rel="stylesheet" href="www.w3.org/StyleSheets/TR/2021/W3C-DNOTE">
+</head>
+
+<body class="h-entry informative">
+<div class="head">
+    <p class="logos"><a class="logo" href="www.w3.org/"><img crossorigin="" alt="W3C" height="48" src="www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+  </a></p>
+    <h1 id="title" class="title">Chinese Layout Gap Analysis</h1> 
+    <p id="w3c-state"><a href="www.w3.org/standards/types#DNOTE">W3C Group Draft Note</a> <time class="dt-published" datetime="2024-02-08">08 February 2024</time></p>
+    <details open="">
+      <summary>More details about this document</summary>
+      <dl>
+        <dt>This version:</dt>
+<dd>
+                <a class="u-url" href="www.w3.org/TR/2024/DNOTE-clreq-gap-20240208/">https://www.w3.org/TR/2024/DNOTE-clreq-gap-20240208/</a>
+              </dd>
+        <dt>Latest published version:</dt>
+<dd>
+                <a href="www.w3.org/TR/clreq-gap/">https://www.w3.org/TR/clreq-gap/</a>
+              </dd>
+        <dt>Latest editor's draft:</dt>
+<dd><a href="www.w3.org/International/clreq/gap-analysis/">https://www.w3.org/International/clreq/gap-analysis/</a></dd>
+        <dt>History:</dt>
+<dd>
+                    <a href="www.w3.org/standards/history/clreq-gap/">https://www.w3.org/standards/history/clreq-gap/</a>
+                  </dd>
+<dd>
+                    <a href="github.com/w3c/clreq/commits/">Commit history</a>
+                  </dd>
+        
+        
+        
+        
+        
+        <dt>Editors:</dt>
+<dd class="editor p-author h-card vcard" data-editor-id="95475">
+    <span class="p-name fn">Fuqiao Xue</span> (<span class="p-org org h-org">W3C</span>)
+  </dd>
+<dd class="editor p-author h-card vcard" data-editor-id="3439">
+    <span class="p-name fn">Richard Ishida</span> (<span class="p-org org h-org">W3C</span>)
+  </dd>
+        
+        
+        <dt>Feedback:</dt>
+<dd>
+        <a href="github.com/w3c/clreq/">GitHub w3c/clreq</a>
+        (<a href="github.com/w3c/clreq/pulls/">pull requests</a>,
+        <a href="github.com/w3c/clreq/issues/new/choose">new issue</a>,
+        <a href="github.com/w3c/clreq/issues/">open issues</a>)
+      </dd>
+        
+        
+      </dl>
+    </details>
+    
+    
+    <p class="copyright">
+    <a href="www.w3.org/policies/#copyright">Copyright</a>
+    ©
+    2018-2024
+    
+    <a href="www.w3.org/">World Wide Web Consortium</a>.
+    <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup>
+    <a href="www.w3.org/policies/#Legal_Disclaimer">liability</a>,
+    <a href="www.w3.org/policies/#W3C_Trademarks">trademark</a> and
+    <a rel="license" href="www.w3.org/copyright/software-license-2023/" title="W3C Software and Document Notice and License">permissive document license</a> rules apply.
+  </p>
+    <hr title="Separator for header">
+  </div>
+  <section id="abstract" class="introductory"><h2>Abstract</h2>
+    <p>This document describes and prioritises gaps for the support of Simplified and Traditional Chinese on the Web and in eBooks. In particular, it is concerned with text layout. It checks that needed features are supported in <abbr title="World Wide Web Consortium">W3C</abbr> specifications, in particular HTML and CSS and those relating to digital publications. It also checks whether the features have been implemented in browsers and ereaders. <strong>This is a preliminary analysis.</strong></p>
+  </section>
+
+  <div id="sotd" class="introductory">
+<h2>Status of This Document</h2>
+<p><em>This section describes the status of this
+      document at the time of its publication. A list of current <abbr title="World Wide Web Consortium">W3C</abbr>
+      publications and the latest revision of this technical report can be found
+      in the <a href="www.w3.org/TR/"><abbr title="World Wide Web Consortium">W3C</abbr> technical reports index</a> at
+      https://www.w3.org/TR/.</em></p>
+    <p>This document describes and prioritises gaps for the support of Simplified and Traditional Chinese on the Web and in eBooks. In particular, it is concerned with text layout. It checks that needed features are supported in <abbr title="World Wide Web Consortium">W3C</abbr> specifications, in particular HTML and CSS and those relating to digital publications. It also checks whether the features have been implemented in browsers and ereaders. This document complements the document <a href="www.w3.org/TR/clreq/">Requirements for Chinese Text Layout</a>, which describes the requirements for areas where gaps appear. It is linked to from the <a href="w3c.github.io/typography/gap-analysis/language-matrix.html">language matrix</a> that tracks Web support for many languages.</p>
+<p>The editor's draft of this document is being developed by the <a href="w3c.github.io/clreq/">Chinese Layout Task Force</a>, part of the <abbr title="World Wide Web Consortium">W3C</abbr> <a href="www.w3.org/International/ig/">Internationalization Interest Group</a>. It is published by the <a href="www.w3.org/International/core/">Internationalization Working Group</a>. The end target for this document is a Working Group Note.</p>
+<p>
+    This document was published by the <a href="www.w3.org/groups/wg/i18n-core">Internationalization Working Group</a> as
+    a Group Draft Note using the
+        <a href="www.w3.org/2023/Process-20231103/#recs-and-notes">Note track</a>. 
+  </p>
+<p>Group Draft Notes are not endorsed by
+        <abbr title="World Wide Web Consortium">W3C</abbr> nor its Members. </p>
+<p>
+    This is a draft document and may be updated, replaced or obsoleted by other
+    documents at any time. It is inappropriate to cite this document as other
+    than work in progress.
+    
+  </p>
+<p data-deliverer="32113">
+    
+        The
+        <a href="www.w3.org/Consortium/Patent-Policy/"><abbr title="World Wide Web Consortium">W3C</abbr> Patent
+          Policy</a>
+        does not carry any licensing requirements or commitments on this
+        document.
+      
+    
+  </p>
+<p>
+                      This document is governed by the
+                      <a id="w3c_process_revision" href="www.w3.org/2023/Process-20231103/">03 November 2023 <abbr title="World Wide Web Consortium">W3C</abbr> Process Document</a>.
+                    </p>
+</div>
+<nav id="toc"><h2 class="introductory" id="table-of-contents">Table of Contents</h2>
+<ol class="toc">
+<li class="tocline"><a class="tocxref" href="#abstract">Abstract</a></li>
+<li class="tocline">
+<a class="tocxref" href="#h_introduction"><bdi class="secno">1. </bdi>Introduction</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#workflow"><bdi class="secno">1.1 </bdi>Work flow</a></li>
+<li class="tocline"><a class="tocxref" href="#prioritization"><bdi class="secno">1.2 </bdi>Prioritization</a></li>
+</ol>
+</li>
+<li class="tocline">
+<a class="tocxref" href="#direction"><bdi class="secno">2. </bdi>Text direction</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#vertical_text"><bdi class="secno">2.1 </bdi>Vertical text</a></li>
+<li class="tocline"><a class="tocxref" href="#bidi_text"><bdi class="secno">2.2 </bdi>Bidirectional text</a></li>
+</ol>
+</li>
+<li class="tocline">
+<a class="tocxref" href="#h_characters_and_phrases"><bdi class="secno">3. </bdi>Characters and phrases</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#charset"><bdi class="secno">3.1 </bdi>Characters &amp; encoding</a></li>
+<li class="tocline"><a class="tocxref" href="#fonts"><bdi class="secno">3.2 </bdi>Fonts</a></li>
+<li class="tocline"><a class="tocxref" href="#font_style"><bdi class="secno">3.3 </bdi>Font  styles, weight, etc</a></li>
+<li class="tocline"><a class="tocxref" href="#glyphs"><bdi class="secno">3.4 </bdi>Glyph shaping and positioning</a></li>
+<li class="tocline"><a class="tocxref" href="#cursive"><bdi class="secno">3.5 </bdi>Cursive text</a></li>
+<li class="tocline"><a class="tocxref" href="#baselines"><bdi class="secno">3.6 </bdi>Baselines, line-height, etc</a></li>
+<li class="tocline"><a class="tocxref" href="#transforms"><bdi class="secno">3.7 </bdi>Transforming characters</a></li>
+<li class="tocline"><a class="tocxref" href="#segmentation"><bdi class="secno">3.8 </bdi>Grapheme/word segmentation &amp; selection</a></li>
+<li class="tocline"><a class="tocxref" href="#punctuation_etc"><bdi class="secno">3.9 </bdi>Inline features &amp; punctuation</a></li>
+<li class="tocline"><a class="tocxref" href="#text_decoration"><bdi class="secno">3.10 </bdi>Text decoration</a></li>
+<li class="tocline"><a class="tocxref" href="#quotations"><bdi class="secno">3.11 </bdi>Quotations</a></li>
+<li class="tocline"><a class="tocxref" href="#inline_notes"><bdi class="secno">3.12 </bdi>Inline notes &amp; annotations</a></li>
+<li class="tocline"><a class="tocxref" href="#data_formats"><bdi class="secno">3.13 </bdi>Data formats &amp; numbers</a></li>
+</ol>
+</li>
+<li class="tocline">
+<a class="tocxref" href="#h_lines_and_paragraphs"><bdi class="secno">4. </bdi>Lines and Paragraphs</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#line_breaking"><bdi class="secno">4.1 </bdi>Line breaking</a></li>
+<li class="tocline"><a class="tocxref" href="#hyphenation"><bdi class="secno">4.2 </bdi>Hyphenation</a></li>
+<li class="tocline"><a class="tocxref" href="#justification"><bdi class="secno">4.3 </bdi>Text alignment &amp; justification</a></li>
+<li class="tocline"><a class="tocxref" href="#spacing"><bdi class="secno">4.4 </bdi>Letter spacing</a></li>
+<li class="tocline"><a class="tocxref" href="#lists"><bdi class="secno">4.5 </bdi>Lists, counters, etc.</a></li>
+<li class="tocline"><a class="tocxref" href="#initials"><bdi class="secno">4.6 </bdi>Styling initials</a></li>
+</ol>
+</li>
+<li class="tocline">
+<a class="tocxref" href="#h_pages"><bdi class="secno">5. </bdi>Page &amp; book layout</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#page_layout"><bdi class="secno">5.1 </bdi>General page layout &amp; progression</a></li>
+<li class="tocline"><a class="tocxref" href="#footnotes_etc"><bdi class="secno">5.2 </bdi>Footnotes, endnotes, etc.</a></li>
+<li class="tocline"><a class="tocxref" href="#headers_footers"><bdi class="secno">5.3 </bdi>Page headers, footers, etc.</a></li>
+<li class="tocline"><a class="tocxref" href="#interaction"><bdi class="secno">5.4 </bdi>Forms &amp; user interaction</a></li>
+</ol>
+</li>
+<li class="tocline">
+<a class="tocxref" href="#h_other"><bdi class="secno">6. </bdi>Other</a><ol class="toc">
+<li class="tocline"><a class="tocxref" href="#culturespecific"><bdi class="secno">6.1 </bdi>Culture-specific features</a></li>
+<li class="tocline"><a class="tocxref" href="#other"><bdi class="secno">6.2 </bdi>What else?</a></li>
+</ol>
+</li>
+</ol></nav>
+
+  <section id="h_introduction"><div class="header-wrapper">
+<h2 id="x1-introduction">
+<bdi class="secno">1. </bdi>Introduction</h2>
+<a class="self-link" href="#h_introduction" aria-label="Permalink for Section 1."></a>
+</div>
+    
+    <p>The <abbr title="World Wide Web Consortium">W3C</abbr> needs to make sure that the  needs of scripts and languages around the world are built in to technologies such as HTML, CSS, SVG, etc. so that Web pages and eBooks can look and behave as people expect around the world.</p>
+<p>This page documents difficulties people encounter when trying to use the Chinese language in both Simplified and Traditional scripts on the Web. </p>
+<p>Having identified an issue, it investigates the current status with regards to web specifications and implementations by user agents (browsers, e-readers, etc.), and attempts to prioritise the severity of the issue for web users.  </p>
+<p>A summary of this report and others can be found as part of the <a href="w3c.github.io/typography/gap-analysis/language-matrix.html" style="font-size: 140%;">language matrix</a>.</p>
+
+    <section id="workflow"><div class="header-wrapper">
+<h3 id="x1-1-work-flow">
+<bdi class="secno">1.1 </bdi>Work flow</h3>
+<a class="self-link" href="#workflow" aria-label="Permalink for Section 1.1"></a>
+</div>
+    
+    <p><span style="font-weight:bold; font-size: 140%;">This version of the document is a preliminary analysis</span></p>
+
+    <p>Gap analysis work usually starts with a <strong>preliminary analysis</strong>, conducted quickly by one or a small group of experts. Then a more <strong>detailed analysis</strong> is carried out, involving a wider range of experts. The detailed analysis may involve the development of tests, in order to illustrate issues and track results for browsers. The next phase is <strong>ongoing maintenance</strong>. It is expected that the resulting document will not be frozen: as gaps are fixed, this should be noted in the document. It is also possible that new gaps are noticed or arise, and they can be added to this document when that happens.</p>
+
+    <p>As the gap analysis develops, the requirements for features that are problematic should be described in the companion document, <a href="www.w3.org/TR/clreq/">Requirements for Chinese Text Layout</a>. Links to the appropriate part of that document should be added to this document as the material is created. Note that the requirements document should not contain any technology-specific information: all of that belongs here.</p>
+    </section>
+
+    <section id="prioritization"><div class="header-wrapper">
+<h3 id="x1-2-prioritization">
+<bdi class="secno">1.2 </bdi>Prioritization</h3>
+<a class="self-link" href="#prioritization" aria-label="Permalink for Section 1.2"></a>
+</div>
+    
+    <p>This document not only describes gaps, it also attempts to prioritise them in terms of the impact on the local user. The prioritisation is indicated by colour.</p>
+
+        <p>Key:</p>
+  <ul style="list-style-type: none;">
+        <li class="ok">
+        <li class="na">
+        <li class="advanced">
+        <li class="basic">
+        <li class="broken">
+        <li class="tbd">
+        </ul>
+
+    <p>It is important to note that these colours do not indicate to what extent a particular feature is broken. They indicate the impact of a broken or missing feature on the content author or end user.</p>
+    <p>Basic styling is the level that would be generally accepted as sufficient for most Web pages. Advanced level support would include additional features one might expect to include in ebooks or other advanced typographic formats. There may be features of a script or language that are not supported on the Web, but that are not generally regarded as necessary (usually archaic or obscure features). In this case, the feature can be described here, but the status should be marked as OK.</p>
+    <p>The decision as to what priority level is assigned to a described gap is down to the experts doing the gap analysis. It may not always be straightforward to decide. If a given section in this document refers to more than one feature that is broken, each with different impacts on Web users, the priority for the section should be the lowest denominator.</p>
+    <p>A cell can be scored as OK if the feature in question is specified in an appropriate specification, and is supported by user agents. A specification that is in CR or later and has two implementations in 'major' browsers will count. This means that the feature may not be supported in all browsers yet. (At some point in the future we may try to distinguish, visually, whether support is available in a specification but still pending in major browsers or applications.) </p>
+    </section>
+</section>
+
+
+
+
+
+<section id="direction"><div class="header-wrapper">
+<h2 id="x2-text-direction">
+<bdi class="secno">2. </bdi>Text direction</h2>
+<a class="self-link" href="#direction" aria-label="Permalink for Section 2."></a>
+</div>
+
+<p>See also General page layout &amp; progression for features such as column layout, page turning direction, etc. that are affected by text direction.</p>
+
+
+<section id="vertical_text" class="basic"><div class="header-wrapper">
+<h3 id="x2-1-vertical-text">
+<bdi class="secno">2.1 </bdi>Vertical text</h3>
+<a class="self-link" href="#vertical_text" aria-label="Permalink for Section 2.1"></a>
+</div>
+
+<p id="prompt-vertical_text" class="status_prompt promptStub">Are the script requirements for vertically oriented text met?  What about if you mix vertical text with scripts that are normally only horizontal? Do you need a switch to use different characters in vertical vs. horizontal text? Does the browser support short runs of horizontal text in vertical lines (tate-chu-yoko in Japanese) as expected? Is the orientation of characters and the directional ordering of characters supported as needed? <a href="www.w3.org/TR/typography/#vertical_text">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Avertical-text+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+<div id="insert-vertical_text">
+<section id="issue367_vertical_text">
+<div class="header-wrapper">
+<h4 id="x367-unable-to-make-list-counters-stand-upright-in-vertical-text">#367 Unable to make list counters stand upright in vertical text</h4>
+<a class="self-link" href="#issue367_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/367" class="issueLink basicIssue">GitHub issue #367</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, Korean, and Mongolian.</i></p>
+<p>A common way to orient counters for lists in vertical text is to have an upright number with a dot alongside it.</p>
+<p>The expected way to achieve this in HTML would be to use the following CSS: <code>li::marker { text-combine-upright: all; }</code>, however this cannot be used because browsers don't support <code class="kw" translate="no">text-combine-upright</code>.  </p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/170">this GitHub issue</a>, which is being used to track this gap.</b>
+</p>
+</section>
+<section id="issue250_vertical_text">
+<div class="header-wrapper">
+<h4 id="x250-table-cells-don-t-handle-vertical-direction-properly">#250 Table cells don't handle vertical direction properly</h4>
+<a class="self-link" href="#issue250_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/250" class="issueLink basicIssue">GitHub issue #250</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, Korean, and Mongolian.</i></p>
+<p>If you place the writing-mode property with a value of vertical-rl on an individual table cell, you would expect the text in that cell to be displayed vertically. This doesn't work as expected in all browsers: some don't apply vertical writing mode, or leave the text horizontal but rotate the CJK characters to the left.</p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/171">this GitHub issue</a>, which is being used to track this gap. Please add any discussion there, and not to this issue.</b></p>
+</section>
+<section id="issue249_vertical_text">
+<div class="header-wrapper">
+<h4 id="x249-horizontal-in-vertical-tate-chu-yoko-lacks-support-especially-for-the-digits-value">#249 Horizontal-in-vertical (tate-chu-yoko) lacks support, especially for the digits value</h4>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/249" class="issueLink advancedIssue">GitHub issue #249</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, Korean, &amp; Mongolian.</i></p>
+<p>In vertically set text, it is normal to display numbers with 2-3 digits and sometimes up 4  (and sometimes other things) horizontally within a one character space.  This is particularly common for things such as day and month digits. This is often referred to using the japanese name, tate chu yoko.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/142436464-b0f3262a-57e3-4571-84b9-dc99d4d95f2a.png" alt="Screenshot 2021-11-18 at 14 39 23"></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="the-gap"> The GAP
+</h5>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+In <a href="www.w3.org/TR/css-writing-modes-4/#text-combine-upright">writing-modes</a> CSS provides 2 solutions to enable tate chu yoko.<p></p>
+<p></p>
+<ol>
+<li> <code class="kw" translate="no">text-combine-upright</code> property with the <code class="kw" translate="no">all</code> value makes everything within the element to which it is attached horizontal.  It has to be applied to each location where the presentation needs to be changed.
+</li>
+<li> <code class="kw" translate="no">digits &lt;integer&gt;</code> identifies numbers with a given digit count within the element styled, and presents them horizontally.  If the integer is omitted, the default is 2.  This is much easier to use, because it can be applied to a paragraph or section, etc. and instances will be found automatically.
+</li>
+</ol>
+The CSS <code class="kw" translate="no">text-combine-upright</code> property works with the <code class="kw" translate="no">all</code> value in <span class="pass">Gecko</span> and <span class="pass">Blink</span> browsers, but not in <span class="fail">Webkit</span>. (Webkit supports the proprietary property <code class="kw" translate="no">-webkit-text-combine:horizontal</code>.)<p></p>
+<p><span class="fail">No major browsers</span> support the <code class="kw" translate="no">digits</code> value, with or without a following digit, which is a shame since it is a better approach to the problem.</p>
+<p>(The CSS <code class="kw" translate="no">digits</code> value was supported by Legacy Edge with it's proprietary property name, but  single digits were stretched to fit the width of the (vertical) line. The new (Blink-based) Edge no longer supports it.)</p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority"> Priority:
+</h5>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>The unavailability of the <code class="kw" translate="no">digits</code> value is an inconvenience, since more interventions and markup are needed when using the <code class="kw" translate="no">all</code> value. Since the <code translate="no">all</code> value can be used with most browsers, this is classed as Advanced, but really it is probably close to Basic.<p></p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="tests"> Tests
+</h5>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/2">text-combine-upright:all will make up to 4 characters run horizontally in vertical text, and not exceed the line width.</a><br><p></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/3">text-combine-upright:digits set on a parent element will make up to 2 digits run horizontally in vertical text, without special markup, but not longer numbers</a><br></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/4">text-combine-upright:digits followed by a number from 2 to 4, set on a parent element, will make up to that number of digits run horizontally in vertical text, without special markup, but not longer ones</a><br></p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="action-taken"> Action taken
+</h5>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<b class="subhead">Browser bug reports:</b> <a href="bugs.chromium.org/p/chromium/issues/detail?id=1052659">Chromium</a>  • <a href="bugs.webkit.org/show_bug.cgi?id=150821">Webkit</a>  • <a href="bugzilla.mozilla.org/show_bug.cgi?id=1258635">Mozilla</a><p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="outcomes"> Outcomes
+</h5>
+<a class="self-link" href="#issue249_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<span class="pass">Webkit</span> now supports <code translate="no">text-combine-upright: all</code> without a prefix.  This means that Blink, WebKit, and Gecko browser engines now all support this property-value combination.<p></p>
+<p>Support is still lacking, however, for the more useful <code translate="no">digits</code> value.</p>
+</section>
+<section id="issue248_vertical_text">
+<div class="header-wrapper">
+<h4 id="x248-upright-text-orientation-not-supported">#248 Upright text orientation not supported</h4>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/248" class="issueLink okIssue">GitHub issue #248</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, Korean, and Mongolian.</i></p>
+<p>By default, in runs of Latin alphanumeric text the letters are rotated 90º and run down the page.  However, in some instances the alphanumerics need to stand upright.  For example, this is important for acronyms.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/142612484-70dfb492-0ba3-4af2-8b23-fd9c171ff34b.png" alt="Screenshot 2021-11-19 at 11 04 53"></p>
+<p>Browsers need to allow content authors to indicate where alphanumerics should be rendered upright.</p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="the-gap-0"> The GAP
+</h5>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<a href="drafts.csswg.org/css-writing-modes/#text-orientation">writing-modes</a> The CSS <code class="kw" translate="no">text-orientation</code> property has a value <code class="kw" translate="no">upright</code> which is meant to produce this behaviour, but not all browsers support it.<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority-0"> Priority
+</h5>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>Upright-oriented Latin text, especially, is used commonly for acronyms in Chinese, Japanese, Korean, &amp; Mongolian vertical text, so this is a significant gap for general web content.<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="tests-results"> Tests &amp; results
+</h5>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/5">text-orientation:upright will make Latin characters and digits sit upright in vertical text.</a><br><p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-0"> Action taken
+</h5>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<a href="bugs.webkit.org/show_bug.cgi?id=196139">Webkit</a><p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="outcomes-0"> Outcomes
+</h5>
+<a class="self-link" href="#issue248_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<strong><span class="pass">All major browser engines</span> now support this feature!</strong>
+<p></p>
+</section>
+<section id="issue247_vertical_text">
+<div class="header-wrapper">
+<h4 id="x247-poor-level-of-support-for-vertical-form-controls">#247 Poor level of support for vertical form controls</h4>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/247" class="issueLink basicIssue">GitHub issue #247</a></p>
+<p><i class="meta">This issue is applicable to languages that can be vertically set, especially Mongolian, since it has no horizontal setting. (Linked from: <a href="www.w3.org/TR/clreq-gap/#issue247_vertical_text">Chinese</a> • <a href="www.w3.org/TR/jpan-gap/#issue167_vertical_text">Japanese</a> • <a href="www.w3.org/TR/mong-gap/#issue37_interaction">Mongolian</a>)</i></p>
+<p>In vertically set text, form controls should also be oriented vertically, in order to fit into the flow of the content.  The following examples show what you'd expect to see for various types of form in vertically set Chinese.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/121891994-15941b80-cd14-11eb-9d3d-987090e1c009.png" alt="vertical form controls"></p>
+<p>For more examples see the following. Note, especially, that the sideways direction differs for Mongolian.</p>
+<p><a href="r12a.github.io/scripts/jpan/ja.html#interaction">Japanese</a> • <a href="r12a.github.io/scripts/hani/zh.html#interaction">Chinese</a> • <a href="r12a.github.io/scripts/mong/mn.html#interaction">Mongolian</a></p>
+<p>The same vertical orientation needs to be applied to the display of buttons, progress bars, etc.</p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="the-gap-1"> The GAP
+</h5>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+Unfortunately, this is not supported by all browsers, creating difficulties for use of forms in vertical text (especially traditional Mongolian, where reverting to horizontal is not an option).<p></p>
+<p>Here is an example of a select control. In Blink, not only is the control and its text displayed horizontally, but also the small angle bracket to indicate where to click for more entries doesn't respond.  You have to click over on the left (where there is no indicator) to open the pulldown.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/121894920-9a346900-cd17-11eb-9a43-e56339891d80.png" alt="Screenshot 2021-06-14 at 13 48 46"></p>
+<p>
+<a href="www.w3.org/TR/css-writing-modes-3/#example-fb72ee40">css-writing-modes</a> Creates an expectation that forms should be rendered vertically, but doesn't specify details for rendering.</p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority-1"> Priority
+</h5>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>Handling of vertical text in forms is a major gap.<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="tests-results-0"> Tests &amp; results
+</h5>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<strong>CJK tests:</strong><p></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/14">When vertically-set CJK text contains a textarea element, the control will also be vertical. A preceding label will appear above the top right corner of the textarea box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/15">When vertically-set CJK text contains a text input element, the control will be vertical. A preceding label will appear above the box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/16">When vertically-set CJK text contains a select element, the control will be vertical, and multiple options will extend, vertically-set, towards the left.</a></p>
+<p><span class="partial">Gecko</span> mostly passes all the above tests except for two small problems: 
+</p>
+<ol>
+<li> although the initial select control is vertical, the alternative options box is horizontal, and opens to the right.
+</li>
+<li> the label associated with a textarea control appears above the top left corner of the box, rather than top right.
+</li>
+</ol>
+<span class="fail">Blink</span> and <span class="fail">WebKit</span> browsers fail to render the controls vertically at all.<p></p>
+<p>
+<i>i18n test suite</i>, <a href="www.w3.org/International/tests/repo/results/writing-mode-vertical#rl_forms">Forms: vertical-rl</a> and <a href="www.w3.org/International/tests/repo/results/writing-mode-vertical#lr_forms">Forms: vertical-lr</a><br>
+Same results as for the previous tests.</p>
+<p></p>
+<p><strong>Mongolian tests:</strong></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/17">When vertically-set Mongolian text contains a textarea element, the control will also be vertical. A preceding label will appear above the top right corner of the textarea box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/18">When vertically-set Mongolian text contains a text input element, the control will be vertical. A preceding label will appear above the box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/19">When vertically-set Mongolian text contains a select element, the control will be vertical, and multiple options will extend, vertically-set, towards the left.</a></p>
+<p>The results of these tests are the same as for the CJK tests, except that the label appears to the correct side of a textarea control (because of the change in text direction).</p>
+<p><strong>Button tests:</strong></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/13">When vertically-set CJK text contains an HTML button element, the control will also be vertical.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/12">When vertically-set Mongolian text contains an HTML button element, the control will also be vertical.</a></p>
+<p><span class="pass">Gecko</span> passes the test, but <span class="fail">Blink</span>, and <span class="fail">Webkit</span> produce horizontal buttons.</p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-1"> Action taken
+</h5>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+<a href="bugs.chromium.org/p/chromium/issues/detail?id=681917">Blink</a> • <a href="bugs.webkit.org/show_bug.cgi?id=245355">Webkit</a><p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="outcomes-1"> Outcomes
+</h5>
+<a class="self-link" href="#issue247_vertical_text" aria-label="Permalink for this Section"></a>
+</div>
+Blink now produces vertical button text in vertically-set lines, and some progress has been made on vertical select and input controls.  Some tests still fail, though. Chrome has <a href="developer.chrome.com/blog/vertical-form-controls">a plan</a> to complete the implementation of vertical forms by version 123.<p></p>
+<p>Buttons are still horizontal in WebKit.
+</p>
+</section>
+</div>
+</section>
+
+
+
+
+<section id="bidi_text" class="na"><div class="header-wrapper">
+<h3 id="x2-2-bidirectional-text">
+<bdi class="secno">2.2 </bdi>Bidirectional text</h3>
+<a class="self-link" href="#bidi_text" aria-label="Permalink for Section 2.2"></a>
+</div>
+
+<p id="prompt-bidi_text" class="status_prompt promptStub">If this script runs right-to-left, are there any issues when handling that? Is bidirectional text adequately supported? What about numbers and expressions? Do the Unicode bidi controls and HTML markup provide the support needed? Is isolation of directional runs problematic? <a href="www.w3.org/TR/typography/#bidi_text">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Abidi-text+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+<div id="insert-bidi_text"></div>
+
+</section>
+</section>
+
+
+
+
+<section id="h_characters_and_phrases"><div class="header-wrapper">
+<h2 id="x3-characters-and-phrases">
+<bdi class="secno">3. </bdi>Characters and phrases</h2>
+<a class="self-link" href="#h_characters_and_phrases" aria-label="Permalink for Section 3."></a>
+</div>
+
+
+
+
+<section id="charset" class="ok"><div class="header-wrapper">
+<h3 id="x3-1-characters-encoding">
+<bdi class="secno">3.1 </bdi>Characters &amp; encoding</h3>
+<a class="self-link" href="#charset" aria-label="Permalink for Section 3.1"></a>
+</div>
+
+<p id="prompt-charset" class="status_prompt promptStub">Are there any character repertoire issues preventing use of this script on the Web? Do variation selectors need attention? Are there any other encoding-related issues? <a href="www.w3.org/TR/typography/#charset">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Acharset+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+<div id="insert-charset"></div>
+</section>
+
+
+
+<section id="fonts" class="basic"><div class="header-wrapper">
+<h3 id="x3-2-fonts">
+<bdi class="secno">3.2 </bdi>Fonts</h3>
+<a class="self-link" href="#fonts" aria-label="Permalink for Section 3.2"></a>
+</div>
+
+<p id="prompt-fonts" class="status_prompt promptStub">Do the standard fallback fonts used in browsers (eg. serif, sans-serif, cursive, etc.) match expectations? Are special font or OpenType features needed for this script that are not available?  <a href="www.w3.org/TR/typography/#fonts">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Afonts+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-fonts">
+<section id="issue587_fonts">
+<div class="header-wrapper">
+<h4 id="x587-no-support-for-kai-and-fangsong-generic-font-families">#587 No support for Kai and Fangsong generic font families</h4>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/587" class="issueLink basicIssue">GitHub issue #587</a></p>
+<p><i class="meta">This issue is applicable to Chinese.</i></p>
+<p>There are many font styles used in Chinese composition, but Song, Kai, Hei, and Fangsong are the most important ones.</p>
+<p>The <code translate="no">font-family</code> CSS property should support generic family names for these font styles.</p>
+<p>More:
+</p>
+<ul>
+<li> <a href="www.w3.org/TR/clreq/#four_commonly_used_typefaces_for_chinese_composition">Four frequently-used Typefaces for Chinese Text</a>
+</li>
+</ul>
+<div class="header-wrapper">
+<h5 id="the-gap-2"> The GAP
+</h5>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<code translate="no">generic(kai)</code> and <code translate="no">generic(fangsong)</code> are not supported by any major browser engine.<p></p>
+<p><a href="drafts.csswg.org/css-fonts-4/#generic-font-families">css-fonts-4</a> describes <code translate="no">generic(kai)</code> and <code translate="no">generic(fangsong)</code> in CSS.</p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="priority-2"> Priority
+</h5>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+The Kai and Fangsong generic font families significantly improves the fallback mechanism of Chinese websites and web applications. If the browsers does not support them, the differences expressed by the font styles won't appear (unless the author use web fonts, which is often <a href="github.com/w3c/clreq/issues/403">too large</a>). This was therefore marked as Basic.<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="tests-results-1"> Tests &amp; results
+</h5>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<i>Interactive test</i>, <a href="github.com/w3c/character_phrase_tests/issues/62">font-family:generic(kai) will apply a Kai font in Chinese</a><br>
+<i>Interactive test</i>, <a href="github.com/w3c/character_phrase_tests/issues/25">font-family:generic(fangsong) will apply a Fangsong font in Chinese</a><p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-2"> Action taken
+</h5>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<i>Issue</i>, <a href="github.com/w3c/csswg-drafts/issues/4606">The Cursive = Chinese Kaiti equivalent</a> Closed.<p></p>
+<p><i>Browser bug reports</i>: <a href="bugzilla.mozilla.org/show_bug.cgi?id=1868500">Gecko</a> • <a href="bugs.chromium.org/p/chromium/issues/detail?id=1508721">Blink</a> • <a href="bugs.webkit.org/show_bug.cgi?id=265926">WebKit</a></p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="outcomes-2"> Outcomes
+</h5>
+<a class="self-link" href="#issue587_fonts" aria-label="Permalink for this Section"></a>
+</div>
+tbd<p></p>
+</section>
+<section id="issue430_fonts">
+<div class="header-wrapper">
+<h4 id="x430-wip-the-glyphs-of-punctuation-marks-do-not-match-the-requirements-for-chinese-text-layout">#430 [WIP] The glyphs of punctuation marks do not match the requirements for Chinese text layout</h4>
+<a class="self-link" href="#issue430_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/430" class="issueLink advancedIssue">GitHub issue #430</a></p>
+<p><i class="meta">This issue applies to Chinese.</i></p>
+<p>The glyphs in some system fonts do not match the requirements for Chinese text layout.</p>
+<p>Below are the problematic code points.</p>
+<p></p>
+<ul>
+<li><code translate="no">U+2E3A TWO-EM DASH[⸺]</code></li>
+<li>
+<code translate="no">U+2014 EM DASH [—]</code>: it should be vertically centred. It is not vertically centred in Microsoft JhengHei and Microsoft YaHei.</li>
+<li>
+<code translate="no">U+2026 HORIZONTAL ELLIPSIS</code>: it should be vertically centred. It is not vertically centred in PingFang, Microsoft JhengHei, and Microsoft YaHei.</li>
+<li>
+<code translate="no">U+2013 EN DASH [–]</code> should be vertically centred. It is not vertically centred in Noto Sans TC/SC, Microsoft JhengHei, and Microsoft YaHei.</li>
+<li>
+<code translate="no">U+00B7 MIDDLE DOT [·]</code>: it should have the same width or half the width of a Han character. It does not in PingFang, Noto Sans TC/SC, Microsoft JhengHei, and Microsoft YaHei.</li>
+</ul>
+<p></p>
+<p>The root cause of this problem is that some Chinese and Western punctuations share the same code points. See also requirements in <a href="www.w3.org/TR/clreq/#categories_and_usage_of_punctuation_marks">clreq</a>.</p>
+<p><b class="subhead">Tests &amp; results:</b>
+Interactive test <a href="github.com/w3c/character_phrase_tests/issues/51">U+2E3A TWO-EM DASH[⸺]</a> will be vertically centred in Chinese.</p>
+<p>It is not vertically centred in PingFang, Microsoft JhengHei, and Microsoft YaHei.</p>
+<p><strong>[TODO: To add more tests]</strong></p>
+<p><b class="subhead">Priority:</b>
+Given that a workaround is possible (i.e., changing the font), this is prioritised as an advanced issue.</p>
+</section>
+<section id="issue403_fonts">
+<div class="header-wrapper">
+<h4 id="x403-webfonts-are-too-large">#403 Webfonts are too large</h4>
+<a class="self-link" href="#issue403_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/403" class="issueLink advancedIssue">GitHub issue #403</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, and Korean.</i></p>
+<p>Most simple alphabetic languages are currently well served by existing Web font delivery methods. However, the Chinese, Japanese and Korean (CJK) group of languages is currently unable to use Webfonts due to the very large file sizes. A substantial reduction in file size is needed, without a significant increase in page load times caused by multiple network requests.</p>
+<p><b class="subhead">Specs:</b></p>
+<p><a href="www.w3.org/TR/IFT/">IFT</a>: this specification defines methods to incrementally transfer fonts from server to client.</p>
+<p>Preinstalled Fonts and User-Installed Fonts in <a href="www.w3.org/TR/css-fonts/#preinstalled-and-user-installed-fonts">css-fonts</a>: <a href="github.com/w3c/csswg-drafts/issues/5421">issue 5421</a> Open.</p>
+<p><b class="subhead">Priority:</b></p>
+<p>Because most operating systems have preinstalled CJK fonts, CJK text can be rendered properly, it's just the fonts cannot be freely selected, so this is prioritised as an advanced issue.</p>
+</section>
+<section id="issue237_fonts">
+<div class="header-wrapper">
+<h4 id="x237-issues-with-variation-sequence-font-fallback">#237 Issues with variation sequence font fallback</h4>
+<a class="self-link" href="#issue237_fonts" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/237" class="issueLink advancedIssue">GitHub issue #237</a></p>
+<p>Font matching/fallback for variation sequences is <a href="github.com/w3c/csswg-drafts/issues/1710">not implemented correctly</a>.</p>
+</section>
+</div>
+</section>
+
+
+
+<section id="font_style" class="ok"><div class="header-wrapper">
+<h3 id="x3-3-font-styles-weight-etc">
+<bdi class="secno">3.3 </bdi>Font  styles, weight, etc</h3>
+<a class="self-link" href="#font_style" aria-label="Permalink for Section 3.3"></a>
+</div>
+
+<p id="prompt-font_style" class="status_prompt promptStub">This covers ways of modifying the glyphs, such as for italicisation, bolding, oblique, etc. Do italic fonts lean in the right direction? Is synthesised italicisation problematic? Are there other problems relating to bolding or italicisation - perhaps relating to generalised assumptions of applicability? <a href="www.w3.org/TR/typography/#font_style">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Afont-style+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-font_style"></div>
+</section>
+
+
+
+<section id="glyphs" class="na"><div class="header-wrapper">
+<h3 id="x3-4-glyph-shaping-and-positioning">
+<bdi class="secno">3.4 </bdi>Glyph shaping and positioning</h3>
+<a class="self-link" href="#glyphs" aria-label="Permalink for Section 3.4"></a>
+</div>
+
+<p id="prompt-glyphs" class="status_prompt promptStub">Does the script in question require additional user control features to support alterations to the position or shape of glyphs, for example adjusting the distance between the base text and diacritics, or changing the glyphs used in a systematic way? Do you need to be able to compose/decompose conjuncts, or show characters that are otherwise hidden, etc? <a href="www.w3.org/TR/typography/#glyphs">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Aglyphs-diacritics+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-glyphs"></div>
+</section>
+
+
+
+<section id="cursive" class="na"><div class="header-wrapper">
+<h3 id="x3-5-cursive-text">
+<bdi class="secno">3.5 </bdi>Cursive text</h3>
+<a class="self-link" href="#cursive" aria-label="Permalink for Section 3.5"></a>
+</div>
+
+<p id="prompt-cursive" class="status_prompt promptStub">If this script is cursive (eg. Arabic, N’Ko, Syriac, etc), are there problems or needed features related to the handling of cursive text? Do cursive links break if parts of a word are marked up or styled? Do Unicode joiner and non-joiner characters behave as expected?   <a href="www.w3.org/TR/typography/#cursive">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Acursive+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-cursive"></div>
+</section>
+
+
+
+<section id="baselines" class="na"><div class="header-wrapper">
+<h3 id="x3-6-baselines-line-height-etc">
+<bdi class="secno">3.6 </bdi>Baselines, line-height, etc</h3>
+<a class="self-link" href="#baselines" aria-label="Permalink for Section 3.6"></a>
+</div>
+
+<p id="prompt-baselines" class="status_prompt promptStub">Does the browser support  requirements for baseline alignment between mixed scripts and in general? <a href="www.w3.org/TR/typography/#baselines">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Abaselines+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-baselines"></div>
+</section>
+
+
+
+
+<section id="transforms" class="na"><div class="header-wrapper">
+<h3 id="x3-7-transforming-characters">
+<bdi class="secno">3.7 </bdi>Transforming characters</h3>
+<a class="self-link" href="#transforms" aria-label="Permalink for Section 3.7"></a>
+</div>
+
+<p id="prompt-transforms" class="status_prompt promptStub">Does your script need special text transforms that are not supported? Does your script convert letters to uppercase, capitalised and lowercase alternatives according to your typographic needs? Do you need to to convert between half-width and full-width presentation forms? <a href="www.w3.org/TR/typography/#transforms">See available information</a> or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Atransforms+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-transforms"></div>
+</section>
+
+
+
+
+<section id="segmentation" class="ok"><div class="header-wrapper">
+<h3 id="x3-8-grapheme-word-segmentation-selection">
+<bdi class="secno">3.8 </bdi>Grapheme/word segmentation &amp; selection</h3>
+<a class="self-link" href="#segmentation" aria-label="Permalink for Section 3.8"></a>
+</div>
+
+<p id="prompt-segmentation" class="status_prompt promptStub">This is about how text is divided into graphemes, words, sentences, etc., and behaviour associated with that. Do Unicode grapheme clusters appropriately segment character units for your script? When you double- or triple-click on the text, is the expected range of characters highlighted? When you move through the text with the cursor, or backspace, etc. do you see the expected behaviour?  (Some of the answers to these questions may be picker up in other sections, such as line-breaking, or initial-letter styling.)   <a href="www.w3.org/TR/typography/#segmentation">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Asegmentation+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-segmentation"></div>
+</section>
+
+
+
+<section id="punctuation_etc" class="tbd"><div class="header-wrapper">
+<h3 id="x3-9-inline-features-punctuation">
+<bdi class="secno">3.9 </bdi>Inline features &amp; punctuation</h3>
+<a class="self-link" href="#punctuation_etc" aria-label="Permalink for Section 3.9"></a>
+</div>
+<p id="prompt-punctuation_etc" class="status_prompt promptStub">Are there specific problems related to punctuation or the interaction of the text with punctuation (for example separation of punctuation from previous text, but allowing no line break between)? Are there issues related to handling of abbreviation, ellipsis, or iteration? Are there problems related to bracketing information or demarcating things such as proper nouns, etc?   <a href="www.w3.org/TR/typography/#punctuation_etc">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Apunctuation_etc+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-punctuation_etc"></div>
+</section>
+
+
+
+<section id="text_decoration" class="basic"><div class="header-wrapper">
+<h3 id="x3-10-text-decoration">
+<bdi class="secno">3.10 </bdi>Text decoration</h3>
+<a class="self-link" href="#text_decoration" aria-label="Permalink for Section 3.10"></a>
+</div>
+
+<p id="prompt-text_decoration" class="status_prompt promptStub">This is about  ways of marking text (see also specific sections dedicated to quotations and inline notes/annotations). Is it possible to express emphasis or highlight content as expected? Bold, italic and under-/over-lines are not always appropriate, and some scripts have their own unique ways of doing things, that are not in the Western tradition at all. Text delimiters mark certain items or sections off from the main text, such as book names in Chinese, quotations, head markers in Tibetan, etc, and often involve the use of punctuation. Is there any behaviour that isn't well supported, such as overlines for numeric digits in Syriac?    Are there issues about the positioning or use of underlines? Some aspects related to the drawing of lines alongside or through text involve local typographic considerations. Do underlines need to be broken in special ways for this script? Do you need support for additional line shapes or widths? Does the distance or position of the lines relative to the text need to vary in ways that are not achievable? Are lines correctly drawn relative to vertical text?   <a href="www.w3.org/TR/typography/#text_decoration">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Atext-decoration+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-text_decoration">
+<section id="issue599_text_decoration">
+<div class="header-wrapper">
+<h4 id="x599-adjacent-items-with-text-decoration-should-be-separated-by-a-small-gap">#599 Adjacent items with text decoration should be separated by a small gap</h4>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/599" class="issueLink basicIssue">GitHub issue #599</a></p>
+<p><i class="meta">This issue is applicable to Chinese and Japanese.</i></p>
+<p>When two underlined items appear side-by-side, the underline should be broken between the two. For example, although there are no gaps between characters in the code stream, there should be small visible gaps in the underlining of this example, which contains 2 proper nouns ('sòng', and 'ōuyángxiū') and a poem title ('míng fēi qū').</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/5f8d3ab0-3d08-4e6a-a189-cc210e2a6aff.png" width="362" alt="fig_underline_gap"></p>
+<p></p>
+<p>
+More:
+</p>
+<ul>
+<li> <a href="www.w3.org/TR/clreq/#handling_interlinear_punctuation">Clreq</a>
+</li>
+<li> <a href="github.com/w3c/clreq/issues/502#issuecomment-1751628253">example</a>
+</li>
+</ul>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="the-gap-3"> The GAP
+</h5>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+None of the major browsers show this gap between text decorations.<p></p>
+<p><a href="www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset">css-text-decor-4</a> The CSS Text specification currently proposes the use of a <code translate="no">text-decoration-skip-inset</code> property, although it is not yet finalised and is not supported by any browser. The auto value should automatically produce the slightly shorter line lengths below the characters.</p>
+<p><span class="pass">Gecko</span>, <span class="partial">Blink</span>, and <span class="fail">Webkit</span></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="priority-3"> Priority
+</h5>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>These text decorations are used commonly in Chinese text, and decorations that run into each other creates readability problems.  This gap is therefore being labelled as basic.<p></p>
+<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="tests-results-2"> Tests &amp; results
+</h5>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<i>Interactive test</i>, <a href="github.com/w3c/character_phrase_tests/issues/65">text-decoration-skip-inset: auto; will create a gap between words that are side by side and underlined using the u tag.</a><br>
+<i>Interactive test</i>, <a href="github.com/w3c/character_phrase_tests/issues/65">text-decoration-skip-inset: auto; will create a gap between spans that are side by side and underlined using text-decoration-line:underline.</a><br><p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-3"> Action taken
+</h5>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>Awaiting finalisation of CSS syntax.<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="outcomes-3"> Outcomes
+</h5>
+<a class="self-link" href="#issue599_text_decoration" aria-label="Permalink for this Section"></a>
+</div>tbd<p></p>
+<p></p>
+</section>
+<section id="issue550_text_decoration">
+<div class="header-wrapper">
+<h4 id="x550-emphasis-dots-should-be-centre-aligned-with-the-text-after-the-letter-spacing-is-increased">#550 Emphasis dots should be centre-aligned with the text after the letter spacing is increased</h4>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/550" class="issueLink advancedIssue">GitHub issue #550</a></p>
+<p><i class="meta">This issue applies to Chinese and Japanese.</i></p>
+<p>Emphasis dots should be centre-aligned with the text after the letter spacing is increased.</p>
+<p>Example in Chinese:</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/8789aa1f-de02-44a7-b5b8-12676dc71650.png" width="500" alt="emphasis"></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="the-gap-4"> The GAP
+</h5>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>The dots are centre-aligned with the characters in <span class="success">Gecko</span> and <span class="success">WebKit</span>, but not in <span class="fail">Blink</span>.<p></p>
+<p><a href="www.w3.org/TR/css-text-decor-4/">CSS Text Decoration Module Level 4</a> doesn't refer to this.</p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority-4"> Priority
+</h5>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>Given that increased inter-character spacing and emphasis dots appearing at the same time is not common, this was prioritised as an advanced issue.<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="tests-0"> Tests
+</h5>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<i>Interactive test</i> <a href="github.com/w3c/character_phrase_tests/issues/53">Emphasis dots should be centre-aligned with the text after the letter spacing is increased</a><p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-4"> Action taken
+</h5>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<a href="bugs.chromium.org/p/chromium/issues/detail?id=1281289">Blink</a><p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="outcomes-4"> Outcomes
+</h5>
+<a class="self-link" href="#issue550_text_decoration" aria-label="Permalink for this Section"></a>
+</div>tbd
+<p></p>
+</section>
+<section id="issue239_text_decoration">
+<div class="header-wrapper">
+<h4 id="x239-emphasis-mark-support-not-interoperable">#239 Emphasis mark support not interoperable</h4>
+<a class="self-link" href="#issue239_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/239" class="issueLink okIssue">GitHub issue #239</a></p>
+<p><i class="meta">This issue is applicable to Japanese &amp; Chinese, in particular.</i></p>
+<p>Chinese and Japanese have a native way of indicating emphasis for short ranges of inline text which involves placing a small mark above or below the characters being emphasised in horizontal text, and to the right/left in vertical text.</p>
+<p>The actual marks used vary, depending on author preference, although some marks are more common in vertical text and others in horizontal. Typically, dots, circles, or 'sesame seed' shapes are used.</p>
+<p>The following illustrates this:</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/191958046-743994d0-3b44-4ccf-ae28-00e2c7076e64.png" alt="boten_marks"></p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/173">this GitHub issue</a>, which is being used to track this gap.</b></p>
+</section>
+<section id="issue238_text_decoration">
+<div class="header-wrapper">
+<h4 id="x238-punctuation-not-skipped-by-default-for-emphasis-marks">#238 Punctuation not skipped by default for emphasis marks</h4>
+<a class="self-link" href="#issue238_text_decoration" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/238" class="issueLink advancedIssue">GitHub issue #238</a></p>
+<p>Punctuations are not skipped by default for emphasis marks.</p>
+</section>
+</div>
+</section>
+
+
+
+<section id="quotations" class="advanced"><div class="header-wrapper">
+<h3 id="x3-11-quotations">
+<bdi class="secno">3.11 </bdi>Quotations</h3>
+<a class="self-link" href="#quotations" aria-label="Permalink for Section 3.11"></a>
+</div>
+
+<p id="prompt-quotations" class="status_prompt promptStub">Are there any issues when dealing with quotations marks, especially when nested? Should block quotes be indented or handled specially?   <a href="www.w3.org/TR/typography/#quotations">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Aquotations+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-quotations">
+<section id="issue240_quotations">
+<div class="header-wrapper">
+<h4 id="x240-q-element-produces-incorrect-quotation-marks-when-language-changes">#240 q element produces incorrect quotation marks when language changes</h4>
+<a class="self-link" href="#issue240_quotations" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/240" class="issueLink advancedIssue">GitHub issue #240</a></p>
+<p><i class="meta">This issue is common across all languages that use the q element.</i></p>
+<p>When a Chinese page contains a quotation in another language, the quotation marks used around that quotation (and inside it for embedded quotes) should be the Chinese ones – not those of the language of the quotation.</p>
+<p>Currently, if the language of the quotation is declared on the <code translate="no">q</code> tag in HTML using the <code translate="no">lang</code> attribute, browsers instead set the quotation marks based on the language of the quote.</p>
+<p>For example, if English text is quoted in a Chinese sentence surrounded by just <code translate="no">&lt;q&gt;</code>, the quotation marks will be correct:</p>
+<p><span lang="zh">第一 「second 『third』」</span></p>
+<p>However, if <code translate="no">lang="en"</code> is added to the <code translate="no">q</code> tag, the result becomes:</p>
+<p><span lang="zh">第一  “second ‘third’”</span></p>
+<p>Here is <a href="w3c.github.io/i18n-tests/exploratory/vanilla/?text=%3Cdiv%3E%E7%AC%AC%E4%B8%80+%3Cq%3Esecond+%3Cq%3Ethird%3C%2Fq%3E%3C%2Fq%3E%3C%2Fdiv%3E%0A%3Cdiv%3E%E7%AC%AC%E4%B8%80+%3Cq+lang%3D%22en%22%3Esecond+%3Cq%3Ethird%3C%2Fq%3E%3C%2Fq%3E%3C%2Fdiv%3E%0A&amp;lang=zh-hant&amp;fontSize=45&amp;width=560&amp;height=159">a test</a>.    There are also tests and results <a href="w3c.github.io/i18n-tests/results/the-q-element.html#ml_nesting">in the i18n test suite</a>.</p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/eurlreq/issues/22">this GitHub issue</a>, which is being used to track this gap.</b></p>
+</section>
+</div>
+</section>
+
+
+<section id="inline_notes" class="basic"><div class="header-wrapper">
+<h3 id="x3-12-inline-notes-annotations">
+<bdi class="secno">3.12 </bdi>Inline notes &amp; annotations</h3>
+<a class="self-link" href="#inline_notes" aria-label="Permalink for Section 3.12"></a>
+</div>
+
+<p id="prompt-inline_notes" class="status_prompt promptStub">The ruby spec currently specifies an initial subset of requirements for fine-tuning the typography of phonetic and semantic annotations of East Asian text, including furigana, pinyin and zhuyin fuhao systems.  Is is adequate for what it sets out to do?  What other controls will be needed in the future? What about other types of inline annotation, such as warichu? (For referent-type notes such as footnotes, see below.)         <a href="www.w3.org/TR/typography/#inline_notes">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Ainline-notes+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-inline_notes">
+<section id="issue357_inline_notes">
+<div class="header-wrapper">
+<h4 id="x357-in-page-search-fails-on-ruby-annotated-text">#357 In-page search fails on ruby-annotated text</h4>
+<a class="self-link" href="#issue357_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/357" class="issueLink basicIssue">GitHub issue #357</a></p>
+<p><i class="meta">This issue is applicable to all languages that use ruby markup (Chinese, Japanese, Mongolian, Korean).</i></p>
+<p>If text is marked up for ruby, using the interleaved markup approach currently required by the HTML spec, a browser's in-page search no longer recognises the text.  For example, if you search for 東京 on a page that has this markup:</p>
+<p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;rt&gt;とう&lt;rb&gt;京&lt;rt&gt;きょう&lt;/ruby&gt;</code></p>
+<p>the search will fail to locate the word.</p>
+<p>Note that a tabular arrangement of markup, such as </p>
+<p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;rb&gt;京&lt;rt&gt;とう&lt;rt&gt;きょう&lt;/ruby&gt;</code></p>
+<p>would work fine but, although it is parsed correctly,  this tabular markup is not displayed correctly by Blink or Webkit currently, and therefore the HTML specification has obsoleted the <code translate="no">rb</code> and <code translate="no">rtc</code> elements.</p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/255">this GitHub issue</a>, which is being used to track this gap.</b>
+</p>
+</section>
+<section id="issue243_inline_notes">
+<div class="header-wrapper">
+<h4 id="x243-cutting-note-not-supported">#243 Cutting Note not supported</h4>
+<a class="self-link" href="#issue243_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/243" class="issueLink advancedIssue">GitHub issue #243</a></p>
+<p>Inline cutting note (warichu in Japanese) is a type of inline notation, where two lines of small characters are inserted into the text, dividing a line into two sub lines.  Inline cutting note is usually used in vertical writing mode. It is very infrequently used in horizontal writing mode. (see <a href="www.w3.org/TR/jlreq/#inline_cutting_note">Inline Cutting Note (Warichu)</a>)</p>
+<p>The following illustrates a cutting note in Japanese text.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/142900454-84e53617-288e-4904-9fa0-e7ab2a966e79.png" alt="img2_4_1"></p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/318">this GitHub issue</a>, which is being used to track this gap. Please add any discussion there, and not to this issue.</b></p>
+<p>The frequency of use of the inline cutting note is not so high in Chinese, so this gap is labelled with an advanced priority.</p>
+</section>
+<section id="issue242_inline_notes">
+<div class="header-wrapper">
+<h4 id="x242-difficulties-selecting-ruby">#242 Difficulties selecting ruby</h4>
+<a class="self-link" href="#issue242_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/242" class="issueLink advancedIssue">GitHub issue #242</a></p>
+<p>There are difficulties in selecting ruby text in <a href="github.com/w3c/i18n-issues/issues/3">some browsers</a>.</p>
+</section>
+<section id="issue241_inline_notes">
+<div class="header-wrapper">
+<h4 id="x241-no-bopomofo-ruby-support">#241 No bopomofo ruby support</h4>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/241" class="issueLink basicIssue">GitHub issue #241</a></p>
+<p><i class="meta">This issue is applicable to Chinese.</i></p>
+<p>Bopomofo, also named Zhuyin, is a transliteration and writing system for Chinese. For example:</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/dbbb980b-842b-44bc-8e12-84822b55d7b5.svg" width="400" alt="「心」字的國語注音符號拼式"></p>
+<p>
+More:</p>
+<p></p>
+<ul>
+<li> <a href="r12a.github.io/scripts/bopomofo/ontheweb">Bopomofo on the Web</a>
+</li>
+<li> <a href="www.w3.org/TR/clreq/#positioning_of_zhuyin">Requirements for Chinese Text Layout – 中文排版需求</a>
+</li>
+</ul>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="the-gap-5"> The Gap:
+</h5>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+Bopomofo ruby is not supported by any browser. This is because it needs additional and bopomofo-specific positioning rules to place the bopomofo letters vertically alongside the base character, and to position the tone marks relative to them, either above or in a second column with particular alignments.<p></p>
+<p>The CSS spec provides an <code translate="no">inter-character</code> value for the <code translate="no">ruby-position</code> property which is supposed to indicate to the browser that this arrangement should be applied.</p>
+<p>There are two font-based ways to implement Bopomofo:</p>
+<p></p>
+<ol>
+<li> Make special fonts, and combine the Chinese character and the Bopomofo characters into the glyph. Use <code translate="no">span</code>s, CSS, and web fonts to toggle fonts. This approach works in all browsers, but it is not very accessible and it is not easy to handle polyphones.
+</li>
+</ol>
+<ol>
+<li> Use HTML <code translate="no">ruby</code>/<code translate="no">rt</code>, <code translate="no">ruby-position: inter-character</code>, and OpenType fonts for all characters in <code translate="no">rt</code> (see https://github.com/cmex-30/Bopomofo_on_Web/blob/master/BOPOMOFO%20TYPOGRAPHY.pdf). 
+</li>
+</ol>
+No browser supports <code translate="no">ruby-position: inter-character</code> at the moment (see <a href="www.w3.org/International/i18n-tests/results/css-ruby#ruby_position_intercharacter">test results</a>), so people use <code translate="no">ruby { writing-mode: vertical-lr; }</code> to achieve this (see an <a href="www.mdnkids.com/zhuyinTest/test.html">example</a>),  however, that doesn't produce the needed positioning.<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="spec-status"> Spec status:
+</h5>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<ul>
+<li> <a href="html.spec.whatwg.org/multipage/text-level-semantics.html#the-ruby-element">HTML ruby element</a>
+</li>
+<li> <a href="html.spec.whatwg.org/multipage/text-level-semantics.html#the-rt-element">HTML rt element</a>
+</li>
+<li> <a href="www.w3.org/TR/css-ruby-1/#rubypos">ruby-position</a>
+</li>
+<li> <a href="learn.microsoft.com/en-us/typography/opentype/spec/">OpenType</a>
+</li>
+</ul>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-5"> Action taken:
+</h5>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>
+<a href="bugs.chromium.org/p/chromium/issues/detail?id=1258284">Blink</a> • <a href="bugzilla.mozilla.org/show_bug.cgi?id=1055672">Gecko</a><p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="outcomes-5"> Outcomes:
+</h5>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>tbd<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority-5"> Priority
+</h5>
+<a class="self-link" href="#issue241_inline_notes" aria-label="Permalink for this Section"></a>
+</div>Since this is important for education, it is prioritised as a basic issue.
+<p></p>
+</section>
+</div>
+</section>
+
+
+
+<section id="data_formats" class="ok"><div class="header-wrapper">
+<h3 id="x3-13-data-formats-numbers">
+<bdi class="secno">3.13 </bdi>Data formats &amp; numbers</h3>
+<a class="self-link" href="#data_formats" aria-label="Permalink for Section 3.13"></a>
+</div>
+
+<p id="prompt-data_formats" class="status_prompt promptStub">If  the script has its own set of number digits, are there any issues in how they are used? Does the script or language use special format patterns that are problematic (eg. 12,34,000 in India)? What about date/time formats and selection - and are non-Gregorian calendars needed?  Do percent signs and other symbols associated with number work correctly, and do numbers need special decorations, (like in Ethiopic or Syriac)? How about the management of personal names, addresses, etc. in web pages: are there issues?        <a href="www.w3.org/TR/typography/#data_formats">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Adata-formats+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-data_formats"></div>
+</section>
+</section>
+
+
+
+
+
+
+<section id="h_lines_and_paragraphs"><div class="header-wrapper">
+<h2 id="x4-lines-and-paragraphs">
+<bdi class="secno">4. </bdi>Lines and Paragraphs</h2>
+<a class="self-link" href="#h_lines_and_paragraphs" aria-label="Permalink for Section 4."></a>
+</div>
+
+
+
+<section id="line_breaking" class="advanced"><div class="header-wrapper">
+<h3 id="x4-1-line-breaking">
+<bdi class="secno">4.1 </bdi>Line breaking</h3>
+<a class="self-link" href="#line_breaking" aria-label="Permalink for Section 4.1"></a>
+</div>
+
+<p id="prompt-line_breaking" class="status_prompt promptStub">Does the browser capture the rules about the way text in your script wraps when it hits the end of a line? Does line-breaking wrap whole 'words' at a time, or characters, or something else (such as syllables in Tibetan and Javanese)?  What characters should not appear at the end or start of a line, and what should be done to prevent that?         <a href="www.w3.org/TR/typography/#line_breaking">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Aline-breaking+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-line_breaking">
+<section id="issue245_line_breaking">
+<div class="header-wrapper">
+<h4 id="x245-uax-14-for-line-breaking-with-quotation-marks">#245 UAX #14 for line-breaking with quotation marks</h4>
+<a class="self-link" href="#issue245_line_breaking" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/245" class="issueLink okIssue">GitHub issue #245</a></p>
+<p>In Chinese, <code translate="no">“</code> is an opening quotation mark, but in some languages (like German) it can be a closing quotation mark. In <a href="www.unicode.org/reports/tr14/tr14-43.html">UAX #14</a>:</p>
+<p></p>
+<blockquote> LB19 Do not break before or after quotation marks, such as ‘ ” ’.
+<br>
+</blockquote>
+This is too strict for Chinese, because breaks before <code translate="no">“</code> should be allowed (it can appear at the line start).<p></p>
+<p><b class="subhead">Specs:</b>
+In the description for QU in <a href="www.unicode.org/reports/tr14/">UAX #14</a>:</p>
+<p></p>
+<blockquote> Some quotation characters can be opening or closing, or even both, depending on usage. The default is to treat them as both opening and closing.
+<br>
+ [...]
+<br>
+ Note: If language information is available, it can be used to determine which character is used as the opening quote and which as the closing quote. See the information in Section 6.2, General Punctuation, in [Unicode]. In such a case, the quotation marks could be tailored to either OP or CL depending on their actual usage.
+<br>
+</blockquote>
+And css-text also allows the UA to determine the set of line-breaking restrictions to use, so it allows for this kind of tailoring.<p></p>
+<p><b class="subhead">Tests &amp; results:</b>
+<i>Interactive test</i>, <a href="w3c.github.io/i18n-tests/exploratory/line_breaking/int-line-break?lang=zh-hans&amp;fontSize=36&amp;width=766&amp;lineBreak=auto&amp;wordBreak=normal&amp;text=%E6%9D%83%E5%9C%A8%E5%B0%8A%E4%B8%A5%E5%92%8C%E6%9D%83%E5%9C%A8%E5%B0%8A%E4%B8%A5%E5%92%8C%E6%9D%83%E3%80%81%E2%80%9C%E5%88%A9%E4%B8%8A%E4%B8%80%E2%80%9D%E5%BE%8B%E5%B9%B3%E7%AD%89%E3%80%82&amp;a=In+Chinese%2C+breaks+before+%E2%80%9C+are+allowed.&amp;i=Adjust+the+width+of+the+test+box+and+observe+whether+%E2%80%9C+can+appear+at+the+beginning+of+the+line.">In Chinese, breaks before “ are allowed.</a><br></p>
+<p></p>
+<ul>
+<li> <strong>Gecko:</strong> ✅
+</li>
+<li> <strong>Blink:</strong> ✅
+</li>
+<li> <strong>Webkit:</strong> ✅
+</li>
+</ul>
+<b class="subhead">Bug report:</b>
+<a href="github.com/unicode-org/icu/pull/223">ICU</a><p></p>
+</section>
+<section id="issue244_line_breaking">
+<div class="header-wrapper">
+<h4 id="x244-browsers-handle-ideographic-space-differently-during-line-breaking">#244 Browsers handle ideographic space differently during line-breaking</h4>
+<a class="self-link" href="#issue244_line_breaking" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/244" class="issueLink advancedIssue">GitHub issue #244</a></p>
+<p>Browsers differ in how they handle line breaks for IDEOGRAPHIC SPACE (U+3000). </p>
+</section>
+</div>
+
+<p>See also <a href="#hyphenation">hyphenation</a> below. </p>
+</section>
+
+
+
+<section id="hyphenation" class="na"><div class="header-wrapper">
+<h3 id="x4-2-hyphenation">
+<bdi class="secno">4.2 </bdi>Hyphenation</h3>
+<a class="self-link" href="#hyphenation" aria-label="Permalink for Section 4.2"></a>
+</div>
+
+<p id="prompt-hyphenation" class="status_prompt promptStub">Is hyphenation used for your script, or something else? If hyphenation is used, does it work as expected? (Note, this is about line-end hyphenation when text is wrapped, rather than use of the hyphen and related characters as punctuation marks.)         <a href="www.w3.org/TR/typography/#hyphenation">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Ahyphenation+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-hyphenation"></div>
+</section>
+
+
+
+<section id="justification" class="tbd"><div class="header-wrapper">
+<h3 id="x4-3-text-alignment-justification">
+<bdi class="secno">4.3 </bdi>Text alignment &amp; justification</h3>
+<a class="self-link" href="#justification" aria-label="Permalink for Section 4.3"></a>
+</div>
+
+<p id="prompt-justification" class="status_prompt promptStub">When text in a paragraph needs to have flush lines down both sides, does it follow the rules for your script? Does the script need assistance to conform to a grid pattern? Does your script allow punctuation to hang outside the text box at the start or end of a line? Where adjustments are need to make a line flush, how is that done? Do you shrink/stretch space between words and/or letters? Are word baselines stretched, as in Arabic? What about paragraph indents, or the need for logical alignment keywords, such as start/end, rather than left/right?         <a href="www.w3.org/TR/typography/#justification">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Ajustification+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-justification"></div>
+</section>
+
+
+
+<section id="spacing" class="advanced"><div class="header-wrapper">
+<h3 id="x4-4-letter-spacing">
+<bdi class="secno">4.4 </bdi>Letter spacing</h3>
+<a class="self-link" href="#spacing" aria-label="Permalink for Section 4.4"></a>
+</div>
+
+<p id="prompt-spacing" class="status_prompt promptStub">Some scripts create emphasis or other effects by spacing out the words, letters or syllables in a word. Are there requirements for this script/language that are unsupported? (For justification related spacing, see below.)         <a href="www.w3.org/TR/typography/#spacing">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Aspacing+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+
+<div id="insert-spacing">
+<section id="issue401_spacing">
+<div class="header-wrapper">
+<h4 id="x401-lack-of-support-for-applying-extra-spacing-between-chinese-japanese-and-western-text">#401 Lack of support for applying extra spacing between Chinese/Japanese and Western text</h4>
+<a class="self-link" href="#issue401_spacing" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/401" class="issueLink advancedIssue">GitHub issue #401</a></p>
+<p><i class="meta">This issue applies to Chinese and Japanese.</i></p>
+<p>In Chinese and Japanese composition, it is usually recommended to apply extra spacing between Chinese/Japanese and Western text to increase the recognition of Western text.</p>
+<p>Currently, browsers do not support this feature, so content authors have to work around the problem by adding spaces manually.</p>
+<p>See also requirements in <a href="www.w3.org/TR/clreq/#mixed_text_composition_in_horizontal_writing_mode">Chinese</a> and <a href="www.w3.org/TR/jlreq/#id209">Japanese</a>.</p>
+<p><b class="subhead">Specs:</b>
+<a href="www.w3.org/TR/css-text-4/#text-autospace-property">‘text-autospace: ideograph-alpha ideograph-numeric’</a> in the <a href="www.w3.org/TR/css-text-4/">css-text</a> specification can be used to create 1/4em extra spacing between runs of ideographs and non-ideographic letters/numerals.</p>
+<p><b class="subhead">Tests &amp; results:</b>
+Interactive test <a href="github.com/w3c/line_paragraph_tests/issues/76">‘text-autospace: ideograph-alpha ideograph-numeric’ should create 1/4em extra spacing between runs of ideographs and non-ideographic letters/numerals</a></p>
+<p>Gecko, Blink, and Webkit browsers all fail to add the 1/4em extra spacing between runs of ideographs and non-ideographic letters.</p>
+<p><b class="subhead">Browser bug reports:</b>
+<a href="bugzilla.mozilla.org/show_bug.cgi?id=289130">Gecko</a> • <a href="bugs.chromium.org/p/chromium/issues/detail?id=1463890">Blink 1</a> • <a href="bugs.chromium.org/p/chromium/issues/detail?id=1260688">Blink 2</a> • <a href="bugs.webkit.org/show_bug.cgi?id=252068">Webkit 1</a> • <a href="bugs.webkit.org/show_bug.cgi?id=157383">Webkit 2</a></p>
+<p><b class="subhead">Priority:</b>
+Given that a workaround is possible, though not ideal, this is prioritised as an advanced issue.</p>
+</section>
+<section id="issue319_spacing">
+<div class="header-wrapper">
+<h4 id="x319-browsers-apply-extraneous-spaces-when-letter-spacing">#319 Browsers apply extraneous spaces when letter-spacing</h4>
+<a class="self-link" href="#issue319_spacing" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/319" class="issueLink advancedIssue">GitHub issue #319</a></p>
+<p><i class="meta">This issue applies to all languages that use letter-spacing.</i></p>
+<p>Currently browsers that apply letter-spacing do so by adding a space after every letter in the text that is tracked.  This results in a superfluous space at the end of the range, which creates an inappropriate gap before the following text.  Letter spacing at the end of a line makes the line look misaligned in justified or right-justified text. It also has implications for text that has other styling, such as an outline or a coloured background, at the same time as being stretched.  </p>
+<p>
+<b class="meta">For more details, see <a href="github.com/w3c/eurlreq/issues/23">this GitHub issue</a>, which is being used to track this gap. Please add any discussion there, and not to this issue.</b></p>
+</section>
+</div>
+</section>
+
+
+
+<section id="lists" class="basic"><div class="header-wrapper">
+<h3 id="x4-5-lists-counters-etc">
+<bdi class="secno">4.5 </bdi>Lists, counters, etc.</h3>
+<a class="self-link" href="#lists" aria-label="Permalink for Section 4.5"></a>
+</div>
+
+<p id="prompt-lists" class="status_prompt promptStub">The CSS Counter Styles specification describes a limited set of simple and complex styles for counters to be used in list numbering, chapter heading numbering, etc.The rules plus more counter styles (totalling around 120 for over 30 scripts) are listed in the document <a href="www.w3.org/TR/predefined-counter-styles/">Ready-made Counter Styles</a>. Do these cover your needs?  Are the details correct? Are there other aspects related to counters and lists that need to be addressed?         <a href="www.w3.org/TR/typography/#lists">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Alists+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-lists">
+<section id="issue367_lists">
+<div class="header-wrapper">
+<h4 id="x367-unable-to-make-list-counters-stand-upright-in-vertical-text-0">#367 Unable to make list counters stand upright in vertical text</h4>
+<a class="self-link" href="#issue367_lists" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/367" class="issueLink basicIssue">GitHub issue #367</a></p>
+<p><i class="meta">This issue is applicable to Chinese, Japanese, Korean, and Mongolian.</i></p>
+<p>A common way to orient counters for lists in vertical text is to have an upright number with a dot alongside it.</p>
+<p>The expected way to achieve this in HTML would be to use the following CSS: <code>li::marker { text-combine-upright: all; }</code>, however this cannot be used because browsers don't support <code class="kw" translate="no">text-combine-upright</code>.  </p>
+<p><b class="meta">For more details, see <a href="github.com/w3c/jlreq/issues/170">this GitHub issue</a>, which is being used to track this gap.</b>
+</p>
+</section>
+<section id="issue246_lists">
+<div class="header-wrapper">
+<h4 id="x246-lack-of-support-for-counter-style">#246 Lack of support for @counter-style</h4>
+<a class="self-link" href="#issue246_lists" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/246" class="issueLink okIssue">GitHub issue #246</a></p>
+<p><i class="meta">Customisable counters are needed for many languages.</i></p>
+<p>There is no way for users to create local counter styles that are not built in to the browser, and users also often want to tweak the counter style in some way (esp. the prefix/suffix).</p>
+<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="fixed"> FIXED !
+</h5>
+<a class="self-link" href="#issue246_lists" aria-label="Permalink for this Section"></a>
+</div>
+<b class="meta">This gap is now fixed. For more details, see <a href="github.com/w3c/iip/issues/93">this GitHub issue</a>, which is being used to track this gap. Please add any discussion there, and not to this issue.</b><p></p>
+<p></p>
+<p>
+The following are Chinese-specific details.</p>
+<p>Tests:
+</p>
+<ul>
+<li><a href="w3c.github.io/i18n-tests/results/counter-styles#basics">Basic tests for support of @counter-styles</a></li>
+<li><a href="w3c.github.io/i18n-tests/results/custom-counter-styles#chinese">Tests for CJK scripts</a></li>
+</ul>
+<p></p>
+<p>Related browser bugs:
+<a href="bugs.chromium.org/p/chromium/issues/detail?id=687225">Chromium</a> •  <a href="bugs.webkit.org/show_bug.cgi?id=167645">WebKit</a></p>
+<p></p>
+</section>
+</div>
+</section>
+
+
+
+<section id="initials" class="ok"><div class="header-wrapper">
+<h3 id="x4-6-styling-initials">
+<bdi class="secno">4.6 </bdi>Styling initials</h3>
+<a class="self-link" href="#initials" aria-label="Permalink for Section 4.6"></a>
+</div>
+
+<p id="prompt-initials" class="status_prompt promptStub">Does the browser or ereader correctly handle special styling of the initial letter of a line or paragraph, such as for drop caps or similar? How about  the size relationship between the large letter and the lines alongide? where does the large letter anchor relative to the lines alongside? is it normal to include initial quote marks in the large letter? is the large letter really a syllable? etc. Are all of these things working as expected?         <a href="www.w3.org/TR/typography/#initials">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Ainitials+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-initials"></div>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="h_pages"><div class="header-wrapper">
+<h2 id="x5-page-book-layout">
+<bdi class="secno">5. </bdi>Page &amp; book layout</h2>
+<a class="self-link" href="#h_pages" aria-label="Permalink for Section 5."></a>
+</div>
+
+
+<section id="page_layout" class="tbd"><div class="header-wrapper">
+<h3 id="x5-1-general-page-layout-progression">
+<bdi class="secno">5.1 </bdi>General page layout &amp; progression</h3>
+<a class="self-link" href="#page_layout" aria-label="Permalink for Section 5.1"></a>
+</div>
+
+<p id="prompt-page_layout" class="status_prompt promptStub">How are the main text area and ancilliary areas positioned and defined? Are there any special requirements here, such as dimensions in characters for the Japanese kihon hanmen? The book cover for scripts that are read right-to-left scripts is on the right of the spine, rather than the left. Is that provided for? When content can flow vertically and to the left or right, how do you specify the location of objects, text, etc. relative to the flow? For example, keywords 'left' and 'right' are likely to need to be reversed for pages written in English and page written in Arabic. Do tables and grid layouts work as expected? How do columns work in vertical text? Can you mix block of vertical and horizontal text correctly? Does text scroll in the expected direction? Other topics that belong here include any local requirements for things such as printer marks, tables of contents and indexes.        <a href="www.w3.org/TR/typography/#page_layout">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Apage-layout+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-page-layout"></div>
+</section>
+
+
+
+<section id="footnotes_etc" class="tbd"><div class="header-wrapper">
+<h3 id="x5-2-footnotes-endnotes-etc">
+<bdi class="secno">5.2 </bdi>Footnotes, endnotes, etc.</h3>
+<a class="self-link" href="#footnotes_etc" aria-label="Permalink for Section 5.2"></a>
+</div>
+
+<p id="prompt-footnotes_etc" class="status_prompt promptStub">Does your script have special requirements for footnotes, endnotes or other necessary annotations of this kind in the way needed for your culture? (There is a section above for purely inline annotations, such as ruby or warichu. This section is more about annotation systems that separate the reference marks and the content of the notes.)         <a href="www.w3.org/TR/typography/#footnotes_etc">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Afootnotes-etc+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-footnotes_etc"></div>
+</section>
+
+
+
+<section id="headers_footers" class="tbd"><div class="header-wrapper">
+<h3 id="x5-3-page-headers-footers-etc">
+<bdi class="secno">5.3 </bdi>Page headers, footers, etc.</h3>
+<a class="self-link" href="#headers_footers" aria-label="Permalink for Section 5.3"></a>
+</div>
+
+<p id="prompt-headers_footers" class="status_prompt promptStub">Are there special conventions for page numbering, or the way that running headers and the like are handled?         <a href="www.w3.org/TR/typography/#headers_footers">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Aheaders-footers+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+
+<div id="insert-headers_footers"></div>
+</section>
+
+
+
+<section id="interaction" class="basic"><div class="header-wrapper">
+<h3 id="x5-4-forms-user-interaction">
+<bdi class="secno">5.4 </bdi>Forms &amp; user interaction</h3>
+<a class="self-link" href="#interaction" aria-label="Permalink for Section 5.4"></a>
+</div>
+
+<p id="prompt-interaction" class="status_prompt promptStub">Are vertical form controls well supported? In right-to-left scripts, is it possible to set the base direction for a form field? Is the scroll bar on the correct side? etc.         <a href="www.w3.org/TR/typography/#interaction">See available information</a>  or <a href="github.com/w3c/i18n-activity/issues?utf8=%E2%9C%93&amp;q=is%3Aissue+is%3Aopen+label%3Ai%3Ainteraction+label%3Atype-info-request">check for currently needed data</a>.</p>
+
+
+<div id="insert-interaction">
+<section id="issue247_interaction">
+<div class="header-wrapper">
+<h4 id="x247-poor-level-of-support-for-vertical-form-controls-0">#247 Poor level of support for vertical form controls</h4>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>
+<p class="ghLink"><a target="_blank" href="github.com/w3c/clreq/issues/247" class="issueLink basicIssue">GitHub issue #247</a></p>
+<p><i class="meta">This issue is applicable to languages that can be vertically set, especially Mongolian, since it has no horizontal setting. (Linked from: <a href="www.w3.org/TR/clreq-gap/#issue247_vertical_text">Chinese</a> • <a href="www.w3.org/TR/jpan-gap/#issue167_vertical_text">Japanese</a> • <a href="www.w3.org/TR/mong-gap/#issue37_interaction">Mongolian</a>)</i></p>
+<p>In vertically set text, form controls should also be oriented vertically, in order to fit into the flow of the content.  The following examples show what you'd expect to see for various types of form in vertically set Chinese.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/121891994-15941b80-cd14-11eb-9d3d-987090e1c009.png" alt="vertical form controls"></p>
+<p>For more examples see the following. Note, especially, that the sideways direction differs for Mongolian.</p>
+<p><a href="r12a.github.io/scripts/jpan/ja.html#interaction">Japanese</a> • <a href="r12a.github.io/scripts/hani/zh.html#interaction">Chinese</a> • <a href="r12a.github.io/scripts/mong/mn.html#interaction">Mongolian</a></p>
+<p>The same vertical orientation needs to be applied to the display of buttons, progress bars, etc.</p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="the-gap-6"> The GAP
+</h5>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>
+Unfortunately, this is not supported by all browsers, creating difficulties for use of forms in vertical text (especially traditional Mongolian, where reverting to horizontal is not an option).<p></p>
+<p>Here is an example of a select control. In Blink, not only is the control and its text displayed horizontally, but also the small angle bracket to indicate where to click for more entries doesn't respond.  You have to click over on the left (where there is no indicator) to open the pulldown.</p>
+<p><img src="www.w3.org/TR/clreq-gap/images/121894920-9a346900-cd17-11eb-9a43-e56339891d80.png" alt="Screenshot 2021-06-14 at 13 48 46"></p>
+<p>
+<a href="www.w3.org/TR/css-writing-modes-3/#example-fb72ee40">css-writing-modes</a> Creates an expectation that forms should be rendered vertically, but doesn't specify details for rendering.</p>
+<p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="priority-6"> Priority
+</h5>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>Handling of vertical text in forms is a major gap.<p></p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="tests-results-3"> Tests &amp; results
+</h5>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>
+<strong>CJK tests:</strong><p></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/14">When vertically-set CJK text contains a textarea element, the control will also be vertical. A preceding label will appear above the top right corner of the textarea box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/15">When vertically-set CJK text contains a text input element, the control will be vertical. A preceding label will appear above the box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/16">When vertically-set CJK text contains a select element, the control will be vertical, and multiple options will extend, vertically-set, towards the left.</a></p>
+<p><span class="partial">Gecko</span> mostly passes all the above tests except for two small problems: 
+</p>
+<ol>
+<li> although the initial select control is vertical, the alternative options box is horizontal, and opens to the right.
+</li>
+<li> the label associated with a textarea control appears above the top left corner of the box, rather than top right.
+</li>
+</ol>
+<span class="fail">Blink</span> and <span class="fail">WebKit</span> browsers fail to render the controls vertically at all.<p></p>
+<p>
+<i>i18n test suite</i>, <a href="www.w3.org/International/tests/repo/results/writing-mode-vertical#rl_forms">Forms: vertical-rl</a> and <a href="www.w3.org/International/tests/repo/results/writing-mode-vertical#lr_forms">Forms: vertical-lr</a><br>
+Same results as for the previous tests.</p>
+<p></p>
+<p><strong>Mongolian tests:</strong></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/17">When vertically-set Mongolian text contains a textarea element, the control will also be vertical. A preceding label will appear above the top right corner of the textarea box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/18">When vertically-set Mongolian text contains a text input element, the control will be vertical. A preceding label will appear above the box.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/19">When vertically-set Mongolian text contains a select element, the control will be vertical, and multiple options will extend, vertically-set, towards the left.</a></p>
+<p>The results of these tests are the same as for the CJK tests, except that the label appears to the correct side of a textarea control (because of the change in text direction).</p>
+<p><strong>Button tests:</strong></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/13">When vertically-set CJK text contains an HTML button element, the control will also be vertical.</a></p>
+<p><i>Interactive test</i>, <a href="github.com/w3c/text_direction_tests/issues/12">When vertically-set Mongolian text contains an HTML button element, the control will also be vertical.</a></p>
+<p><span class="pass">Gecko</span> passes the test, but <span class="fail">Blink</span>, and <span class="fail">Webkit</span> produce horizontal buttons.</p>
+<p></p>
+<p></p>
+<div class="header-wrapper">
+<h5 id="action-taken-6"> Action taken
+</h5>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>
+<a href="bugs.chromium.org/p/chromium/issues/detail?id=681917">Blink</a> • <a href="bugs.webkit.org/show_bug.cgi?id=245355">Webkit</a><p></p>
+<p>
+</p>
+<div class="header-wrapper">
+<h5 id="outcomes-6"> Outcomes
+</h5>
+<a class="self-link" href="#issue247_interaction" aria-label="Permalink for this Section"></a>
+</div>
+Blink now produces vertical button text in vertically-set lines, and some progress has been made on vertical select and input controls.  Some tests still fail, though. Chrome has <a href="developer.chrome.com/blog/vertical-form-controls">a plan</a> to complete the implementation of vertical forms by version 123.<p></p>
+<p>Buttons are still horizontal in WebKit.
+</p>
+</section>
+</div>
+</section>
+</section>
+
+
+
+
+
+
+<section id="h_other"><div class="header-wrapper">
+<h2 id="x6-other">
+<bdi class="secno">6. </bdi>Other</h2>
+<a class="self-link" href="#h_other" aria-label="Permalink for Section 6."></a>
+</div>
+
+
+
+<section id="culturespecific" class="tbd"><div class="header-wrapper">
+<h3 id="x6-1-culture-specific-features">
+<bdi class="secno">6.1 </bdi>Culture-specific features</h3>
+<a class="self-link" href="#culturespecific" aria-label="Permalink for Section 6.1"></a>
+</div>
+    
+    <p class="status_prompt">Sometimes a script or language does things that are not common outside of its sphere of influence. This is a loose bag of additional items that weren't previously mentioned. This section may also be relevant for observations related to locale formats (such as number, date, currency, format support).</p>
+
+
+<div id="insert-culturespecific"></div>
+    </section>
+
+
+
+<section id="other" class="tbd"><div class="header-wrapper">
+<h3 id="x6-2-what-else">
+<bdi class="secno">6.2 </bdi>What else?</h3>
+<a class="self-link" href="#other" aria-label="Permalink for Section 6.2"></a>
+</div>
+    
+    <p class="status_prompt">There are many other CSS modules which may need review for script-specific requirements, not to mention the SVG, HTML, Speech, MathML and other specifications. What else is likely to cause problems for worldwide deployment of the Web, and what requirements need to be addressed to make the Web function well locally?</p>
+
+
+<div id="insert-other"></div>
+    </section>
+
+</section>
+
+
+
+
+<details>
+<summary style="margin-top:4em; cursor: pointer;" onclick="setUpSummary(); printSummary(true)">Show summary</summary>
+<pre id="summaryPlaceholder" style="white-space: pre-wrap;"></pre>
+</details>
+<script>if (window.location.href.includes('/TR/')) document.getElementById('summaryStats').style.display = 'none'</script>
+
+
+
+
+
+
+
+
+
+<p role="navigation" id="back-to-top">
+    <a href="#title"><abbr title="Back to Top">↑</abbr></a>
+  </p>
+<script id="respec-dfn-panel">(() => {
+// @ts-check
+if (document.respec) {
+  document.respec.ready.then(setupPanel);
+} else {
+  setupPanel();
+}
+
+function setupPanel() {
+  const listener = panelListener();
+  document.body.addEventListener("keydown", listener);
+  document.body.addEventListener("click", listener);
+}
+
+function panelListener() {
+  /** @type {HTMLElement} */
+  let panel = null;
+  return event => {
+    const { target, type } = event;
+
+    if (!(target instanceof HTMLElement)) return;
+
+    // For keys, we only care about Enter key to activate the panel
+    // otherwise it's activated via a click.
+    if (type === "keydown" && event.key !== "Enter") return;
+
+    const action = deriveAction(event);
+
+    switch (action) {
+      case "show": {
+        hidePanel(panel);
+        /** @type {HTMLElement} */
+        const dfn = target.closest("dfn, .index-term");
+        panel = document.getElementById(`dfn-panel-for-${dfn.id}`);
+        const coords = deriveCoordinates(event);
+        displayPanel(dfn, panel, coords);
+        break;
+      }
+      case "dock": {
+        panel.style.left = null;
+        panel.style.top = null;
+        panel.classList.add("docked");
+        break;
+      }
+      case "hide": {
+        hidePanel(panel);
+        panel = null;
+        break;
+      }
+    }
+  };
+}
+
+/**
+ * @param {MouseEvent|KeyboardEvent} event
+ */
+function deriveCoordinates(event) {
+  const target = /** @type HTMLElement */ (event.target);
+
+  // We prevent synthetic AT clicks from putting
+  // the dialog in a weird place. The AT events sometimes
+  // lack coordinates, so they have clientX/Y = 0
+  const rect = target.getBoundingClientRect();
+  if (
+    event instanceof MouseEvent &&
+    event.clientX >= rect.left &&
+    event.clientY >= rect.top
+  ) {
+    // The event probably happened inside the bounding rect...
+    return { x: event.clientX, y: event.clientY };
+  }
+
+  // Offset to the middle of the element
+  const x = rect.x + rect.width / 2;
+  // Placed at the bottom of the element
+  const y = rect.y + rect.height;
+  return { x, y };
+}
+
+/**
+ * @param {Event} event
+ */
+function deriveAction(event) {
+  const target = /** @type {HTMLElement} */ (event.target);
+  const hitALink = !!target.closest("a");
+  if (target.closest("dfn:not([data-cite]), .index-term")) {
+    return hitALink ? "none" : "show";
+  }
+  if (target.closest(".dfn-panel")) {
+    if (hitALink) {
+      return target.classList.contains("self-link") ? "hide" : "dock";
+    }
+    const panel = target.closest(".dfn-panel");
+    return panel.classList.contains("docked") ? "hide" : "none";
+  }
+  if (document.querySelector(".dfn-panel:not([hidden])")) {
+    return "hide";
+  }
+  return "none";
+}
+
+/**
+ * @param {HTMLElement} dfn
+ * @param {HTMLElement} panel
+ * @param {{ x: number, y: number }} clickPosition
+ */
+function displayPanel(dfn, panel, { x, y }) {
+  panel.hidden = false;
+  // distance (px) between edge of panel and the pointing triangle (caret)
+  const MARGIN = 20;
+
+  const dfnRects = dfn.getClientRects();
+  // Find the `top` offset when the `dfn` can be spread across multiple lines
+  let closestTop = 0;
+  let minDiff = Infinity;
+  for (const rect of dfnRects) {
+    const { top, bottom } = rect;
+    const diffFromClickY = Math.abs((top + bottom) / 2 - y);
+    if (diffFromClickY < minDiff) {
+      minDiff = diffFromClickY;
+      closestTop = top;
+    }
+  }
+
+  const top = window.scrollY + closestTop + dfnRects[0].height;
+  const left = x - MARGIN;
+  panel.style.left = `${left}px`;
+  panel.style.top = `${top}px`;
+
+  // Find if the panel is flowing out of the window
+  const panelRect = panel.getBoundingClientRect();
+  const SCREEN_WIDTH = Math.min(window.innerWidth, window.screen.width);
+  if (panelRect.right > SCREEN_WIDTH) {
+    const newLeft = Math.max(MARGIN, x + MARGIN - panelRect.width);
+    const newCaretOffset = left - newLeft;
+    panel.style.left = `${newLeft}px`;
+    /** @type {HTMLElement} */
+    const caret = panel.querySelector(".caret");
+    caret.style.left = `${newCaretOffset}px`;
+  }
+
+  // As it's a dialog, we trap focus.
+  // TODO: when <dialog> becomes a implemented, we should really
+  // use that.
+  trapFocus(panel, dfn);
+}
+
+/**
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function trapFocus(panel, dfn) {
+  /** @type NodeListOf<HTMLAnchorElement> elements */
+  const anchors = panel.querySelectorAll("a[href]");
+  // No need to trap focus
+  if (!anchors.length) return;
+
+  // Move focus to first anchor element
+  const first = anchors.item(0);
+  first.focus();
+
+  const trapListener = createTrapListener(anchors, panel, dfn);
+  panel.addEventListener("keydown", trapListener);
+
+  // Hiding the panel releases the trap
+  const mo = new MutationObserver(records => {
+    const [record] = records;
+    const target = /** @type HTMLElement */ (record.target);
+    if (target.hidden) {
+      panel.removeEventListener("keydown", trapListener);
+      mo.disconnect();
+    }
+  });
+  mo.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
+}
+
+/**
+ *
+ * @param {NodeListOf<HTMLAnchorElement>} anchors
+ * @param {HTMLElement} panel
+ * @param {HTMLElement} dfn
+ * @returns
+ */
+function createTrapListener(anchors, panel, dfn) {
+  const lastIndex = anchors.length - 1;
+  let currentIndex = 0;
+  return event => {
+    switch (event.key) {
+      // Hitting "Tab" traps us in a nice loop around elements.
+      case "Tab": {
+        event.preventDefault();
+        currentIndex += event.shiftKey ? -1 : +1;
+        if (currentIndex < 0) {
+          currentIndex = lastIndex;
+        } else if (currentIndex > lastIndex) {
+          currentIndex = 0;
+        }
+        anchors.item(currentIndex).focus();
+        break;
+      }
+
+      // Hitting "Enter" on an anchor releases the trap.
+      case "Enter":
+        hidePanel(panel);
+        break;
+
+      // Hitting "Escape" returns focus to dfn.
+      case "Escape":
+        hidePanel(panel);
+        dfn.focus();
+        return;
+    }
+  };
+}
+
+/** @param {HTMLElement} panel */
+function hidePanel(panel) {
+  if (!panel) return;
+  panel.hidden = true;
+  panel.classList.remove("docked");
+}
+})()</script><script src="www.w3.org/scripts/TR/2021/fixup.js"></script>
+</body>
+</html>
